@@ -9,9 +9,9 @@
 
 QMAKE_PROJECT_DEPTH = 0 # undocumented qmake flag to force absolute paths in make files
 
-exists($${OUT_PWD}/qgroundcontrol.pro) {
-    error("You must use shadow build (e.g. mkdir build; cd build; qmake ../qgroundcontrol.pro).")
-}
+#exists($${OUT_PWD}/qgroundcontrol.pro) {
+#    error("You must use shadow build (e.g. mkdir build; cd build; qmake ../qgroundcontrol.pro).")
+#}
 
 message(Qt version $$[QT_VERSION])
 

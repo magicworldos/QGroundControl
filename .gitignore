@@ -5,6 +5,7 @@ CMakeFiles
 *Makefile*
 tags
 build*/
+build/*
 Info.plist
 obj
 .DS_Store
