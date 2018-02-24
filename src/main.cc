@@ -209,6 +209,14 @@ int main(int argc, char *argv[])
     QGCApplication* app = new QGCApplication(argc, argv, runUnitTests);
     Q_CHECK_PTR(app);
 
+    QString qmpPath = QCoreApplication::applicationDirPath();
+    qmpPath.append("/");
+    qmpPath.append("default.qm");
+    QTranslator translator;
+	translator.load(qmpPath);
+    //translator.load("translation_CN.qm");
+	app->installTranslator(&translator);
+
 #ifdef Q_OS_LINUX
     QApplication::setWindowIcon(QIcon(":/res/resources/icons/qgroundcontrol.ico"));
 #endif /* Q_OS_LINUX */
