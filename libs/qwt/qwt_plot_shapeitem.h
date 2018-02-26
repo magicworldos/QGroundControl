@@ -15,7 +15,7 @@
 #include <qpainterpath.h>
 
 /*!
-  \brief A plot item, which displays any graphical shape, 
+  \brief A plot item, which displays any graphical shape,
          that can be defined by a QPainterPath
 
   A QPainterPath is a shape composed from intersecting and uniting
@@ -31,81 +31,81 @@
 class QWT_EXPORT QwtPlotShapeItem: public QwtPlotItem
 {
 public:
-    /*!
-        Attributes to modify the drawing algorithm.
-        The default disables all attributes
+	/*!
+	    Attributes to modify the drawing algorithm.
+	    The default disables all attributes
 
-        \sa setPaintAttribute(), testPaintAttribute()
-    */
-    enum PaintAttribute
-    {
-        /*!
-          Clip polygons before painting them. In situations, where points
-          are far outside the visible area (f.e when zooming deep) this
-          might be a substantial improvement for the painting performance
+	    \sa setPaintAttribute(), testPaintAttribute()
+	*/
+	enum PaintAttribute
+	{
+		/*!
+		  Clip polygons before painting them. In situations, where points
+		  are far outside the visible area (f.e when zooming deep) this
+		  might be a substantial improvement for the painting performance
 
-          But polygon clipping will convert the painter path into
-          polygons what might introduce a negative impact on the
-          performance of paths composed from curves or ellipses.
-         */
-        ClipPolygons = 0x01,
-    };
+		  But polygon clipping will convert the painter path into
+		  polygons what might introduce a negative impact on the
+		  performance of paths composed from curves or ellipses.
+		 */
+		ClipPolygons = 0x01,
+	};
 
-    //! Paint attributes
-    typedef QFlags<PaintAttribute> PaintAttributes;
+	//! Paint attributes
+	typedef QFlags<PaintAttribute> PaintAttributes;
 
-    //! Mode how to display the item on the legend
-    enum LegendMode
-    {
-        //! Display a scaled down version of the shape
-        LegendShape,
+	//! Mode how to display the item on the legend
+	enum LegendMode
+	{
+		//! Display a scaled down version of the shape
+		LegendShape,
 
-        //! Display a filled rectangle 
-        LegendColor
-    };
+		//! Display a filled rectangle
+		LegendColor
+	};
 
-    explicit QwtPlotShapeItem( const QString &title = QString::null );
-    explicit QwtPlotShapeItem( const QwtText &title );
+	explicit QwtPlotShapeItem(const QString &title = QString::null);
+	explicit QwtPlotShapeItem(const QwtText &title);
 
-    virtual ~QwtPlotShapeItem();
+	virtual ~QwtPlotShapeItem();
 
-    void setPaintAttribute( PaintAttribute, bool on = true );
-    bool testPaintAttribute( PaintAttribute ) const;
+	void setPaintAttribute(PaintAttribute, bool on = true);
+	bool testPaintAttribute(PaintAttribute) const;
 
-    void setLegendMode( LegendMode );
-    LegendMode legendMode() const;
+	void setLegendMode(LegendMode);
+	LegendMode legendMode() const;
 
-    void setRect( const QRectF & );
-    void setPolygon( const QPolygonF & );
+	void setRect(const QRectF &);
+	void setPolygon(const QPolygonF &);
 
-    void setShape( const QPainterPath & );
-    QPainterPath shape() const;
+	void setShape(const QPainterPath &);
+	QPainterPath shape() const;
 
-    void setPen( const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine );
-    void setPen( const QPen & );
-    QPen pen() const;
+	void setPen(const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine);
+	void setPen(const QPen &);
+	QPen pen() const;
 
-    void setBrush( const QBrush & );
-    QBrush brush() const;
+	void setBrush(const QBrush &);
+	QBrush brush() const;
 
-    void setRenderTolerance( double );
-    double renderTolerance() const;
+	void setRenderTolerance(double);
+	double renderTolerance() const;
 
-    virtual QRectF boundingRect() const;
+	virtual QRectF boundingRect() const;
 
-    virtual void draw( QPainter *p,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &rect ) const;
+	virtual void draw(QPainter *p,
+			  const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+			  const QRectF &rect) const;
 
-    virtual QwtGraphic legendIcon( int index, const QSizeF & ) const;
+	virtual QwtGraphic legendIcon(int index, const QSizeF &) const;
 
-    virtual int rtti() const;
+	virtual int rtti() const;
 
 private:
-    void init();
+	void init();
 
-    class PrivateData;
-    PrivateData *d_data;
+	class PrivateData;
+	PrivateData *d_data;
 };
 
 #endif

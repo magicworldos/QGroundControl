@@ -20,7 +20,7 @@
  */
 struct GPSPositionMessage
 {
-    vehicle_gps_position_s position_data;
+	vehicle_gps_position_s position_data;
 };
 
 Q_DECLARE_METATYPE(GPSPositionMessage);
@@ -28,6 +28,6 @@ Q_DECLARE_METATYPE(GPSPositionMessage);
 
 struct GPSSatelliteMessage
 {
-    satellite_info_s satellite_data;
+	satellite_info_s satellite_data;
 };
 Q_DECLARE_METATYPE(GPSSatelliteMessage);

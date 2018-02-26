@@ -10,79 +10,84 @@
 #include "QGCFenceCircle.h"
 #include "JsonHelper.h"
 
-const char* QGCFenceCircle::_jsonInclusionKey = "inclusion";
+const char *QGCFenceCircle::_jsonInclusionKey = "inclusion";
 
-QGCFenceCircle::QGCFenceCircle(QObject* parent)
-    : QGCMapCircle  (parent)
-    , _inclusion    (true)
+QGCFenceCircle::QGCFenceCircle(QObject *parent)
+	: QGCMapCircle(parent)
+	, _inclusion(true)
 {
-    _init();
+	_init();
 }
 
-QGCFenceCircle::QGCFenceCircle(const QGeoCoordinate& center, double radius, bool inclusion, QObject* parent)
-    : QGCMapCircle  (center, radius, parent)
-    , _inclusion    (inclusion)
+QGCFenceCircle::QGCFenceCircle(const QGeoCoordinate &center, double radius, bool inclusion, QObject *parent)
+	: QGCMapCircle(center, radius, parent)
+	, _inclusion(inclusion)
 {
-    _init();
+	_init();
 }
 
-QGCFenceCircle::QGCFenceCircle(const QGCFenceCircle& other, QObject* parent)
-    : QGCMapCircle  (other, parent)
-    , _inclusion    (other._inclusion)
+QGCFenceCircle::QGCFenceCircle(const QGCFenceCircle &other, QObject *parent)
+	: QGCMapCircle(other, parent)
+	, _inclusion(other._inclusion)
 {
-    _init();
+	_init();
 }
 
 void QGCFenceCircle::_init(void)
 {
-    connect(this, &QGCFenceCircle::inclusionChanged, this, &QGCFenceCircle::_setDirty);
+	connect(this, &QGCFenceCircle::inclusionChanged, this, &QGCFenceCircle::_setDirty);
 }
 
-const QGCFenceCircle& QGCFenceCircle::operator=(const QGCFenceCircle& other)
+const QGCFenceCircle &QGCFenceCircle::operator=(const QGCFenceCircle &other)
 {
-    QGCMapCircle::operator=(other);
+	QGCMapCircle::operator=(other);
 
-    setInclusion(other._inclusion);
+	setInclusion(other._inclusion);
 
-    return *this;
+	return *this;
 }
 
 void QGCFenceCircle::_setDirty(void)
 {
-    setDirty(true);
+	setDirty(true);
 }
 
-void QGCFenceCircle::saveToJson(QJsonObject& json)
+void QGCFenceCircle::saveToJson(QJsonObject &json)
 {
-    QGCMapCircle::saveToJson(json);
+	QGCMapCircle::saveToJson(json);
 
-    json[_jsonInclusionKey] = _inclusion;
+	json[_jsonInclusionKey] = _inclusion;
 }
 
-bool QGCFenceCircle::loadFromJson(const QJsonObject& json, QString& errorString)
+bool QGCFenceCircle::loadFromJson(const QJsonObject &json, QString &errorString)
 {
-    if (!QGCMapCircle::loadFromJson(json, errorString)) {
-        return false;
-    }
+	if (!QGCMapCircle::loadFromJson(json, errorString))
+	{
+		return false;
+	}
 
-    errorString.clear();
+	errorString.clear();
 
-    QList<JsonHelper::KeyValidateInfo> keyInfoList = {
-        { _jsonInclusionKey, QJsonValue::Bool, true },
-    };
-    if (!JsonHelper::validateKeys(json, keyInfoList, errorString)) {
-        return false;
-    }
+	QList<JsonHelper::KeyValidateInfo> keyInfoList =
+	{
+		{ _jsonInclusionKey, QJsonValue::Bool, true },
+	};
 
-    setInclusion(json[_jsonInclusionKey].toBool());
+	if (!JsonHelper::validateKeys(json, keyInfoList, errorString))
+	{
+		return false;
+	}
 
-    return true;
+	setInclusion(json[_jsonInclusionKey].toBool());
+
+	return true;
 }
 
 void QGCFenceCircle::setInclusion(bool inclusion)
 {
-    if (inclusion != _inclusion) {
-        _inclusion = inclusion;
-        emit inclusionChanged(inclusion);
-    }
+	if (inclusion != _inclusion)
+	{
+		_inclusion = inclusion;
+		emit inclusionChanged(inclusion);
+	}
 }

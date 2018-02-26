@@ -33,17 +33,17 @@ class QPainter;
 class AbstractSurfacePainter
 {
 public:
-    virtual ~AbstractSurfacePainter() {}
+	virtual ~AbstractSurfacePainter() {}
 
-    virtual bool supportsFormat(GstVideoFormat format) const = 0;
+	virtual bool supportsFormat(GstVideoFormat format) const = 0;
 
-    virtual void init(const BufferFormat & format) = 0;
-    virtual void cleanup() = 0;
+	virtual void init(const BufferFormat &format) = 0;
+	virtual void cleanup() = 0;
 
-    virtual void paint(quint8 *data, const BufferFormat & frameFormat,
-                       QPainter *painter, const PaintAreas & areas) = 0;
+	virtual void paint(quint8 *data, const BufferFormat &frameFormat,
+			   QPainter *painter, const PaintAreas &areas) = 0;
 
-    virtual void updateColors(int brightness, int contrast, int hue, int saturation) = 0;
+	virtual void updateColors(int brightness, int contrast, int hue, int saturation) = 0;
 };
 
 #endif

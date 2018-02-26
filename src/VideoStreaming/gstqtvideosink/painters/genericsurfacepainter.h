@@ -35,24 +35,25 @@
 class GenericSurfacePainter : public AbstractSurfacePainter
 {
 public:
-    GenericSurfacePainter();
+	GenericSurfacePainter();
 
-    static QSet<GstVideoFormat> supportedPixelFormats();
+	static QSet<GstVideoFormat> supportedPixelFormats();
 
-    virtual bool supportsFormat(GstVideoFormat format) const {
-        return supportedPixelFormats().contains(format);
-    }
+	virtual bool supportsFormat(GstVideoFormat format) const
+	{
+		return supportedPixelFormats().contains(format);
+	}
 
-    virtual void init(const BufferFormat &format);
-    virtual void cleanup();
+	virtual void init(const BufferFormat &format);
+	virtual void cleanup();
 
-    virtual void paint(quint8 *data, const BufferFormat & frameFormat,
-                       QPainter *painter, const PaintAreas & areas);
+	virtual void paint(quint8 *data, const BufferFormat &frameFormat,
+			   QPainter *painter, const PaintAreas &areas);
 
-    virtual void updateColors(int brightness, int contrast, int hue, int saturation);
+	virtual void updateColors(int brightness, int contrast, int hue, int saturation);
 
 private:
-    QImage::Format m_imageFormat;
+	QImage::Format m_imageFormat;
 };
 
 #endif // GENERICSURFACEPAINTER_H

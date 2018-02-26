@@ -28,11 +28,11 @@
 
 class QtQuick2VideoSinkDelegate : public BaseDelegate
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit QtQuick2VideoSinkDelegate(GstElement * sink, QObject * parent = 0);
+	explicit QtQuick2VideoSinkDelegate(GstElement *sink, QObject *parent = 0);
 
-    QSGNode *updateNode(QSGNode *node, const QRectF & targetArea);
+	QSGNode *updateNode(QSGNode *node, const QRectF &targetArea);
 };
 
 #endif // QTQUICK2VIDEOSINKDELEGATE_H

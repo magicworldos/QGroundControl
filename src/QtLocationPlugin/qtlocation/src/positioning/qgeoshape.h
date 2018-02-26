@@ -44,47 +44,48 @@ class QGeoShapePrivate;
 
 class Q_POSITIONING_EXPORT QGeoShape
 {
-    Q_GADGET
-    Q_PROPERTY(ShapeType type READ type)
-    Q_PROPERTY(bool isValid READ isValid)
-    Q_PROPERTY(bool isEmpty READ isEmpty)
-    Q_ENUMS(ShapeType)
+	Q_GADGET
+	Q_PROPERTY(ShapeType type READ type)
+	Q_PROPERTY(bool isValid READ isValid)
+	Q_PROPERTY(bool isEmpty READ isEmpty)
+	Q_ENUMS(ShapeType)
 
 public:
-    QGeoShape();
-    QGeoShape(const QGeoShape &other);
-    ~QGeoShape();
+	QGeoShape();
+	QGeoShape(const QGeoShape &other);
+	~QGeoShape();
 
-    enum ShapeType {
-        UnknownType,
-        RectangleType,
-        CircleType
-    };
+	enum ShapeType
+	{
+		UnknownType,
+		RectangleType,
+		CircleType
+	};
 
-    ShapeType type() const;
+	ShapeType type() const;
 
-    bool isValid() const;
-    bool isEmpty() const;
-    Q_INVOKABLE bool contains(const QGeoCoordinate &coordinate) const;
+	bool isValid() const;
+	bool isEmpty() const;
+	Q_INVOKABLE bool contains(const QGeoCoordinate &coordinate) const;
 
-    QGeoCoordinate center() const;
+	QGeoCoordinate center() const;
 
-    void extendShape(const QGeoCoordinate &coordinate);
+	void extendShape(const QGeoCoordinate &coordinate);
 
-    bool operator==(const QGeoShape &other) const;
-    bool operator!=(const QGeoShape &other) const;
+	bool operator==(const QGeoShape &other) const;
+	bool operator!=(const QGeoShape &other) const;
 
-    QGeoShape &operator=(const QGeoShape &other);
+	QGeoShape &operator=(const QGeoShape &other);
 
-    Q_INVOKABLE QString toString() const;
+	Q_INVOKABLE QString toString() const;
 protected:
-    QGeoShape(QGeoShapePrivate *d);
+	QGeoShape(QGeoShapePrivate *d);
 
-    QSharedDataPointer<QGeoShapePrivate> d_ptr;
+	QSharedDataPointer<QGeoShapePrivate> d_ptr;
 
 private:
-    inline QGeoShapePrivate *d_func();
-    inline const QGeoShapePrivate *d_func() const;
+	inline QGeoShapePrivate *d_func();
+	inline const QGeoShapePrivate *d_func() const;
 };
 
 Q_DECLARE_TYPEINFO(QGeoShape, Q_MOVABLE_TYPE);

@@ -58,11 +58,12 @@
 class Sleeper : public QThread
 {
 public:
-    static void usleep(unsigned long usecs) { QThread::usleep(usecs); }
+	static void usleep(unsigned long usecs) { QThread::usleep(usecs); }
 };
 
-static inline void usleep(unsigned long usecs) {
-    Sleeper::usleep(usecs);
+static inline void usleep(unsigned long usecs)
+{
+	Sleeper::usleep(usecs);
 }
 
 
@@ -73,9 +74,10 @@ typedef uint64_t gps_abstime;
  * Get the current time in us. Function signature:
  * uint64_t hrt_absolute_time()
  */
-static inline gps_abstime gps_absolute_time() {
-    //FIXME: is there something with microsecond accuracy?
-    return QDateTime::currentMSecsSinceEpoch() * 1000;
+static inline gps_abstime gps_absolute_time()
+{
+	//FIXME: is there something with microsecond accuracy?
+	return QDateTime::currentMSecsSinceEpoch() * 1000;
 }
 
 //timespec is UNIX-specific
@@ -83,8 +85,8 @@ static inline gps_abstime gps_absolute_time() {
 #if _MSC_VER < 1900
 struct timespec
 {
-    time_t tv_sec;
-    long tv_nsec;
+	time_t tv_sec;
+	long tv_nsec;
 };
 #else
 #include <time.h>

@@ -14,51 +14,54 @@
 
 #include <QSettings>
 
-const char* ValuesWidgetController::_groupKey =         "ValuesWidget";
-const char* ValuesWidgetController::_largeValuesKey =   "large";
-const char* ValuesWidgetController::_smallValuesKey =   "small";
+const char *ValuesWidgetController::_groupKey =         "ValuesWidget";
+const char *ValuesWidgetController::_largeValuesKey =   "large";
+const char *ValuesWidgetController::_smallValuesKey =   "small";
 
 ValuesWidgetController::ValuesWidgetController(void)
 {
-    QSettings settings;
+	QSettings settings;
 
-    settings.beginGroup(_groupKey);
+	settings.beginGroup(_groupKey);
 
-    QStringList largeDefaults, smallDefaults;
-    qgcApp()->toolbox()->corePlugin()->valuesWidgetDefaultSettings(largeDefaults, smallDefaults);
+	QStringList largeDefaults, smallDefaults;
+	qgcApp()->toolbox()->corePlugin()->valuesWidgetDefaultSettings(largeDefaults, smallDefaults);
 
-    _largeValues = settings.value(_largeValuesKey, largeDefaults).toStringList();
-    _smallValues = settings.value(_smallValuesKey, smallDefaults).toStringList();
+	_largeValues = settings.value(_largeValuesKey, largeDefaults).toStringList();
+	_smallValues = settings.value(_smallValuesKey, smallDefaults).toStringList();
 
-    _altitudeProperties << "altitudeRelative" << "altitudeAMSL";
+	_altitudeProperties << "altitudeRelative" << "altitudeAMSL";
 
-    // Keep back compat for removed WGS84 value
-    if (_largeValues.contains ("Vehicle.altitudeWGS84")) {
-        setLargeValues(_largeValues.replaceInStrings("Vehicle.altitudeWGS84", "Vehicle.altitudeRelative"));
-    }
-    if (_smallValues.contains ("Vehicle.altitudeWGS84")) {
-        setSmallValues(_largeValues.replaceInStrings("Vehicle.altitudeWGS84", "Vehicle.altitudeRelative"));
-    }
+	// Keep back compat for removed WGS84 value
+	if (_largeValues.contains("Vehicle.altitudeWGS84"))
+	{
+		setLargeValues(_largeValues.replaceInStrings("Vehicle.altitudeWGS84", "Vehicle.altitudeRelative"));
+	}
+
+	if (_smallValues.contains("Vehicle.altitudeWGS84"))
+	{
+		setSmallValues(_largeValues.replaceInStrings("Vehicle.altitudeWGS84", "Vehicle.altitudeRelative"));
+	}
 }
 
-void ValuesWidgetController::setLargeValues(const QStringList& values)
+void ValuesWidgetController::setLargeValues(const QStringList &values)
 {
-    QSettings settings;
+	QSettings settings;
 
-    settings.beginGroup(_groupKey);
-    settings.setValue(_largeValuesKey, values);
+	settings.beginGroup(_groupKey);
+	settings.setValue(_largeValuesKey, values);
 
-    _largeValues = values;
-    emit largeValuesChanged(values);
+	_largeValues = values;
+	emit largeValuesChanged(values);
 }
 
-void ValuesWidgetController::setSmallValues(const QStringList& values)
+void ValuesWidgetController::setSmallValues(const QStringList &values)
 {
-    QSettings settings;
+	QSettings settings;
 
-    settings.beginGroup(_groupKey);
-    settings.setValue(_smallValuesKey, values);
+	settings.beginGroup(_groupKey);
+	settings.setValue(_smallValuesKey, values);
 
-    _smallValues = values;
-    emit smallValuesChanged(values);
+	_smallValues = values;
+	emit smallValuesChanged(values);
 }

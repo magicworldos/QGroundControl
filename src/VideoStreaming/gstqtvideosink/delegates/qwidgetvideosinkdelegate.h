@@ -32,25 +32,25 @@
 
 class QWidgetVideoSinkDelegate : public QtVideoSinkDelegate
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit QWidgetVideoSinkDelegate(GstElement * sink, QObject * parent = 0);
-    virtual ~QWidgetVideoSinkDelegate();
+	explicit QWidgetVideoSinkDelegate(GstElement *sink, QObject *parent = 0);
+	virtual ~QWidgetVideoSinkDelegate();
 
-    // "widget" property
-    QWidget *widget() const;
-    void setWidget(QWidget *widget);
+	// "widget" property
+	QWidget *widget() const;
+	void setWidget(QWidget *widget);
 
 protected:
-    virtual bool eventFilter(QObject *filteredObject, QEvent *event);
-    virtual void update();
+	virtual bool eventFilter(QObject *filteredObject, QEvent *event);
+	virtual void update();
 
 private:
-    // "widget" property
-    QPointer<QWidget> m_widget;
+	// "widget" property
+	QPointer<QWidget> m_widget;
 
-    // original value of the Qt::WA_OpaquePaintEvent attribute
-    bool m_opaquePaintEventAttribute;
+	// original value of the Qt::WA_OpaquePaintEvent attribute
+	bool m_opaquePaintEventAttribute;
 };
 
 #endif // QWIDGET_VIDEO_SINK_DELEGATE_H

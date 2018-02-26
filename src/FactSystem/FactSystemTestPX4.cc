@@ -17,11 +17,11 @@
 /// FactSystem Unit Test for PX4 autpilot
 FactSystemTestPX4::FactSystemTestPX4(void)
 {
-    
+
 }
 
 void FactSystemTestPX4::init(void)
 {
-    UnitTest::init();
-    _init(MAV_AUTOPILOT_PX4);
+	UnitTest::init();
+	_init(MAV_AUTOPILOT_PX4);
 }

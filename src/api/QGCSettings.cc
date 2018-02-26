@@ -14,8 +14,8 @@
 ///     @author Gus Grubba <mavlink@grubba.com>
 
 QGCSettings::QGCSettings(QString title, QUrl url, QUrl icon)
-    : _title(title)
-    , _url(url)
-    , _icon(icon)
+	: _title(title)
+	, _url(url)
+	, _icon(icon)
 {
 }

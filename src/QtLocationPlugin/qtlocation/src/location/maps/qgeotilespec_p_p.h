@@ -55,22 +55,22 @@ QT_BEGIN_NAMESPACE
 class QGeoTileSpecPrivate : public QSharedData
 {
 public:
-    QGeoTileSpecPrivate();
-    QGeoTileSpecPrivate(const QGeoTileSpecPrivate &other);
-    QGeoTileSpecPrivate(const QString &plugin, int mapId, int zoom, int x, int y, int version);
-    ~QGeoTileSpecPrivate();
+	QGeoTileSpecPrivate();
+	QGeoTileSpecPrivate(const QGeoTileSpecPrivate &other);
+	QGeoTileSpecPrivate(const QString &plugin, int mapId, int zoom, int x, int y, int version);
+	~QGeoTileSpecPrivate();
 
-    QGeoTileSpecPrivate &operator = (const QGeoTileSpecPrivate &other);
+	QGeoTileSpecPrivate &operator = (const QGeoTileSpecPrivate &other);
 
-    bool operator == (const QGeoTileSpecPrivate &rhs) const;
-    bool operator < (const QGeoTileSpecPrivate &rhs) const;
+	bool operator == (const QGeoTileSpecPrivate &rhs) const;
+	bool operator < (const QGeoTileSpecPrivate &rhs) const;
 
-    QString plugin_;
-    int mapId_;
-    int zoom_;
-    int x_;
-    int y_;
-    int version_;
+	QString plugin_;
+	int mapId_;
+	int zoom_;
+	int x_;
+	int y_;
+	int version_;
 };
 
 QT_END_NAMESPACE

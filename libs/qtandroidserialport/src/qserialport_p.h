@@ -55,31 +55,32 @@
 
 QT_BEGIN_NAMESPACE
 
-  
+
 class QSerialPortPrivateData
 {
 public:
-    enum IoConstants {
-        ReadChunkSize = 512
-    };
+	enum IoConstants
+	{
+		ReadChunkSize = 512
+	};
 
-    QSerialPortPrivateData(QSerialPort *q);
-    int timeoutValue(int msecs, int elapsed);
+	QSerialPortPrivateData(QSerialPort *q);
+	int timeoutValue(int msecs, int elapsed);
 
-    qint64 readBufferMaxSize;
-    QRingBuffer readBuffer;
-    QRingBuffer writeBuffer;
-    QSerialPort::SerialPortError error;
-    QString systemLocation;
-    qint32 inputBaudRate;
-    qint32 outputBaudRate;
-    QSerialPort::DataBits dataBits;
-    QSerialPort::Parity parity;
-    QSerialPort::StopBits stopBits;
-    QSerialPort::FlowControl flowControl;
-    QSerialPort::DataErrorPolicy policy;
-    bool settingsRestoredOnClose;
-    QSerialPort * const q_ptr;
+	qint64 readBufferMaxSize;
+	QRingBuffer readBuffer;
+	QRingBuffer writeBuffer;
+	QSerialPort::SerialPortError error;
+	QString systemLocation;
+	qint32 inputBaudRate;
+	qint32 outputBaudRate;
+	QSerialPort::DataBits dataBits;
+	QSerialPort::Parity parity;
+	QSerialPort::StopBits stopBits;
+	QSerialPort::FlowControl flowControl;
+	QSerialPort::DataErrorPolicy policy;
+	bool settingsRestoredOnClose;
+	QSerialPort *const q_ptr;
 };
 
 QT_END_NAMESPACE

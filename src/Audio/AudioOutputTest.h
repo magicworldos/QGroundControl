@@ -13,11 +13,11 @@
 
 class AudioOutputTest : public UnitTest
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    AudioOutputTest(void);
+	AudioOutputTest(void);
 
 private slots:
-    void _testSpokenReplacements(void);
+	void _testSpokenReplacements(void);
 };

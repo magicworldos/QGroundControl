@@ -60,19 +60,19 @@ class QGeoRoute;
 class QGeoRouteReplyPrivate
 {
 public:
-    explicit QGeoRouteReplyPrivate(const QGeoRouteRequest &request);
-    QGeoRouteReplyPrivate(QGeoRouteReply::Error error, QString errorString);
-    ~QGeoRouteReplyPrivate();
+	explicit QGeoRouteReplyPrivate(const QGeoRouteRequest &request);
+	QGeoRouteReplyPrivate(QGeoRouteReply::Error error, QString errorString);
+	~QGeoRouteReplyPrivate();
 
-    QGeoRouteReply::Error error;
-    QString errorString;
-    bool isFinished;
+	QGeoRouteReply::Error error;
+	QString errorString;
+	bool isFinished;
 
-    QGeoRouteRequest request;
-    QList<QGeoRoute> routes;
+	QGeoRouteRequest request;
+	QList<QGeoRoute> routes;
 
 private:
-    Q_DISABLE_COPY(QGeoRouteReplyPrivate)
+	Q_DISABLE_COPY(QGeoRouteReplyPrivate)
 };
 
 QT_END_NAMESPACE

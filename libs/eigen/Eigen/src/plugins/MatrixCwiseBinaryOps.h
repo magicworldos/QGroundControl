@@ -18,10 +18,10 @@
   * \sa class CwiseBinaryOp, cwiseAbs2
   */
 template<typename OtherDerived>
-EIGEN_STRONG_INLINE const EIGEN_CWISE_PRODUCT_RETURN_TYPE(Derived,OtherDerived)
+EIGEN_STRONG_INLINE const EIGEN_CWISE_PRODUCT_RETURN_TYPE(Derived, OtherDerived)
 cwiseProduct(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
 {
-  return EIGEN_CWISE_PRODUCT_RETURN_TYPE(Derived,OtherDerived)(derived(), other.derived());
+	return EIGEN_CWISE_PRODUCT_RETURN_TYPE(Derived, OtherDerived)(derived(), other.derived());
 }
 
 /** \returns an expression of the coefficient-wise == operator of *this and \a other
@@ -40,7 +40,7 @@ template<typename OtherDerived>
 inline const CwiseBinaryOp<std::equal_to<Scalar>, const Derived, const OtherDerived>
 cwiseEqual(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
 {
-  return CwiseBinaryOp<std::equal_to<Scalar>, const Derived, const OtherDerived>(derived(), other.derived());
+	return CwiseBinaryOp<std::equal_to<Scalar>, const Derived, const OtherDerived>(derived(), other.derived());
 }
 
 /** \returns an expression of the coefficient-wise != operator of *this and \a other
@@ -59,7 +59,7 @@ template<typename OtherDerived>
 inline const CwiseBinaryOp<std::not_equal_to<Scalar>, const Derived, const OtherDerived>
 cwiseNotEqual(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
 {
-  return CwiseBinaryOp<std::not_equal_to<Scalar>, const Derived, const OtherDerived>(derived(), other.derived());
+	return CwiseBinaryOp<std::not_equal_to<Scalar>, const Derived, const OtherDerived>(derived(), other.derived());
 }
 
 /** \returns an expression of the coefficient-wise min of *this and \a other
@@ -73,7 +73,7 @@ template<typename OtherDerived>
 EIGEN_STRONG_INLINE const CwiseBinaryOp<internal::scalar_min_op<Scalar>, const Derived, const OtherDerived>
 cwiseMin(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
 {
-  return CwiseBinaryOp<internal::scalar_min_op<Scalar>, const Derived, const OtherDerived>(derived(), other.derived());
+	return CwiseBinaryOp<internal::scalar_min_op<Scalar>, const Derived, const OtherDerived>(derived(), other.derived());
 }
 
 /** \returns an expression of the coefficient-wise min of *this and scalar \a other
@@ -83,7 +83,7 @@ cwiseMin(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
 EIGEN_STRONG_INLINE const CwiseBinaryOp<internal::scalar_min_op<Scalar>, const Derived, const ConstantReturnType>
 cwiseMin(const Scalar &other) const
 {
-  return cwiseMin(Derived::Constant(rows(), cols(), other));
+	return cwiseMin(Derived::Constant(rows(), cols(), other));
 }
 
 /** \returns an expression of the coefficient-wise max of *this and \a other
@@ -97,7 +97,7 @@ template<typename OtherDerived>
 EIGEN_STRONG_INLINE const CwiseBinaryOp<internal::scalar_max_op<Scalar>, const Derived, const OtherDerived>
 cwiseMax(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
 {
-  return CwiseBinaryOp<internal::scalar_max_op<Scalar>, const Derived, const OtherDerived>(derived(), other.derived());
+	return CwiseBinaryOp<internal::scalar_max_op<Scalar>, const Derived, const OtherDerived>(derived(), other.derived());
 }
 
 /** \returns an expression of the coefficient-wise max of *this and scalar \a other
@@ -107,7 +107,7 @@ cwiseMax(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
 EIGEN_STRONG_INLINE const CwiseBinaryOp<internal::scalar_max_op<Scalar>, const Derived, const ConstantReturnType>
 cwiseMax(const Scalar &other) const
 {
-  return cwiseMax(Derived::Constant(rows(), cols(), other));
+	return cwiseMax(Derived::Constant(rows(), cols(), other));
 }
 
 
@@ -122,10 +122,12 @@ template<typename OtherDerived>
 EIGEN_STRONG_INLINE const CwiseBinaryOp<internal::scalar_quotient_op<Scalar>, const Derived, const OtherDerived>
 cwiseQuotient(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
 {
-  return CwiseBinaryOp<internal::scalar_quotient_op<Scalar>, const Derived, const OtherDerived>(derived(), other.derived());
+	return CwiseBinaryOp<internal::scalar_quotient_op<Scalar>, const Derived, const OtherDerived>(derived(),
+			other.derived());
 }
 
-typedef CwiseBinaryOp<internal::scalar_cmp_op<Scalar,internal::cmp_EQ>, const Derived, const ConstantReturnType> CwiseScalarEqualReturnType;
+typedef CwiseBinaryOp<internal::scalar_cmp_op<Scalar, internal::cmp_EQ>, const Derived, const ConstantReturnType>
+CwiseScalarEqualReturnType;
 
 /** \returns an expression of the coefficient-wise == operator of \c *this and a scalar \a s
   *
@@ -137,7 +139,8 @@ typedef CwiseBinaryOp<internal::scalar_cmp_op<Scalar,internal::cmp_EQ>, const De
   * \sa cwiseEqual(const MatrixBase<OtherDerived> &) const
   */
 inline const CwiseScalarEqualReturnType
-cwiseEqual(const Scalar& s) const
+cwiseEqual(const Scalar &s) const
 {
-  return CwiseScalarEqualReturnType(derived(), Derived::Constant(rows(), cols(), s), internal::scalar_cmp_op<Scalar,internal::cmp_EQ>());
+	return CwiseScalarEqualReturnType(derived(), Derived::Constant(rows(), cols(), s),
+					  internal::scalar_cmp_op<Scalar, internal::cmp_EQ>());
 }

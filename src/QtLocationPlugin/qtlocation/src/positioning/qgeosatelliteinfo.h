@@ -44,52 +44,55 @@ class QGeoSatelliteInfoPrivate;
 class Q_POSITIONING_EXPORT QGeoSatelliteInfo
 {
 public:
-    enum Attribute {
-        Elevation,
-        Azimuth
-    };
+	enum Attribute
+	{
+		Elevation,
+		Azimuth
+	};
 
-    enum SatelliteSystem {
-        Undefined = 0x00,
-        GPS = 0x01,
-        GLONASS = 0x02
-    };
+	enum SatelliteSystem
+	{
+		Undefined = 0x00,
+		GPS = 0x01,
+		GLONASS = 0x02
+	};
 
-    QGeoSatelliteInfo();
-    QGeoSatelliteInfo(const QGeoSatelliteInfo &other);
-    ~QGeoSatelliteInfo();
+	QGeoSatelliteInfo();
+	QGeoSatelliteInfo(const QGeoSatelliteInfo &other);
+	~QGeoSatelliteInfo();
 
-    QGeoSatelliteInfo &operator=(const QGeoSatelliteInfo &other);
+	QGeoSatelliteInfo &operator=(const QGeoSatelliteInfo &other);
 
-    bool operator==(const QGeoSatelliteInfo &other) const;
-    inline bool operator!=(const QGeoSatelliteInfo &other) const {
-        return !operator==(other);
-    }
+	bool operator==(const QGeoSatelliteInfo &other) const;
+	inline bool operator!=(const QGeoSatelliteInfo &other) const
+	{
+		return !operator==(other);
+	}
 
-    void setSatelliteSystem(SatelliteSystem system);
-    SatelliteSystem satelliteSystem() const;
+	void setSatelliteSystem(SatelliteSystem system);
+	SatelliteSystem satelliteSystem() const;
 
-    void setSatelliteIdentifier(int satId);
-    int satelliteIdentifier() const;
+	void setSatelliteIdentifier(int satId);
+	int satelliteIdentifier() const;
 
-    void setSignalStrength(int signalStrength);
-    int signalStrength() const;
+	void setSignalStrength(int signalStrength);
+	int signalStrength() const;
 
-    void setAttribute(Attribute attribute, qreal value);
-    qreal attribute(Attribute attribute) const;
-    void removeAttribute(Attribute attribute);
+	void setAttribute(Attribute attribute, qreal value);
+	qreal attribute(Attribute attribute) const;
+	void removeAttribute(Attribute attribute);
 
-    bool hasAttribute(Attribute attribute) const;
+	bool hasAttribute(Attribute attribute) const;
 
 private:
 #ifndef QT_NO_DEBUG_STREAM
-    friend Q_POSITIONING_EXPORT QDebug operator<<(QDebug dbg, const QGeoSatelliteInfo &info);
+	friend Q_POSITIONING_EXPORT QDebug operator<<(QDebug dbg, const QGeoSatelliteInfo &info);
 #endif
 #ifndef QT_NO_DATASTREAM
-    friend Q_POSITIONING_EXPORT QDataStream &operator<<(QDataStream &stream, const QGeoSatelliteInfo &info);
-    friend Q_POSITIONING_EXPORT QDataStream &operator>>(QDataStream &stream, QGeoSatelliteInfo &info);
+	friend Q_POSITIONING_EXPORT QDataStream &operator<<(QDataStream &stream, const QGeoSatelliteInfo &info);
+	friend Q_POSITIONING_EXPORT QDataStream &operator>>(QDataStream &stream, QGeoSatelliteInfo &info);
 #endif
-    QGeoSatelliteInfoPrivate *d;
+	QGeoSatelliteInfoPrivate *d;
 };
 
 #ifndef QT_NO_DEBUG_STREAM

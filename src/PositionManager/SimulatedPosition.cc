@@ -13,111 +13,119 @@
 
 #include "SimulatedPosition.h"
 
-SimulatedPosition::simulated_motion_s SimulatedPosition::_simulated_motion[5] = {{0,250},{0,0},{0, -250},{-250, 0},{0,0}};
+SimulatedPosition::simulated_motion_s SimulatedPosition::_simulated_motion[5] = {{0, 250}, {0, 0}, {0, -250}, {-250, 0}, {0, 0}};
 
 SimulatedPosition::SimulatedPosition()
-    : QGeoPositionInfoSource(NULL),
-      lat_int(47.3977420*1e7),
-      lon_int(8.5455941*1e7),
-      _step_cnt(0),
-      _simulate_motion_index(0),
-      _simulate_motion(true),
-      _rotation(0.0F)
+	: QGeoPositionInfoSource(NULL),
+	  lat_int(47.3977420 * 1e7),
+	  lon_int(8.5455941 * 1e7),
+	  _step_cnt(0),
+	  _simulate_motion_index(0),
+	  _simulate_motion(true),
+	  _rotation(0.0F)
 {
-    QDateTime currentDateTime = QDateTime::currentDateTime();
+	QDateTime currentDateTime = QDateTime::currentDateTime();
 
-    qsrand(currentDateTime.toTime_t());
+	qsrand(currentDateTime.toTime_t());
 
-    connect(&update_timer, &QTimer::timeout, this, &SimulatedPosition::updatePosition);
+	connect(&update_timer, &QTimer::timeout, this, &SimulatedPosition::updatePosition);
 }
 
 QGeoPositionInfo SimulatedPosition::lastKnownPosition(bool /*fromSatellitePositioningMethodsOnly*/) const
 {
-    return lastPosition;
+	return lastPosition;
 }
 
 SimulatedPosition::PositioningMethods SimulatedPosition::supportedPositioningMethods() const
 {
-    return AllPositioningMethods;
+	return AllPositioningMethods;
 }
 
 int SimulatedPosition::minimumUpdateInterval() const
 {
-    return 1000;
+	return 1000;
 }
 
 void SimulatedPosition::startUpdates()
-{    
-    int interval = updateInterval();
-    if (interval < minimumUpdateInterval())
-        interval = minimumUpdateInterval();
+{
+	int interval = updateInterval();
 
-    update_timer.setSingleShot(false);
-    update_timer.start(interval);
+	if (interval < minimumUpdateInterval())
+	{
+		interval = minimumUpdateInterval();
+	}
+
+	update_timer.setSingleShot(false);
+	update_timer.start(interval);
 }
 
 void SimulatedPosition::stopUpdates()
 {
-    update_timer.stop();
+	update_timer.stop();
 }
 
 void SimulatedPosition::requestUpdate(int /*timeout*/)
 {
-    emit updateTimeout();
+	emit updateTimeout();
 }
 
 int SimulatedPosition::getRandomNumber(int size)
 {
-    if(size == 0) {
-        return 0;
-    }
+	if (size == 0)
+	{
+		return 0;
+	}
 
-    int num = (qrand()%2 > 1) ? -1 : 1;
+	int num = (qrand() % 2 > 1) ? -1 : 1;
 
-    return num*qrand()%size;
+	return num * qrand() % size;
 }
 
 void SimulatedPosition::updatePosition()
 {
-    int32_t lat_mov = 0;
-    int32_t lon_mov = 0;
+	int32_t lat_mov = 0;
+	int32_t lon_mov = 0;
 
-    _rotation += (float) .1;
+	_rotation += (float) .1;
 
-    if(!(_step_cnt++%30)) {
-        _simulate_motion_index++;
-        if(_simulate_motion_index > 4) {
-            _simulate_motion_index = 0;
-        }
-    }
+	if (!(_step_cnt++ % 30))
+	{
+		_simulate_motion_index++;
 
-    lat_mov = _simulated_motion[_simulate_motion_index].lat;
-    lon_mov = _simulated_motion[_simulate_motion_index].lon*sin(_rotation);
+		if (_simulate_motion_index > 4)
+		{
+			_simulate_motion_index = 0;
+		}
+	}
 
-    lon_int += lat_mov;
-    lat_int += lon_mov;
+	lat_mov = _simulated_motion[_simulate_motion_index].lat;
+	lon_mov = _simulated_motion[_simulate_motion_index].lon * sin(_rotation);
 
-    double latitude = ((double)  (lat_int + getRandomNumber(250)))*1e-7;
-    double longitude = ((double) (lon_int + getRandomNumber(250)))*1e-7;
+	lon_int += lat_mov;
+	lat_int += lon_mov;
 
-    QDateTime timestamp = QDateTime::currentDateTime();
+	double latitude = ((double)(lat_int + getRandomNumber(250))) * 1e-7;
+	double longitude = ((double)(lon_int + getRandomNumber(250))) * 1e-7;
 
-    QGeoCoordinate position(latitude, longitude);
-    QGeoPositionInfo info(position, timestamp);
+	QDateTime timestamp = QDateTime::currentDateTime();
 
-    if(lat_mov || lon_mov) {
-        info.setAttribute(QGeoPositionInfo::Attribute::Direction, 3.14/2);
-        info.setAttribute(QGeoPositionInfo::Attribute::GroundSpeed, 5);
-    }
+	QGeoCoordinate position(latitude, longitude);
+	QGeoPositionInfo info(position, timestamp);
 
-    lastPosition = info;
+	if (lat_mov || lon_mov)
+	{
+		info.setAttribute(QGeoPositionInfo::Attribute::Direction, 3.14 / 2);
+		info.setAttribute(QGeoPositionInfo::Attribute::GroundSpeed, 5);
+	}
 
-    emit positionUpdated(info);
+	lastPosition = info;
+
+	emit positionUpdated(info);
 }
 
 QGeoPositionInfoSource::Error SimulatedPosition::error() const
 {
-    return QGeoPositionInfoSource::NoError;
+	return QGeoPositionInfoSource::NoError;
 }
 
 

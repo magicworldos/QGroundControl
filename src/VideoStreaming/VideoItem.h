@@ -22,27 +22,27 @@
 
 class VideoItem : public QQuickItem
 {
-    Q_OBJECT
-    Q_DISABLE_COPY(VideoItem)
-    Q_PROPERTY(VideoSurface* surface READ surface WRITE setSurface)
+	Q_OBJECT
+	Q_DISABLE_COPY(VideoItem)
+	Q_PROPERTY(VideoSurface *surface READ surface WRITE setSurface)
 
 public:
-    explicit VideoItem(QQuickItem *parent = 0);
-    virtual ~VideoItem();
+	explicit VideoItem(QQuickItem *parent = 0);
+	virtual ~VideoItem();
 
-    VideoSurface *surface() const;
-    void setSurface(VideoSurface *surface);
+	VideoSurface *surface() const;
+	void setSurface(VideoSurface *surface);
 
 protected:
 #if defined(QGC_GST_STREAMING)
-    /*! Reimplemented from QQuickItem. */
-    virtual QSGNode* updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *updatePaintNodeData);
+	/*! Reimplemented from QQuickItem. */
+	virtual QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *updatePaintNodeData);
 #endif
 
 private:
 #if defined(QGC_GST_STREAMING)
-    struct Private;
-    Private* const _data;
+	struct Private;
+	Private *const _data;
 #endif
 };
 

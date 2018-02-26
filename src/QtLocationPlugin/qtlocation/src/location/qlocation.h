@@ -45,13 +45,15 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace QLocation {
+namespace QLocation
+{
 
-enum Visibility {
-    UnspecifiedVisibility = 0x00,
-    DeviceVisibility = 0x01,
-    PrivateVisibility = 0x02,
-    PublicVisibility = 0x04
+enum Visibility
+{
+	UnspecifiedVisibility = 0x00,
+	DeviceVisibility = 0x01,
+	PrivateVisibility = 0x02,
+	PublicVisibility = 0x04
 };
 
 Q_DECLARE_FLAGS(VisibilityScope, Visibility)

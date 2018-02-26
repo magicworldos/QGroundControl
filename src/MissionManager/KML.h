@@ -17,26 +17,26 @@ class Kml
 {
 
 public:
-    Kml();
-    ~Kml();
+	Kml();
+	~Kml();
 
-    void points(const QStringList& points);
-    void polygon(const QStringList& points);
-    void save(QDomDocument& document);
+	void points(const QStringList &points);
+	void polygon(const QStringList &points);
+	void save(QDomDocument &document);
 
 private:
-    void createHeader();
-    void createLookAt(QDomElement& placemark, const QStringList &lookAtList);
-    void createStyles();
-    void createStyleLine(QDomElement& domEle, const QString& lineColor, const QString& lineWidth, const QString& polyColor);
-    void createTextElement(QDomElement& domEle, const QString& elementName, const QString& textElement);
+	void createHeader();
+	void createLookAt(QDomElement &placemark, const QStringList &lookAtList);
+	void createStyles();
+	void createStyleLine(QDomElement &domEle, const QString &lineColor, const QString &lineWidth, const QString &polyColor);
+	void createTextElement(QDomElement &domEle, const QString &elementName, const QString &textElement);
 
-    QDomDocument _domDocument;
-    QDomElement _docEle;
-    static const QString _encoding;
-    static const QString _opengis;
-    static const QString _qgckml;
-    static const QString _version;
+	QDomDocument _domDocument;
+	QDomElement _docEle;
+	static const QString _encoding;
+	static const QString _opengis;
+	static const QString _qgckml;
+	static const QString _version;
 };
 
 #endif

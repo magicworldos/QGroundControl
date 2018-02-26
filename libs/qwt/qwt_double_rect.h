@@ -57,40 +57,40 @@ typedef QRectF QwtDoubleRect;
 class QWT_EXPORT QwtDoublePoint
 {
 public:
-    QwtDoublePoint();
-    QwtDoublePoint(double x, double y);
-    QwtDoublePoint(const QPoint &);
+	QwtDoublePoint();
+	QwtDoublePoint(double x, double y);
+	QwtDoublePoint(const QPoint &);
 
-    QPoint toPoint() const;
+	QPoint toPoint() const;
 
-    bool isNull()    const;
+	bool isNull()    const;
 
-    double x() const;
-    double y() const;
+	double x() const;
+	double y() const;
 
-    double &rx();
-    double &ry();
+	double &rx();
+	double &ry();
 
-    void setX(double x);
-    void setY(double y);
+	void setX(double x);
+	void setY(double y);
 
-    bool operator==(const QwtDoublePoint &) const;
-    bool operator!=(const QwtDoublePoint &) const;
+	bool operator==(const QwtDoublePoint &) const;
+	bool operator!=(const QwtDoublePoint &) const;
 
-    const QwtDoublePoint operator-() const;
-    const QwtDoublePoint operator+(const QwtDoublePoint &) const;
-    const QwtDoublePoint operator-(const QwtDoublePoint &) const;
-    const QwtDoublePoint operator*(double) const;
-    const QwtDoublePoint operator/(double) const;
+	const QwtDoublePoint operator-() const;
+	const QwtDoublePoint operator+(const QwtDoublePoint &) const;
+	const QwtDoublePoint operator-(const QwtDoublePoint &) const;
+	const QwtDoublePoint operator*(double) const;
+	const QwtDoublePoint operator/(double) const;
 
-    QwtDoublePoint &operator+=(const QwtDoublePoint &);
-    QwtDoublePoint &operator-=(const QwtDoublePoint &);
-    QwtDoublePoint &operator*=(double);
-    QwtDoublePoint &operator/=(double);
+	QwtDoublePoint &operator+=(const QwtDoublePoint &);
+	QwtDoublePoint &operator-=(const QwtDoublePoint &);
+	QwtDoublePoint &operator*=(double);
+	QwtDoublePoint &operator/=(double);
 
 private:
-    double d_x;
-    double d_y;
+	double d_x;
+	double d_y;
 };
 
 /*!
@@ -100,39 +100,39 @@ private:
 class QWT_EXPORT QwtDoubleSize
 {
 public:
-    QwtDoubleSize();
-    QwtDoubleSize(double width, double height);
-    QwtDoubleSize(const QSize &);
+	QwtDoubleSize();
+	QwtDoubleSize(double width, double height);
+	QwtDoubleSize(const QSize &);
 
-    bool isNull() const;
-    bool isEmpty() const;
-    bool isValid() const;
+	bool isNull() const;
+	bool isEmpty() const;
+	bool isValid() const;
 
-    double width() const;
-    double height() const;
-    void setWidth( double w );
-    void setHeight( double h );
-    void transpose();
+	double width() const;
+	double height() const;
+	void setWidth(double w);
+	void setHeight(double h);
+	void transpose();
 
-    QwtDoubleSize expandedTo(const QwtDoubleSize &) const;
-    QwtDoubleSize boundedTo(const QwtDoubleSize &) const;
+	QwtDoubleSize expandedTo(const QwtDoubleSize &) const;
+	QwtDoubleSize boundedTo(const QwtDoubleSize &) const;
 
-    bool operator==(const QwtDoubleSize &) const;
-    bool operator!=(const QwtDoubleSize &) const;
+	bool operator==(const QwtDoubleSize &) const;
+	bool operator!=(const QwtDoubleSize &) const;
 
-    const QwtDoubleSize operator+(const QwtDoubleSize &) const;
-    const QwtDoubleSize operator-(const QwtDoubleSize &) const;
-    const QwtDoubleSize operator*(double) const;
-    const QwtDoubleSize operator/(double) const;
+	const QwtDoubleSize operator+(const QwtDoubleSize &) const;
+	const QwtDoubleSize operator-(const QwtDoubleSize &) const;
+	const QwtDoubleSize operator*(double) const;
+	const QwtDoubleSize operator/(double) const;
 
-    QwtDoubleSize &operator+=(const QwtDoubleSize &);
-    QwtDoubleSize &operator-=(const QwtDoubleSize &);
-    QwtDoubleSize &operator*=(double c);
-    QwtDoubleSize &operator/=(double c);
+	QwtDoubleSize &operator+=(const QwtDoubleSize &);
+	QwtDoubleSize &operator-=(const QwtDoubleSize &);
+	QwtDoubleSize &operator*=(double c);
+	QwtDoubleSize &operator/=(double c);
 
 private:
-    double d_width;
-    double d_height;
+	double d_width;
+	double d_height;
 };
 
 /*!
@@ -142,82 +142,82 @@ private:
 class QWT_EXPORT QwtDoubleRect
 {
 public:
-    QwtDoubleRect();
-    QwtDoubleRect(double left, double top, double width, double height);
-    QwtDoubleRect(const QwtDoublePoint&, const QwtDoubleSize &);
+	QwtDoubleRect();
+	QwtDoubleRect(double left, double top, double width, double height);
+	QwtDoubleRect(const QwtDoublePoint &, const QwtDoubleSize &);
 
-    QwtDoubleRect(const QRect &);
-    QRect toRect() const;
+	QwtDoubleRect(const QRect &);
+	QRect toRect() const;
 
-    bool isNull()    const;
-    bool isEmpty()   const;
-    bool isValid()   const;
+	bool isNull()    const;
+	bool isEmpty()   const;
+	bool isValid()   const;
 
-    QwtDoubleRect normalized() const;
+	QwtDoubleRect normalized() const;
 
-    double x()  const;
-    double y()  const;
+	double x()  const;
+	double y()  const;
 
-    double left()  const;
-    double right()  const;
-    double top()  const;
-    double bottom()  const;
+	double left()  const;
+	double right()  const;
+	double top()  const;
+	double bottom()  const;
 
-    void setX(double);
-    void setY(double);
+	void setX(double);
+	void setY(double);
 
-    void setLeft(double);
-    void setRight(double);
-    void setTop(double);
-    void setBottom(double);
+	void setLeft(double);
+	void setRight(double);
+	void setTop(double);
+	void setBottom(double);
 
-    QwtDoublePoint center()  const;
+	QwtDoublePoint center()  const;
 
-    void moveLeft(double x);
-    void moveRight(double x);
-    void moveTop(double y );
-    void moveBottom(double y );
-    void moveTo(double x, double y);
-    void moveTo(const QwtDoublePoint &);
-    void moveBy(double dx, double dy);
-    void moveCenter(const QwtDoublePoint &);
-    void moveCenter(double dx, double dy);
+	void moveLeft(double x);
+	void moveRight(double x);
+	void moveTop(double y);
+	void moveBottom(double y);
+	void moveTo(double x, double y);
+	void moveTo(const QwtDoublePoint &);
+	void moveBy(double dx, double dy);
+	void moveCenter(const QwtDoublePoint &);
+	void moveCenter(double dx, double dy);
 
-    void setRect(double x1, double x2, double width, double height);
+	void setRect(double x1, double x2, double width, double height);
 
-    double width()   const;
-    double height()  const;
-    QwtDoubleSize size() const;
+	double width()   const;
+	double height()  const;
+	QwtDoubleSize size() const;
 
-    void setWidth(double w );
-    void setHeight(double h );
-    void setSize(const QwtDoubleSize &);
+	void setWidth(double w);
+	void setHeight(double h);
+	void setSize(const QwtDoubleSize &);
 
-    QwtDoubleRect  operator|(const QwtDoubleRect &r) const;
-    QwtDoubleRect  operator&(const QwtDoubleRect &r) const;
-    QwtDoubleRect &operator|=(const QwtDoubleRect &r);
-    QwtDoubleRect &operator&=(const QwtDoubleRect &r);
-    bool operator==( const QwtDoubleRect &) const;
-    bool operator!=( const QwtDoubleRect &) const;
+	QwtDoubleRect  operator|(const QwtDoubleRect &r) const;
+	QwtDoubleRect  operator&(const QwtDoubleRect &r) const;
+	QwtDoubleRect &operator|=(const QwtDoubleRect &r);
+	QwtDoubleRect &operator&=(const QwtDoubleRect &r);
+	bool operator==(const QwtDoubleRect &) const;
+	bool operator!=(const QwtDoubleRect &) const;
 
-    bool contains(const QwtDoublePoint &p, bool proper = false) const;
-    bool contains(double x, double y, bool proper = false) const;
-    bool contains(const QwtDoubleRect &r, bool proper=false) const;
+	bool contains(const QwtDoublePoint &p, bool proper = false) const;
+	bool contains(double x, double y, bool proper = false) const;
+	bool contains(const QwtDoubleRect &r, bool proper = false) const;
 
-    QwtDoubleRect unite(const QwtDoubleRect &) const;
-    QwtDoubleRect intersect(const QwtDoubleRect &) const;
-    bool intersects(const QwtDoubleRect &) const;
+	QwtDoubleRect unite(const QwtDoubleRect &) const;
+	QwtDoubleRect intersect(const QwtDoubleRect &) const;
+	bool intersects(const QwtDoubleRect &) const;
 
-    QwtDoublePoint bottomRight() const;
-    QwtDoublePoint topRight() const;
-    QwtDoublePoint topLeft() const;
-    QwtDoublePoint bottomLeft() const;
+	QwtDoublePoint bottomRight() const;
+	QwtDoublePoint topRight() const;
+	QwtDoublePoint topLeft() const;
+	QwtDoublePoint bottomLeft() const;
 
 private:
-    double d_left;
-    double d_right;
-    double d_top;
-    double d_bottom;
+	double d_left;
+	double d_right;
+	double d_top;
+	double d_bottom;
 };
 
 /*!
@@ -228,43 +228,43 @@ private:
 */
 inline bool QwtDoublePoint::isNull() const
 {
-    return d_x == 0.0 && d_y == 0.0;
+	return d_x == 0.0 && d_y == 0.0;
 }
 
 //! Returns the x-coordinate of the point.
 inline double QwtDoublePoint::x() const
 {
-    return d_x;
+	return d_x;
 }
 
 //! Returns the y-coordinate of the point.
 inline double QwtDoublePoint::y() const
 {
-    return d_y;
+	return d_y;
 }
 
 //! Returns a reference to the x-coordinate of the point.
 inline double &QwtDoublePoint::rx()
 {
-    return d_x;
+	return d_x;
 }
 
 //! Returns a reference to the y-coordinate of the point.
 inline double &QwtDoublePoint::ry()
 {
-    return d_y;
+	return d_y;
 }
 
 //! Sets the x-coordinate of the point to the value specified by x.
 inline void QwtDoublePoint::setX(double x)
 {
-    d_x = x;
+	d_x = x;
 }
 
 //! Sets the y-coordinate of the point to the value specified by y.
 inline void QwtDoublePoint::setY(double y)
 {
-    d_y = y;
+	d_y = y;
 }
 
 /*!
@@ -273,7 +273,7 @@ inline void QwtDoublePoint::setY(double y)
 */
 inline QPoint QwtDoublePoint::toPoint() const
 {
-    return QPoint(qRound(d_x), qRound(d_y));
+	return QPoint(qRound(d_x), qRound(d_y));
 }
 
 /*!
@@ -282,7 +282,7 @@ inline QPoint QwtDoublePoint::toPoint() const
 */
 inline bool QwtDoubleSize::isNull() const
 {
-    return d_width == 0.0 && d_height == 0.0;
+	return d_width == 0.0 && d_height == 0.0;
 }
 
 /*!
@@ -291,7 +291,7 @@ inline bool QwtDoubleSize::isNull() const
 */
 inline bool QwtDoubleSize::isEmpty() const
 {
-    return d_width <= 0.0 || d_height <= 0.0;
+	return d_width <= 0.0 || d_height <= 0.0;
 }
 
 /*!
@@ -300,31 +300,31 @@ inline bool QwtDoubleSize::isEmpty() const
 */
 inline bool QwtDoubleSize::isValid() const
 {
-    return d_width >= 0.0 && d_height >= 0.0;
+	return d_width >= 0.0 && d_height >= 0.0;
 }
 
 //! Returns the width.
 inline double QwtDoubleSize::width() const
 {
-    return d_width;
+	return d_width;
 }
 
 //! Returns the height.
 inline double QwtDoubleSize::height() const
 {
-    return d_height;
+	return d_height;
 }
 
 //! Sets the width to width.
 inline void QwtDoubleSize::setWidth(double width)
 {
-    d_width = width;
+	d_width = width;
 }
 
 //! Sets the height to height.
 inline void QwtDoubleSize::setHeight(double height)
 {
-    d_height = height;
+	d_height = height;
 }
 
 /*!
@@ -336,7 +336,7 @@ inline void QwtDoubleSize::setHeight(double height)
 */
 inline bool QwtDoubleRect::isNull() const
 {
-    return d_right == d_left && d_bottom == d_top;
+	return d_right == d_left && d_bottom == d_top;
 }
 
 /*!
@@ -348,7 +348,7 @@ inline bool QwtDoubleRect::isNull() const
 */
 inline bool QwtDoubleRect::isEmpty() const
 {
-    return d_left >= d_right || d_top >= d_bottom;
+	return d_left >= d_right || d_top >= d_bottom;
 }
 
 /*!
@@ -361,109 +361,109 @@ inline bool QwtDoubleRect::isEmpty() const
 */
 inline bool QwtDoubleRect::isValid() const
 {
-    return d_left < d_right && d_top < d_bottom;
+	return d_left < d_right && d_top < d_bottom;
 }
 
 //! Returns x
 inline double QwtDoubleRect::x() const
 {
-    return d_left;
+	return d_left;
 }
 
 //! Returns y
 inline double QwtDoubleRect::y() const
 {
-    return d_top;
+	return d_top;
 }
 
 //! Returns left
 inline double QwtDoubleRect::left() const
 {
-    return d_left;
+	return d_left;
 }
 
 //! Returns right
 inline double QwtDoubleRect::right() const
 {
-    return d_right;
+	return d_right;
 }
 
 //! Returns top
 inline double QwtDoubleRect::top() const
 {
-    return d_top;
+	return d_top;
 }
 
 //! Returns bottom
 inline double QwtDoubleRect::bottom() const
 {
-    return d_bottom;
+	return d_bottom;
 }
 
 //! Set left
 inline void QwtDoubleRect::setX(double x)
 {
-    d_left = x;
+	d_left = x;
 }
 
 //! Set left
 inline void QwtDoubleRect::setY(double y)
 {
-    d_top = y;
+	d_top = y;
 }
 
 //! Set left
 inline void QwtDoubleRect::setLeft(double x)
 {
-    d_left = x;
+	d_left = x;
 }
 
 //! Set right
 inline void QwtDoubleRect::setRight(double x)
 {
-    d_right = x;
+	d_right = x;
 }
 
 //! Set top
 inline void QwtDoubleRect::setTop(double y)
 {
-    d_top = y;
+	d_top = y;
 }
 
 //! Set bottom
 inline void QwtDoubleRect::setBottom(double y)
 {
-    d_bottom = y;
+	d_bottom = y;
 }
 
 //! Returns the width
 inline double QwtDoubleRect::width() const
 {
-    return  d_right - d_left;
+	return  d_right - d_left;
 }
 
 //! Returns the height
 inline double QwtDoubleRect::height() const
 {
-    return  d_bottom - d_top;
+	return  d_bottom - d_top;
 }
 
 //! Returns the size
 inline QwtDoubleSize QwtDoubleRect::size() const
 {
-    return QwtDoubleSize(width(), height());
+	return QwtDoubleSize(width(), height());
 }
 
 //! Set the width, by right = left + w;
 inline void QwtDoubleRect::setWidth(double w)
 {
-    d_right = d_left + w;
+	d_right = d_left + w;
 }
 
 //! Set the height, by bottom = top + h;
 inline void QwtDoubleRect::setHeight(double h)
 {
-    d_bottom = d_top + h;
+	d_bottom = d_top + h;
 }
 
 /*!
@@ -472,27 +472,27 @@ inline void QwtDoubleRect::setHeight(double h)
 */
 inline void QwtDoubleRect::moveTo(const QwtDoublePoint &p)
 {
-    moveTo(p.x(), p.y());
+	moveTo(p.x(), p.y());
 }
 
 inline QwtDoublePoint QwtDoubleRect::bottomRight() const
 {
-    return QwtDoublePoint(bottom(), right());
+	return QwtDoublePoint(bottom(), right());
 }
 
 inline QwtDoublePoint QwtDoubleRect::topRight() const
 {
-    return QwtDoublePoint(top(), right());
+	return QwtDoublePoint(top(), right());
 }
 
 inline QwtDoublePoint QwtDoubleRect::topLeft() const
 {
-    return QwtDoublePoint(top(), left());
+	return QwtDoublePoint(top(), left());
 }
 
 inline QwtDoublePoint QwtDoubleRect::bottomLeft() const
 {
-    return QwtDoublePoint(bottom(), left());
+	return QwtDoublePoint(bottom(), left());
 }
 
 

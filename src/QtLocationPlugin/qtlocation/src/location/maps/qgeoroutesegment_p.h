@@ -61,20 +61,20 @@ class QGeoCoordinate;
 class QGeoRouteSegmentPrivate : public QSharedData
 {
 public:
-    QGeoRouteSegmentPrivate();
-    QGeoRouteSegmentPrivate(const QGeoRouteSegmentPrivate &other);
-    ~QGeoRouteSegmentPrivate();
+	QGeoRouteSegmentPrivate();
+	QGeoRouteSegmentPrivate(const QGeoRouteSegmentPrivate &other);
+	~QGeoRouteSegmentPrivate();
 
-    bool operator ==(const QGeoRouteSegmentPrivate &other) const;
+	bool operator ==(const QGeoRouteSegmentPrivate &other) const;
 
-    bool valid;
+	bool valid;
 
-    int travelTime;
-    qreal distance;
-    QList<QGeoCoordinate> path;
-    QGeoManeuver maneuver;
+	int travelTime;
+	qreal distance;
+	QList<QGeoCoordinate> path;
+	QGeoManeuver maneuver;
 
-    QExplicitlySharedDataPointer<QGeoRouteSegmentPrivate> nextSegment;
+	QExplicitlySharedDataPointer<QGeoRouteSegmentPrivate> nextSegment;
 };
 
 QT_END_NAMESPACE

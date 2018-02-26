@@ -31,16 +31,16 @@ class QwtCompassRose;
 class QWT_EXPORT QwtCompassScaleDraw: public QwtRoundScaleDraw
 {
 public:
-    explicit QwtCompassScaleDraw();
-    explicit QwtCompassScaleDraw( const QMap<double, QString> &map );
+	explicit QwtCompassScaleDraw();
+	explicit QwtCompassScaleDraw(const QMap<double, QString> &map);
 
-    void setLabelMap( const QMap<double, QString> &map );
-    QMap<double, QString> labelMap() const;
+	void setLabelMap(const QMap<double, QString> &map);
+	QMap<double, QString> labelMap() const;
 
-    virtual QwtText label( double value ) const;
+	virtual QwtText label(double value) const;
 
 private:
-    QMap<double, QString> d_labelMap;
+	QMap<double, QString> d_labelMap;
 };
 
 /*!
@@ -56,28 +56,28 @@ private:
 
 class QWT_EXPORT QwtCompass: public QwtDial
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit QwtCompass( QWidget* parent = NULL );
-    virtual ~QwtCompass();
+	explicit QwtCompass(QWidget *parent = NULL);
+	virtual ~QwtCompass();
 
-    void setRose( QwtCompassRose *rose );
-    const QwtCompassRose *rose() const;
-    QwtCompassRose *rose();
+	void setRose(QwtCompassRose *rose);
+	const QwtCompassRose *rose() const;
+	QwtCompassRose *rose();
 
 protected:
-    virtual void drawRose( QPainter *, const QPointF &center,
-        double radius, double north, QPalette::ColorGroup ) const;
+	virtual void drawRose(QPainter *, const QPointF &center,
+			      double radius, double north, QPalette::ColorGroup) const;
 
-    virtual void drawScaleContents( QPainter *,
-        const QPointF &center, double radius ) const;
+	virtual void drawScaleContents(QPainter *,
+				       const QPointF &center, double radius) const;
 
-    virtual void keyPressEvent( QKeyEvent * );
+	virtual void keyPressEvent(QKeyEvent *);
 
 private:
-    class PrivateData;
-    PrivateData *d_data;
+	class PrivateData;
+	PrivateData *d_data;
 };
 
 #endif

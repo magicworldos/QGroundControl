@@ -50,54 +50,55 @@ class QGeoCodeReplyPrivate;
 
 class Q_LOCATION_EXPORT QGeoCodeReply : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    enum Error {
-        NoError,
-        EngineNotSetError,
-        CommunicationError,
-        ParseError,
-        UnsupportedOptionError,
-        CombinationError,
-        UnknownError
-    };
+	enum Error
+	{
+		NoError,
+		EngineNotSetError,
+		CommunicationError,
+		ParseError,
+		UnsupportedOptionError,
+		CombinationError,
+		UnknownError
+	};
 
-    QGeoCodeReply(Error error, const QString &errorString, QObject *parent = 0);
-    virtual ~QGeoCodeReply();
+	QGeoCodeReply(Error error, const QString &errorString, QObject *parent = 0);
+	virtual ~QGeoCodeReply();
 
-    bool isFinished() const;
-    Error error() const;
-    QString errorString() const;
+	bool isFinished() const;
+	Error error() const;
+	QString errorString() const;
 
-    QGeoShape viewport() const;
-    QList<QGeoLocation> locations() const;
+	QGeoShape viewport() const;
+	QList<QGeoLocation> locations() const;
 
-    int limit() const;
-    int offset() const;
+	int limit() const;
+	int offset() const;
 
-    virtual void abort();
+	virtual void abort();
 
 Q_SIGNALS:
-    void finished();
-    void error(QGeoCodeReply::Error error, const QString &errorString = QString());
+	void finished();
+	void error(QGeoCodeReply::Error error, const QString &errorString = QString());
 
 protected:
-    QGeoCodeReply(QObject *parent = 0);
+	QGeoCodeReply(QObject *parent = 0);
 
-    void setError(Error error, const QString &errorString);
-    void setFinished(bool finished);
+	void setError(Error error, const QString &errorString);
+	void setFinished(bool finished);
 
-    void setViewport(const QGeoShape &viewport);
-    void addLocation(const QGeoLocation &location);
-    void setLocations(const QList<QGeoLocation> &locations);
+	void setViewport(const QGeoShape &viewport);
+	void addLocation(const QGeoLocation &location);
+	void setLocations(const QList<QGeoLocation> &locations);
 
-    void setLimit(int limit);
-    void setOffset(int offset);
+	void setLimit(int limit);
+	void setOffset(int offset);
 
 private:
-    QGeoCodeReplyPrivate *d_ptr;
-    Q_DISABLE_COPY(QGeoCodeReply)
+	QGeoCodeReplyPrivate *d_ptr;
+	Q_DISABLE_COPY(QGeoCodeReply)
 };
 
 QT_END_NAMESPACE

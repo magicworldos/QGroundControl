@@ -20,22 +20,22 @@
 class ViewWidgetController : public QObject
 {
 	Q_OBJECT
-	
+
 public:
 	ViewWidgetController(void);
-	
+
 	Q_INVOKABLE void checkForVehicle(void);
-	
+
 signals:
 	void pluginConnected(QVariant autopilot);
 	void pluginDisconnected(void);
-	
+
 private slots:
-    void _vehicleAvailable(bool available);
+	void _vehicleAvailable(bool available);
 
 private:
-	AutoPilotPlugin*        _autopilot;
-	UASInterface*           _uas;
+	AutoPilotPlugin        *_autopilot;
+	UASInterface           *_uas;
 };
 
 #endif

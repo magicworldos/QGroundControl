@@ -22,14 +22,14 @@
   The selection is supported by a rubber band and optionally by displaying
   the coordinates of the current mouse position.
 
-  Zooming can be repeated as often as possible, limited only by 
+  Zooming can be repeated as often as possible, limited only by
   maxStackDepth() or minZoomSize().  Each rectangle is pushed on a stack.
 
-  The default setting how to select rectangles is 
+  The default setting how to select rectangles is
   a QwtPickerDragRectMachine with the following bindings:
 
   - QwtEventPattern::MouseSelect1\n
-    The first point of the zoom rectangle is selected by a mouse press, 
+    The first point of the zoom rectangle is selected by a mouse press,
     the second point from the position, where the mouse is released.
 
   - QwtEventPattern::KeySelect1\n
@@ -44,7 +44,7 @@
 
   - QwtEventPattern::MouseSelect3, QwtEventPattern::KeyUndo\n
     Zoom out one position on the zoom stack
-    
+
   - QwtEventPattern::MouseSelect6, QwtEventPattern::KeyRedo\n
     Zoom in one position on the zoom stack
 
@@ -52,9 +52,9 @@
     Zoom to the zoom base
 
   The setKeyPattern() and setMousePattern() functions can be used
-  to configure the zoomer actions. The following example 
-  shows, how to configure the 'I' and 'O' keys for zooming in and out 
-  one position on the zoom stack. The "Home" key is used to 
+  to configure the zoomer actions. The following example
+  shows, how to configure the 'I' and 'O' keys for zooming in and out
+  one position on the zoom stack. The "Home" key is used to
   "unzoom" the plot.
 
   \code
@@ -76,65 +76,65 @@
 
 class QWT_EXPORT QwtPlotZoomer: public QwtPlotPicker
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit QwtPlotZoomer( QWidget *, bool doReplot = true );
-    explicit QwtPlotZoomer( int xAxis, int yAxis,
-                            QWidget *, bool doReplot = true );
+	explicit QwtPlotZoomer(QWidget *, bool doReplot = true);
+	explicit QwtPlotZoomer(int xAxis, int yAxis,
+			       QWidget *, bool doReplot = true);
 
-    virtual ~QwtPlotZoomer();
+	virtual ~QwtPlotZoomer();
 
-    virtual void setZoomBase( bool doReplot = true );
-    virtual void setZoomBase( const QRectF & );
+	virtual void setZoomBase(bool doReplot = true);
+	virtual void setZoomBase(const QRectF &);
 
-    QRectF zoomBase() const;
-    QRectF zoomRect() const;
+	QRectF zoomBase() const;
+	QRectF zoomRect() const;
 
-    virtual void setAxis( int xAxis, int yAxis );
+	virtual void setAxis(int xAxis, int yAxis);
 
-    void setMaxStackDepth( int );
-    int maxStackDepth() const;
+	void setMaxStackDepth(int);
+	int maxStackDepth() const;
 
-    const QStack<QRectF> &zoomStack() const;
-    void setZoomStack( const QStack<QRectF> &,
-        int zoomRectIndex = -1 );
+	const QStack<QRectF> &zoomStack() const;
+	void setZoomStack(const QStack<QRectF> &,
+			  int zoomRectIndex = -1);
 
-    uint zoomRectIndex() const;
+	uint zoomRectIndex() const;
 
 public Q_SLOTS:
-    void moveBy( double x, double y );
-    virtual void moveTo( const QPointF & );
+	void moveBy(double x, double y);
+	virtual void moveTo(const QPointF &);
 
-    virtual void zoom( const QRectF & );
-    virtual void zoom( int up );
+	virtual void zoom(const QRectF &);
+	virtual void zoom(int up);
 
 Q_SIGNALS:
-    /*!
-      A signal emitting the zoomRect(), when the plot has been
-      zoomed in or out.
+	/*!
+	  A signal emitting the zoomRect(), when the plot has been
+	  zoomed in or out.
 
-      \param rect Current zoom rectangle.
-    */
+	  \param rect Current zoom rectangle.
+	*/
 
-    void zoomed( const QRectF &rect );
+	void zoomed(const QRectF &rect);
 
 protected:
-    virtual void rescale();
+	virtual void rescale();
 
-    virtual QSizeF minZoomSize() const;
+	virtual QSizeF minZoomSize() const;
 
-    virtual void widgetMouseReleaseEvent( QMouseEvent * );
-    virtual void widgetKeyPressEvent( QKeyEvent * );
+	virtual void widgetMouseReleaseEvent(QMouseEvent *);
+	virtual void widgetKeyPressEvent(QKeyEvent *);
 
-    virtual void begin();
-    virtual bool end( bool ok = true );
-    virtual bool accept( QPolygon & ) const;
+	virtual void begin();
+	virtual bool end(bool ok = true);
+	virtual bool accept(QPolygon &) const;
 
 private:
-    void init( bool doReplot );
+	void init(bool doReplot);
 
-    class PrivateData;
-    PrivateData *d_data;
+	class PrivateData;
+	PrivateData *d_data;
 };
 
 #endif

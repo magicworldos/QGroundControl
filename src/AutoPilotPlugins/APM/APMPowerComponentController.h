@@ -23,35 +23,35 @@
 /// Power Component MVC Controller for PowerComponent.qml.
 class PowerComponentController : public FactPanelController
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 public:
-    PowerComponentController(void);
-    ~PowerComponentController();
-    
-    Q_INVOKABLE void calibrateEsc(void);
-    Q_INVOKABLE void busConfigureActuators(void);
-    Q_INVOKABLE void stopBusConfigureActuators(void);
-    
+	PowerComponentController(void);
+	~PowerComponentController();
+
+	Q_INVOKABLE void calibrateEsc(void);
+	Q_INVOKABLE void busConfigureActuators(void);
+	Q_INVOKABLE void stopBusConfigureActuators(void);
+
 signals:
-    void oldFirmware(void);
-    void newerFirmware(void);
-    void incorrectFirmwareRevReporting(void);
-    void connectBattery(void);
-    void disconnectBattery(void);
-    void batteryConnected(void);
-    void calibrationFailed(const QString& errorMessage);
-    void calibrationSuccess(const QStringList& warningMessages);
-    
+	void oldFirmware(void);
+	void newerFirmware(void);
+	void incorrectFirmwareRevReporting(void);
+	void connectBattery(void);
+	void disconnectBattery(void);
+	void batteryConnected(void);
+	void calibrationFailed(const QString &errorMessage);
+	void calibrationSuccess(const QStringList &warningMessages);
+
 private slots:
-    void _handleUASTextMessage(int uasId, int compId, int severity, QString text);
-    
+	void _handleUASTextMessage(int uasId, int compId, int severity, QString text);
+
 private:
-    void _stopCalibration(void);
-    void _stopBusConfig(void);
-    
-    QStringList _warningMessages;
-    static const int _neededFirmwareRev = 1;
+	void _stopCalibration(void);
+	void _stopBusConfig(void);
+
+	QStringList _warningMessages;
+	static const int _neededFirmwareRev = 1;
 };
 
 #endif

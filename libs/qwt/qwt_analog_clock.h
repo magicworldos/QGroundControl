@@ -21,7 +21,7 @@
   \image html analogclock.png
 
   \par Example
-  \code 
+  \code
   #include <qwt_analog_clock.h>
 
   QwtAnalogClock *clock = new QwtAnalogClock(...);
@@ -42,52 +42,52 @@
 
 class QWT_EXPORT QwtAnalogClock: public QwtDial
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    /*!
-        Hand type
-        \sa setHand(), hand()
-    */
-    enum Hand
-    {
-        //! Needle displaying the seconds
-        SecondHand,
+	/*!
+	    Hand type
+	    \sa setHand(), hand()
+	*/
+	enum Hand
+	{
+		//! Needle displaying the seconds
+		SecondHand,
 
-        //! Needle displaying the minutes
-        MinuteHand,
+		//! Needle displaying the minutes
+		MinuteHand,
 
-        //! Needle displaying the hours
-        HourHand,
+		//! Needle displaying the hours
+		HourHand,
 
-        //! Number of needles
-        NHands
-    };
+		//! Number of needles
+		NHands
+	};
 
-    explicit QwtAnalogClock( QWidget* parent = NULL );
-    virtual ~QwtAnalogClock();
+	explicit QwtAnalogClock(QWidget *parent = NULL);
+	virtual ~QwtAnalogClock();
 
-    void setHand( Hand, QwtDialNeedle * );
+	void setHand(Hand, QwtDialNeedle *);
 
-    const QwtDialNeedle *hand( Hand ) const;
-    QwtDialNeedle *hand( Hand );
+	const QwtDialNeedle *hand(Hand) const;
+	QwtDialNeedle *hand(Hand);
 
 public Q_SLOTS:
-    void setCurrentTime();
-    void setTime( const QTime & );
+	void setCurrentTime();
+	void setTime(const QTime &);
 
 protected:
-    virtual void drawNeedle( QPainter *, const QPointF &,
-        double radius, double direction, QPalette::ColorGroup ) const;
+	virtual void drawNeedle(QPainter *, const QPointF &,
+				double radius, double direction, QPalette::ColorGroup) const;
 
-    virtual void drawHand( QPainter *, Hand, const QPointF &,
-        double radius, double direction, QPalette::ColorGroup ) const;
+	virtual void drawHand(QPainter *, Hand, const QPointF &,
+			      double radius, double direction, QPalette::ColorGroup) const;
 
 private:
-    // use setHand instead
-    void setNeedle( QwtDialNeedle * );
+	// use setHand instead
+	void setNeedle(QwtDialNeedle *);
 
-    QwtDialNeedle *d_hand[NHands];
+	QwtDialNeedle *d_hand[NHands];
 };
 
 #endif

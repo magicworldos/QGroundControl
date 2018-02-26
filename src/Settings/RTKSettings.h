@@ -13,23 +13,23 @@
 
 class RTKSettings : public SettingsGroup
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 public:
-    RTKSettings(QObject* parent = NULL);
+	RTKSettings(QObject *parent = NULL);
 
-    Q_PROPERTY(Fact* surveyInAccuracyLimit          READ surveyInAccuracyLimit          CONSTANT)
-    Q_PROPERTY(Fact* surveyInMinObservationDuration READ surveyInMinObservationDuration CONSTANT)
+	Q_PROPERTY(Fact *surveyInAccuracyLimit          READ surveyInAccuracyLimit          CONSTANT)
+	Q_PROPERTY(Fact *surveyInMinObservationDuration READ surveyInMinObservationDuration CONSTANT)
 
-    Fact* surveyInAccuracyLimit         (void);
-    Fact* surveyInMinObservationDuration(void);
+	Fact *surveyInAccuracyLimit(void);
+	Fact *surveyInMinObservationDuration(void);
 
-    static const char* RTKSettingsGroupName;
+	static const char *RTKSettingsGroupName;
 
-    static const char* surveyInAccuracyLimitName;
-    static const char* surveyInMinObservationDurationName;
+	static const char *surveyInAccuracyLimitName;
+	static const char *surveyInMinObservationDurationName;
 
 private:
-    SettingsFact* _surveyInAccuracyLimitFact;
-    SettingsFact* _surveyInMinObservationDurationFact;
+	SettingsFact *_surveyInAccuracyLimitFact;
+	SettingsFact *_surveyInMinObservationDurationFact;
 };

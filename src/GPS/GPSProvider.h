@@ -27,27 +27,28 @@
  */
 class GPSProvider : public QThread
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    GPSProvider(const QString& device, bool enableSatInfo, double surveyInAccMeters, int surveryInDurationSecs, const std::atomic_bool& requestStop);
-    ~GPSProvider();
+	GPSProvider(const QString &device, bool enableSatInfo, double surveyInAccMeters, int surveryInDurationSecs,
+		    const std::atomic_bool &requestStop);
+	~GPSProvider();
 
-    /**
-     * this is called by the callback method
-     */
-    void gotRTCMData(uint8_t *data, size_t len);
+	/**
+	 * this is called by the callback method
+	 */
+	void gotRTCMData(uint8_t *data, size_t len);
 signals:
-    void positionUpdate(GPSPositionMessage message);
-    void satelliteInfoUpdate(GPSSatelliteMessage message);
-    void RTCMDataUpdate(QByteArray message);
-    void surveyInStatus(float duration, float accuracyMM, bool valid, bool active);
+	void positionUpdate(GPSPositionMessage message);
+	void satelliteInfoUpdate(GPSSatelliteMessage message);
+	void RTCMDataUpdate(QByteArray message);
+	void surveyInStatus(float duration, float accuracyMM, bool valid, bool active);
 
 protected:
-    void run();
+	void run();
 
 private:
-    void publishGPSPosition();
-    void publishGPSSatellite();
+	void publishGPSPosition();
+	void publishGPSSatellite();
 
 	/**
 	 * callback from the driver for the platform specific stuff
@@ -56,10 +57,10 @@ private:
 
 	int callback(GPSCallbackType type, void *data1, int data2);
 
-    QString _device;
-    const std::atomic_bool& _requestStop;
-    double  _surveyInAccMeters;
-    int     _surveryInDurationSecs;
+	QString _device;
+	const std::atomic_bool &_requestStop;
+	double  _surveyInAccMeters;
+	int     _surveryInDurationSecs;
 
 	struct vehicle_gps_position_s	_reportGpsPos;
 	struct satellite_info_s		*_pReportSatInfo = nullptr;

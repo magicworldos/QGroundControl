@@ -25,11 +25,11 @@ Q_LOGGING_CATEGORY(CodingStyleLog, "CodingStyleLog")
 
 const int CodingStyle::_privateStaticVariable = 0;
 
-CodingStyle::CodingStyle(QObject* parent) :
-    QObject(parent),
-    _protectedVariable(1),
-    _privateVariable1(2),
-    _privateVariable2(3)
+CodingStyle::CodingStyle(QObject *parent) :
+	QObject(parent),
+	_protectedVariable(1),
+	_privateVariable1(2),
+	_privateVariable2(3)
 {
 
 }
@@ -37,56 +37,64 @@ CodingStyle::CodingStyle(QObject* parent) :
 /// Document non-obvious private methods in the code file.
 void CodingStyle::_privateMethod(void)
 {
-    // Always include braces even for single line if/for/...
-    if (uas != _uasId) {
-        return;
-    }
-    
-    // Note the brace placement
-    if (_lastSeenComponent == -1) {
-        _lastSeenComponent = component;
-    } else {
-        Q_ASSERT(component == _lastSeenComponent);  // Asserts are your friend
-    }
+	// Always include braces even for single line if/for/...
+	if (uas != _uasId)
+	{
+		return;
+	}
+
+	// Note the brace placement
+	if (_lastSeenComponent == -1)
+	{
+		_lastSeenComponent = component;
+	}
+
+	else
+	{
+		Q_ASSERT(component == _lastSeenComponent);  // Asserts are your friend
+	}
 }
 
 void CodingStyle::_privateMethod2(void)
 {
-    Fact* fact = qobject_cast<Fact*>(sender());
-    Q_ASSERT(fact);
-    
-    QVariant typedValue;
-    switch (fact->type()) {
-        case FactMetaData::valueTypeInt8:
-        case FactMetaData::valueTypeInt16:
-        case FactMetaData::valueTypeInt32:
-            typedValue.setValue(QVariant(value.toInt()));
-            break;
-            
-        case FactMetaData::valueTypeUint8:
-        case FactMetaData::valueTypeUint16:
-        case FactMetaData::valueTypeUint32:
-            typedValue.setValue(value.toUInt());
-            break;
-            
-        case FactMetaData::valueTypeFloat: {
-            int localScopedVar = 1;
-            typedValue.setValue(value.toFloat());
-        }
-            break;
-            
-        case FactMetaData::valueTypeDouble:
-            typedValue.setValue(value.toDouble());
-            break;
-    }
+	Fact *fact = qobject_cast<Fact *>(sender());
+	Q_ASSERT(fact);
+
+	QVariant typedValue;
+
+	switch (fact->type())
+	{
+	case FactMetaData::valueTypeInt8:
+	case FactMetaData::valueTypeInt16:
+	case FactMetaData::valueTypeInt32:
+		typedValue.setValue(QVariant(value.toInt()));
+		break;
+
+	case FactMetaData::valueTypeUint8:
+	case FactMetaData::valueTypeUint16:
+	case FactMetaData::valueTypeUint32:
+		typedValue.setValue(value.toUInt());
+		break;
+
+	case FactMetaData::valueTypeFloat:
+		{
+			int localScopedVar = 1;
+			typedValue.setValue(value.toFloat());
+		}
+		break;
+
+	case FactMetaData::valueTypeDouble:
+		typedValue.setValue(value.toDouble());
+		break;
+	}
 }
 
-void CodingStyle::_methodWithManyArguments(QWidget*         parent,
-                                           const QString&   caption,
-                                           const QString&   dir,
-                                           Options          options1,
-                                           Options          options2,
-                                           Options          options3)
+void CodingStyle::_methodWithManyArguments(QWidget         *parent,
+		const QString   &caption,
+		const QString   &dir,
+		Options          options1,
+		Options          options2,
+		Options          options3)
 {
-    // Implementataion here...
+	// Implementataion here...
 }

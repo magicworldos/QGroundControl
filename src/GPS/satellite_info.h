@@ -39,7 +39,8 @@
  * and was manually copied here.
  */
 
-struct satellite_info_s {
+struct satellite_info_s
+{
 	uint64_t timestamp;
 	uint8_t count;
 	uint8_t svid[20];

@@ -19,20 +19,20 @@
 class QWT_EXPORT QwtPointArrayData: public QwtSeriesData<QPointF>
 {
 public:
-    QwtPointArrayData( const QVector<double> &x, const QVector<double> &y );
-    QwtPointArrayData( const double *x, const double *y, size_t size );
+	QwtPointArrayData(const QVector<double> &x, const QVector<double> &y);
+	QwtPointArrayData(const double *x, const double *y, size_t size);
 
-    virtual QRectF boundingRect() const;
+	virtual QRectF boundingRect() const;
 
-    virtual size_t size() const;
-    virtual QPointF sample( size_t i ) const;
+	virtual size_t size() const;
+	virtual QPointF sample(size_t i) const;
 
-    const QVector<double> &xData() const;
-    const QVector<double> &yData() const;
+	const QVector<double> &xData() const;
+	const QVector<double> &yData() const;
 
 private:
-    QVector<double> d_x;
-    QVector<double> d_y;
+	QVector<double> d_x;
+	QVector<double> d_y;
 };
 
 /*!
@@ -41,19 +41,19 @@ private:
 class QWT_EXPORT QwtCPointerData: public QwtSeriesData<QPointF>
 {
 public:
-    QwtCPointerData( const double *x, const double *y, size_t size );
+	QwtCPointerData(const double *x, const double *y, size_t size);
 
-    virtual QRectF boundingRect() const;
-    virtual size_t size() const;
-    virtual QPointF sample( size_t i ) const;
+	virtual QRectF boundingRect() const;
+	virtual size_t size() const;
+	virtual QPointF sample(size_t i) const;
 
-    const double *xData() const;
-    const double *yData() const;
+	const double *xData() const;
+	const double *yData() const;
 
 private:
-    const double *d_x;
-    const double *d_y;
-    size_t d_size;
+	const double *d_x;
+	const double *d_y;
+	size_t d_size;
 };
 
 /*!
@@ -112,35 +112,35 @@ int main(int argc, char **argv)
 class QWT_EXPORT QwtSyntheticPointData: public QwtSeriesData<QPointF>
 {
 public:
-    QwtSyntheticPointData( size_t size,
-        const QwtInterval & = QwtInterval() );
+	QwtSyntheticPointData(size_t size,
+			      const QwtInterval & = QwtInterval());
 
-    void setSize( size_t size );
-    virtual size_t size() const;
+	void setSize(size_t size);
+	virtual size_t size() const;
 
-    void setInterval( const QwtInterval& );
-    QwtInterval interval() const;
+	void setInterval(const QwtInterval &);
+	QwtInterval interval() const;
 
-    virtual QRectF boundingRect() const;
-    virtual QPointF sample( size_t i ) const;
+	virtual QRectF boundingRect() const;
+	virtual QPointF sample(size_t i) const;
 
-    /*!
-       Calculate a y value for a x value
+	/*!
+	   Calculate a y value for a x value
 
-       \param x x value
-       \return Corresponding y value
-     */
-    virtual double y( double x ) const = 0;
-    virtual double x( uint index ) const;
+	   \param x x value
+	   \return Corresponding y value
+	 */
+	virtual double y(double x) const = 0;
+	virtual double x(uint index) const;
 
-    virtual void setRectOfInterest( const QRectF & );
-    QRectF rectOfInterest() const;
+	virtual void setRectOfInterest(const QRectF &);
+	QRectF rectOfInterest() const;
 
 private:
-    size_t d_size;
-    QwtInterval d_interval;
-    QRectF d_rectOfInterest;
-    QwtInterval d_intervalOfInterest;
+	size_t d_size;
+	QwtInterval d_interval;
+	QRectF d_rectOfInterest;
+	QwtInterval d_intervalOfInterest;
 };
 
 #endif

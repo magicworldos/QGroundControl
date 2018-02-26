@@ -46,43 +46,44 @@
 class OpenGLSurfacePainter : public AbstractSurfacePainter
 {
 public:
-    OpenGLSurfacePainter();
+	OpenGLSurfacePainter();
 
-    static QSet<GstVideoFormat> supportedPixelFormats();
+	static QSet<GstVideoFormat> supportedPixelFormats();
 
-    virtual bool supportsFormat(GstVideoFormat format) const {
-        return supportedPixelFormats().contains(format);
-    }
+	virtual bool supportsFormat(GstVideoFormat format) const
+	{
+		return supportedPixelFormats().contains(format);
+	}
 
-    virtual void updateColors(int brightness, int contrast, int hue, int saturation);
-    virtual void paint(quint8 *data, const BufferFormat & frameFormat,
-                       QPainter *painter, const PaintAreas & areas);
+	virtual void updateColors(int brightness, int contrast, int hue, int saturation);
+	virtual void paint(quint8 *data, const BufferFormat &frameFormat,
+			   QPainter *painter, const PaintAreas &areas);
 
 protected:
-    void initRgbTextureInfo(GLenum internalFormat, GLuint format, GLenum type, const QSize &size);
-    void initYuv420PTextureInfo(const QSize &size);
-    void initYv12TextureInfo(const QSize &size);
+	void initRgbTextureInfo(GLenum internalFormat, GLuint format, GLenum type, const QSize &size);
+	void initYuv420PTextureInfo(const QSize &size);
+	void initYv12TextureInfo(const QSize &size);
 
-    virtual void paintImpl(const QPainter *painter,
-                           const GLfloat *vertexCoordArray,
-                           const GLfloat *textureCoordArray) = 0;
+	virtual void paintImpl(const QPainter *painter,
+			       const GLfloat *vertexCoordArray,
+			       const GLfloat *textureCoordArray) = 0;
 
 #ifndef QT_OPENGL_ES
-    typedef void (APIENTRY *_glActiveTexture) (GLenum);
-    _glActiveTexture glActiveTexture;
+	typedef void (APIENTRY *_glActiveTexture)(GLenum);
+	_glActiveTexture glActiveTexture;
 #endif
 
-    GLenum m_textureFormat;
-    GLuint m_textureInternalFormat;
-    GLenum m_textureType;
-    int m_textureCount;
-    GLuint m_textureIds[3];
-    int m_textureWidths[3];
-    int m_textureHeights[3];
-    int m_textureOffsets[3];
+	GLenum m_textureFormat;
+	GLuint m_textureInternalFormat;
+	GLenum m_textureType;
+	int m_textureCount;
+	GLuint m_textureIds[3];
+	int m_textureWidths[3];
+	int m_textureHeights[3];
+	int m_textureOffsets[3];
 
-    QMatrix4x4 m_colorMatrix;
-    GstVideoColorMatrix m_videoColorMatrix;
+	QMatrix4x4 m_colorMatrix;
+	GstVideoColorMatrix m_videoColorMatrix;
 };
 
 #ifndef QT_OPENGL_ES
@@ -90,32 +91,32 @@ protected:
 class ArbFpSurfacePainter : public OpenGLSurfacePainter
 {
 public:
-    ArbFpSurfacePainter();
+	ArbFpSurfacePainter();
 
-    virtual void init(const BufferFormat & format);
-    virtual void cleanup();
+	virtual void init(const BufferFormat &format);
+	virtual void cleanup();
 
 protected:
-    virtual void paintImpl(const QPainter *painter,
-                           const GLfloat *vertexCoordArray,
-                           const GLfloat *textureCoordArray);
+	virtual void paintImpl(const QPainter *painter,
+			       const GLfloat *vertexCoordArray,
+			       const GLfloat *textureCoordArray);
 
 private:
-    typedef void (APIENTRY *_glProgramStringARB) (GLenum, GLenum, GLsizei, const GLvoid *);
-    typedef void (APIENTRY *_glBindProgramARB) (GLenum, GLuint);
-    typedef void (APIENTRY *_glDeleteProgramsARB) (GLsizei, const GLuint *);
-    typedef void (APIENTRY *_glGenProgramsARB) (GLsizei, GLuint *);
-    typedef void (APIENTRY *_glProgramLocalParameter4fARB) (
-            GLenum, GLuint, GLfloat, GLfloat, GLfloat, GLfloat);
-    typedef void (APIENTRY *_glActiveTexture) (GLenum);
+	typedef void (APIENTRY *_glProgramStringARB)(GLenum, GLenum, GLsizei, const GLvoid *);
+	typedef void (APIENTRY *_glBindProgramARB)(GLenum, GLuint);
+	typedef void (APIENTRY *_glDeleteProgramsARB)(GLsizei, const GLuint *);
+	typedef void (APIENTRY *_glGenProgramsARB)(GLsizei, GLuint *);
+	typedef void (APIENTRY *_glProgramLocalParameter4fARB)(
+		GLenum, GLuint, GLfloat, GLfloat, GLfloat, GLfloat);
+	typedef void (APIENTRY *_glActiveTexture)(GLenum);
 
-    _glProgramStringARB glProgramStringARB;
-    _glBindProgramARB glBindProgramARB;
-    _glDeleteProgramsARB glDeleteProgramsARB;
-    _glGenProgramsARB glGenProgramsARB;
-    _glProgramLocalParameter4fARB glProgramLocalParameter4fARB;
+	_glProgramStringARB glProgramStringARB;
+	_glBindProgramARB glBindProgramARB;
+	_glDeleteProgramsARB glDeleteProgramsARB;
+	_glGenProgramsARB glGenProgramsARB;
+	_glProgramLocalParameter4fARB glProgramLocalParameter4fARB;
 
-    GLuint m_programId;
+	GLuint m_programId;
 };
 
 #endif
@@ -123,18 +124,18 @@ private:
 class GlslSurfacePainter : public OpenGLSurfacePainter
 {
 public:
-    GlslSurfacePainter();
+	GlslSurfacePainter();
 
-    virtual void init(const BufferFormat & format);
-    virtual void cleanup();
+	virtual void init(const BufferFormat &format);
+	virtual void cleanup();
 
 protected:
-    virtual void paintImpl(const QPainter *painter,
-                           const GLfloat *vertexCoordArray,
-                           const GLfloat *textureCoordArray);
+	virtual void paintImpl(const QPainter *painter,
+			       const GLfloat *vertexCoordArray,
+			       const GLfloat *textureCoordArray);
 
 private:
-    QGLShaderProgram m_program;
+	QGLShaderProgram m_program;
 };
 
 #endif // GST_QT_VIDEO_SINK_NO_OPENGL

@@ -58,16 +58,16 @@ QT_BEGIN_NAMESPACE
 class QGeoCodingManagerEnginePrivate
 {
 public:
-    QGeoCodingManagerEnginePrivate();
-    ~QGeoCodingManagerEnginePrivate();
+	QGeoCodingManagerEnginePrivate();
+	~QGeoCodingManagerEnginePrivate();
 
-    QString managerName;
-    int managerVersion;
+	QString managerName;
+	int managerVersion;
 
-    QLocale locale;
+	QLocale locale;
 
 private:
-    Q_DISABLE_COPY(QGeoCodingManagerEnginePrivate)
+	Q_DISABLE_COPY(QGeoCodingManagerEnginePrivate)
 };
 
 QT_END_NAMESPACE

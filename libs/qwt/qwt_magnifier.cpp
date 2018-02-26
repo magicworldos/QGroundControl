@@ -15,60 +15,60 @@
 class QwtMagnifier::PrivateData
 {
 public:
-    PrivateData():
-        isEnabled( false ),
-        wheelFactor( 0.9 ),
-        wheelModifiers( Qt::NoModifier ),
-        mouseFactor( 0.95 ),
-        mouseButton( Qt::RightButton ),
-        mouseButtonModifiers( Qt::NoModifier ),
-        keyFactor( 0.9 ),
-        zoomInKey( Qt::Key_Plus ),
-        zoomInKeyModifiers( Qt::NoModifier ),
-        zoomOutKey( Qt::Key_Minus ),
-        zoomOutKeyModifiers( Qt::NoModifier ),
-        mousePressed( false )
-    {
-    }
+	PrivateData():
+		isEnabled(false),
+		wheelFactor(0.9),
+		wheelModifiers(Qt::NoModifier),
+		mouseFactor(0.95),
+		mouseButton(Qt::RightButton),
+		mouseButtonModifiers(Qt::NoModifier),
+		keyFactor(0.9),
+		zoomInKey(Qt::Key_Plus),
+		zoomInKeyModifiers(Qt::NoModifier),
+		zoomOutKey(Qt::Key_Minus),
+		zoomOutKeyModifiers(Qt::NoModifier),
+		mousePressed(false)
+	{
+	}
 
-    bool isEnabled;
+	bool isEnabled;
 
-    double wheelFactor;
-    Qt::KeyboardModifiers wheelModifiers;
+	double wheelFactor;
+	Qt::KeyboardModifiers wheelModifiers;
 
-    double mouseFactor;
+	double mouseFactor;
 
-    Qt::MouseButton mouseButton;
-    Qt::KeyboardModifiers mouseButtonModifiers;
+	Qt::MouseButton mouseButton;
+	Qt::KeyboardModifiers mouseButtonModifiers;
 
-    double keyFactor;
+	double keyFactor;
 
-    int zoomInKey;
-    Qt::KeyboardModifiers zoomInKeyModifiers;
+	int zoomInKey;
+	Qt::KeyboardModifiers zoomInKeyModifiers;
 
-    int zoomOutKey;
-    Qt::KeyboardModifiers  zoomOutKeyModifiers;
+	int zoomOutKey;
+	Qt::KeyboardModifiers  zoomOutKeyModifiers;
 
-    bool mousePressed;
-    bool hasMouseTracking;
-    QPoint mousePos;
+	bool mousePressed;
+	bool hasMouseTracking;
+	QPoint mousePos;
 };
 
 /*!
    Constructor
    \param parent Widget to be magnified
 */
-QwtMagnifier::QwtMagnifier( QWidget *parent ):
-    QObject( parent )
+QwtMagnifier::QwtMagnifier(QWidget *parent):
+	QObject(parent)
 {
-    d_data = new PrivateData();
-    setEnabled( true );
+	d_data = new PrivateData();
+	setEnabled(true);
 }
 
 //! Destructor
 QwtMagnifier::~QwtMagnifier()
 {
-    delete d_data;
+	delete d_data;
 }
 
 /*!
@@ -80,21 +80,27 @@ QwtMagnifier::~QwtMagnifier()
   \param on true or false
   \sa isEnabled(), eventFilter()
 */
-void QwtMagnifier::setEnabled( bool on )
+void QwtMagnifier::setEnabled(bool on)
 {
-    if ( d_data->isEnabled != on )
-    {
-        d_data->isEnabled = on;
+	if (d_data->isEnabled != on)
+	{
+		d_data->isEnabled = on;
 
-        QObject *o = parent();
-        if ( o )
-        {
-            if ( d_data->isEnabled )
-                o->installEventFilter( this );
-            else
-                o->removeEventFilter( this );
-        }
-    }
+		QObject *o = parent();
+
+		if (o)
+		{
+			if (d_data->isEnabled)
+			{
+				o->installEventFilter(this);
+			}
+
+			else
+			{
+				o->removeEventFilter(this);
+			}
+		}
+	}
 }
 
 /*!
@@ -103,7 +109,7 @@ void QwtMagnifier::setEnabled( bool on )
 */
 bool QwtMagnifier::isEnabled() const
 {
-    return d_data->isEnabled;
+	return d_data->isEnabled;
 }
 
 /*!
@@ -122,9 +128,9 @@ bool QwtMagnifier::isEnabled() const
    \sa wheelFactor(), setWheelButtonState(),
        setMouseFactor(), setKeyFactor()
 */
-void QwtMagnifier::setWheelFactor( double factor )
+void QwtMagnifier::setWheelFactor(double factor)
 {
-    d_data->wheelFactor = factor;
+	d_data->wheelFactor = factor;
 }
 
 /*!
@@ -133,7 +139,7 @@ void QwtMagnifier::setWheelFactor( double factor )
 */
 double QwtMagnifier::wheelFactor() const
 {
-    return d_data->wheelFactor;
+	return d_data->wheelFactor;
 }
 
 /*!
@@ -143,9 +149,9 @@ double QwtMagnifier::wheelFactor() const
    \param modifiers Keyboard modifiers
    \sa wheelModifiers()
 */
-void QwtMagnifier::setWheelModifiers( Qt::KeyboardModifiers modifiers )
+void QwtMagnifier::setWheelModifiers(Qt::KeyboardModifiers modifiers)
 {
-    d_data->wheelModifiers = modifiers;
+	d_data->wheelModifiers = modifiers;
 }
 
 /*!
@@ -154,7 +160,7 @@ void QwtMagnifier::setWheelModifiers( Qt::KeyboardModifiers modifiers )
 */
 Qt::KeyboardModifiers QwtMagnifier::wheelModifiers() const
 {
-    return d_data->wheelModifiers;
+	return d_data->wheelModifiers;
 }
 
 /*!
@@ -167,9 +173,9 @@ Qt::KeyboardModifiers QwtMagnifier::wheelModifiers() const
    \param factor Wheel factor
    \sa mouseFactor(), setMouseButton(), setWheelFactor(), setKeyFactor()
 */
-void QwtMagnifier::setMouseFactor( double factor )
+void QwtMagnifier::setMouseFactor(double factor)
 {
-    d_data->mouseFactor = factor;
+	d_data->mouseFactor = factor;
 }
 
 /*!
@@ -178,7 +184,7 @@ void QwtMagnifier::setMouseFactor( double factor )
 */
 double QwtMagnifier::mouseFactor() const
 {
-    return d_data->mouseFactor;
+	return d_data->mouseFactor;
 }
 
 /*!
@@ -190,19 +196,19 @@ double QwtMagnifier::mouseFactor() const
 
    \sa getMouseButton()
 */
-void QwtMagnifier::setMouseButton( 
-    Qt::MouseButton button, Qt::KeyboardModifiers modifiers )
+void QwtMagnifier::setMouseButton(
+	Qt::MouseButton button, Qt::KeyboardModifiers modifiers)
 {
-    d_data->mouseButton = button;
-    d_data->mouseButtonModifiers = modifiers;
+	d_data->mouseButton = button;
+	d_data->mouseButtonModifiers = modifiers;
 }
 
 //! \sa setMouseButton()
 void QwtMagnifier::getMouseButton(
-    Qt::MouseButton &button, Qt::KeyboardModifiers &modifiers ) const
+	Qt::MouseButton &button, Qt::KeyboardModifiers &modifiers) const
 {
-    button = d_data->mouseButton;
-    modifiers = d_data->mouseButtonModifiers;
+	button = d_data->mouseButton;
+	modifiers = d_data->mouseButtonModifiers;
 }
 
 /*!
@@ -216,9 +222,9 @@ void QwtMagnifier::getMouseButton(
    \sa keyFactor(), setZoomInKey(), setZoomOutKey(),
        setWheelFactor, setMouseFactor()
 */
-void QwtMagnifier::setKeyFactor( double factor )
+void QwtMagnifier::setKeyFactor(double factor)
 {
-    d_data->keyFactor = factor;
+	d_data->keyFactor = factor;
 }
 
 /*!
@@ -227,7 +233,7 @@ void QwtMagnifier::setKeyFactor( double factor )
 */
 double QwtMagnifier::keyFactor() const
 {
-    return d_data->keyFactor;
+	return d_data->keyFactor;
 }
 
 /*!
@@ -238,14 +244,14 @@ double QwtMagnifier::keyFactor() const
    \param modifiers
    \sa getZoomInKey(), setZoomOutKey()
 */
-void QwtMagnifier::setZoomInKey( int key, 
-    Qt::KeyboardModifiers modifiers )
+void QwtMagnifier::setZoomInKey(int key,
+				Qt::KeyboardModifiers modifiers)
 {
-    d_data->zoomInKey = key;
-    d_data->zoomInKeyModifiers = modifiers;
+	d_data->zoomInKey = key;
+	d_data->zoomInKeyModifiers = modifiers;
 }
 
-/*! 
+/*!
    \brief Retrieve the settings of the zoom in key
 
    \param key Key code, see Qt::Key
@@ -253,11 +259,11 @@ void QwtMagnifier::setZoomInKey( int key,
 
    \sa setZoomInKey()
 */
-void QwtMagnifier::getZoomInKey( int &key, 
-    Qt::KeyboardModifiers &modifiers ) const
+void QwtMagnifier::getZoomInKey(int &key,
+				Qt::KeyboardModifiers &modifiers) const
 {
-    key = d_data->zoomInKey;
-    modifiers = d_data->zoomInKeyModifiers;
+	key = d_data->zoomInKey;
+	modifiers = d_data->zoomInKeyModifiers;
 }
 
 /*!
@@ -268,14 +274,14 @@ void QwtMagnifier::getZoomInKey( int &key,
    \param modifiers
    \sa getZoomOutKey(), setZoomOutKey()
 */
-void QwtMagnifier::setZoomOutKey( int key, 
-    Qt::KeyboardModifiers modifiers )
+void QwtMagnifier::setZoomOutKey(int key,
+				 Qt::KeyboardModifiers modifiers)
 {
-    d_data->zoomOutKey = key;
-    d_data->zoomOutKeyModifiers = modifiers;
+	d_data->zoomOutKey = key;
+	d_data->zoomOutKeyModifiers = modifiers;
 }
 
-/*! 
+/*!
    \brief Retrieve the settings of the zoom out key
 
    \param key Key code, see Qt::Key
@@ -283,11 +289,11 @@ void QwtMagnifier::setZoomOutKey( int key,
 
    \sa setZoomOutKey()
 */
-void QwtMagnifier::getZoomOutKey( int &key, 
-    Qt::KeyboardModifiers &modifiers ) const
+void QwtMagnifier::getZoomOutKey(int &key,
+				 Qt::KeyboardModifiers &modifiers) const
 {
-    key = d_data->zoomOutKey;
-    modifiers = d_data->zoomOutKeyModifiers;
+	key = d_data->zoomOutKey;
+	modifiers = d_data->zoomOutKeyModifiers;
 }
 
 /*!
@@ -305,46 +311,53 @@ void QwtMagnifier::getZoomOutKey( int &key,
       widgetMouseMoveEvent(), widgetWheelEvent(), widgetKeyPressEvent()
       widgetKeyReleaseEvent()
 */
-bool QwtMagnifier::eventFilter( QObject *object, QEvent *event )
+bool QwtMagnifier::eventFilter(QObject *object, QEvent *event)
 {
-    if ( object && object == parent() )
-    {
-        switch ( event->type() )
-        {
-            case QEvent::MouseButtonPress:
-            {
-                widgetMousePressEvent( static_cast<QMouseEvent *>( event ) );
-                break;
-            }
-            case QEvent::MouseMove:
-            {
-                widgetMouseMoveEvent( static_cast<QMouseEvent *>( event ) );
-                break;
-            }
-            case QEvent::MouseButtonRelease:
-            {
-                widgetMouseReleaseEvent( static_cast<QMouseEvent *>( event ) );
-                break;
-            }
-            case QEvent::Wheel:
-            {
-                widgetWheelEvent( static_cast<QWheelEvent *>( event ) );
-                break;
-            }
-            case QEvent::KeyPress:
-            {
-                widgetKeyPressEvent( static_cast<QKeyEvent *>( event ) );
-                break;
-            }
-            case QEvent::KeyRelease:
-            {
-                widgetKeyReleaseEvent( static_cast<QKeyEvent *>( event ) );
-                break;
-            }
-            default:;
-        }
-    }
-    return QObject::eventFilter( object, event );
+	if (object && object == parent())
+	{
+		switch (event->type())
+		{
+		case QEvent::MouseButtonPress:
+			{
+				widgetMousePressEvent(static_cast<QMouseEvent *>(event));
+				break;
+			}
+
+		case QEvent::MouseMove:
+			{
+				widgetMouseMoveEvent(static_cast<QMouseEvent *>(event));
+				break;
+			}
+
+		case QEvent::MouseButtonRelease:
+			{
+				widgetMouseReleaseEvent(static_cast<QMouseEvent *>(event));
+				break;
+			}
+
+		case QEvent::Wheel:
+			{
+				widgetWheelEvent(static_cast<QWheelEvent *>(event));
+				break;
+			}
+
+		case QEvent::KeyPress:
+			{
+				widgetKeyPressEvent(static_cast<QKeyEvent *>(event));
+				break;
+			}
+
+		case QEvent::KeyRelease:
+			{
+				widgetKeyReleaseEvent(static_cast<QKeyEvent *>(event));
+				break;
+			}
+
+		default:;
+		}
+	}
+
+	return QObject::eventFilter(object, event);
 }
 
 /*!
@@ -353,22 +366,24 @@ bool QwtMagnifier::eventFilter( QObject *object, QEvent *event )
   \param mouseEvent Mouse event
   \sa eventFilter(), widgetMouseReleaseEvent(), widgetMouseMoveEvent()
 */
-void QwtMagnifier::widgetMousePressEvent( QMouseEvent *mouseEvent )
+void QwtMagnifier::widgetMousePressEvent(QMouseEvent *mouseEvent)
 {
-    if ( parentWidget() == NULL )
-        return;
+	if (parentWidget() == NULL)
+	{
+		return;
+	}
 
-    if ( ( mouseEvent->button() != d_data->mouseButton ) ||
-        ( mouseEvent->modifiers() != d_data->mouseButtonModifiers ) )
-    {
-        return;
-    }
+	if ((mouseEvent->button() != d_data->mouseButton) ||
+			(mouseEvent->modifiers() != d_data->mouseButtonModifiers))
+	{
+		return;
+	}
 
-    d_data->hasMouseTracking = parentWidget()->hasMouseTracking();
+	d_data->hasMouseTracking = parentWidget()->hasMouseTracking();
 
-    parentWidget()->setMouseTracking( true );
-    d_data->mousePos = mouseEvent->pos();
-    d_data->mousePressed = true;
+	parentWidget()->setMouseTracking(true);
+	d_data->mousePos = mouseEvent->pos();
+	d_data->mousePressed = true;
 }
 
 /*!
@@ -378,15 +393,15 @@ void QwtMagnifier::widgetMousePressEvent( QMouseEvent *mouseEvent )
 
   \sa eventFilter(), widgetMousePressEvent(), widgetMouseMoveEvent(),
 */
-void QwtMagnifier::widgetMouseReleaseEvent( QMouseEvent *mouseEvent )
+void QwtMagnifier::widgetMouseReleaseEvent(QMouseEvent *mouseEvent)
 {
-    Q_UNUSED( mouseEvent );
+	Q_UNUSED(mouseEvent);
 
-    if ( d_data->mousePressed && parentWidget() )
-    {
-        d_data->mousePressed = false;
-        parentWidget()->setMouseTracking( d_data->hasMouseTracking );
-    }
+	if (d_data->mousePressed && parentWidget())
+	{
+		d_data->mousePressed = false;
+		parentWidget()->setMouseTracking(d_data->hasMouseTracking);
+	}
 }
 
 /*!
@@ -395,22 +410,28 @@ void QwtMagnifier::widgetMouseReleaseEvent( QMouseEvent *mouseEvent )
   \param mouseEvent Mouse event
   \sa eventFilter(), widgetMousePressEvent(), widgetMouseReleaseEvent(),
 */
-void QwtMagnifier::widgetMouseMoveEvent( QMouseEvent *mouseEvent )
+void QwtMagnifier::widgetMouseMoveEvent(QMouseEvent *mouseEvent)
 {
-    if ( !d_data->mousePressed )
-        return;
+	if (!d_data->mousePressed)
+	{
+		return;
+	}
 
-    const int dy = mouseEvent->pos().y() - d_data->mousePos.y();
-    if ( dy != 0 )
-    {
-        double f = d_data->mouseFactor;
-        if ( dy < 0 )
-            f = 1 / f;
+	const int dy = mouseEvent->pos().y() - d_data->mousePos.y();
 
-        rescale( f );
-    }
+	if (dy != 0)
+	{
+		double f = d_data->mouseFactor;
 
-    d_data->mousePos = mouseEvent->pos();
+		if (dy < 0)
+		{
+			f = 1 / f;
+		}
+
+		rescale(f);
+	}
+
+	d_data->mousePos = mouseEvent->pos();
 }
 
 /*!
@@ -419,32 +440,34 @@ void QwtMagnifier::widgetMouseMoveEvent( QMouseEvent *mouseEvent )
   \param wheelEvent Wheel event
   \sa eventFilter()
 */
-void QwtMagnifier::widgetWheelEvent( QWheelEvent *wheelEvent )
+void QwtMagnifier::widgetWheelEvent(QWheelEvent *wheelEvent)
 {
-    if ( wheelEvent->modifiers() != d_data->wheelModifiers )
-    {
-        return;
-    }
+	if (wheelEvent->modifiers() != d_data->wheelModifiers)
+	{
+		return;
+	}
 
-    if ( d_data->wheelFactor != 0.0 )
-    {
-        /*
-            A positive delta indicates that the wheel was
-            rotated forwards away from the user; a negative
-            value indicates that the wheel was rotated
-            backwards toward the user.
-            Most mouse types work in steps of 15 degrees,
-            in which case the delta value is a multiple
-            of 120 (== 15 * 8).
-         */
-        double f = qPow( d_data->wheelFactor, 
-            qAbs( wheelEvent->delta() / 120.0 ) );
+	if (d_data->wheelFactor != 0.0)
+	{
+		/*
+		    A positive delta indicates that the wheel was
+		    rotated forwards away from the user; a negative
+		    value indicates that the wheel was rotated
+		    backwards toward the user.
+		    Most mouse types work in steps of 15 degrees,
+		    in which case the delta value is a multiple
+		    of 120 (== 15 * 8).
+		 */
+		double f = qPow(d_data->wheelFactor,
+				qAbs(wheelEvent->delta() / 120.0));
 
-        if ( wheelEvent->delta() > 0 )
-            f = 1 / f;
+		if (wheelEvent->delta() > 0)
+		{
+			f = 1 / f;
+		}
 
-        rescale( f );
-    }
+		rescale(f);
+	}
 }
 
 /*!
@@ -453,18 +476,19 @@ void QwtMagnifier::widgetWheelEvent( QWheelEvent *wheelEvent )
   \param keyEvent Key event
   \sa eventFilter(), widgetKeyReleaseEvent()
 */
-void QwtMagnifier::widgetKeyPressEvent( QKeyEvent *keyEvent )
+void QwtMagnifier::widgetKeyPressEvent(QKeyEvent *keyEvent)
 {
-    if ( keyEvent->key() == d_data->zoomInKey &&
-        keyEvent->modifiers() == d_data->zoomInKeyModifiers )
-    {
-        rescale( d_data->keyFactor );
-    }
-    else if ( keyEvent->key() == d_data->zoomOutKey &&
-        keyEvent->modifiers() == d_data->zoomOutKeyModifiers )
-    {
-        rescale( 1.0 / d_data->keyFactor );
-    }
+	if (keyEvent->key() == d_data->zoomInKey &&
+			keyEvent->modifiers() == d_data->zoomInKeyModifiers)
+	{
+		rescale(d_data->keyFactor);
+	}
+
+	else if (keyEvent->key() == d_data->zoomOutKey &&
+			keyEvent->modifiers() == d_data->zoomOutKeyModifiers)
+	{
+		rescale(1.0 / d_data->keyFactor);
+	}
 }
 
 /*!
@@ -473,20 +497,20 @@ void QwtMagnifier::widgetKeyPressEvent( QKeyEvent *keyEvent )
   \param keyEvent Key event
   \sa eventFilter(), widgetKeyReleaseEvent()
 */
-void QwtMagnifier::widgetKeyReleaseEvent( QKeyEvent *keyEvent )
+void QwtMagnifier::widgetKeyReleaseEvent(QKeyEvent *keyEvent)
 {
-    Q_UNUSED( keyEvent );
+	Q_UNUSED(keyEvent);
 }
 
 //! \return Parent widget, where the rescaling happens
 QWidget *QwtMagnifier::parentWidget()
 {
-    return qobject_cast<QWidget *>( parent() );
+	return qobject_cast<QWidget *>(parent());
 }
 
 //! \return Parent widget, where the rescaling happens
 const QWidget *QwtMagnifier::parentWidget() const
 {
-    return qobject_cast<const QWidget *>( parent() );
+	return qobject_cast<const QWidget *>(parent());
 }
 

@@ -23,12 +23,12 @@
 class VideoSurfacePrivate
 {
 public:
-    VideoSurfacePrivate()
-        : videoSink(NULL)
-    {
-    }
-    QSet<VideoItem*> items;
-    GstElement* videoSink;
+	VideoSurfacePrivate()
+		: videoSink(NULL)
+	{
+	}
+	QSet<VideoItem *> items;
+	GstElement *videoSink;
 };
 
 #endif // VIDEO_SURFACE_P_H

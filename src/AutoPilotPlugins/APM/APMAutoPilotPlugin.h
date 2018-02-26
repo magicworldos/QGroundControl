@@ -31,37 +31,37 @@ class ESP8266Component;
 /// This is the APM specific implementation of the AutoPilot class.
 class APMAutoPilotPlugin : public AutoPilotPlugin
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    APMAutoPilotPlugin(Vehicle* vehicle, QObject* parent);
-    ~APMAutoPilotPlugin();
+	APMAutoPilotPlugin(Vehicle *vehicle, QObject *parent);
+	~APMAutoPilotPlugin();
 
-    // Overrides from AutoPilotPlugin
-    const QVariantList& vehicleComponents(void) override;
-    QString prerequisiteSetup(VehicleComponent* component) const override;
+	// Overrides from AutoPilotPlugin
+	const QVariantList &vehicleComponents(void) override;
+	QString prerequisiteSetup(VehicleComponent *component) const override;
 
 protected:
-    bool                        _incorrectParameterVersion; ///< true: parameter version incorrect, setup not allowed
-    APMAirframeComponent*       _airframeComponent;
-    APMCameraComponent*         _cameraComponent;
-    APMLightsComponent*         _lightsComponent;
-    APMSubFrameComponent*       _subFrameComponent;
-    APMFlightModesComponent*    _flightModesComponent;
-    APMPowerComponent*          _powerComponent;
+	bool                        _incorrectParameterVersion; ///< true: parameter version incorrect, setup not allowed
+	APMAirframeComponent       *_airframeComponent;
+	APMCameraComponent         *_cameraComponent;
+	APMLightsComponent         *_lightsComponent;
+	APMSubFrameComponent       *_subFrameComponent;
+	APMFlightModesComponent    *_flightModesComponent;
+	APMPowerComponent          *_powerComponent;
 #if 0
-    // Temporarily removed, waiting for new command implementation
-    MotorComponent*             _motorComponent;
+	// Temporarily removed, waiting for new command implementation
+	MotorComponent             *_motorComponent;
 #endif
-    APMRadioComponent*          _radioComponent;
-    APMSafetyComponent*         _safetyComponent;
-    APMSensorsComponent*        _sensorsComponent;
-    APMTuningComponent*         _tuningComponent;
-    APMAirframeLoader*          _airframeFacts;
-    ESP8266Component*           _esp8266Component;
+	APMRadioComponent          *_radioComponent;
+	APMSafetyComponent         *_safetyComponent;
+	APMSensorsComponent        *_sensorsComponent;
+	APMTuningComponent         *_tuningComponent;
+	APMAirframeLoader          *_airframeFacts;
+	ESP8266Component           *_esp8266Component;
 
 private:
-    QVariantList                _components;
+	QVariantList                _components;
 };
 
 #endif

@@ -28,40 +28,40 @@ class QPoint;
 class QWT_EXPORT QwtDialNeedle
 {
 public:
-    QwtDialNeedle();
-    virtual ~QwtDialNeedle();
+	QwtDialNeedle();
+	virtual ~QwtDialNeedle();
 
-    virtual void setPalette( const QPalette & );
-    const QPalette &palette() const;
+	virtual void setPalette(const QPalette &);
+	const QPalette &palette() const;
 
-    virtual void draw( QPainter *painter, const QPointF &center,
-        double length, double direction, 
-        QPalette::ColorGroup = QPalette::Active ) const;
+	virtual void draw(QPainter *painter, const QPointF &center,
+			  double length, double direction,
+			  QPalette::ColorGroup = QPalette::Active) const;
 
 protected:
-    /*!
-      \brief Draw the needle
+	/*!
+	  \brief Draw the needle
 
-      The origin of the needle is at position (0.0, 0.0 )
-      pointing in direction 0.0 ( = east ). 
+	  The origin of the needle is at position (0.0, 0.0 )
+	  pointing in direction 0.0 ( = east ).
 
-      The painter is already initialized with translation and 
-      rotation.
+	  The painter is already initialized with translation and
+	  rotation.
 
-      \param painter Painter
-      \param length Length of the needle
-      \param colorGroup Color group, used for painting
+	  \param painter Painter
+	  \param length Length of the needle
+	  \param colorGroup Color group, used for painting
 
-      \sa setPalette(), palette()
-    */
-    virtual void drawNeedle( QPainter *painter, 
-        double length, QPalette::ColorGroup colorGroup ) const = 0;
+	  \sa setPalette(), palette()
+	*/
+	virtual void drawNeedle(QPainter *painter,
+				double length, QPalette::ColorGroup colorGroup) const = 0;
 
-    virtual void drawKnob( QPainter *, double width, 
-        const QBrush &, bool sunken ) const;
+	virtual void drawKnob(QPainter *, double width,
+			      const QBrush &, bool sunken) const;
 
 private:
-    QPalette d_palette;
+	QPalette d_palette;
 };
 
 /*!
@@ -80,30 +80,30 @@ private:
 class QWT_EXPORT QwtDialSimpleNeedle: public QwtDialNeedle
 {
 public:
-    //! Style of the needle
-    enum Style
-    {
-        //! Arrow
-        Arrow,
+	//! Style of the needle
+	enum Style
+	{
+		//! Arrow
+		Arrow,
 
-        //! A straight line from the center
-        Ray
-    };
+		//! A straight line from the center
+		Ray
+	};
 
-    QwtDialSimpleNeedle( Style, bool hasKnob = true,
-        const QColor &mid = Qt::gray, const QColor &base = Qt::darkGray );
+	QwtDialSimpleNeedle(Style, bool hasKnob = true,
+			    const QColor &mid = Qt::gray, const QColor &base = Qt::darkGray);
 
-    void setWidth( double width );
-    double width() const;
+	void setWidth(double width);
+	double width() const;
 
 protected:
-    virtual void drawNeedle( QPainter *, double length,
-        QPalette::ColorGroup ) const;
+	virtual void drawNeedle(QPainter *, double length,
+				QPalette::ColorGroup) const;
 
 private:
-    Style d_style;
-    bool d_hasKnob;
-    double d_width;
+	Style d_style;
+	bool d_hasKnob;
+	double d_width;
 };
 
 /*!
@@ -126,25 +126,25 @@ private:
 class QWT_EXPORT QwtCompassMagnetNeedle: public QwtDialNeedle
 {
 public:
-    //! Style of the needle
-    enum Style
-    {
-        //! A needle with a triangular shape
-        TriangleStyle,
+	//! Style of the needle
+	enum Style
+	{
+		//! A needle with a triangular shape
+		TriangleStyle,
 
-        //! A thin needle 
-        ThinStyle
-    };
+		//! A thin needle
+		ThinStyle
+	};
 
-    QwtCompassMagnetNeedle( Style = TriangleStyle,
-        const QColor &light = Qt::white, const QColor &dark = Qt::red );
+	QwtCompassMagnetNeedle(Style = TriangleStyle,
+			       const QColor &light = Qt::white, const QColor &dark = Qt::red);
 
 protected:
-    virtual void drawNeedle( QPainter *, 
-        double length, QPalette::ColorGroup ) const;
+	virtual void drawNeedle(QPainter *,
+				double length, QPalette::ColorGroup) const;
 
 private:
-    Style d_style;
+	Style d_style;
 };
 
 /*!
@@ -163,25 +163,25 @@ private:
 class QWT_EXPORT QwtCompassWindArrow: public QwtDialNeedle
 {
 public:
-    //! Style of the arrow
-    enum Style
-    {
-        //! A needle pointing to the center
-        Style1,
+	//! Style of the arrow
+	enum Style
+	{
+		//! A needle pointing to the center
+		Style1,
 
-        //! A needle pointing to the center
-        Style2
-    };
+		//! A needle pointing to the center
+		Style2
+	};
 
-    QwtCompassWindArrow( Style, const QColor &light = Qt::white,
-        const QColor &dark = Qt::gray );
+	QwtCompassWindArrow(Style, const QColor &light = Qt::white,
+			    const QColor &dark = Qt::gray);
 
 protected:
-    virtual void drawNeedle( QPainter *, 
-        double length, QPalette::ColorGroup ) const;
+	virtual void drawNeedle(QPainter *,
+				double length, QPalette::ColorGroup) const;
 
 private:
-    Style d_style;
+	Style d_style;
 };
 
-#endif 
+#endif

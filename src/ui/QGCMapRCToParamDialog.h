@@ -22,7 +22,8 @@
 #include "AutoPilotPlugin.h"
 #include "MultiVehicleManager.h"
 
-namespace Ui {
+namespace Ui
+{
 class QGCMapRCToParamDialog;
 }
 
@@ -30,31 +31,32 @@ class QGCMapRCToParamDialog;
 
 class QGCMapRCToParamDialog : public QDialog
 {
-    Q_OBJECT
-    QThread paramLoadThread;
+	Q_OBJECT
+	QThread paramLoadThread;
 
 public:
-    explicit QGCMapRCToParamDialog(QString param_id, UASInterface *mav, MultiVehicleManager* multiVehicleManager, QWidget *parent = 0);
-    ~QGCMapRCToParamDialog();
+	explicit QGCMapRCToParamDialog(QString param_id, UASInterface *mav, MultiVehicleManager *multiVehicleManager,
+				       QWidget *parent = 0);
+	~QGCMapRCToParamDialog();
 
 signals:
-    void mapRCToParamDialogResult(QString param_id, float scale, float value0,
-            quint8 param_rc_channel_index, float valueMin, float valueMax);
+	void mapRCToParamDialogResult(QString param_id, float scale, float value0,
+				      quint8 param_rc_channel_index, float valueMin, float valueMax);
 
 public slots:
-    void accept();
+	void accept();
 
 protected:
-    // void showEvent(QShowEvent * event );
-    QString param_id;
-    UASInterface *mav;
+	// void showEvent(QShowEvent * event );
+	QString param_id;
+	UASInterface *mav;
 
 private slots:
-    void _parameterUpdated(QVariant value);
+	void _parameterUpdated(QVariant value);
 
 private:
-    MultiVehicleManager*        _multiVehicleManager;
-    Ui::QGCMapRCToParamDialog*  ui;
+	MultiVehicleManager        *_multiVehicleManager;
+	Ui::QGCMapRCToParamDialog  *ui;
 };
 
 #endif // QGCMAPRCTOPARAMDIALOG_H

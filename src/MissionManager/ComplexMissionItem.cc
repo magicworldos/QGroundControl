@@ -9,17 +9,17 @@
 
 #include "ComplexMissionItem.h"
 
-const char* ComplexMissionItem::jsonComplexItemTypeKey = "complexItemType";
+const char *ComplexMissionItem::jsonComplexItemTypeKey = "complexItemType";
 
-ComplexMissionItem::ComplexMissionItem(Vehicle* vehicle, QObject* parent)
-    : VisualMissionItem(vehicle, parent)
+ComplexMissionItem::ComplexMissionItem(Vehicle *vehicle, QObject *parent)
+	: VisualMissionItem(vehicle, parent)
 {
 
 }
 
-const ComplexMissionItem& ComplexMissionItem::operator=(const ComplexMissionItem& other)
+const ComplexMissionItem &ComplexMissionItem::operator=(const ComplexMissionItem &other)
 {
-    VisualMissionItem::operator=(other);
+	VisualMissionItem::operator=(other);
 
-    return *this;
+	return *this;
 }

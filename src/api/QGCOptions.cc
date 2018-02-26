@@ -14,24 +14,26 @@
 ///     @brief Core Plugin Interface for QGroundControl - Application Options
 ///     @author Gus Grubba <mavlink@grubba.com>
 
-QGCOptions::QGCOptions(QObject* parent)
-    : QObject(parent)
-    , _defaultInstrumentWidget(NULL)
+QGCOptions::QGCOptions(QObject *parent)
+	: QObject(parent)
+	, _defaultInstrumentWidget(NULL)
 {
-    qmlRegisterUncreatableType<CustomInstrumentWidget>("QGroundControl", 1, 0, "CustomInstrumentWidget", "Reference only");
+	qmlRegisterUncreatableType<CustomInstrumentWidget>("QGroundControl", 1, 0, "CustomInstrumentWidget", "Reference only");
 }
 
-CustomInstrumentWidget*
+CustomInstrumentWidget *
 QGCOptions::instrumentWidget()
 {
-    if(!_defaultInstrumentWidget) {
-        _defaultInstrumentWidget = new CustomInstrumentWidget(this);
-    }
-    return _defaultInstrumentWidget;
+	if (!_defaultInstrumentWidget)
+	{
+		_defaultInstrumentWidget = new CustomInstrumentWidget(this);
+	}
+
+	return _defaultInstrumentWidget;
 }
 
-CustomInstrumentWidget::CustomInstrumentWidget(QObject* parent)
-    : QObject(parent)
+CustomInstrumentWidget::CustomInstrumentWidget(QObject *parent)
+	: QObject(parent)
 {
 }
 

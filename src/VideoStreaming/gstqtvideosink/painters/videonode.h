@@ -32,25 +32,26 @@
 class VideoNode : public QSGGeometryNode
 {
 public:
-    VideoNode();
+	VideoNode();
 
-    enum MaterialType {
-        MaterialTypeVideo,
-        MaterialTypeSolidBlack
-    };
+	enum MaterialType
+	{
+		MaterialTypeVideo,
+		MaterialTypeSolidBlack
+	};
 
-    MaterialType materialType() const { return m_materialType; }
+	MaterialType materialType() const { return m_materialType; }
 
-    void changeFormat(const BufferFormat &format);
-    void setMaterialTypeSolidBlack();
+	void changeFormat(const BufferFormat &format);
+	void setMaterialTypeSolidBlack();
 
-    void setCurrentFrame(GstBuffer *buffer);
-    void updateColors(int brightness, int contrast, int hue, int saturation);
+	void setCurrentFrame(GstBuffer *buffer);
+	void updateColors(int brightness, int contrast, int hue, int saturation);
 
-    void updateGeometry(const PaintAreas & areas);
+	void updateGeometry(const PaintAreas &areas);
 
 private:
-    MaterialType m_materialType;
+	MaterialType m_materialType;
 };
 
 #endif // VIDEONODE_H

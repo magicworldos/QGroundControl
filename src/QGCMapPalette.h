@@ -38,39 +38,39 @@
 
 class QGCMapPalette : public QObject
 {
-    Q_OBJECT
-    
-    Q_PROPERTY(bool lightColors READ lightColors WRITE setLightColors NOTIFY paletteChanged)
+	Q_OBJECT
 
-    Q_PROPERTY(QColor text          READ text          NOTIFY paletteChanged)
-    Q_PROPERTY(QColor textOutline   READ textOutline   NOTIFY paletteChanged)
-    Q_PROPERTY(QColor thumbJoystick READ thumbJoystick NOTIFY paletteChanged)
+	Q_PROPERTY(bool lightColors READ lightColors WRITE setLightColors NOTIFY paletteChanged)
 
-public:    
-    QGCMapPalette(QObject* parent = NULL);
-    
-    /// Text color
-    QColor text(void)           const { return _text[_lightColors ? 0 : 1]; }
-    QColor textOutline(void)    const { return _textOutline[_lightColors ? 0 : 1]; }
+	Q_PROPERTY(QColor text          READ text          NOTIFY paletteChanged)
+	Q_PROPERTY(QColor textOutline   READ textOutline   NOTIFY paletteChanged)
+	Q_PROPERTY(QColor thumbJoystick READ thumbJoystick NOTIFY paletteChanged)
 
-    /// Thumb joystick indicator
-    QColor thumbJoystick(void)  const { return _thumbJoystick[_lightColors ? 0 : 1]; }
+public:
+	QGCMapPalette(QObject *parent = NULL);
 
-    bool lightColors(void) const { return _lightColors; }
-    void setLightColors(bool lightColors);    
+	/// Text color
+	QColor text(void)           const { return _text[_lightColors ? 0 : 1]; }
+	QColor textOutline(void)    const { return _textOutline[_lightColors ? 0 : 1]; }
+
+	/// Thumb joystick indicator
+	QColor thumbJoystick(void)  const { return _thumbJoystick[_lightColors ? 0 : 1]; }
+
+	bool lightColors(void) const { return _lightColors; }
+	void setLightColors(bool lightColors);
 
 signals:
-    void paletteChanged(void);
-    void lightColorsChanged(bool lightColors);
-    
+	void paletteChanged(void);
+	void lightColorsChanged(bool lightColors);
+
 private:
-    bool _lightColors;
+	bool _lightColors;
 
-    static const int _cColorGroups = 2;
+	static const int _cColorGroups = 2;
 
-    static QColor _thumbJoystick[_cColorGroups];
-    static QColor _text[_cColorGroups];
-    static QColor _textOutline[_cColorGroups];
+	static QColor _thumbJoystick[_cColorGroups];
+	static QColor _text[_cColorGroups];
+	static QColor _textOutline[_cColorGroups];
 };
 
 #endif

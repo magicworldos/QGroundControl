@@ -58,24 +58,24 @@ QT_BEGIN_NAMESPACE
 class QGeoRoutingManagerEnginePrivate
 {
 public:
-    QGeoRoutingManagerEnginePrivate();
-    ~QGeoRoutingManagerEnginePrivate();
+	QGeoRoutingManagerEnginePrivate();
+	~QGeoRoutingManagerEnginePrivate();
 
-    QString managerName;
-    int managerVersion;
+	QString managerName;
+	int managerVersion;
 
-    QGeoRouteRequest::TravelModes supportedTravelModes;
-    QGeoRouteRequest::FeatureTypes supportedFeatureTypes;
-    QGeoRouteRequest::FeatureWeights supportedFeatureWeights;
-    QGeoRouteRequest::RouteOptimizations supportedRouteOptimizations;
-    QGeoRouteRequest::SegmentDetails supportedSegmentDetails;
-    QGeoRouteRequest::ManeuverDetails supportedManeuverDetails;
+	QGeoRouteRequest::TravelModes supportedTravelModes;
+	QGeoRouteRequest::FeatureTypes supportedFeatureTypes;
+	QGeoRouteRequest::FeatureWeights supportedFeatureWeights;
+	QGeoRouteRequest::RouteOptimizations supportedRouteOptimizations;
+	QGeoRouteRequest::SegmentDetails supportedSegmentDetails;
+	QGeoRouteRequest::ManeuverDetails supportedManeuverDetails;
 
-    QLocale locale;
-    QLocale::MeasurementSystem measurementSystem;
+	QLocale locale;
+	QLocale::MeasurementSystem measurementSystem;
 
 private:
-    Q_DISABLE_COPY(QGeoRoutingManagerEnginePrivate)
+	Q_DISABLE_COPY(QGeoRoutingManagerEnginePrivate)
 };
 
 QT_END_NAMESPACE

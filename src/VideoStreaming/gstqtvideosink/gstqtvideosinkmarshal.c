@@ -54,181 +54,189 @@
 
 /* VOID:POINTER,FLOAT,FLOAT,FLOAT,FLOAT (marshaller.src:1) */
 void
-g_cclosure_user_marshal_VOID__POINTER_FLOAT_FLOAT_FLOAT_FLOAT (GClosure     *closure,
-                                                               GValue       *return_value G_GNUC_UNUSED,
-                                                               guint         n_param_values,
-                                                               const GValue *param_values,
-                                                               gpointer      invocation_hint G_GNUC_UNUSED,
-                                                               gpointer      marshal_data)
+g_cclosure_user_marshal_VOID__POINTER_FLOAT_FLOAT_FLOAT_FLOAT(GClosure     *closure,
+		GValue       *return_value G_GNUC_UNUSED,
+		guint         n_param_values,
+		const GValue *param_values,
+		gpointer      invocation_hint G_GNUC_UNUSED,
+		gpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__POINTER_FLOAT_FLOAT_FLOAT_FLOAT) (gpointer     data1,
-                                                                      gpointer     arg_1,
-                                                                      gfloat       arg_2,
-                                                                      gfloat       arg_3,
-                                                                      gfloat       arg_4,
-                                                                      gfloat       arg_5,
-                                                                      gpointer     data2);
-  register GMarshalFunc_VOID__POINTER_FLOAT_FLOAT_FLOAT_FLOAT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+	typedef void (*GMarshalFunc_VOID__POINTER_FLOAT_FLOAT_FLOAT_FLOAT)(gpointer     data1,
+			gpointer     arg_1,
+			gfloat       arg_2,
+			gfloat       arg_3,
+			gfloat       arg_4,
+			gfloat       arg_5,
+			gpointer     data2);
+	register GMarshalFunc_VOID__POINTER_FLOAT_FLOAT_FLOAT_FLOAT callback;
+	register GCClosure *cc = (GCClosure *) closure;
+	register gpointer data1, data2;
 
-  g_return_if_fail (n_param_values == 6);
+	g_return_if_fail(n_param_values == 6);
 
-  if (G_CCLOSURE_SWAP_DATA (closure))
-    {
-      data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
-    }
-  else
-    {
-      data1 = g_value_peek_pointer (param_values + 0);
-      data2 = closure->data;
-    }
-  callback = (GMarshalFunc_VOID__POINTER_FLOAT_FLOAT_FLOAT_FLOAT) (marshal_data ? marshal_data : cc->callback);
+	if (G_CCLOSURE_SWAP_DATA(closure))
+	{
+		data1 = closure->data;
+		data2 = g_value_peek_pointer(param_values + 0);
+	}
 
-  callback (data1,
-            g_marshal_value_peek_pointer (param_values + 1),
-            g_marshal_value_peek_float (param_values + 2),
-            g_marshal_value_peek_float (param_values + 3),
-            g_marshal_value_peek_float (param_values + 4),
-            g_marshal_value_peek_float (param_values + 5),
-            data2);
+	else
+	{
+		data1 = g_value_peek_pointer(param_values + 0);
+		data2 = closure->data;
+	}
+
+	callback = (GMarshalFunc_VOID__POINTER_FLOAT_FLOAT_FLOAT_FLOAT)(marshal_data ? marshal_data : cc->callback);
+
+	callback(data1,
+		 g_marshal_value_peek_pointer(param_values + 1),
+		 g_marshal_value_peek_float(param_values + 2),
+		 g_marshal_value_peek_float(param_values + 3),
+		 g_marshal_value_peek_float(param_values + 4),
+		 g_marshal_value_peek_float(param_values + 5),
+		 data2);
 }
 
 /* VOID:POINTER,DOUBLE,DOUBLE,DOUBLE,DOUBLE (marshaller.src:2) */
 void
-g_cclosure_user_marshal_VOID__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE (GClosure     *closure,
-                                                                   GValue       *return_value G_GNUC_UNUSED,
-                                                                   guint         n_param_values,
-                                                                   const GValue *param_values,
-                                                                   gpointer      invocation_hint G_GNUC_UNUSED,
-                                                                   gpointer      marshal_data)
+g_cclosure_user_marshal_VOID__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE(GClosure     *closure,
+		GValue       *return_value G_GNUC_UNUSED,
+		guint         n_param_values,
+		const GValue *param_values,
+		gpointer      invocation_hint G_GNUC_UNUSED,
+		gpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE) (gpointer     data1,
-                                                                          gpointer     arg_1,
-                                                                          gdouble      arg_2,
-                                                                          gdouble      arg_3,
-                                                                          gdouble      arg_4,
-                                                                          gdouble      arg_5,
-                                                                          gpointer     data2);
-  register GMarshalFunc_VOID__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+	typedef void (*GMarshalFunc_VOID__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE)(gpointer     data1,
+			gpointer     arg_1,
+			gdouble      arg_2,
+			gdouble      arg_3,
+			gdouble      arg_4,
+			gdouble      arg_5,
+			gpointer     data2);
+	register GMarshalFunc_VOID__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE callback;
+	register GCClosure *cc = (GCClosure *) closure;
+	register gpointer data1, data2;
 
-  g_return_if_fail (n_param_values == 6);
+	g_return_if_fail(n_param_values == 6);
 
-  if (G_CCLOSURE_SWAP_DATA (closure))
-    {
-      data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
-    }
-  else
-    {
-      data1 = g_value_peek_pointer (param_values + 0);
-      data2 = closure->data;
-    }
-  callback = (GMarshalFunc_VOID__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE) (marshal_data ? marshal_data : cc->callback);
+	if (G_CCLOSURE_SWAP_DATA(closure))
+	{
+		data1 = closure->data;
+		data2 = g_value_peek_pointer(param_values + 0);
+	}
 
-  callback (data1,
-            g_marshal_value_peek_pointer (param_values + 1),
-            g_marshal_value_peek_double (param_values + 2),
-            g_marshal_value_peek_double (param_values + 3),
-            g_marshal_value_peek_double (param_values + 4),
-            g_marshal_value_peek_double (param_values + 5),
-            data2);
+	else
+	{
+		data1 = g_value_peek_pointer(param_values + 0);
+		data2 = closure->data;
+	}
+
+	callback = (GMarshalFunc_VOID__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE)(marshal_data ? marshal_data : cc->callback);
+
+	callback(data1,
+		 g_marshal_value_peek_pointer(param_values + 1),
+		 g_marshal_value_peek_double(param_values + 2),
+		 g_marshal_value_peek_double(param_values + 3),
+		 g_marshal_value_peek_double(param_values + 4),
+		 g_marshal_value_peek_double(param_values + 5),
+		 data2);
 }
 
 /* POINTER:POINTER,FLOAT,FLOAT,FLOAT,FLOAT (marshaller.src:3) */
 void
-g_cclosure_user_marshal_POINTER__POINTER_FLOAT_FLOAT_FLOAT_FLOAT (GClosure     *closure,
-                                                                  GValue       *return_value G_GNUC_UNUSED,
-                                                                  guint         n_param_values,
-                                                                  const GValue *param_values,
-                                                                  gpointer      invocation_hint G_GNUC_UNUSED,
-                                                                  gpointer      marshal_data)
+g_cclosure_user_marshal_POINTER__POINTER_FLOAT_FLOAT_FLOAT_FLOAT(GClosure     *closure,
+		GValue       *return_value G_GNUC_UNUSED,
+		guint         n_param_values,
+		const GValue *param_values,
+		gpointer      invocation_hint G_GNUC_UNUSED,
+		gpointer      marshal_data)
 {
-  typedef gpointer (*GMarshalFunc_POINTER__POINTER_FLOAT_FLOAT_FLOAT_FLOAT) (gpointer     data1,
-                                                                             gpointer     arg_1,
-                                                                             gfloat       arg_2,
-                                                                             gfloat       arg_3,
-                                                                             gfloat       arg_4,
-                                                                             gfloat       arg_5,
-                                                                             gpointer     data2);
-  register GMarshalFunc_POINTER__POINTER_FLOAT_FLOAT_FLOAT_FLOAT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
-  gpointer v_return;
+	typedef gpointer(*GMarshalFunc_POINTER__POINTER_FLOAT_FLOAT_FLOAT_FLOAT)(gpointer     data1,
+			gpointer     arg_1,
+			gfloat       arg_2,
+			gfloat       arg_3,
+			gfloat       arg_4,
+			gfloat       arg_5,
+			gpointer     data2);
+	register GMarshalFunc_POINTER__POINTER_FLOAT_FLOAT_FLOAT_FLOAT callback;
+	register GCClosure *cc = (GCClosure *) closure;
+	register gpointer data1, data2;
+	gpointer v_return;
 
-  g_return_if_fail (return_value != NULL);
-  g_return_if_fail (n_param_values == 6);
+	g_return_if_fail(return_value != NULL);
+	g_return_if_fail(n_param_values == 6);
 
-  if (G_CCLOSURE_SWAP_DATA (closure))
-    {
-      data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
-    }
-  else
-    {
-      data1 = g_value_peek_pointer (param_values + 0);
-      data2 = closure->data;
-    }
-  callback = (GMarshalFunc_POINTER__POINTER_FLOAT_FLOAT_FLOAT_FLOAT) (marshal_data ? marshal_data : cc->callback);
+	if (G_CCLOSURE_SWAP_DATA(closure))
+	{
+		data1 = closure->data;
+		data2 = g_value_peek_pointer(param_values + 0);
+	}
 
-  v_return = callback (data1,
-                       g_marshal_value_peek_pointer (param_values + 1),
-                       g_marshal_value_peek_float (param_values + 2),
-                       g_marshal_value_peek_float (param_values + 3),
-                       g_marshal_value_peek_float (param_values + 4),
-                       g_marshal_value_peek_float (param_values + 5),
-                       data2);
+	else
+	{
+		data1 = g_value_peek_pointer(param_values + 0);
+		data2 = closure->data;
+	}
 
-  g_value_set_pointer (return_value, v_return);
+	callback = (GMarshalFunc_POINTER__POINTER_FLOAT_FLOAT_FLOAT_FLOAT)(marshal_data ? marshal_data : cc->callback);
+
+	v_return = callback(data1,
+			    g_marshal_value_peek_pointer(param_values + 1),
+			    g_marshal_value_peek_float(param_values + 2),
+			    g_marshal_value_peek_float(param_values + 3),
+			    g_marshal_value_peek_float(param_values + 4),
+			    g_marshal_value_peek_float(param_values + 5),
+			    data2);
+
+	g_value_set_pointer(return_value, v_return);
 }
 
 /* POINTER:POINTER,DOUBLE,DOUBLE,DOUBLE,DOUBLE (marshaller.src:4) */
 void
-g_cclosure_user_marshal_POINTER__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE (GClosure     *closure,
-                                                                      GValue       *return_value G_GNUC_UNUSED,
-                                                                      guint         n_param_values,
-                                                                      const GValue *param_values,
-                                                                      gpointer      invocation_hint G_GNUC_UNUSED,
-                                                                      gpointer      marshal_data)
+g_cclosure_user_marshal_POINTER__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE(GClosure     *closure,
+		GValue       *return_value G_GNUC_UNUSED,
+		guint         n_param_values,
+		const GValue *param_values,
+		gpointer      invocation_hint G_GNUC_UNUSED,
+		gpointer      marshal_data)
 {
-  typedef gpointer (*GMarshalFunc_POINTER__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE) (gpointer     data1,
-                                                                                 gpointer     arg_1,
-                                                                                 gdouble      arg_2,
-                                                                                 gdouble      arg_3,
-                                                                                 gdouble      arg_4,
-                                                                                 gdouble      arg_5,
-                                                                                 gpointer     data2);
-  register GMarshalFunc_POINTER__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
-  gpointer v_return;
+	typedef gpointer(*GMarshalFunc_POINTER__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE)(gpointer     data1,
+			gpointer     arg_1,
+			gdouble      arg_2,
+			gdouble      arg_3,
+			gdouble      arg_4,
+			gdouble      arg_5,
+			gpointer     data2);
+	register GMarshalFunc_POINTER__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE callback;
+	register GCClosure *cc = (GCClosure *) closure;
+	register gpointer data1, data2;
+	gpointer v_return;
 
-  g_return_if_fail (return_value != NULL);
-  g_return_if_fail (n_param_values == 6);
+	g_return_if_fail(return_value != NULL);
+	g_return_if_fail(n_param_values == 6);
 
-  if (G_CCLOSURE_SWAP_DATA (closure))
-    {
-      data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
-    }
-  else
-    {
-      data1 = g_value_peek_pointer (param_values + 0);
-      data2 = closure->data;
-    }
-  callback = (GMarshalFunc_POINTER__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE) (marshal_data ? marshal_data : cc->callback);
+	if (G_CCLOSURE_SWAP_DATA(closure))
+	{
+		data1 = closure->data;
+		data2 = g_value_peek_pointer(param_values + 0);
+	}
 
-  v_return = callback (data1,
-                       g_marshal_value_peek_pointer (param_values + 1),
-                       g_marshal_value_peek_double (param_values + 2),
-                       g_marshal_value_peek_double (param_values + 3),
-                       g_marshal_value_peek_double (param_values + 4),
-                       g_marshal_value_peek_double (param_values + 5),
-                       data2);
+	else
+	{
+		data1 = g_value_peek_pointer(param_values + 0);
+		data2 = closure->data;
+	}
 
-  g_value_set_pointer (return_value, v_return);
+	callback = (GMarshalFunc_POINTER__POINTER_DOUBLE_DOUBLE_DOUBLE_DOUBLE)(marshal_data ? marshal_data : cc->callback);
+
+	v_return = callback(data1,
+			    g_marshal_value_peek_pointer(param_values + 1),
+			    g_marshal_value_peek_double(param_values + 2),
+			    g_marshal_value_peek_double(param_values + 3),
+			    g_marshal_value_peek_double(param_values + 4),
+			    g_marshal_value_peek_double(param_values + 5),
+			    data2);
+
+	g_value_set_pointer(return_value, v_return);
 }
 

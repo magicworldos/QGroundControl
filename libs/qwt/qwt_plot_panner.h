@@ -30,31 +30,31 @@ class QwtPlot;
 */
 class QWT_EXPORT QwtPlotPanner: public QwtPanner
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit QwtPlotPanner( QWidget * );
-    virtual ~QwtPlotPanner();
+	explicit QwtPlotPanner(QWidget *);
+	virtual ~QwtPlotPanner();
 
-    QWidget *canvas();
-    const QWidget *canvas() const;
+	QWidget *canvas();
+	const QWidget *canvas() const;
 
-    QwtPlot *plot();
-    const QwtPlot *plot() const;
+	QwtPlot *plot();
+	const QwtPlot *plot() const;
 
-    void setAxisEnabled( int axis, bool on );
-    bool isAxisEnabled( int axis ) const;
+	void setAxisEnabled(int axis, bool on);
+	bool isAxisEnabled(int axis) const;
 
 protected Q_SLOTS:
-    virtual void moveCanvas( int dx, int dy );
+	virtual void moveCanvas(int dx, int dy);
 
 protected:
-    virtual QBitmap contentsMask() const;
-    virtual QPixmap grab() const;
+	virtual QBitmap contentsMask() const;
+	virtual QPixmap grab() const;
 
 private:
-    class PrivateData;
-    PrivateData *d_data;
+	class PrivateData;
+	PrivateData *d_data;
 };
 
 #endif

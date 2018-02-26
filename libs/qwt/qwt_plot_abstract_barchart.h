@@ -17,7 +17,7 @@
 /*!
   \brief Abstract base class for bar chart items
 
-  In opposite to almost all other plot items bar charts can't be 
+  In opposite to almost all other plot items bar charts can't be
   displayed inside of their bounding rectangle and need a special
   API  how to calculate the width of the bars and how they affect
   the layout of the attached plot.
@@ -25,73 +25,73 @@
 class QWT_EXPORT QwtPlotAbstractBarChart: public QwtPlotSeriesItem
 {
 public:
-    /*!
-        \brief Mode how to calculate the bar width
+	/*!
+	    \brief Mode how to calculate the bar width
 
-        setLayoutPolicy(), setLayoutHint(), barWidthHint()
-     */
-    enum LayoutPolicy
-    {
-        /*!
-          The sample width is calculated by dividing the bounding rectangle
-          by the number of samples.
+	    setLayoutPolicy(), setLayoutHint(), barWidthHint()
+	 */
+	enum LayoutPolicy
+	{
+		/*!
+		  The sample width is calculated by dividing the bounding rectangle
+		  by the number of samples.
 
-          \sa boundingRectangle()
-          \note The layoutHint() is ignored
-         */
-        AutoAdjustSamples,
+		  \sa boundingRectangle()
+		  \note The layoutHint() is ignored
+		 */
+		AutoAdjustSamples,
 
-        /*!
-          layoutHint() defines an interval in axis coordinates
-         */
-        ScaleSamplesToAxes,
+		/*!
+		  layoutHint() defines an interval in axis coordinates
+		 */
+		ScaleSamplesToAxes,
 
-        /*!
-          The bar width is calculated by multiplying layoutHint()
-          with the height or width of the canvas.
+		/*!
+		  The bar width is calculated by multiplying layoutHint()
+		  with the height or width of the canvas.
 
-          \sa boundingRectangle()
-         */
-        ScaleSampleToCanvas,
+		  \sa boundingRectangle()
+		 */
+		ScaleSampleToCanvas,
 
-        /*!
-          layoutHint() defines a fixed width in paint device coordinates.
-         */
-        FixedSampleSize
-    };
+		/*!
+		  layoutHint() defines a fixed width in paint device coordinates.
+		 */
+		FixedSampleSize
+	};
 
-    explicit QwtPlotAbstractBarChart( const QwtText &title );
-    virtual ~QwtPlotAbstractBarChart();
+	explicit QwtPlotAbstractBarChart(const QwtText &title);
+	virtual ~QwtPlotAbstractBarChart();
 
-    void setLayoutPolicy( LayoutPolicy );
-    LayoutPolicy layoutPolicy() const;
+	void setLayoutPolicy(LayoutPolicy);
+	LayoutPolicy layoutPolicy() const;
 
-    void setLayoutHint( double );
-    double layoutHint() const;
+	void setLayoutHint(double);
+	double layoutHint() const;
 
-    void setSpacing( int );
-    int spacing() const;
+	void setSpacing(int);
+	int spacing() const;
 
-    void setMargin( int );
-    int margin() const;
+	void setMargin(int);
+	int margin() const;
 
-    void setBaseline( double );
-    double baseline() const;
+	void setBaseline(double);
+	double baseline() const;
 
-    virtual void getCanvasMarginHint( 
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &canvasRect,
-        double &left, double &top, double &right, double &bottom) const;
+	virtual void getCanvasMarginHint(
+		const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+		const QRectF &canvasRect,
+		double &left, double &top, double &right, double &bottom) const;
 
 
 protected:
-    double sampleWidth( const QwtScaleMap &map,
-        double canvasSize, double dataSize,
-        double value ) const;
+	double sampleWidth(const QwtScaleMap &map,
+			   double canvasSize, double dataSize,
+			   double value) const;
 
 private:
-    class PrivateData;
-    PrivateData *d_data;
+	class PrivateData;
+	PrivateData *d_data;
 };
 
 #endif

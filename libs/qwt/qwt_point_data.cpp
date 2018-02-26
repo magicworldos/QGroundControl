@@ -20,9 +20,9 @@
   \sa QwtPlotCurve::setData(), QwtPlotCurve::setSamples()
 */
 QwtPointArrayData::QwtPointArrayData(
-        const QVector<double> &x, const QVector<double> &y ):
-    d_x( x ),
-    d_y( y )
+	const QVector<double> &x, const QVector<double> &y):
+	d_x(x),
+	d_y(y)
 {
 }
 
@@ -34,14 +34,14 @@ QwtPointArrayData::QwtPointArrayData(
   \param size Size of the x and y arrays
   \sa QwtPlotCurve::setData(), QwtPlotCurve::setSamples()
 */
-QwtPointArrayData::QwtPointArrayData( const double *x,
-        const double *y, size_t size )
+QwtPointArrayData::QwtPointArrayData(const double *x,
+				     const double *y, size_t size)
 {
-    d_x.resize( static_cast<int>(size) );
-    ::memcpy( d_x.data(), x, size * sizeof( double ) );
+	d_x.resize(static_cast<int>(size));
+	::memcpy(d_x.data(), x, size * sizeof(double));
 
-    d_y.resize(static_cast<int>(size));
-    ::memcpy( d_y.data(), y, size * sizeof( double ) );
+	d_y.resize(static_cast<int>(size));
+	::memcpy(d_y.data(), y, size * sizeof(double));
 }
 
 /*!
@@ -54,16 +54,18 @@ QwtPointArrayData::QwtPointArrayData( const double *x,
 */
 QRectF QwtPointArrayData::boundingRect() const
 {
-    if ( d_boundingRect.width() < 0 )
-        d_boundingRect = qwtBoundingRect( *this );
+	if (d_boundingRect.width() < 0)
+	{
+		d_boundingRect = qwtBoundingRect(*this);
+	}
 
-    return d_boundingRect;
+	return d_boundingRect;
 }
 
 //! \return Size of the data set
 size_t QwtPointArrayData::size() const
 {
-    return qMin( d_x.size(), d_y.size() );
+	return qMin(d_x.size(), d_y.size());
 }
 
 /*!
@@ -72,21 +74,21 @@ size_t QwtPointArrayData::size() const
   \param index Index
   \return Sample at position i
 */
-QPointF QwtPointArrayData::sample( size_t index ) const
+QPointF QwtPointArrayData::sample(size_t index) const
 {
-    return QPointF( d_x[int( index )], d_y[int( index )] );
+	return QPointF(d_x[int(index)], d_y[int(index)]);
 }
 
 //! \return Array of the x-values
 const QVector<double> &QwtPointArrayData::xData() const
 {
-    return d_x;
+	return d_x;
 }
 
 //! \return Array of the y-values
 const QVector<double> &QwtPointArrayData::yData() const
 {
-    return d_y;
+	return d_y;
 }
 
 /*!
@@ -103,10 +105,10 @@ const QVector<double> &QwtPointArrayData::yData() const
   \sa QwtPlotCurve::setData(), QwtPlotCurve::setRawSamples()
 */
 QwtCPointerData::QwtCPointerData(
-        const double *x, const double *y, size_t size ):
-    d_x( x ),
-    d_y( y ),
-    d_size( size )
+	const double *x, const double *y, size_t size):
+	d_x(x),
+	d_y(y),
+	d_size(size)
 {
 }
 
@@ -120,16 +122,18 @@ QwtCPointerData::QwtCPointerData(
 */
 QRectF QwtCPointerData::boundingRect() const
 {
-    if ( d_boundingRect.width() < 0 )
-        d_boundingRect = qwtBoundingRect( *this );
+	if (d_boundingRect.width() < 0)
+	{
+		d_boundingRect = qwtBoundingRect(*this);
+	}
 
-    return d_boundingRect;
+	return d_boundingRect;
 }
 
 //! \return Size of the data set
 size_t QwtCPointerData::size() const
 {
-    return d_size;
+	return d_size;
 }
 
 /*!
@@ -138,21 +142,21 @@ size_t QwtCPointerData::size() const
   \param index Index
   \return Sample at position i
 */
-QPointF QwtCPointerData::sample( size_t index ) const
+QPointF QwtCPointerData::sample(size_t index) const
 {
-    return QPointF( d_x[int( index )], d_y[int( index )] );
+	return QPointF(d_x[int(index)], d_y[int(index)]);
 }
 
 //! \return Array of the x-values
 const double *QwtCPointerData::xData() const
 {
-    return d_x;
+	return d_x;
 }
 
 //! \return Array of the y-values
 const double *QwtCPointerData::yData() const
 {
-    return d_y;
+	return d_y;
 }
 
 /*!
@@ -164,9 +168,9 @@ const double *QwtCPointerData::yData() const
    \sa setInterval(), setSize()
 */
 QwtSyntheticPointData::QwtSyntheticPointData(
-        size_t size, const QwtInterval &interval ):
-    d_size( size ),
-    d_interval( interval )
+	size_t size, const QwtInterval &interval):
+	d_size(size),
+	d_interval(interval)
 {
 }
 
@@ -176,9 +180,9 @@ QwtSyntheticPointData::QwtSyntheticPointData(
   \param size Number of points
   \sa size(), setInterval()
 */
-void QwtSyntheticPointData::setSize( size_t size )
+void QwtSyntheticPointData::setSize(size_t size)
 {
-    d_size = size;
+	d_size = size;
 }
 
 /*!
@@ -187,7 +191,7 @@ void QwtSyntheticPointData::setSize( size_t size )
 */
 size_t QwtSyntheticPointData::size() const
 {
-    return d_size;
+	return d_size;
 }
 
 /*!
@@ -196,9 +200,9 @@ size_t QwtSyntheticPointData::size() const
    \param interval Interval
    \sa interval(), setSize()
 */
-void QwtSyntheticPointData::setInterval( const QwtInterval &interval )
+void QwtSyntheticPointData::setInterval(const QwtInterval &interval)
 {
-    d_interval = interval.normalized();
+	d_interval = interval.normalized();
 }
 
 /*!
@@ -207,7 +211,7 @@ void QwtSyntheticPointData::setInterval( const QwtInterval &interval )
 */
 QwtInterval QwtSyntheticPointData::interval() const
 {
-    return d_interval;
+	return d_interval;
 }
 
 /*!
@@ -221,11 +225,11 @@ QwtInterval QwtSyntheticPointData::interval() const
 
    \sa rectOfInterest()
 */
-void QwtSyntheticPointData::setRectOfInterest( const QRectF &rect )
+void QwtSyntheticPointData::setRectOfInterest(const QRectF &rect)
 {
-    d_rectOfInterest = rect;
-    d_intervalOfInterest = QwtInterval(
-        rect.left(), rect.right() ).normalized();
+	d_rectOfInterest = rect;
+	d_intervalOfInterest = QwtInterval(
+				       rect.left(), rect.right()).normalized();
 }
 
 /*!
@@ -234,7 +238,7 @@ void QwtSyntheticPointData::setRectOfInterest( const QRectF &rect )
 */
 QRectF QwtSyntheticPointData::rectOfInterest() const
 {
-    return d_rectOfInterest;
+	return d_rectOfInterest;
 }
 
 /*!
@@ -250,13 +254,13 @@ QRectF QwtSyntheticPointData::rectOfInterest() const
 */
 QRectF QwtSyntheticPointData::boundingRect() const
 {
-    if ( d_size == 0 ||
-        !( d_interval.isValid() || d_intervalOfInterest.isValid() ) )
-    {
-        return QRectF( 1.0, 1.0, -2.0, -2.0 ); // something invalid
-    }
+	if (d_size == 0 ||
+			!(d_interval.isValid() || d_intervalOfInterest.isValid()))
+	{
+		return QRectF(1.0, 1.0, -2.0, -2.0);   // something invalid
+	}
 
-    return qwtBoundingRect( *this );
+	return qwtBoundingRect(*this);
 }
 
 /*!
@@ -268,15 +272,17 @@ QRectF QwtSyntheticPointData::boundingRect() const
    \warning For invalid indices ( index < 0 || index >= size() )
             (0, 0) is returned.
 */
-QPointF QwtSyntheticPointData::sample( size_t index ) const
+QPointF QwtSyntheticPointData::sample(size_t index) const
 {
-    if ( index >= d_size )
-        return QPointF( 0, 0 );
+	if (index >= d_size)
+	{
+		return QPointF(0, 0);
+	}
 
-    const double xValue = x( static_cast<uint>(index) );
-    const double yValue = y( xValue );
+	const double xValue = x(static_cast<uint>(index));
+	const double yValue = y(xValue);
 
-    return QPointF( xValue, yValue );
+	return QPointF(xValue, yValue);
 }
 
 /*!
@@ -286,19 +292,21 @@ QPointF QwtSyntheticPointData::sample( size_t index ) const
    equidistant steps. If !interval().isValid() the
    interval is calculated from the "rectangle of interest".
 
-   \param index Index of the requested point 
+   \param index Index of the requested point
    \return Calculated x coordinate
 
    \sa interval(), rectOfInterest(), y()
 */
-double QwtSyntheticPointData::x( uint index ) const
+double QwtSyntheticPointData::x(uint index) const
 {
-    const QwtInterval &interval = d_interval.isValid() ?
-        d_interval : d_intervalOfInterest;
+	const QwtInterval &interval = d_interval.isValid() ?
+				      d_interval : d_intervalOfInterest;
 
-    if ( !interval.isValid() || d_size == 0 || index >= d_size )
-        return 0.0;
+	if (!interval.isValid() || d_size == 0 || index >= d_size)
+	{
+		return 0.0;
+	}
 
-    const double dx = interval.width() / d_size;
-    return interval.minValue() + index * dx;
+	const double dx = interval.width() / d_size;
+	return interval.minValue() + index * dx;
 }

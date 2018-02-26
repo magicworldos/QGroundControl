@@ -34,37 +34,37 @@ template class QWT_EXPORT QwtArray<double>;
 class QWT_EXPORT QwtIntervalData
 {
 public:
-    QwtIntervalData();
-    QwtIntervalData(const QwtArray<QwtDoubleInterval> &,
-                    const QwtArray<double> &);
+	QwtIntervalData();
+	QwtIntervalData(const QwtArray<QwtDoubleInterval> &,
+			const QwtArray<double> &);
 
-    void setData(const QwtArray<QwtDoubleInterval> &,
-                 const QwtArray<double> &);
+	void setData(const QwtArray<QwtDoubleInterval> &,
+		     const QwtArray<double> &);
 
-    size_t size() const;
-    const QwtDoubleInterval &interval(size_t i) const;
-    double value(size_t i) const;
+	size_t size() const;
+	const QwtDoubleInterval &interval(size_t i) const;
+	double value(size_t i) const;
 
-    QwtDoubleRect boundingRect() const;
+	QwtDoubleRect boundingRect() const;
 
 private:
-    QwtArray<QwtDoubleInterval> d_intervals;
-    QwtArray<double> d_values;
+	QwtArray<QwtDoubleInterval> d_intervals;
+	QwtArray<double> d_values;
 };
 
 inline size_t QwtIntervalData::size() const
 {
-    return qwtMin(d_intervals.size(), d_values.size());
+	return qwtMin(d_intervals.size(), d_values.size());
 }
 
 inline const QwtDoubleInterval &QwtIntervalData::interval(size_t i) const
 {
-    return d_intervals[int(i)];
+	return d_intervals[int(i)];
 }
 
 inline double QwtIntervalData::value(size_t i) const
 {
-    return d_values[int(i)];
+	return d_values[int(i)];
 }
 
 #endif

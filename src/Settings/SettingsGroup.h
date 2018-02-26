@@ -21,23 +21,23 @@
 /// is shows in the ui.
 class SettingsGroup : public QObject
 {
-    Q_OBJECT
-    
-public:
-    /// @param name Name for this Settings group
-    /// @param settingsGroup Group to place settings in for QSettings::setGroup
-    SettingsGroup(const QString& name, const QString& settingsGroup, QObject* parent = NULL);
+	Q_OBJECT
 
-    Q_PROPERTY(bool visible MEMBER _visible CONSTANT)
+public:
+	/// @param name Name for this Settings group
+	/// @param settingsGroup Group to place settings in for QSettings::setGroup
+	SettingsGroup(const QString &name, const QString &settingsGroup, QObject *parent = NULL);
+
+	Q_PROPERTY(bool visible MEMBER _visible CONSTANT)
 
 protected:
-    SettingsFact* _createSettingsFact(const QString& name);
+	SettingsFact *_createSettingsFact(const QString &name);
 
-    QString _name;
-    QString _settingsGroup;
-    bool    _visible;
+	QString _name;
+	QString _settingsGroup;
+	bool    _visible;
 
-    QMap<QString, FactMetaData*> _nameToMetaDataMap;
+	QMap<QString, FactMetaData *> _nameToMetaDataMap;
 };
 
 #endif

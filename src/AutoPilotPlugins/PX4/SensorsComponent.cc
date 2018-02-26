@@ -16,82 +16,96 @@
 #include "QGCQmlWidgetHolder.h"
 #include "SensorsComponentController.h"
 
-const char* SensorsComponent::_airspeedBreakerParam =   "CBRK_AIRSPD_CHK";
-const char* SensorsComponent::_airspeedDisabledParam =  "FW_ARSP_MODE";
-const char* SensorsComponent::_airspeedCalParam =       "SENS_DPRES_OFF";
+const char *SensorsComponent::_airspeedBreakerParam =   "CBRK_AIRSPD_CHK";
+const char *SensorsComponent::_airspeedDisabledParam =  "FW_ARSP_MODE";
+const char *SensorsComponent::_airspeedCalParam =       "SENS_DPRES_OFF";
 
-SensorsComponent::SensorsComponent(Vehicle* vehicle, AutoPilotPlugin* autopilot, QObject* parent) :
-    VehicleComponent(vehicle, autopilot, parent),
-    _name(tr("Sensors"))
+SensorsComponent::SensorsComponent(Vehicle *vehicle, AutoPilotPlugin *autopilot, QObject *parent) :
+	VehicleComponent(vehicle, autopilot, parent),
+	_name(tr("Sensors"))
 {
-    _deviceIds << QStringLiteral("CAL_MAG0_ID") << QStringLiteral("CAL_GYRO0_ID") << QStringLiteral("CAL_ACC0_ID");
+	_deviceIds << QStringLiteral("CAL_MAG0_ID") << QStringLiteral("CAL_GYRO0_ID") << QStringLiteral("CAL_ACC0_ID");
 }
 
 QString SensorsComponent::name(void) const
 {
-    return _name;
+	return _name;
 }
 
 QString SensorsComponent::description(void) const
 {
-    return tr("Sensors Setup is used to calibrate the sensors within your vehicle.");
+	return tr("Sensors Setup is used to calibrate the sensors within your vehicle.");
 }
 
 QString SensorsComponent::iconResource(void) const
 {
-    return "/qmlimages/SensorsComponentIcon.png";
+	return "/qmlimages/SensorsComponentIcon.png";
 }
 
 bool SensorsComponent::requiresSetup(void) const
 {
-    return true;
+	return true;
 }
 
 bool SensorsComponent::setupComplete(void) const
 {
-    foreach (const QString &triggerParam, _deviceIds) {
-        if (_vehicle->parameterManager()->getParameter(FactSystem::defaultComponentId, triggerParam)->rawValue().toFloat() == 0.0f) {
-            return false;
-        }
-    }
+	foreach (const QString &triggerParam, _deviceIds)
+	{
+		if (_vehicle->parameterManager()->getParameter(FactSystem::defaultComponentId,
+				triggerParam)->rawValue().toFloat() == 0.0f)
+		{
+			return false;
+		}
+	}
 
-    if (_vehicle->fixedWing() || _vehicle->vtol()) {
-        if (!_vehicle->parameterManager()->getParameter(FactSystem::defaultComponentId, _airspeedDisabledParam)->rawValue().toBool() &&
-                _vehicle->parameterManager()->getParameter(FactSystem::defaultComponentId, _airspeedBreakerParam)->rawValue().toInt() != 162128 &&
-                _vehicle->parameterManager()->getParameter(FactSystem::defaultComponentId, _airspeedCalParam)->rawValue().toFloat() == 0.0f) {
-            return false;
-        }
-    }
+	if (_vehicle->fixedWing() || _vehicle->vtol())
+	{
+		if (!_vehicle->parameterManager()->getParameter(FactSystem::defaultComponentId,
+				_airspeedDisabledParam)->rawValue().toBool() &&
+				_vehicle->parameterManager()->getParameter(FactSystem::defaultComponentId,
+						_airspeedBreakerParam)->rawValue().toInt() != 162128 &&
+				_vehicle->parameterManager()->getParameter(FactSystem::defaultComponentId,
+						_airspeedCalParam)->rawValue().toFloat() == 0.0f)
+		{
+			return false;
+		}
+	}
 
-    return true;
+	return true;
 }
 
 QStringList SensorsComponent::setupCompleteChangedTriggerList(void) const
 {
-    QStringList triggers;
-    
-    triggers << _deviceIds;
-    if (_vehicle->fixedWing() || _vehicle->vtol()) {
-        triggers << _airspeedCalParam << _airspeedBreakerParam;
-    }
-    
-    return triggers;
+	QStringList triggers;
+
+	triggers << _deviceIds;
+
+	if (_vehicle->fixedWing() || _vehicle->vtol())
+	{
+		triggers << _airspeedCalParam << _airspeedBreakerParam;
+	}
+
+	return triggers;
 }
 
 QUrl SensorsComponent::setupSource(void) const
 {
-    return QUrl::fromUserInput("qrc:/qml/SensorsComponent.qml");
+	return QUrl::fromUserInput("qrc:/qml/SensorsComponent.qml");
 }
 
 QUrl SensorsComponent::summaryQmlSource(void) const
 {
-    QString summaryQml;
-    
-    if (_vehicle->fixedWing() || _vehicle->vtol()) {
-        summaryQml = "qrc:/qml/SensorsComponentSummaryFixedWing.qml";
-    } else {
-        summaryQml = "qrc:/qml/SensorsComponentSummary.qml";
-    }
-    
-    return QUrl::fromUserInput(summaryQml);
+	QString summaryQml;
+
+	if (_vehicle->fixedWing() || _vehicle->vtol())
+	{
+		summaryQml = "qrc:/qml/SensorsComponentSummaryFixedWing.qml";
+	}
+
+	else
+	{
+		summaryQml = "qrc:/qml/SensorsComponentSummary.qml";
+	}
+
+	return QUrl::fromUserInput(summaryQml);
 }

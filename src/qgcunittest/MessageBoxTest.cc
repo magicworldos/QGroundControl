@@ -18,48 +18,48 @@
 
 MessageBoxTest::MessageBoxTest(void)
 {
-    
+
 }
 
 void MessageBoxTest::_messageBoxExpected_test(void)
 {
-    setExpectedMessageBox(QMessageBox::Ok);
-    
-    QCOMPARE(QGCMessageBox::information(QString(), QString()), QMessageBox::Ok);
-    
-    checkExpectedMessageBox();
+	setExpectedMessageBox(QMessageBox::Ok);
+
+	QCOMPARE(QGCMessageBox::information(QString(), QString()), QMessageBox::Ok);
+
+	checkExpectedMessageBox();
 }
 
 void MessageBoxTest::_messageBoxUnexpected_test(void)
 {
-    // This should cause an expected failure in the cleanup method
-    QGCMessageBox::information(QString(), QString());
-    _expectMissedMessageBox = true;
+	// This should cause an expected failure in the cleanup method
+	QGCMessageBox::information(QString(), QString());
+	_expectMissedMessageBox = true;
 }
 
 void MessageBoxTest::_previousMessageBox_test(void)
 {
-    // This is the previous unexpected message box
-    QGCMessageBox::information(QString(), QString());
-    
-    // Setup for an expected message box.
-    QEXPECT_FAIL("", "Expecting failure due to previous message boxes", Continue);
-    setExpectedMessageBox(QMessageBox::Ok);
+	// This is the previous unexpected message box
+	QGCMessageBox::information(QString(), QString());
+
+	// Setup for an expected message box.
+	QEXPECT_FAIL("", "Expecting failure due to previous message boxes", Continue);
+	setExpectedMessageBox(QMessageBox::Ok);
 }
 
 void MessageBoxTest::_noMessageBox_test(void)
 {
-    setExpectedMessageBox(QMessageBox::Ok);
-    checkExpectedMessageBox(expectFailNoDialog);
+	setExpectedMessageBox(QMessageBox::Ok);
+	checkExpectedMessageBox(expectFailNoDialog);
 }
 
 void MessageBoxTest::_badResponseButton_test(void)
 {
-    setExpectedMessageBox(QMessageBox::Cancel);
+	setExpectedMessageBox(QMessageBox::Cancel);
 
-    // Will return Ok even though Cancel was specified, since that was wrong
-    QCOMPARE(QGCMessageBox::information(QString(), QString()), QMessageBox::Ok);
-    
-    checkExpectedMessageBox(expectFailBadResponseButton);
+	// Will return Ok even though Cancel was specified, since that was wrong
+	QCOMPARE(QGCMessageBox::information(QString(), QString()), QMessageBox::Ok);
+
+	checkExpectedMessageBox(expectFailBadResponseButton);
 }
 

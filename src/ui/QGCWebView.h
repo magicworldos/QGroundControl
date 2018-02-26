@@ -10,17 +10,17 @@ class QGCWebView;
 
 class QGCWebView : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit QGCWebView(QWidget *parent = 0);
-    ~QGCWebView();
+	explicit QGCWebView(QWidget *parent = 0);
+	~QGCWebView();
 
 protected:
-    void changeEvent(QEvent *e);
+	void changeEvent(QEvent *e);
 
 private:
-    Ui::QGCWebView *ui;
+	Ui::QGCWebView *ui;
 };
 
 #endif // QGCWEBVIEW_H

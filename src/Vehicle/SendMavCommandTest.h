@@ -15,15 +15,15 @@
 
 class SendMavCommandTest : public UnitTest
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 private slots:
-    void _noFailure(void);
-    void _failureShowError(void);
-    void _failureNoShowError(void);
-    void _noFailureAfterRetry(void);
-    void _failureAfterRetry(void);
-    void _failureAfterNoReponse(void);
+	void _noFailure(void);
+	void _failureShowError(void);
+	void _failureNoShowError(void);
+	void _noFailureAfterRetry(void);
+	void _failureAfterRetry(void);
+	void _failureAfterNoReponse(void);
 
 private:
 };

@@ -24,33 +24,33 @@
 /// MVC Controller for FlightModesComponent.qml.
 class APMFlightModesComponentController : public FactPanelController
 {
-    Q_OBJECT
-    
-public:
-    APMFlightModesComponentController(void);
-    
-    Q_PROPERTY(QString  modeParamPrefix             MEMBER _modeParamPrefix     CONSTANT)
-    Q_PROPERTY(QString  modeChannelParam            MEMBER _modeChannelParam    CONSTANT)
-    Q_PROPERTY(int      activeFlightMode            READ activeFlightMode       NOTIFY activeFlightModeChanged)
-    Q_PROPERTY(int      channelCount                MEMBER _channelCount        CONSTANT)
-    Q_PROPERTY(QVariantList channelOptionEnabled    READ channelOptionEnabled   NOTIFY channelOptionEnabledChanged)
+	Q_OBJECT
 
-    int activeFlightMode(void) const { return _activeFlightMode; }
-    QVariantList channelOptionEnabled(void) const { return _rgChannelOptionEnabled; }
+public:
+	APMFlightModesComponentController(void);
+
+	Q_PROPERTY(QString  modeParamPrefix             MEMBER _modeParamPrefix     CONSTANT)
+	Q_PROPERTY(QString  modeChannelParam            MEMBER _modeChannelParam    CONSTANT)
+	Q_PROPERTY(int      activeFlightMode            READ activeFlightMode       NOTIFY activeFlightModeChanged)
+	Q_PROPERTY(int      channelCount                MEMBER _channelCount        CONSTANT)
+	Q_PROPERTY(QVariantList channelOptionEnabled    READ channelOptionEnabled   NOTIFY channelOptionEnabledChanged)
+
+	int activeFlightMode(void) const { return _activeFlightMode; }
+	QVariantList channelOptionEnabled(void) const { return _rgChannelOptionEnabled; }
 
 signals:
-    void activeFlightModeChanged(int activeFlightMode);
-    void channelOptionEnabledChanged(void);
-    
+	void activeFlightModeChanged(int activeFlightMode);
+	void channelOptionEnabledChanged(void);
+
 private slots:
-    void _rcChannelsChanged(int channelCount, int pwmValues[Vehicle::cMaxRcChannels]);
-    
+	void _rcChannelsChanged(int channelCount, int pwmValues[Vehicle::cMaxRcChannels]);
+
 private:
-    QString         _modeParamPrefix;
-    QString         _modeChannelParam;
-    int             _activeFlightMode;
-    int             _channelCount;
-    QVariantList    _rgChannelOptionEnabled;
+	QString         _modeParamPrefix;
+	QString         _modeChannelParam;
+	int             _activeFlightMode;
+	int             _channelCount;
+	QVariantList    _rgChannelOptionEnabled;
 };
 
 #endif

@@ -15,30 +15,31 @@
 
 #include "Vehicle.h"
 
-namespace Ui {
+namespace Ui
+{
 class QGCHilConfiguration;
 }
 
 class QGCHilConfiguration : public QWidget
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 public:
-    QGCHilConfiguration(Vehicle* vehicle, QWidget *parent = 0);
-    ~QGCHilConfiguration();
+	QGCHilConfiguration(Vehicle *vehicle, QWidget *parent = 0);
+	~QGCHilConfiguration();
 
 public slots:
-    /** @brief Receive status message */
-    void receiveStatusMessage(const QString& message);
-    void setVersion(QString version);
+	/** @brief Receive status message */
+	void receiveStatusMessage(const QString &message);
+	void setVersion(QString version);
 
 private slots:
-    void on_simComboBox_currentIndexChanged(int index);
+	void on_simComboBox_currentIndexChanged(int index);
 
 private:
-    Vehicle* _vehicle;
-    
-    Ui::QGCHilConfiguration *ui;
+	Vehicle *_vehicle;
+
+	Ui::QGCHilConfiguration *ui;
 };
 
 #endif // QGCHILCONFIGURATION_H

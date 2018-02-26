@@ -14,55 +14,57 @@
 
 class FlightMapSettings : public SettingsGroup
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    FlightMapSettings(QObject* parent = NULL);
+	FlightMapSettings(QObject *parent = NULL);
 
-    // This enum must match the json meta data
-    typedef enum {
-        mapProviderBing,
-        mapProviderGoogle,
-        mapProviderStarkart,
-        mapProviderMapbox,
-        mapProviderEsri,
-        mapProviderEniro
-    } MapProvider_t;
+	// This enum must match the json meta data
+	typedef enum
+	{
+		mapProviderBing,
+		mapProviderGoogle,
+		mapProviderStarkart,
+		mapProviderMapbox,
+		mapProviderEsri,
+		mapProviderEniro
+	} MapProvider_t;
 
-    // This enum must match the json meta data
-    typedef enum {
-        mapTypeStreet,
-        mapTypeSatellite,
-        mapTypeHybrid,
-        mapTypeTerrain
-    } MapType_t;
+	// This enum must match the json meta data
+	typedef enum
+	{
+		mapTypeStreet,
+		mapTypeSatellite,
+		mapTypeHybrid,
+		mapTypeTerrain
+	} MapType_t;
 
-    Q_PROPERTY(Fact* mapProvider     READ mapProvider   CONSTANT)               ///< Currently selected map provider
-    Q_PROPERTY(Fact* mapType         READ mapType       NOTIFY mapTypeChanged)  ///< Current selected map type
+	Q_PROPERTY(Fact *mapProvider     READ mapProvider   CONSTANT)               ///< Currently selected map provider
+	Q_PROPERTY(Fact *mapType         READ mapType       NOTIFY mapTypeChanged)  ///< Current selected map type
 
-    Fact* mapProvider   (void);
-    Fact* mapType       (void);
+	Fact *mapProvider(void);
+	Fact *mapType(void);
 
-    static const char* flightMapSettingsGroupName;
-    static const char* mapProviderSettingsName;
-    static const char* mapTypeSettingsName;
+	static const char *flightMapSettingsGroupName;
+	static const char *mapProviderSettingsName;
+	static const char *mapTypeSettingsName;
 
 signals:
-    void mapTypeChanged(void);
+	void mapTypeChanged(void);
 
 private slots:
-    void _newMapProvider(QVariant value);
+	void _newMapProvider(QVariant value);
 
 private:
-    void _removeEnumValue(int value, QStringList& enumStrings, QVariantList& enumValues);
-    void _excludeProvider(MapProvider_t provider);
+	void _removeEnumValue(int value, QStringList &enumStrings, QVariantList &enumValues);
+	void _excludeProvider(MapProvider_t provider);
 
-    SettingsFact*   _mapProviderFact;
-    SettingsFact*   _mapTypeFact;
-    QStringList     _savedMapTypeStrings;
-    QVariantList    _savedMapTypeValues;
+	SettingsFact   *_mapProviderFact;
+	SettingsFact   *_mapTypeFact;
+	QStringList     _savedMapTypeStrings;
+	QVariantList    _savedMapTypeValues;
 
-    static const char* _settingsGroupName;
+	static const char *_settingsGroupName;
 };
 
 #endif

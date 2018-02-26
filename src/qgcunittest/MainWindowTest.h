@@ -21,14 +21,14 @@
 
 class MainWindowTest : public UnitTest
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 private slots:
-    void _connectWindowClosePX4_test(void);
-    void _connectWindowCloseGeneric_test(void);
+	void _connectWindowClosePX4_test(void);
+	void _connectWindowCloseGeneric_test(void);
 
 private:
-    void _connectWindowClose_test(MAV_AUTOPILOT autopilot);
+	void _connectWindowClose_test(MAV_AUTOPILOT autopilot);
 };
 
 #endif

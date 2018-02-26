@@ -12,33 +12,35 @@
 #include <QQmlEngine>
 #include <QtQml>
 
-const char* RTKSettings::RTKSettingsGroupName =                 "RTK";
-const char* RTKSettings::surveyInAccuracyLimitName =            "SurveyInAccuracyLimit";
-const char* RTKSettings::surveyInMinObservationDurationName =   "SurveyInMinObservationDuration";
+const char *RTKSettings::RTKSettingsGroupName =                 "RTK";
+const char *RTKSettings::surveyInAccuracyLimitName =            "SurveyInAccuracyLimit";
+const char *RTKSettings::surveyInMinObservationDurationName =   "SurveyInMinObservationDuration";
 
-RTKSettings::RTKSettings(QObject* parent)
-    : SettingsGroup(RTKSettingsGroupName, QString(RTKSettingsGroupName), parent)
-    , _surveyInAccuracyLimitFact(NULL)
-    , _surveyInMinObservationDurationFact(NULL)
+RTKSettings::RTKSettings(QObject *parent)
+	: SettingsGroup(RTKSettingsGroupName, QString(RTKSettingsGroupName), parent)
+	, _surveyInAccuracyLimitFact(NULL)
+	, _surveyInMinObservationDurationFact(NULL)
 {
-    QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
-    qmlRegisterUncreatableType<RTKSettings>("QGroundControl.SettingsManager", 1, 0, "RTKSettings", "Reference only");
+	QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
+	qmlRegisterUncreatableType<RTKSettings>("QGroundControl.SettingsManager", 1, 0, "RTKSettings", "Reference only");
 }
 
-Fact* RTKSettings::surveyInAccuracyLimit(void)
+Fact *RTKSettings::surveyInAccuracyLimit(void)
 {
-    if (!_surveyInAccuracyLimitFact) {
-        _surveyInAccuracyLimitFact = _createSettingsFact(surveyInAccuracyLimitName);
-    }
+	if (!_surveyInAccuracyLimitFact)
+	{
+		_surveyInAccuracyLimitFact = _createSettingsFact(surveyInAccuracyLimitName);
+	}
 
-    return _surveyInAccuracyLimitFact;
+	return _surveyInAccuracyLimitFact;
 }
 
-Fact* RTKSettings::surveyInMinObservationDuration(void)
+Fact *RTKSettings::surveyInMinObservationDuration(void)
 {
-    if (!_surveyInMinObservationDurationFact) {
-        _surveyInMinObservationDurationFact = _createSettingsFact(surveyInMinObservationDurationName);
-    }
+	if (!_surveyInMinObservationDurationFact)
+	{
+		_surveyInMinObservationDurationFact = _createSettingsFact(surveyInMinObservationDurationName);
+	}
 
-    return _surveyInMinObservationDurationFact;
+	return _surveyInMinObservationDurationFact;
 }

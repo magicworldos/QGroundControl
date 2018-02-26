@@ -68,17 +68,17 @@ class QGeoTiledMappingManagerEngine;
 class QGeoTileFetcherPrivate
 {
 public:
-    QGeoTileFetcherPrivate();
-    virtual ~QGeoTileFetcherPrivate();
+	QGeoTileFetcherPrivate();
+	virtual ~QGeoTileFetcherPrivate();
 
-    bool enabled_;
-    QBasicTimer timer_;
-    QMutex queueMutex_;
-    QList<QGeoTileSpec> queue_;
-    QHash<QGeoTileSpec, QGeoTiledMapReply *> invmap_;
+	bool enabled_;
+	QBasicTimer timer_;
+	QMutex queueMutex_;
+	QList<QGeoTileSpec> queue_;
+	QHash<QGeoTileSpec, QGeoTiledMapReply *> invmap_;
 
 private:
-    Q_DISABLE_COPY(QGeoTileFetcherPrivate)
+	Q_DISABLE_COPY(QGeoTileFetcherPrivate)
 };
 
 QT_END_NAMESPACE

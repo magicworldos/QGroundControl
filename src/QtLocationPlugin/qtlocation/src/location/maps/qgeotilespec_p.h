@@ -61,35 +61,35 @@ class QGeoTileSpecPrivate;
 class Q_LOCATION_EXPORT QGeoTileSpec
 {
 public:
-    QGeoTileSpec();
-    QGeoTileSpec(const QGeoTileSpec &other);
-    QGeoTileSpec(const QString &plugin, int mapId, int zoom, int x, int y, int version = -1);
-    ~QGeoTileSpec();
+	QGeoTileSpec();
+	QGeoTileSpec(const QGeoTileSpec &other);
+	QGeoTileSpec(const QString &plugin, int mapId, int zoom, int x, int y, int version = -1);
+	~QGeoTileSpec();
 
-    QGeoTileSpec &operator = (const QGeoTileSpec &other);
+	QGeoTileSpec &operator = (const QGeoTileSpec &other);
 
-    QString plugin() const;
+	QString plugin() const;
 
-    void setZoom(int zoom);
-    int zoom() const;
+	void setZoom(int zoom);
+	int zoom() const;
 
-    void setX(int x);
-    int x() const;
+	void setX(int x);
+	int x() const;
 
-    void setY(int y);
-    int y() const;
+	void setY(int y);
+	int y() const;
 
-    void setMapId(int mapId);
-    int mapId() const;
+	void setMapId(int mapId);
+	int mapId() const;
 
-    void setVersion(int version);
-    int version() const;
+	void setVersion(int version);
+	int version() const;
 
-    bool operator == (const QGeoTileSpec &rhs) const;
-    bool operator < (const QGeoTileSpec &rhs) const;
+	bool operator == (const QGeoTileSpec &rhs) const;
+	bool operator < (const QGeoTileSpec &rhs) const;
 
 private:
-    QSharedDataPointer<QGeoTileSpecPrivate> d;
+	QSharedDataPointer<QGeoTileSpecPrivate> d;
 };
 
 Q_LOCATION_EXPORT unsigned int qHash(const QGeoTileSpec &spec);

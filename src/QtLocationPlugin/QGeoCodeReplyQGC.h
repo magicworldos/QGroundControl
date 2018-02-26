@@ -52,20 +52,20 @@
 
 class QGeoCodeReplyQGC : public QGeoCodeReply
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit QGeoCodeReplyQGC(QNetworkReply *reply, QObject *parent = 0);
-    ~QGeoCodeReplyQGC();
+	explicit QGeoCodeReplyQGC(QNetworkReply *reply, QObject *parent = 0);
+	~QGeoCodeReplyQGC();
 
-    void abort();
+	void abort();
 
 private Q_SLOTS:
-    void networkReplyFinished();
-    void networkReplyError(QNetworkReply::NetworkError error);
+	void networkReplyFinished();
+	void networkReplyError(QNetworkReply::NetworkError error);
 
 private:
-    QNetworkReply *m_reply;
+	QNetworkReply *m_reply;
 };
 
 #endif // QGEOCODEREPLYQGC_H

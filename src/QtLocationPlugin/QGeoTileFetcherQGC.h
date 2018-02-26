@@ -56,17 +56,17 @@ class QNetworkAccessManager;
 
 class QGeoTileFetcherQGC : public QGeoTileFetcher
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit QGeoTileFetcherQGC             (QGeoTiledMappingManagerEngine *parent = 0);
-    ~QGeoTileFetcherQGC();
+	explicit QGeoTileFetcherQGC(QGeoTiledMappingManagerEngine *parent = 0);
+	~QGeoTileFetcherQGC();
 public slots:
-    void                    timeout         ();
+	void                    timeout();
 private:
-    QGeoTiledMapReply*      getTileImage    (const QGeoTileSpec &spec);
+	QGeoTiledMapReply      *getTileImage(const QGeoTileSpec &spec);
 private:
-    QNetworkAccessManager*  _networkManager;
-    QTimer                  _timer;
+	QNetworkAccessManager  *_networkManager;
+	QTimer                  _timer;
 };
 
 #endif // QGEOTILEFETCHERQGC_H

@@ -23,19 +23,19 @@
 class QWT_EXPORT QwtPixelMatrix: public QBitArray
 {
 public:
-    QwtPixelMatrix( const QRect& rect );
-    ~QwtPixelMatrix();
+	QwtPixelMatrix(const QRect &rect);
+	~QwtPixelMatrix();
 
-    void setRect( const QRect& rect );
-    QRect rect() const;
+	void setRect(const QRect &rect);
+	QRect rect() const;
 
-    bool testPixel( int x, int y ) const;
-    bool testAndSetPixel( int x, int y, bool on );
+	bool testPixel(int x, int y) const;
+	bool testAndSetPixel(int x, int y, bool on);
 
-    int index( int x, int y ) const;
+	int index(int x, int y) const;
 
 private:
-    QRect d_rect;
+	QRect d_rect;
 };
 
 /*!
@@ -47,10 +47,10 @@ private:
   \return true, when pos is outside of rect(), or when the pixel
           has already been set.
  */
-inline bool QwtPixelMatrix::testPixel( int x, int y ) const
+inline bool QwtPixelMatrix::testPixel(int x, int y) const
 {
-    const int idx = index( x, y );
-    return ( idx >= 0 ) ? testBit( idx ) : true;
+	const int idx = index(x, y);
+	return (idx >= 0) ? testBit(idx) : true;
 }
 
 /*!
@@ -63,16 +63,19 @@ inline bool QwtPixelMatrix::testPixel( int x, int y ) const
   \return true, when pos is outside of rect(), or when the pixel
           was set before.
  */
-inline bool QwtPixelMatrix::testAndSetPixel( int x, int y, bool on )
+inline bool QwtPixelMatrix::testAndSetPixel(int x, int y, bool on)
 {
-    const int idx = index( x, y );
-    if ( idx < 0 )
-        return true;
+	const int idx = index(x, y);
 
-    const bool onBefore = testBit( idx );
-    setBit( idx, on );
+	if (idx < 0)
+	{
+		return true;
+	}
 
-    return onBefore;
+	const bool onBefore = testBit(idx);
+	setBit(idx, on);
+
+	return onBefore;
 }
 
 /*!
@@ -82,17 +85,23 @@ inline bool QwtPixelMatrix::testAndSetPixel( int x, int y, bool on )
   \param y Y-coordinate
   \return Index, when rect() contains pos - otherwise -1.
  */
-inline int QwtPixelMatrix::index( int x, int y ) const
+inline int QwtPixelMatrix::index(int x, int y) const
 {
-    const int dx = x - d_rect.x();
-    if ( dx < 0 || dx >= d_rect.width() )
-        return -1;
+	const int dx = x - d_rect.x();
 
-    const int dy = y - d_rect.y();
-    if ( dy < 0 || dy >= d_rect.height() )
-        return -1;
+	if (dx < 0 || dx >= d_rect.width())
+	{
+		return -1;
+	}
 
-    return dy * d_rect.width() + dx;
+	const int dy = y - d_rect.y();
+
+	if (dy < 0 || dy >= d_rect.height())
+	{
+		return -1;
+	}
+
+	return dy * d_rect.width() + dx;
 }
 
 #endif

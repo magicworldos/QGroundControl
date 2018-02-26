@@ -18,54 +18,54 @@
 class QwtPlotItem::PrivateData
 {
 public:
-    PrivateData():
-        plot( NULL ),
-        isVisible( true ),
-        attributes( 0 ),
-        interests( 0 ),
-        renderHints( 0 ),
-        renderThreadCount( 1 ),
-        z( 0.0 ),
-        xAxis( QwtPlot::xBottom ),
-        yAxis( QwtPlot::yLeft ),
-        legendIconSize( 8, 8 )
-    {
-    }
+	PrivateData():
+		plot(NULL),
+		isVisible(true),
+		attributes(0),
+		interests(0),
+		renderHints(0),
+		renderThreadCount(1),
+		z(0.0),
+		xAxis(QwtPlot::xBottom),
+		yAxis(QwtPlot::yLeft),
+		legendIconSize(8, 8)
+	{
+	}
 
-    mutable QwtPlot *plot;
+	mutable QwtPlot *plot;
 
-    bool isVisible;
+	bool isVisible;
 
-    QwtPlotItem::ItemAttributes attributes;
-    QwtPlotItem::ItemInterests interests;
+	QwtPlotItem::ItemAttributes attributes;
+	QwtPlotItem::ItemInterests interests;
 
-    QwtPlotItem::RenderHints renderHints;
-    uint renderThreadCount;
+	QwtPlotItem::RenderHints renderHints;
+	uint renderThreadCount;
 
-    double z;
+	double z;
 
-    int xAxis;
-    int yAxis;
+	int xAxis;
+	int yAxis;
 
-    QwtText title;
-    QSize legendIconSize;
+	QwtText title;
+	QSize legendIconSize;
 };
 
 /*!
    Constructor
    \param title Title of the item
 */
-QwtPlotItem::QwtPlotItem( const QwtText &title )
+QwtPlotItem::QwtPlotItem(const QwtText &title)
 {
-    d_data = new PrivateData;
-    d_data->title = title;
+	d_data = new PrivateData;
+	d_data->title = title;
 }
 
 //! Destroy the QwtPlotItem
 QwtPlotItem::~QwtPlotItem()
 {
-    attach( NULL );
-    delete d_data;
+	attach(NULL);
+	delete d_data;
 }
 
 /*!
@@ -79,22 +79,28 @@ QwtPlotItem::~QwtPlotItem()
   \param plot Plot widget
   \sa detach()
 */
-void QwtPlotItem::attach( QwtPlot *plot )
+void QwtPlotItem::attach(QwtPlot *plot)
 {
-    if ( plot == d_data->plot )
-        return;
+	if (plot == d_data->plot)
+	{
+		return;
+	}
 
-    if ( d_data->plot )
-        d_data->plot->attachItem( this, false );
+	if (d_data->plot)
+	{
+		d_data->plot->attachItem(this, false);
+	}
 
-    d_data->plot = plot;
+	d_data->plot = plot;
 
-    if ( d_data->plot )
-        d_data->plot->attachItem( this, true );
+	if (d_data->plot)
+	{
+		d_data->plot->attachItem(this, true);
+	}
 }
 
 /*!
-   \brief This method detaches a QwtPlotItem from any 
+   \brief This method detaches a QwtPlotItem from any
           QwtPlot it has been associated with.
 
    detach() is equivalent to calling attach( NULL )
@@ -102,7 +108,7 @@ void QwtPlotItem::attach( QwtPlot *plot )
 */
 void QwtPlotItem::detach()
 {
-    attach( NULL );
+	attach(NULL);
 }
 
 /*!
@@ -119,13 +125,13 @@ void QwtPlotItem::detach()
 */
 int QwtPlotItem::rtti() const
 {
-    return Rtti_PlotItem;
+	return Rtti_PlotItem;
 }
 
 //! Return attached plot
 QwtPlot *QwtPlotItem::plot() const
 {
-    return d_data->plot;
+	return d_data->plot;
 }
 
 /*!
@@ -135,7 +141,7 @@ QwtPlot *QwtPlotItem::plot() const
 */
 double QwtPlotItem::z() const
 {
-    return d_data->z;
+	return d_data->z;
 }
 
 /*!
@@ -146,20 +152,24 @@ double QwtPlotItem::z() const
    \param z Z-value
    \sa z(), QwtPlotDict::itemList()
 */
-void QwtPlotItem::setZ( double z )
+void QwtPlotItem::setZ(double z)
 {
-    if ( d_data->z != z )
-    {
-        if ( d_data->plot ) // update the z order
-            d_data->plot->attachItem( this, false );
+	if (d_data->z != z)
+	{
+		if (d_data->plot)   // update the z order
+		{
+			d_data->plot->attachItem(this, false);
+		}
 
-        d_data->z = z;
+		d_data->z = z;
 
-        if ( d_data->plot )
-            d_data->plot->attachItem( this, true );
+		if (d_data->plot)
+		{
+			d_data->plot->attachItem(this, true);
+		}
 
-        itemChanged();
-    }
+		itemChanged();
+	}
 }
 
 /*!
@@ -168,9 +178,9 @@ void QwtPlotItem::setZ( double z )
    \param title Title
    \sa title()
 */
-void QwtPlotItem::setTitle( const QString &title )
+void QwtPlotItem::setTitle(const QString &title)
 {
-    setTitle( QwtText( title ) );
+	setTitle(QwtText(title));
 }
 
 /*!
@@ -179,17 +189,17 @@ void QwtPlotItem::setTitle( const QString &title )
    \param title Title
    \sa title()
 */
-void QwtPlotItem::setTitle( const QwtText &title )
+void QwtPlotItem::setTitle(const QwtText &title)
 {
-    if ( d_data->title != title )
-    {
-        d_data->title = title;
+	if (d_data->title != title)
+	{
+		d_data->title = title;
 
-        legendChanged();
+		legendChanged();
 #if 0
-        itemChanged();
+		itemChanged();
 #endif
-    }
+	}
 }
 
 /*!
@@ -198,7 +208,7 @@ void QwtPlotItem::setTitle( const QwtText &title )
 */
 const QwtText &QwtPlotItem::title() const
 {
-    return d_data->title;
+	return d_data->title;
 }
 
 /*!
@@ -209,20 +219,27 @@ const QwtText &QwtPlotItem::title() const
 
    \sa testItemAttribute(), ItemInterest
 */
-void QwtPlotItem::setItemAttribute( ItemAttribute attribute, bool on )
+void QwtPlotItem::setItemAttribute(ItemAttribute attribute, bool on)
 {
-    if ( d_data->attributes.testFlag( attribute ) != on )
-    {
-        if ( on )
-            d_data->attributes |= attribute;
-        else
-            d_data->attributes &= ~attribute;
+	if (d_data->attributes.testFlag(attribute) != on)
+	{
+		if (on)
+		{
+			d_data->attributes |= attribute;
+		}
 
-        if ( attribute == QwtPlotItem::Legend )
-            legendChanged();
+		else
+		{
+			d_data->attributes &= ~attribute;
+		}
 
-        itemChanged();
-    }
+		if (attribute == QwtPlotItem::Legend)
+		{
+			legendChanged();
+		}
+
+		itemChanged();
+	}
 }
 
 /*!
@@ -232,9 +249,9 @@ void QwtPlotItem::setItemAttribute( ItemAttribute attribute, bool on )
    \return true/false
    \sa setItemAttribute(), ItemInterest
 */
-bool QwtPlotItem::testItemAttribute( ItemAttribute attribute ) const
+bool QwtPlotItem::testItemAttribute(ItemAttribute attribute) const
 {
-    return d_data->attributes.testFlag( attribute );
+	return d_data->attributes.testFlag(attribute);
 }
 
 /*!
@@ -245,17 +262,22 @@ bool QwtPlotItem::testItemAttribute( ItemAttribute attribute ) const
 
    \sa testItemInterest(), ItemAttribute
 */
-void QwtPlotItem::setItemInterest( ItemInterest interest, bool on )
+void QwtPlotItem::setItemInterest(ItemInterest interest, bool on)
 {
-    if ( d_data->interests.testFlag( interest ) != on )
-    {
-        if ( on )
-            d_data->interests |= interest;
-        else
-            d_data->interests &= ~interest;
+	if (d_data->interests.testFlag(interest) != on)
+	{
+		if (on)
+		{
+			d_data->interests |= interest;
+		}
 
-        itemChanged();
-    }
+		else
+		{
+			d_data->interests &= ~interest;
+		}
+
+		itemChanged();
+	}
 }
 
 /*!
@@ -265,9 +287,9 @@ void QwtPlotItem::setItemInterest( ItemInterest interest, bool on )
    \return true/false
    \sa setItemInterest(), ItemAttribute
 */
-bool QwtPlotItem::testItemInterest( ItemInterest interest ) const
+bool QwtPlotItem::testItemInterest(ItemInterest interest) const
 {
-    return d_data->interests.testFlag( interest );
+	return d_data->interests.testFlag(interest);
 }
 
 /*!
@@ -278,17 +300,22 @@ bool QwtPlotItem::testItemInterest( ItemInterest interest ) const
 
    \sa testRenderHint(), RenderHint
 */
-void QwtPlotItem::setRenderHint( RenderHint hint, bool on )
+void QwtPlotItem::setRenderHint(RenderHint hint, bool on)
 {
-    if ( d_data->renderHints.testFlag( hint ) != on )
-    {
-        if ( on )
-            d_data->renderHints |= hint;
-        else
-            d_data->renderHints &= ~hint;
+	if (d_data->renderHints.testFlag(hint) != on)
+	{
+		if (on)
+		{
+			d_data->renderHints |= hint;
+		}
 
-        itemChanged();
-    }
+		else
+		{
+			d_data->renderHints &= ~hint;
+		}
+
+		itemChanged();
+	}
 }
 
 /*!
@@ -298,14 +325,14 @@ void QwtPlotItem::setRenderHint( RenderHint hint, bool on )
    \return true/false
    \sa setRenderHint(), RenderHint
 */
-bool QwtPlotItem::testRenderHint( RenderHint hint ) const
+bool QwtPlotItem::testRenderHint(RenderHint hint) const
 {
-    return d_data->renderHints.testFlag( hint );
+	return d_data->renderHints.testFlag(hint);
 }
 
 /*!
-   On multi core systems rendering of certain plot item 
-   ( f.e QwtPlotRasterItem ) can be done in parallel in 
+   On multi core systems rendering of certain plot item
+   ( f.e QwtPlotRasterItem ) can be done in parallel in
    several threads.
 
    The default setting is set to 1.
@@ -316,9 +343,9 @@ bool QwtPlotItem::testRenderHint( RenderHint hint ) const
 
    The default thread count is 1 ( = no additional threads )
 */
-void QwtPlotItem::setRenderThreadCount( uint numThreads )
+void QwtPlotItem::setRenderThreadCount(uint numThreads)
 {
-    d_data->renderThreadCount = numThreads;
+	d_data->renderThreadCount = numThreads;
 }
 
 /*!
@@ -328,7 +355,7 @@ void QwtPlotItem::setRenderThreadCount( uint numThreads )
 */
 uint QwtPlotItem::renderThreadCount() const
 {
-    return d_data->renderThreadCount;
+	return d_data->renderThreadCount;
 }
 
 /*!
@@ -339,13 +366,13 @@ uint QwtPlotItem::renderThreadCount() const
    \param size Size
    \sa legendIconSize(), legendIcon()
 */
-void QwtPlotItem::setLegendIconSize( const QSize &size )
+void QwtPlotItem::setLegendIconSize(const QSize &size)
 {
-    if ( d_data->legendIconSize != size )
-    {
-        d_data->legendIconSize = size;
-        legendChanged();
-    }
+	if (d_data->legendIconSize != size)
+	{
+		d_data->legendIconSize = size;
+		legendChanged();
+	}
 }
 
 /*!
@@ -354,7 +381,7 @@ void QwtPlotItem::setLegendIconSize( const QSize &size )
 */
 QSize QwtPlotItem::legendIconSize() const
 {
-    return d_data->legendIconSize;
+	return d_data->legendIconSize;
 }
 
 /*!
@@ -362,19 +389,19 @@ QSize QwtPlotItem::legendIconSize() const
 
    The default implementation returns an invalid icon
 
-   \param index Index of the legend entry 
+   \param index Index of the legend entry
                 ( usually there is only one )
    \param size Icon size
 
    \sa setLegendIconSize(), legendData()
  */
-QwtGraphic QwtPlotItem::legendIcon( 
-    int index, const QSizeF &size ) const
+QwtGraphic QwtPlotItem::legendIcon(
+	int index, const QSizeF &size) const
 {
-    Q_UNUSED( index )
-    Q_UNUSED( size )
+	Q_UNUSED(index)
+	Q_UNUSED(size)
 
-    return QwtGraphic();
+	return QwtGraphic();
 }
 
 /*!
@@ -388,33 +415,34 @@ QwtGraphic QwtPlotItem::legendIcon(
 
    \return A filled rectangle
  */
-QwtGraphic QwtPlotItem::defaultIcon( 
-    const QBrush &brush, const QSizeF &size ) const
-{   
-    QwtGraphic icon;
-    if ( !size.isEmpty() )
-    {
-        icon.setDefaultSize( size );
-        
-        QRectF r( 0, 0, size.width(), size.height() );
-        
-        QPainter painter( &icon );
-        painter.fillRect( r, brush );
-    }   
-    
-    return icon;
-}   
+QwtGraphic QwtPlotItem::defaultIcon(
+	const QBrush &brush, const QSizeF &size) const
+{
+	QwtGraphic icon;
+
+	if (!size.isEmpty())
+	{
+		icon.setDefaultSize(size);
+
+		QRectF r(0, 0, size.width(), size.height());
+
+		QPainter painter(&icon);
+		painter.fillRect(r, brush);
+	}
+
+	return icon;
+}
 
 //! Show the item
 void QwtPlotItem::show()
 {
-    setVisible( true );
+	setVisible(true);
 }
 
 //! Hide the item
 void QwtPlotItem::hide()
 {
-    setVisible( false );
+	setVisible(false);
 }
 
 /*!
@@ -423,13 +451,13 @@ void QwtPlotItem::hide()
     \param on Show if true, otherwise hide
     \sa isVisible(), show(), hide()
 */
-void QwtPlotItem::setVisible( bool on )
+void QwtPlotItem::setVisible(bool on)
 {
-    if ( on != d_data->isVisible )
-    {
-        d_data->isVisible = on;
-        itemChanged();
-    }
+	if (on != d_data->isVisible)
+	{
+		d_data->isVisible = on;
+		itemChanged();
+	}
 }
 
 /*!
@@ -438,7 +466,7 @@ void QwtPlotItem::setVisible( bool on )
 */
 bool QwtPlotItem::isVisible() const
 {
-    return d_data->isVisible;
+	return d_data->isVisible;
 }
 
 /*!
@@ -449,8 +477,10 @@ bool QwtPlotItem::isVisible() const
 */
 void QwtPlotItem::itemChanged()
 {
-    if ( d_data->plot )
-        d_data->plot->autoRefresh();
+	if (d_data->plot)
+	{
+		d_data->plot->autoRefresh();
+	}
 }
 
 /*!
@@ -459,8 +489,10 @@ void QwtPlotItem::itemChanged()
 */
 void QwtPlotItem::legendChanged()
 {
-    if ( testItemAttribute( QwtPlotItem::Legend ) && d_data->plot )
-        d_data->plot->updateLegend( this );
+	if (testItemAttribute(QwtPlotItem::Legend) && d_data->plot)
+	{
+		d_data->plot->updateLegend(this);
+	}
 }
 
 /*!
@@ -473,15 +505,19 @@ void QwtPlotItem::legendChanged()
 
    \sa setXAxis(), setYAxis(), xAxis(), yAxis(), QwtPlot::Axis
 */
-void QwtPlotItem::setAxes( int xAxis, int yAxis )
+void QwtPlotItem::setAxes(int xAxis, int yAxis)
 {
-    if ( xAxis == QwtPlot::xBottom || xAxis == QwtPlot::xTop )
-        d_data->xAxis = xAxis;
+	if (xAxis == QwtPlot::xBottom || xAxis == QwtPlot::xTop)
+	{
+		d_data->xAxis = xAxis;
+	}
 
-    if ( yAxis == QwtPlot::yLeft || yAxis == QwtPlot::yRight )
-        d_data->yAxis = yAxis;
+	if (yAxis == QwtPlot::yLeft || yAxis == QwtPlot::yRight)
+	{
+		d_data->yAxis = yAxis;
+	}
 
-    itemChanged();
+	itemChanged();
 }
 
 /*!
@@ -492,13 +528,13 @@ void QwtPlotItem::setAxes( int xAxis, int yAxis )
    \param axis X Axis ( QwtPlot::xBottom or QwtPlot::xTop )
    \sa setAxes(), setYAxis(), xAxis(), QwtPlot::Axis
 */
-void QwtPlotItem::setXAxis( int axis )
+void QwtPlotItem::setXAxis(int axis)
 {
-    if ( axis == QwtPlot::xBottom || axis == QwtPlot::xTop )
-    {
-        d_data->xAxis = axis;
-        itemChanged();
-    }
+	if (axis == QwtPlot::xBottom || axis == QwtPlot::xTop)
+	{
+		d_data->xAxis = axis;
+		itemChanged();
+	}
 }
 
 /*!
@@ -509,25 +545,25 @@ void QwtPlotItem::setXAxis( int axis )
    \param axis Y Axis ( QwtPlot::yLeft or QwtPlot::yRight )
    \sa setAxes(), setXAxis(), yAxis(), QwtPlot::Axis
 */
-void QwtPlotItem::setYAxis( int axis )
+void QwtPlotItem::setYAxis(int axis)
 {
-    if ( axis == QwtPlot::yLeft || axis == QwtPlot::yRight )
-    {
-        d_data->yAxis = axis;
-        itemChanged();
-    }
+	if (axis == QwtPlot::yLeft || axis == QwtPlot::yRight)
+	{
+		d_data->yAxis = axis;
+		itemChanged();
+	}
 }
 
 //! Return xAxis
 int QwtPlotItem::xAxis() const
 {
-    return d_data->xAxis;
+	return d_data->xAxis;
 }
 
 //! Return yAxis
 int QwtPlotItem::yAxis() const
 {
-    return d_data->yAxis;
+	return d_data->yAxis;
 }
 
 /*!
@@ -536,7 +572,7 @@ int QwtPlotItem::yAxis() const
 */
 QRectF QwtPlotItem::boundingRect() const
 {
-    return QRectF( 1.0, 1.0, -2.0, -2.0 ); // invalid
+	return QRectF(1.0, 1.0, -2.0, -2.0);   // invalid
 }
 
 /*!
@@ -561,16 +597,16 @@ QRectF QwtPlotItem::boundingRect() const
 
    \sa QwtPlot::getCanvasMarginsHint(), QwtPlot::updateCanvasMargins()
  */
-void QwtPlotItem::getCanvasMarginHint( const QwtScaleMap &xMap, 
-    const QwtScaleMap &yMap, const QRectF &canvasRect,
-    double &left, double &top, double &right, double &bottom ) const
+void QwtPlotItem::getCanvasMarginHint(const QwtScaleMap &xMap,
+				      const QwtScaleMap &yMap, const QRectF &canvasRect,
+				      double &left, double &top, double &right, double &bottom) const
 {
-    Q_UNUSED( xMap );
-    Q_UNUSED( yMap );
-    Q_UNUSED( canvasRect );
+	Q_UNUSED(xMap);
+	Q_UNUSED(yMap);
+	Q_UNUSED(canvasRect);
 
-    // use QMargins, when we don't need to support Qt < 4.6 anymore
-    left = top = right = bottom = 0.0;
+	// use QMargins, when we don't need to support Qt < 4.6 anymore
+	left = top = right = bottom = 0.0;
 }
 
 /*!
@@ -582,11 +618,11 @@ void QwtPlotItem::getCanvasMarginHint( const QwtScaleMap &xMap,
    displays one entry for each bar.
 
    QwtLegendData is basically a list of QVariants that makes it
-   possible to overload and reimplement legendData() to 
+   possible to overload and reimplement legendData() to
    return almost any type of information, that is understood
    by the receiver that acts as the legend.
 
-   The default implementation returns one entry with 
+   The default implementation returns one entry with
    the title() of the item and the legendIcon().
 
    \return Data, that is needed to represent the item on the legend
@@ -594,27 +630,28 @@ void QwtPlotItem::getCanvasMarginHint( const QwtScaleMap &xMap,
  */
 QList<QwtLegendData> QwtPlotItem::legendData() const
 {
-    QwtLegendData data;
+	QwtLegendData data;
 
-    QwtText label = title();
-    label.setRenderFlags( label.renderFlags() & Qt::AlignLeft );
-            
-    QVariant titleValue;
-    qVariantSetValue( titleValue, label );
-    data.setValue( QwtLegendData::TitleRole, titleValue );
-        
-    const QwtGraphic graphic = legendIcon( 0, legendIconSize() );
-    if ( !graphic.isNull() )
-    {   
-        QVariant iconValue;
-        qVariantSetValue( iconValue, graphic );
-        data.setValue( QwtLegendData::IconRole, iconValue );
-    }   
-        
-    QList<QwtLegendData> list;
-    list += data;
+	QwtText label = title();
+	label.setRenderFlags(label.renderFlags() & Qt::AlignLeft);
 
-    return list;
+	QVariant titleValue;
+	qVariantSetValue(titleValue, label);
+	data.setValue(QwtLegendData::TitleRole, titleValue);
+
+	const QwtGraphic graphic = legendIcon(0, legendIconSize());
+
+	if (!graphic.isNull())
+	{
+		QVariant iconValue;
+		qVariantSetValue(iconValue, graphic);
+		data.setValue(QwtLegendData::IconRole, iconValue);
+	}
+
+	QList<QwtLegendData> list;
+	list += data;
+
+	return list;
 }
 
 /*!
@@ -633,11 +670,11 @@ QList<QwtLegendData> QwtPlotItem::legendData() const
 
    \sa QwtPlot::updateAxes(), ScaleInterest
 */
-void QwtPlotItem::updateScaleDiv( const QwtScaleDiv &xScaleDiv,
-    const QwtScaleDiv &yScaleDiv )
+void QwtPlotItem::updateScaleDiv(const QwtScaleDiv &xScaleDiv,
+				 const QwtScaleDiv &yScaleDiv)
 {
-    Q_UNUSED( xScaleDiv );
-    Q_UNUSED( yScaleDiv );
+	Q_UNUSED(xScaleDiv);
+	Q_UNUSED(yScaleDiv);
 }
 
 /*!
@@ -658,11 +695,11 @@ void QwtPlotItem::updateScaleDiv( const QwtScaleDiv &xScaleDiv,
          need to enable the QwtPlotItem::Legend flag and to implement
          legendData() and legendIcon()
  */
-void QwtPlotItem::updateLegend( const QwtPlotItem *item, 
-    const QList<QwtLegendData> &data )
+void QwtPlotItem::updateLegend(const QwtPlotItem *item,
+			       const QList<QwtLegendData> &data)
 {
-    Q_UNUSED( item );
-    Q_UNUSED( data );
+	Q_UNUSED(item);
+	Q_UNUSED(data);
 }
 
 /*!
@@ -673,11 +710,11 @@ void QwtPlotItem::updateLegend( const QwtPlotItem *item,
 
    \return Bounding scale rect of the scale maps, not normalized
 */
-QRectF QwtPlotItem::scaleRect( const QwtScaleMap &xMap,
-    const QwtScaleMap &yMap ) const
+QRectF QwtPlotItem::scaleRect(const QwtScaleMap &xMap,
+			      const QwtScaleMap &yMap) const
 {
-    return QRectF( xMap.s1(), yMap.s1(),
-        xMap.sDist(), yMap.sDist() );
+	return QRectF(xMap.s1(), yMap.s1(),
+		      xMap.sDist(), yMap.sDist());
 }
 
 /*!
@@ -688,11 +725,11 @@ QRectF QwtPlotItem::scaleRect( const QwtScaleMap &xMap,
 
    \return Bounding paint rectangle of the scale maps, not normalized
 */
-QRectF QwtPlotItem::paintRect( const QwtScaleMap &xMap,
-    const QwtScaleMap &yMap ) const
+QRectF QwtPlotItem::paintRect(const QwtScaleMap &xMap,
+			      const QwtScaleMap &yMap) const
 {
-    const QRectF rect( xMap.p1(), yMap.p1(),
-        xMap.pDist(), yMap.pDist() );
+	const QRectF rect(xMap.p1(), yMap.p1(),
+			  xMap.pDist(), yMap.pDist());
 
-    return rect;
+	return rect;
 }

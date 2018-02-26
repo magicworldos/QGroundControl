@@ -16,29 +16,32 @@
 PX4FirmwarePluginFactory PX4FirmwarePluginFactory;
 
 PX4FirmwarePluginFactory::PX4FirmwarePluginFactory(void)
-    : _pluginInstance(NULL)
+	: _pluginInstance(NULL)
 {
 
 }
 
 QList<MAV_AUTOPILOT> PX4FirmwarePluginFactory::supportedFirmwareTypes(void) const
 {
-    QList<MAV_AUTOPILOT> list;
+	QList<MAV_AUTOPILOT> list;
 
-    list.append(MAV_AUTOPILOT_PX4);
-    return list;
+	list.append(MAV_AUTOPILOT_PX4);
+	return list;
 }
 
-FirmwarePlugin* PX4FirmwarePluginFactory::firmwarePluginForAutopilot(MAV_AUTOPILOT autopilotType, MAV_TYPE vehicleType)
+FirmwarePlugin *PX4FirmwarePluginFactory::firmwarePluginForAutopilot(MAV_AUTOPILOT autopilotType, MAV_TYPE vehicleType)
 {
-    Q_UNUSED(vehicleType);
+	Q_UNUSED(vehicleType);
 
-    if (autopilotType == MAV_AUTOPILOT_PX4) {
-        if (!_pluginInstance) {
-            _pluginInstance = new PX4FirmwarePlugin;
-        }
-        return _pluginInstance;
-    }
+	if (autopilotType == MAV_AUTOPILOT_PX4)
+	{
+		if (!_pluginInstance)
+		{
+			_pluginInstance = new PX4FirmwarePlugin;
+		}
 
-    return NULL;
+		return _pluginInstance;
+	}
+
+	return NULL;
 }

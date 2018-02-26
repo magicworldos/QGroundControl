@@ -74,50 +74,50 @@ class QGeoMap;
 
 class Q_LOCATION_EXPORT QGeoMappingManagerEngine : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit QGeoMappingManagerEngine(QObject *parent = 0);
-    virtual ~QGeoMappingManagerEngine();
+	explicit QGeoMappingManagerEngine(QObject *parent = 0);
+	virtual ~QGeoMappingManagerEngine();
 
-    virtual QGeoMap *createMap() = 0;
-    virtual void registerMap(QGeoMap *map) = 0;
-    virtual void deregisterMap(QGeoMap *map) = 0;
+	virtual QGeoMap *createMap() = 0;
+	virtual void registerMap(QGeoMap *map) = 0;
+	virtual void deregisterMap(QGeoMap *map) = 0;
 
-    QVariantMap parameters() const;
+	QVariantMap parameters() const;
 
-    QString managerName() const;
-    int managerVersion() const;
+	QString managerName() const;
+	int managerVersion() const;
 
-    QList<QGeoMapType> supportedMapTypes() const;
+	QList<QGeoMapType> supportedMapTypes() const;
 
-    QGeoCameraCapabilities cameraCapabilities();
+	QGeoCameraCapabilities cameraCapabilities();
 
-    void setLocale(const QLocale &locale);
-    QLocale locale() const;
+	void setLocale(const QLocale &locale);
+	QLocale locale() const;
 
-    bool isInitialized() const;
+	bool isInitialized() const;
 
 Q_SIGNALS:
-    void initialized();
+	void initialized();
 
 protected:
-    void setSupportedMapTypes(const QList<QGeoMapType> &supportedMapTypes);
-    void setCameraCapabilities(const QGeoCameraCapabilities &capabilities);
+	void setSupportedMapTypes(const QList<QGeoMapType> &supportedMapTypes);
+	void setCameraCapabilities(const QGeoCameraCapabilities &capabilities);
 
-    void engineInitialized();
+	void engineInitialized();
 
 private:
-    QGeoMappingManagerEnginePrivate *d_ptr;
+	QGeoMappingManagerEnginePrivate *d_ptr;
 
-    void setManagerName(const QString &managerName);
-    void setManagerVersion(int managerVersion);
+	void setManagerName(const QString &managerName);
+	void setManagerVersion(int managerVersion);
 
-    Q_DECLARE_PRIVATE(QGeoMappingManagerEngine)
-    Q_DISABLE_COPY(QGeoMappingManagerEngine)
+	Q_DECLARE_PRIVATE(QGeoMappingManagerEngine)
+	Q_DISABLE_COPY(QGeoMappingManagerEngine)
 
-    friend class QGeoServiceProvider;
-    friend class QGeoServiceProviderPrivate;
+	friend class QGeoServiceProvider;
+	friend class QGeoServiceProviderPrivate;
 };
 
 QT_END_NAMESPACE

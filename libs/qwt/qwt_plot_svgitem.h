@@ -27,35 +27,35 @@ class QByteArray;
 class QWT_EXPORT QwtPlotSvgItem: public QwtPlotItem
 {
 public:
-    explicit QwtPlotSvgItem( const QString& title = QString::null );
-    explicit QwtPlotSvgItem( const QwtText& title );
-    virtual ~QwtPlotSvgItem();
+	explicit QwtPlotSvgItem(const QString &title = QString::null);
+	explicit QwtPlotSvgItem(const QwtText &title);
+	virtual ~QwtPlotSvgItem();
 
-    bool loadFile( const QRectF&, const QString &fileName );
-    bool loadData( const QRectF&, const QByteArray & );
+	bool loadFile(const QRectF &, const QString &fileName);
+	bool loadData(const QRectF &, const QByteArray &);
 
-    virtual QRectF boundingRect() const;
+	virtual QRectF boundingRect() const;
 
-    virtual void draw( QPainter *p,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &rect ) const;
+	virtual void draw(QPainter *p,
+			  const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+			  const QRectF &rect) const;
 
-    virtual int rtti() const;
+	virtual int rtti() const;
 
 protected:
-    const QSvgRenderer &renderer() const;
-    QSvgRenderer &renderer();
+	const QSvgRenderer &renderer() const;
+	QSvgRenderer &renderer();
 
-    void render( QPainter *painter,
-        const QRectF &viewBox, const QRectF &rect ) const;
+	void render(QPainter *painter,
+		    const QRectF &viewBox, const QRectF &rect) const;
 
-    QRectF viewBox( const QRectF &area ) const;
+	QRectF viewBox(const QRectF &area) const;
 
 private:
-    void init();
+	void init();
 
-    class PrivateData;
-    PrivateData *d_data;
+	class PrivateData;
+	PrivateData *d_data;
 };
 
 #endif

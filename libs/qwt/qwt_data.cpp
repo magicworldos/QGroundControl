@@ -33,29 +33,45 @@ QwtData::~QwtData()
 */
 QwtDoubleRect QwtData::boundingRect() const
 {
-    const size_t sz = size();
+	const size_t sz = size();
 
-    if ( sz <= 0 )
-        return QwtDoubleRect(1.0, 1.0, -2.0, -2.0); // invalid
+	if (sz <= 0)
+	{
+		return QwtDoubleRect(1.0, 1.0, -2.0, -2.0);        // invalid
+	}
 
-    double minX, maxX, minY, maxY;
-    minX = maxX = x(0);
-    minY = maxY = y(0);
+	double minX, maxX, minY, maxY;
+	minX = maxX = x(0);
+	minY = maxY = y(0);
 
-    for ( size_t i = 1; i < sz; i++ ) {
-        const double xv = x(i);
-        if ( xv < minX )
-            minX = xv;
-        if ( xv > maxX )
-            maxX = xv;
+	for (size_t i = 1; i < sz; i++)
+	{
+		const double xv = x(i);
 
-        const double yv = y(i);
-        if ( yv < minY )
-            minY = yv;
-        if ( yv > maxY )
-            maxY = yv;
-    }
-    return QwtDoubleRect(minX, minY, maxX - minX, maxY - minY);
+		if (xv < minX)
+		{
+			minX = xv;
+		}
+
+		if (xv > maxX)
+		{
+			maxX = xv;
+		}
+
+		const double yv = y(i);
+
+		if (yv < minY)
+		{
+			minY = yv;
+		}
+
+		if (yv > maxY)
+		{
+			maxY = yv;
+		}
+	}
+
+	return QwtDoubleRect(minX, minY, maxX - minX, maxY - minY);
 }
 
 /*!
@@ -67,26 +83,28 @@ QwtDoubleRect QwtData::boundingRect() const
 #if QT_VERSION >= 0x040000
 QwtPolygonFData::QwtPolygonFData(const QPolygonF &polygon):
 #else
-QwtPolygonFData::QwtPolygonFData(const QwtArray<QwtDoublePoint> &polygon):
+QwtPolygonFData::QwtPolygonFData(const QwtArray<QwtDoublePoint> & polygon):
 #endif
-    d_data(polygon)
+	d_data(polygon)
 {
 }
 
 //! Assignment
-QwtPolygonFData& QwtPolygonFData::operator=(
-    const QwtPolygonFData &data)
+QwtPolygonFData &QwtPolygonFData::operator=(
+	const QwtPolygonFData &data)
 {
-    if (this != &data) {
-        d_data = data.d_data;
-    }
-    return *this;
+	if (this != &data)
+	{
+		d_data = data.d_data;
+	}
+
+	return *this;
 }
 
 //! \return Size of the data set
 size_t QwtPolygonFData::size() const
 {
-    return d_data.size();
+	return d_data.size();
 }
 
 /*!
@@ -97,7 +115,7 @@ size_t QwtPolygonFData::size() const
 */
 double QwtPolygonFData::x(size_t i) const
 {
-    return d_data[int(i)].x();
+	return d_data[int(i)].x();
 }
 
 /*!
@@ -108,7 +126,7 @@ double QwtPolygonFData::x(size_t i) const
 */
 double QwtPolygonFData::y(size_t i) const
 {
-    return d_data[int(i)].y();
+	return d_data[int(i)].y();
 }
 
 #if QT_VERSION >= 0x040000
@@ -117,7 +135,7 @@ const QPolygonF &QwtPolygonFData::data() const
 const QwtArray<QwtDoublePoint> &QwtPolygonFData::data() const
 #endif
 {
-    return d_data;
+	return d_data;
 }
 
 /*!
@@ -125,7 +143,7 @@ const QwtArray<QwtDoublePoint> &QwtPolygonFData::data() const
 */
 QwtData *QwtPolygonFData::copy() const
 {
-    return new QwtPolygonFData(d_data);
+	return new QwtPolygonFData(d_data);
 }
 
 /*!
@@ -137,9 +155,9 @@ QwtData *QwtPolygonFData::copy() const
   \sa QwtPlotCurve::setData
 */
 QwtArrayData::QwtArrayData(
-    const QwtArray<double> &x, const QwtArray<double> &y):
-    d_x(x),
-    d_y(y)
+	const QwtArray<double> &x, const QwtArray<double> &y):
+	d_x(x),
+	d_y(y)
 {
 }
 
@@ -154,34 +172,36 @@ QwtArrayData::QwtArrayData(
 QwtArrayData::QwtArrayData(const double *x, const double *y, size_t size)
 {
 #if QT_VERSION >= 0x040000
-    d_x.resize(size);
-    qMemCopy(d_x.data(), x, size * sizeof(double));
+	d_x.resize(size);
+	qMemCopy(d_x.data(), x, size * sizeof(double));
 
-    d_y.resize(size);
-    qMemCopy(d_y.data(), y, size * sizeof(double));
+	d_y.resize(size);
+	qMemCopy(d_y.data(), y, size * sizeof(double));
 #else
-    d_x.detach();
-    d_x.duplicate(x, size);
+	d_x.detach();
+	d_x.duplicate(x, size);
 
-    d_y.detach();
-    d_y.duplicate(y, size);
+	d_y.detach();
+	d_y.duplicate(y, size);
 #endif
 }
 
 //! Assignment
-QwtArrayData& QwtArrayData::operator=(const QwtArrayData &data)
+QwtArrayData &QwtArrayData::operator=(const QwtArrayData &data)
 {
-    if (this != &data) {
-        d_x = data.d_x;
-        d_y = data.d_y;
-    }
-    return *this;
+	if (this != &data)
+	{
+		d_x = data.d_x;
+		d_y = data.d_y;
+	}
+
+	return *this;
 }
 
 //! \return Size of the data set
 size_t QwtArrayData::size() const
 {
-    return qwtMin(d_x.size(), d_y.size());
+	return qwtMin(d_x.size(), d_y.size());
 }
 
 /*!
@@ -192,7 +212,7 @@ size_t QwtArrayData::size() const
 */
 double QwtArrayData::x(size_t i) const
 {
-    return d_x[int(i)];
+	return d_x[int(i)];
 }
 
 /*!
@@ -203,19 +223,19 @@ double QwtArrayData::x(size_t i) const
 */
 double QwtArrayData::y(size_t i) const
 {
-    return d_y[int(i)];
+	return d_y[int(i)];
 }
 
 //! \return Array of the x-values
 const QwtArray<double> &QwtArrayData::xData() const
 {
-    return d_x;
+	return d_x;
 }
 
 //! \return Array of the y-values
 const QwtArray<double> &QwtArrayData::yData() const
 {
-    return d_y;
+	return d_y;
 }
 
 /*!
@@ -223,7 +243,7 @@ const QwtArray<double> &QwtArrayData::yData() const
 */
 QwtData *QwtArrayData::copy() const
 {
-    return new QwtArrayData(d_x, d_y);
+	return new QwtArrayData(d_x, d_y);
 }
 
 /*!
@@ -233,32 +253,48 @@ QwtData *QwtArrayData::copy() const
 */
 QwtDoubleRect QwtArrayData::boundingRect() const
 {
-    const size_t sz = size();
+	const size_t sz = size();
 
-    if ( sz <= 0 )
-        return QwtDoubleRect(1.0, 1.0, -2.0, -2.0); // invalid
+	if (sz <= 0)
+	{
+		return QwtDoubleRect(1.0, 1.0, -2.0, -2.0);        // invalid
+	}
 
-    double minX, maxX, minY, maxY;
-    QwtArray<double>::ConstIterator xIt = d_x.begin();
-    QwtArray<double>::ConstIterator yIt = d_y.begin();
-    QwtArray<double>::ConstIterator end = d_x.begin() + sz;
-    minX = maxX = *xIt++;
-    minY = maxY = *yIt++;
+	double minX, maxX, minY, maxY;
+	QwtArray<double>::ConstIterator xIt = d_x.begin();
+	QwtArray<double>::ConstIterator yIt = d_y.begin();
+	QwtArray<double>::ConstIterator end = d_x.begin() + sz;
+	minX = maxX = *xIt++;
+	minY = maxY = *yIt++;
 
-    while ( xIt < end ) {
-        const double xv = *xIt++;
-        if ( xv < minX )
-            minX = xv;
-        if ( xv > maxX )
-            maxX = xv;
+	while (xIt < end)
+	{
+		const double xv = *xIt++;
 
-        const double yv = *yIt++;
-        if ( yv < minY )
-            minY = yv;
-        if ( yv > maxY )
-            maxY = yv;
-    }
-    return QwtDoubleRect(minX, minY, maxX - minX, maxY - minY);
+		if (xv < minX)
+		{
+			minX = xv;
+		}
+
+		if (xv > maxX)
+		{
+			maxX = xv;
+		}
+
+		const double yv = *yIt++;
+
+		if (yv < minY)
+		{
+			minY = yv;
+		}
+
+		if (yv > maxY)
+		{
+			maxY = yv;
+		}
+	}
+
+	return QwtDoubleRect(minX, minY, maxX - minX, maxY - minY);
 }
 
 /*!
@@ -275,28 +311,30 @@ QwtDoubleRect QwtArrayData::boundingRect() const
   \sa QwtPlotCurve::setData(), QwtPlotCurve::setRawData()
 */
 QwtCPointerData::QwtCPointerData(
-    const double *x, const double *y, size_t size):
-    d_x(x),
-    d_y(y),
-    d_size(size)
+	const double *x, const double *y, size_t size):
+	d_x(x),
+	d_y(y),
+	d_size(size)
 {
 }
 
 //! Assignment
-QwtCPointerData& QwtCPointerData::operator=(const QwtCPointerData &data)
+QwtCPointerData &QwtCPointerData::operator=(const QwtCPointerData &data)
 {
-    if (this != &data) {
-        d_x = data.d_x;
-        d_y = data.d_y;
-        d_size = data.d_size;
-    }
-    return *this;
+	if (this != &data)
+	{
+		d_x = data.d_x;
+		d_y = data.d_y;
+		d_size = data.d_size;
+	}
+
+	return *this;
 }
 
 //! \return Size of the data set
 size_t QwtCPointerData::size() const
 {
-    return d_size;
+	return d_size;
 }
 
 /*!
@@ -307,7 +345,7 @@ size_t QwtCPointerData::size() const
 */
 double QwtCPointerData::x(size_t i) const
 {
-    return d_x[int(i)];
+	return d_x[int(i)];
 }
 
 /*!
@@ -318,19 +356,19 @@ double QwtCPointerData::x(size_t i) const
 */
 double QwtCPointerData::y(size_t i) const
 {
-    return d_y[int(i)];
+	return d_y[int(i)];
 }
 
 //! \return Array of the x-values
 const double *QwtCPointerData::xData() const
 {
-    return d_x;
+	return d_x;
 }
 
 //! \return Array of the y-values
 const double *QwtCPointerData::yData() const
 {
-    return d_y;
+	return d_y;
 }
 
 /*!
@@ -338,7 +376,7 @@ const double *QwtCPointerData::yData() const
 */
 QwtData *QwtCPointerData::copy() const
 {
-    return new QwtCPointerData(d_x, d_y, d_size);
+	return new QwtCPointerData(d_x, d_y, d_size);
 }
 
 /*!
@@ -348,30 +386,46 @@ QwtData *QwtCPointerData::copy() const
 */
 QwtDoubleRect QwtCPointerData::boundingRect() const
 {
-    const size_t sz = size();
+	const size_t sz = size();
 
-    if ( sz <= 0 )
-        return QwtDoubleRect(1.0, 1.0, -2.0, -2.0); // invalid
+	if (sz <= 0)
+	{
+		return QwtDoubleRect(1.0, 1.0, -2.0, -2.0);        // invalid
+	}
 
-    double minX, maxX, minY, maxY;
-    const double *xIt = d_x;
-    const double *yIt = d_y;
-    const double *end = d_x + sz;
-    minX = maxX = *xIt++;
-    minY = maxY = *yIt++;
+	double minX, maxX, minY, maxY;
+	const double *xIt = d_x;
+	const double *yIt = d_y;
+	const double *end = d_x + sz;
+	minX = maxX = *xIt++;
+	minY = maxY = *yIt++;
 
-    while ( xIt < end ) {
-        const double xv = *xIt++;
-        if ( xv < minX )
-            minX = xv;
-        if ( xv > maxX )
-            maxX = xv;
+	while (xIt < end)
+	{
+		const double xv = *xIt++;
 
-        const double yv = *yIt++;
-        if ( yv < minY )
-            minY = yv;
-        if ( yv > maxY )
-            maxY = yv;
-    }
-    return QwtDoubleRect(minX, minY, maxX - minX, maxY - minY);
+		if (xv < minX)
+		{
+			minX = xv;
+		}
+
+		if (xv > maxX)
+		{
+			maxX = xv;
+		}
+
+		const double yv = *yIt++;
+
+		if (yv < minY)
+		{
+			minY = yv;
+		}
+
+		if (yv > maxY)
+		{
+			maxY = yv;
+		}
+	}
+
+	return QwtDoubleRect(minX, minY, maxX - minX, maxY - minY);
 }

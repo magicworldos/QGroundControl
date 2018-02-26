@@ -21,7 +21,7 @@
 
   In opposite to QwtPlotMarker the position of the label is unrelated to
   plot coordinates.
-    
+
   As drawing a text is an expensive operation the label is cached
   in a pixmap to speed up replots.
 
@@ -42,34 +42,34 @@
 \endverbatim
 
   \sa QwtPlotMarker
-*/  
+*/
 
 class QWT_EXPORT QwtPlotTextLabel: public QwtPlotItem
 {
 public:
-    QwtPlotTextLabel();
-    virtual ~QwtPlotTextLabel();
+	QwtPlotTextLabel();
+	virtual ~QwtPlotTextLabel();
 
-    virtual int rtti() const;
+	virtual int rtti() const;
 
-    void setText( const QwtText & );
-    QwtText text() const;
+	void setText(const QwtText &);
+	QwtText text() const;
 
-    void setMargin( int margin );
-    int margin() const;
+	void setMargin(int margin);
+	int margin() const;
 
-    virtual QRectF textRect( const QRectF &, const QSizeF & ) const;
+	virtual QRectF textRect(const QRectF &, const QSizeF &) const;
 
 protected:
-    virtual void draw( QPainter *,
-        const QwtScaleMap &, const QwtScaleMap &,
-        const QRectF &) const;
+	virtual void draw(QPainter *,
+			  const QwtScaleMap &, const QwtScaleMap &,
+			  const QRectF &) const;
 
-    void invalidateCache();
+	void invalidateCache();
 
 private:
-    class PrivateData;
-    PrivateData *d_data;
+	class PrivateData;
+	PrivateData *d_data;
 };
 
 #endif

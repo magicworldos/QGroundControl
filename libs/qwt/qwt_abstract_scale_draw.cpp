@@ -20,32 +20,32 @@
 class QwtAbstractScaleDraw::PrivateData
 {
 public:
-    PrivateData():
-        spacing( 4.0 ),
-        penWidth( 0 ),
-        minExtent( 0.0 )
-    {
-        components = QwtAbstractScaleDraw::Backbone 
-            | QwtAbstractScaleDraw::Ticks 
-            | QwtAbstractScaleDraw::Labels;
+	PrivateData():
+		spacing(4.0),
+		penWidth(0),
+		minExtent(0.0)
+	{
+		components = QwtAbstractScaleDraw::Backbone
+			     | QwtAbstractScaleDraw::Ticks
+			     | QwtAbstractScaleDraw::Labels;
 
-        tickLength[QwtScaleDiv::MinorTick] = 4.0;
-        tickLength[QwtScaleDiv::MediumTick] = 6.0;
-        tickLength[QwtScaleDiv::MajorTick] = 8.0;
-    }
+		tickLength[QwtScaleDiv::MinorTick] = 4.0;
+		tickLength[QwtScaleDiv::MediumTick] = 6.0;
+		tickLength[QwtScaleDiv::MajorTick] = 8.0;
+	}
 
-    ScaleComponents components;
+	ScaleComponents components;
 
-    QwtScaleMap map;
-    QwtScaleDiv scaleDiv;
+	QwtScaleMap map;
+	QwtScaleDiv scaleDiv;
 
-    double spacing;
-    double tickLength[QwtScaleDiv::NTickTypes];
-    int penWidth;
+	double spacing;
+	double tickLength[QwtScaleDiv::NTickTypes];
+	int penWidth;
 
-    double minExtent;
+	double minExtent;
 
-    QMap<double, QwtText> labelCache;
+	QMap<double, QwtText> labelCache;
 };
 
 /*!
@@ -57,13 +57,13 @@ public:
 */
 QwtAbstractScaleDraw::QwtAbstractScaleDraw()
 {
-    d_data = new QwtAbstractScaleDraw::PrivateData;
+	d_data = new QwtAbstractScaleDraw::PrivateData;
 }
 
 //! Destructor
 QwtAbstractScaleDraw::~QwtAbstractScaleDraw()
 {
-    delete d_data;
+	delete d_data;
 }
 
 /*!
@@ -75,12 +75,17 @@ QwtAbstractScaleDraw::~QwtAbstractScaleDraw()
   \sa hasComponent()
 */
 void QwtAbstractScaleDraw::enableComponent(
-    ScaleComponent component, bool enable )
+	ScaleComponent component, bool enable)
 {
-    if ( enable )
-        d_data->components |= component;
-    else
-        d_data->components &= ~component;
+	if (enable)
+	{
+		d_data->components |= component;
+	}
+
+	else
+	{
+		d_data->components &= ~component;
+	}
 }
 
 /*!
@@ -90,20 +95,20 @@ void QwtAbstractScaleDraw::enableComponent(
   \return true, when component is enabled
   \sa enableComponent()
 */
-bool QwtAbstractScaleDraw::hasComponent( ScaleComponent component ) const
+bool QwtAbstractScaleDraw::hasComponent(ScaleComponent component) const
 {
-    return ( d_data->components & component );
+	return (d_data->components & component);
 }
 
 /*!
   Change the scale division
   \param scaleDiv New scale division
 */
-void QwtAbstractScaleDraw::setScaleDiv( const QwtScaleDiv &scaleDiv )
+void QwtAbstractScaleDraw::setScaleDiv(const QwtScaleDiv &scaleDiv)
 {
-    d_data->scaleDiv = scaleDiv;
-    d_data->map.setScaleInterval( scaleDiv.lowerBound(), scaleDiv.upperBound() );
-    d_data->labelCache.clear();
+	d_data->scaleDiv = scaleDiv;
+	d_data->map.setScaleInterval(scaleDiv.lowerBound(), scaleDiv.upperBound());
+	d_data->labelCache.clear();
 }
 
 /*!
@@ -111,27 +116,27 @@ void QwtAbstractScaleDraw::setScaleDiv( const QwtScaleDiv &scaleDiv )
   \param transformation New scale transformation
 */
 void QwtAbstractScaleDraw::setTransformation(
-    QwtTransform *transformation )
+	QwtTransform *transformation)
 {
-    d_data->map.setTransformation( transformation );
+	d_data->map.setTransformation(transformation);
 }
 
 //! \return Map how to translate between scale and pixel values
 const QwtScaleMap &QwtAbstractScaleDraw::scaleMap() const
 {
-    return d_data->map;
+	return d_data->map;
 }
 
 //! \return Map how to translate between scale and pixel values
 QwtScaleMap &QwtAbstractScaleDraw::scaleMap()
 {
-    return d_data->map;
+	return d_data->map;
 }
 
 //! \return scale division
-const QwtScaleDiv& QwtAbstractScaleDraw::scaleDiv() const
+const QwtScaleDiv &QwtAbstractScaleDraw::scaleDiv() const
 {
-    return d_data->scaleDiv;
+	return d_data->scaleDiv;
 }
 
 /*!
@@ -139,13 +144,17 @@ const QwtScaleDiv& QwtAbstractScaleDraw::scaleDiv() const
   \param width Pen width
   \sa penWidth()
 */
-void QwtAbstractScaleDraw::setPenWidth( int width )
+void QwtAbstractScaleDraw::setPenWidth(int width)
 {
-    if ( width < 0 )
-        width = 0;
+	if (width < 0)
+	{
+		width = 0;
+	}
 
-    if ( width != d_data->penWidth )
-        d_data->penWidth = width;
+	if (width != d_data->penWidth)
+	{
+		d_data->penWidth = width;
+	}
 }
 
 /*!
@@ -154,7 +163,7 @@ void QwtAbstractScaleDraw::setPenWidth( int width )
 */
 int QwtAbstractScaleDraw::penWidth() const
 {
-    return d_data->penWidth;
+	return d_data->penWidth;
 }
 
 /*!
@@ -165,75 +174,82 @@ int QwtAbstractScaleDraw::penWidth() const
   \param palette    Palette, text color is used for the labels,
                     foreground color for ticks and backbone
 */
-void QwtAbstractScaleDraw::draw( QPainter *painter,
-    const QPalette& palette ) const
+void QwtAbstractScaleDraw::draw(QPainter *painter,
+				const QPalette &palette) const
 {
-    painter->save();
+	painter->save();
 
-    QPen pen = painter->pen();
-    pen.setWidth( d_data->penWidth );
-    pen.setCosmetic( false );
-    painter->setPen( pen );
+	QPen pen = painter->pen();
+	pen.setWidth(d_data->penWidth);
+	pen.setCosmetic(false);
+	painter->setPen(pen);
 
-    if ( hasComponent( QwtAbstractScaleDraw::Labels ) )
-    {
-        painter->save();
-        painter->setPen( palette.color( QPalette::Text ) ); // ignore pen style
+	if (hasComponent(QwtAbstractScaleDraw::Labels))
+	{
+		painter->save();
+		painter->setPen(palette.color(QPalette::Text));     // ignore pen style
 
-        const QList<double> &majorTicks =
-            d_data->scaleDiv.ticks( QwtScaleDiv::MajorTick );
+		const QList<double> &majorTicks =
+			d_data->scaleDiv.ticks(QwtScaleDiv::MajorTick);
 
-        for ( int i = 0; i < majorTicks.count(); i++ )
-        {
-            const double v = majorTicks[i];
-            if ( d_data->scaleDiv.contains( v ) )
-                drawLabel( painter, v );
-        }
+		for (int i = 0; i < majorTicks.count(); i++)
+		{
+			const double v = majorTicks[i];
 
-        painter->restore();
-    }
+			if (d_data->scaleDiv.contains(v))
+			{
+				drawLabel(painter, v);
+			}
+		}
 
-    if ( hasComponent( QwtAbstractScaleDraw::Ticks ) )
-    {
-        painter->save();
+		painter->restore();
+	}
 
-        QPen pen = painter->pen();
-        pen.setColor( palette.color( QPalette::WindowText ) );
-        pen.setCapStyle( Qt::FlatCap );
+	if (hasComponent(QwtAbstractScaleDraw::Ticks))
+	{
+		painter->save();
 
-        painter->setPen( pen );
+		QPen pen = painter->pen();
+		pen.setColor(palette.color(QPalette::WindowText));
+		pen.setCapStyle(Qt::FlatCap);
 
-        for ( int tickType = QwtScaleDiv::MinorTick;
-            tickType < QwtScaleDiv::NTickTypes; tickType++ )
-        {
-            const QList<double> &ticks = d_data->scaleDiv.ticks( tickType );
-            for ( int i = 0; i < ticks.count(); i++ )
-            {
-                const double v = ticks[i];
-                if ( d_data->scaleDiv.contains( v ) )
-                    drawTick( painter, v, d_data->tickLength[tickType] );
-            }
-        }
+		painter->setPen(pen);
 
-        painter->restore();
-    }
+		for (int tickType = QwtScaleDiv::MinorTick;
+				tickType < QwtScaleDiv::NTickTypes; tickType++)
+		{
+			const QList<double> &ticks = d_data->scaleDiv.ticks(tickType);
 
-    if ( hasComponent( QwtAbstractScaleDraw::Backbone ) )
-    {
-        painter->save();
+			for (int i = 0; i < ticks.count(); i++)
+			{
+				const double v = ticks[i];
 
-        QPen pen = painter->pen();
-        pen.setColor( palette.color( QPalette::WindowText ) );
-        pen.setCapStyle( Qt::FlatCap );
+				if (d_data->scaleDiv.contains(v))
+				{
+					drawTick(painter, v, d_data->tickLength[tickType]);
+				}
+			}
+		}
 
-        painter->setPen( pen );
+		painter->restore();
+	}
 
-        drawBackbone( painter );
+	if (hasComponent(QwtAbstractScaleDraw::Backbone))
+	{
+		painter->save();
 
-        painter->restore();
-    }
+		QPen pen = painter->pen();
+		pen.setColor(palette.color(QPalette::WindowText));
+		pen.setCapStyle(Qt::FlatCap);
 
-    painter->restore();
+		painter->setPen(pen);
+
+		drawBackbone(painter);
+
+		painter->restore();
+	}
+
+	painter->restore();
 }
 
 /*!
@@ -246,12 +262,14 @@ void QwtAbstractScaleDraw::draw( QPainter *painter,
 
   \sa spacing()
 */
-void QwtAbstractScaleDraw::setSpacing( double spacing )
+void QwtAbstractScaleDraw::setSpacing(double spacing)
 {
-    if ( spacing < 0 )
-        spacing = 0;
+	if (spacing < 0)
+	{
+		spacing = 0;
+	}
 
-    d_data->spacing = spacing;
+	d_data->spacing = spacing;
 }
 
 /*!
@@ -265,7 +283,7 @@ void QwtAbstractScaleDraw::setSpacing( double spacing )
 */
 double QwtAbstractScaleDraw::spacing() const
 {
-    return d_data->spacing;
+	return d_data->spacing;
 }
 
 /*!
@@ -281,12 +299,14 @@ double QwtAbstractScaleDraw::spacing() const
 
   \sa extent(), minimumExtent()
 */
-void QwtAbstractScaleDraw::setMinimumExtent( double minExtent )
+void QwtAbstractScaleDraw::setMinimumExtent(double minExtent)
 {
-    if ( minExtent < 0.0 )
-        minExtent = 0.0;
+	if (minExtent < 0.0)
+	{
+		minExtent = 0.0;
+	}
 
-    d_data->minExtent = minExtent;
+	d_data->minExtent = minExtent;
 }
 
 /*!
@@ -296,7 +316,7 @@ void QwtAbstractScaleDraw::setMinimumExtent( double minExtent )
 */
 double QwtAbstractScaleDraw::minimumExtent() const
 {
-    return d_data->minExtent;
+	return d_data->minExtent;
 }
 
 /*!
@@ -308,37 +328,42 @@ double QwtAbstractScaleDraw::minimumExtent() const
   \warning the length is limited to [0..1000]
 */
 void QwtAbstractScaleDraw::setTickLength(
-    QwtScaleDiv::TickType tickType, double length )
+	QwtScaleDiv::TickType tickType, double length)
 {
-    if ( tickType < QwtScaleDiv::MinorTick ||
-        tickType > QwtScaleDiv::MajorTick )
-    {
-        return;
-    }
+	if (tickType < QwtScaleDiv::MinorTick ||
+			tickType > QwtScaleDiv::MajorTick)
+	{
+		return;
+	}
 
-    if ( length < 0.0 )
-        length = 0.0;
+	if (length < 0.0)
+	{
+		length = 0.0;
+	}
 
-    const double maxTickLen = 1000.0;
-    if ( length > maxTickLen )
-        length = maxTickLen;
+	const double maxTickLen = 1000.0;
 
-    d_data->tickLength[tickType] = length;
+	if (length > maxTickLen)
+	{
+		length = maxTickLen;
+	}
+
+	d_data->tickLength[tickType] = length;
 }
 
 /*!
     \return Length of the ticks
     \sa setTickLength(), maxTickLength()
 */
-double QwtAbstractScaleDraw::tickLength( QwtScaleDiv::TickType tickType ) const
+double QwtAbstractScaleDraw::tickLength(QwtScaleDiv::TickType tickType) const
 {
-    if ( tickType < QwtScaleDiv::MinorTick ||
-        tickType > QwtScaleDiv::MajorTick )
-    {
-        return 0;
-    }
+	if (tickType < QwtScaleDiv::MinorTick ||
+			tickType > QwtScaleDiv::MajorTick)
+	{
+		return 0;
+	}
 
-    return d_data->tickLength[tickType];
+	return d_data->tickLength[tickType];
 }
 
 /*!
@@ -349,11 +374,14 @@ double QwtAbstractScaleDraw::tickLength( QwtScaleDiv::TickType tickType ) const
 */
 double QwtAbstractScaleDraw::maxTickLength() const
 {
-    double length = 0.0;
-    for ( int i = 0; i < QwtScaleDiv::NTickTypes; i++ )
-        length = qMax( length, d_data->tickLength[i] );
+	double length = 0.0;
 
-    return length;
+	for (int i = 0; i < QwtScaleDiv::NTickTypes; i++)
+	{
+		length = qMax(length, d_data->tickLength[i]);
+	}
+
+	return length;
 }
 
 /*!
@@ -367,9 +395,9 @@ double QwtAbstractScaleDraw::maxTickLength() const
   \param value Value
   \return Label string.
 */
-QwtText QwtAbstractScaleDraw::label( double value ) const
+QwtText QwtAbstractScaleDraw::label(double value) const
 {
-    return QLocale().toString( value );
+	return QLocale().toString(value);
 }
 
 /*!
@@ -386,21 +414,22 @@ QwtText QwtAbstractScaleDraw::label( double value ) const
    \return Tick label
 */
 const QwtText &QwtAbstractScaleDraw::tickLabel(
-    const QFont &font, double value ) const
+	const QFont &font, double value) const
 {
-    QMap<double, QwtText>::const_iterator it = d_data->labelCache.find( value );
-    if ( it == d_data->labelCache.end() )
-    {
-        QwtText lbl = label( value );
-        lbl.setRenderFlags( 0 );
-        lbl.setLayoutAttribute( QwtText::MinimumLayout );
+	QMap<double, QwtText>::const_iterator it = d_data->labelCache.find(value);
 
-        ( void )lbl.textSize( font ); // initialize the internal cache
+	if (it == d_data->labelCache.end())
+	{
+		QwtText lbl = label(value);
+		lbl.setRenderFlags(0);
+		lbl.setLayoutAttribute(QwtText::MinimumLayout);
 
-        it = d_data->labelCache.insert( value, lbl );
-    }
+		(void)lbl.textSize(font);     // initialize the internal cache
 
-    return ( *it );
+		it = d_data->labelCache.insert(value, lbl);
+	}
+
+	return (*it);
 }
 
 /*!
@@ -412,5 +441,5 @@ const QwtText &QwtAbstractScaleDraw::tickLabel(
 */
 void QwtAbstractScaleDraw::invalidateCache()
 {
-    d_data->labelCache.clear();
+	d_data->labelCache.clear();
 }

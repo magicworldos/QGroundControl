@@ -55,144 +55,181 @@
 int QGeoTiledMapReplyQGC::_requestCount = 0;
 
 //-----------------------------------------------------------------------------
-QGeoTiledMapReplyQGC::QGeoTiledMapReplyQGC(QNetworkAccessManager *networkManager, const QNetworkRequest &request, const QGeoTileSpec &spec, QObject *parent)
-    : QGeoTiledMapReply(spec, parent)
-    , _reply(NULL)
-    , _request(request)
-    , _networkManager(networkManager)
+QGeoTiledMapReplyQGC::QGeoTiledMapReplyQGC(QNetworkAccessManager *networkManager, const QNetworkRequest &request,
+		const QGeoTileSpec &spec, QObject *parent)
+	: QGeoTiledMapReply(spec, parent)
+	, _reply(NULL)
+	, _request(request)
+	, _networkManager(networkManager)
 {
-    if(_request.url().isEmpty()) {
-        if(!_badMapbox.size()) {
-            QFile b(":/res/notile.png");
-            if(b.open(QFile::ReadOnly))
-                _badMapbox = b.readAll();
-        }
-        setMapImageData(_badMapbox);
-        setMapImageFormat("png");
-        setFinished(true);
-        setCached(false);
-    } else {
-        QGCFetchTileTask* task = getQGCMapEngine()->createFetchTileTask((UrlFactory::MapType)spec.mapId(), spec.x(), spec.y(), spec.zoom());
-        connect(task, &QGCFetchTileTask::tileFetched, this, &QGeoTiledMapReplyQGC::cacheReply);
-        connect(task, &QGCMapTask::error, this, &QGeoTiledMapReplyQGC::cacheError);
-        getQGCMapEngine()->addTask(task);
-    }
+	if (_request.url().isEmpty())
+	{
+		if (!_badMapbox.size())
+		{
+			QFile b(":/res/notile.png");
+
+			if (b.open(QFile::ReadOnly))
+			{
+				_badMapbox = b.readAll();
+			}
+		}
+
+		setMapImageData(_badMapbox);
+		setMapImageFormat("png");
+		setFinished(true);
+		setCached(false);
+	}
+
+	else
+	{
+		QGCFetchTileTask *task = getQGCMapEngine()->createFetchTileTask((UrlFactory::MapType)spec.mapId(), spec.x(), spec.y(),
+					 spec.zoom());
+		connect(task, &QGCFetchTileTask::tileFetched, this, &QGeoTiledMapReplyQGC::cacheReply);
+		connect(task, &QGCMapTask::error, this, &QGeoTiledMapReplyQGC::cacheError);
+		getQGCMapEngine()->addTask(task);
+	}
 }
 
 //-----------------------------------------------------------------------------
 QGeoTiledMapReplyQGC::~QGeoTiledMapReplyQGC()
 {
-    _clearReply();
+	_clearReply();
 }
 
 //-----------------------------------------------------------------------------
 void
 QGeoTiledMapReplyQGC::_clearReply()
 {
-    _timer.stop();
-    if (_reply) {
-        _reply->deleteLater();
-        _reply = 0;
-        _requestCount--;
-    }
+	_timer.stop();
+
+	if (_reply)
+	{
+		_reply->deleteLater();
+		_reply = 0;
+		_requestCount--;
+	}
 }
 
 //-----------------------------------------------------------------------------
 void
 QGeoTiledMapReplyQGC::abort()
 {
-    _timer.stop();
-    if (_reply)
-        _reply->abort();
+	_timer.stop();
+
+	if (_reply)
+	{
+		_reply->abort();
+	}
 }
 
 //-----------------------------------------------------------------------------
 void
 QGeoTiledMapReplyQGC::networkReplyFinished()
 {
-    _timer.stop();
-    if (!_reply) {
-        return;
-    }
-    if (_reply->error() != QNetworkReply::NoError) {
-        return;
-    }
-    QByteArray a = _reply->readAll();
-    setMapImageData(a);
-    QString format = getQGCMapEngine()->urlFactory()->getImageFormat((UrlFactory::MapType)tileSpec().mapId(), a);
-    if(!format.isEmpty()) {
-        setMapImageFormat(format);
-        getQGCMapEngine()->cacheTile((UrlFactory::MapType)tileSpec().mapId(), tileSpec().x(), tileSpec().y(), tileSpec().zoom(), a, format);
-    }
-    setFinished(true);
-    _clearReply();
+	_timer.stop();
+
+	if (!_reply)
+	{
+		return;
+	}
+
+	if (_reply->error() != QNetworkReply::NoError)
+	{
+		return;
+	}
+
+	QByteArray a = _reply->readAll();
+	setMapImageData(a);
+	QString format = getQGCMapEngine()->urlFactory()->getImageFormat((UrlFactory::MapType)tileSpec().mapId(), a);
+
+	if (!format.isEmpty())
+	{
+		setMapImageFormat(format);
+		getQGCMapEngine()->cacheTile((UrlFactory::MapType)tileSpec().mapId(), tileSpec().x(), tileSpec().y(), tileSpec().zoom(),
+					     a, format);
+	}
+
+	setFinished(true);
+	_clearReply();
 }
 
 //-----------------------------------------------------------------------------
 void
 QGeoTiledMapReplyQGC::networkReplyError(QNetworkReply::NetworkError error)
 {
-    _timer.stop();
-    if (!_reply) {
-        return;
-    }
-    if (error != QNetworkReply::OperationCanceledError) {
-        qWarning() << "Fetch tile error:" << _reply->errorString();
-        setError(QGeoTiledMapReply::CommunicationError, _reply->errorString());
-    }
-    setFinished(true);
-    _clearReply();
+	_timer.stop();
+
+	if (!_reply)
+	{
+		return;
+	}
+
+	if (error != QNetworkReply::OperationCanceledError)
+	{
+		qWarning() << "Fetch tile error:" << _reply->errorString();
+		setError(QGeoTiledMapReply::CommunicationError, _reply->errorString());
+	}
+
+	setFinished(true);
+	_clearReply();
 }
 
 //-----------------------------------------------------------------------------
 void
 QGeoTiledMapReplyQGC::cacheError(QGCMapTask::TaskType type, QString /*errorString*/)
 {
-    if(!getQGCMapEngine()->isInternetActive()) {
-        setError(QGeoTiledMapReply::CommunicationError, "Network not available");
-        setFinished(true);
-    } else {
-        if(type != QGCMapTask::taskFetchTile) {
-            qWarning() << "QGeoTiledMapReplyQGC::cacheError() for wrong task";
-        }
-        //-- Tile not in cache. Get it off the Internet.
+	if (!getQGCMapEngine()->isInternetActive())
+	{
+		setError(QGeoTiledMapReply::CommunicationError, "Network not available");
+		setFinished(true);
+	}
+
+	else
+	{
+		if (type != QGCMapTask::taskFetchTile)
+		{
+			qWarning() << "QGeoTiledMapReplyQGC::cacheError() for wrong task";
+		}
+
+		//-- Tile not in cache. Get it off the Internet.
 #if !defined(__mobile__)
-        QNetworkProxy proxy = _networkManager->proxy();
-        QNetworkProxy tProxy;
-        tProxy.setType(QNetworkProxy::DefaultProxy);
-        _networkManager->setProxy(tProxy);
+		QNetworkProxy proxy = _networkManager->proxy();
+		QNetworkProxy tProxy;
+		tProxy.setType(QNetworkProxy::DefaultProxy);
+		_networkManager->setProxy(tProxy);
 #endif
-        _reply = _networkManager->get(_request);
-        _reply->setParent(0);
-        connect(_reply, SIGNAL(finished()),                         this, SLOT(networkReplyFinished()));
-        connect(_reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(networkReplyError(QNetworkReply::NetworkError)));
+		_reply = _networkManager->get(_request);
+		_reply->setParent(0);
+		connect(_reply, SIGNAL(finished()),                         this, SLOT(networkReplyFinished()));
+		connect(_reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(networkReplyError(QNetworkReply::NetworkError)));
 #if !defined(__mobile__)
-        _networkManager->setProxy(proxy);
+		_networkManager->setProxy(proxy);
 #endif
-        //- Wait for an answer up to 10 seconds
-        connect(&_timer, &QTimer::timeout, this, &QGeoTiledMapReplyQGC::timeout);
-        _timer.setSingleShot(true);
-        _timer.start(10000);
-        _requestCount++;
-    }
+		//- Wait for an answer up to 10 seconds
+		connect(&_timer, &QTimer::timeout, this, &QGeoTiledMapReplyQGC::timeout);
+		_timer.setSingleShot(true);
+		_timer.start(10000);
+		_requestCount++;
+	}
 }
 
 //-----------------------------------------------------------------------------
 void
-QGeoTiledMapReplyQGC::cacheReply(QGCCacheTile* tile)
+QGeoTiledMapReplyQGC::cacheReply(QGCCacheTile *tile)
 {
-    setMapImageData(tile->img());
-    setMapImageFormat(tile->format());
-    setFinished(true);
-    setCached(true);
-    tile->deleteLater();
+	setMapImageData(tile->img());
+	setMapImageFormat(tile->format());
+	setFinished(true);
+	setCached(true);
+	tile->deleteLater();
 }
 
 //-----------------------------------------------------------------------------
 void
 QGeoTiledMapReplyQGC::timeout()
 {
-    if(_reply) {
-        _reply->abort();
-    }
+	if (_reply)
+	{
+		_reply->abort();
+	}
 }

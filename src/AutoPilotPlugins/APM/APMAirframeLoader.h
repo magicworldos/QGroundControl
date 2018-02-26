@@ -30,17 +30,17 @@ Q_DECLARE_LOGGING_CATEGORY(APMAirframeLoaderLog)
 
 class APMAirframeLoader : QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    /// @param uas Uas which this set of facts is associated with
-    APMAirframeLoader(AutoPilotPlugin* autpilot,UASInterface* uas, QObject* parent = NULL);
+	/// @param uas Uas which this set of facts is associated with
+	APMAirframeLoader(AutoPilotPlugin *autpilot, UASInterface *uas, QObject *parent = NULL);
 
-    static void loadAirframeFactMetaData(void);
+	static void loadAirframeFactMetaData(void);
 
 private:
-    static bool _airframeMetaDataLoaded;   ///< true: parameter meta data already loaded
-    static QMap<QString, FactMetaData*> _mapParameterName2FactMetaData; ///< Maps from a parameter name to FactMetaData
+	static bool _airframeMetaDataLoaded;   ///< true: parameter meta data already loaded
+	static QMap<QString, FactMetaData *> _mapParameterName2FactMetaData; ///< Maps from a parameter name to FactMetaData
 };
 
 #endif // APMAirframeLoader_H

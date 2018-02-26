@@ -27,41 +27,42 @@
 #include "gstqtvideosinkbase.h"
 
 #define GST_TYPE_QT_VIDEO_SINK \
-  (GstQtVideoSink::get_type())
+	(GstQtVideoSink::get_type())
 
 struct GstQtVideoSink
 {
 public:
-    GstQtVideoSinkBase parent;
+	GstQtVideoSinkBase parent;
 
-    static GType get_type();
-    static void emit_update(gpointer sink);
+	static GType get_type();
+	static void emit_update(gpointer sink);
 
 private:
-    enum {
-        PAINT_SIGNAL,
-        UPDATE_SIGNAL,
-        LAST_SIGNAL
-    };
+	enum
+	{
+		PAINT_SIGNAL,
+		UPDATE_SIGNAL,
+		LAST_SIGNAL
+	};
 
-    static void base_init(gpointer g_class);
-    static void class_init(gpointer g_class, gpointer class_data);
-    static void init(GTypeInstance *instance, gpointer g_class);
+	static void base_init(gpointer g_class);
+	static void class_init(gpointer g_class, gpointer class_data);
+	static void init(GTypeInstance *instance, gpointer g_class);
 
-    static void paint(GstQtVideoSink *sink, gpointer painter,
-                      qreal x, qreal y, qreal width, qreal height);
+	static void paint(GstQtVideoSink *sink, gpointer painter,
+			  qreal x, qreal y, qreal width, qreal height);
 
-    static guint s_signals[LAST_SIGNAL];
+	static guint s_signals[LAST_SIGNAL];
 };
 
 
 struct GstQtVideoSinkClass
 {
-    GstQtVideoSinkBaseClass parent_class;
+	GstQtVideoSinkBaseClass parent_class;
 
-    /* paint action signal */
-    void (*paint) (GstQtVideoSink *sink, gpointer painter,
-                   qreal x, qreal y, qreal width, qreal height);
+	/* paint action signal */
+	void (*paint)(GstQtVideoSink *sink, gpointer painter,
+		      qreal x, qreal y, qreal width, qreal height);
 };
 
 #endif

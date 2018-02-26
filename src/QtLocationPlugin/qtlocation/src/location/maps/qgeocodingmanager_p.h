@@ -61,13 +61,13 @@ class QGeoCodingManagerEngine;
 class QGeoCodingManagerPrivate
 {
 public:
-    QGeoCodingManagerPrivate();
-    ~QGeoCodingManagerPrivate();
+	QGeoCodingManagerPrivate();
+	~QGeoCodingManagerPrivate();
 
-    QGeoCodingManagerEngine *engine;
+	QGeoCodingManagerEngine *engine;
 
 private:
-    Q_DISABLE_COPY(QGeoCodingManagerPrivate)
+	Q_DISABLE_COPY(QGeoCodingManagerPrivate)
 };
 
 QT_END_NAMESPACE

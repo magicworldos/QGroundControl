@@ -54,40 +54,41 @@ QT_BEGIN_NAMESPACE
 class Q_AUTOTEST_EXPORT QSerialPortInfoPrivate
 {
 public:
-    QSerialPortInfoPrivate()
-        : vendorIdentifier(0)
-        , productIdentifier(0)
-        , hasVendorIdentifier(false)
-        , hasProductIdentifier(false)
-    {
-    }
+	QSerialPortInfoPrivate()
+		: vendorIdentifier(0)
+		, productIdentifier(0)
+		, hasVendorIdentifier(false)
+		, hasProductIdentifier(false)
+	{
+	}
 
-    ~QSerialPortInfoPrivate()
-    {
-    }
+	~QSerialPortInfoPrivate()
+	{
+	}
 
-    static QString portNameToSystemLocation(const QString &source);
-    static QString portNameFromSystemLocation(const QString &source);
+	static QString portNameToSystemLocation(const QString &source);
+	static QString portNameFromSystemLocation(const QString &source);
 
-    QString portName;
-    QString device;
-    QString description;
-    QString manufacturer;
-    QString serialNumber;
+	QString portName;
+	QString device;
+	QString description;
+	QString manufacturer;
+	QString serialNumber;
 
-    quint16 vendorIdentifier;
-    quint16 productIdentifier;
+	quint16 vendorIdentifier;
+	quint16 productIdentifier;
 
-    bool    hasVendorIdentifier;
-    bool    hasProductIdentifier;
+	bool    hasVendorIdentifier;
+	bool    hasProductIdentifier;
 };
 
 class QSerialPortInfoPrivateDeleter
 {
 public:
-    static void cleanup(QSerialPortInfoPrivate *p) {
-        delete p;
-    }
+	static void cleanup(QSerialPortInfoPrivate *p)
+	{
+		delete p;
+	}
 };
 
 QT_END_NAMESPACE

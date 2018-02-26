@@ -57,59 +57,60 @@ class QGeoTileCache;
 
 class Q_LOCATION_EXPORT QGeoTiledMappingManagerEngine : public QGeoMappingManagerEngine
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    enum CacheArea {
-        DiskCache = 0x01,
-        MemoryCache = 0x02,
-        AllCaches = 0xFF
-    };
-    Q_DECLARE_FLAGS(CacheAreas, CacheArea)
+	enum CacheArea
+	{
+		DiskCache = 0x01,
+		MemoryCache = 0x02,
+		AllCaches = 0xFF
+	};
+	Q_DECLARE_FLAGS(CacheAreas, CacheArea)
 
-    explicit QGeoTiledMappingManagerEngine(QObject *parent = 0);
-    virtual ~QGeoTiledMappingManagerEngine();
+	explicit QGeoTiledMappingManagerEngine(QObject *parent = 0);
+	virtual ~QGeoTiledMappingManagerEngine();
 
-    QGeoTileFetcher *tileFetcher();
+	QGeoTileFetcher *tileFetcher();
 
-    QGeoMap *createMap() Q_DECL_OVERRIDE;
-    void registerMap(QGeoMap *map) Q_DECL_OVERRIDE;
-    void deregisterMap(QGeoMap *map) Q_DECL_OVERRIDE;
+	QGeoMap *createMap() Q_DECL_OVERRIDE;
+	void registerMap(QGeoMap *map) Q_DECL_OVERRIDE;
+	void deregisterMap(QGeoMap *map) Q_DECL_OVERRIDE;
 
-    QSize tileSize() const;
+	QSize tileSize() const;
 
-    void updateTileRequests(QGeoTiledMap *map,
-                            const QSet<QGeoTileSpec> &tilesAdded,
-                            const QSet<QGeoTileSpec> &tilesRemoved);
+	void updateTileRequests(QGeoTiledMap *map,
+				const QSet<QGeoTileSpec> &tilesAdded,
+				const QSet<QGeoTileSpec> &tilesRemoved);
 
-    QGeoTileCache *tileCache(); // TODO: check this is still used
-    QSharedPointer<QGeoTileTexture> getTileTexture(const QGeoTileSpec &spec);
+	QGeoTileCache *tileCache(); // TODO: check this is still used
+	QSharedPointer<QGeoTileTexture> getTileTexture(const QGeoTileSpec &spec);
 
 
-    QGeoTiledMappingManagerEngine::CacheAreas cacheHint() const;
+	QGeoTiledMappingManagerEngine::CacheAreas cacheHint() const;
 
 private Q_SLOTS:
-    void engineTileFinished(const QGeoTileSpec &spec, const QByteArray &bytes, const QString &format);
-    void engineTileError(const QGeoTileSpec &spec, const QString &errorString);
+	void engineTileFinished(const QGeoTileSpec &spec, const QByteArray &bytes, const QString &format);
+	void engineTileError(const QGeoTileSpec &spec, const QString &errorString);
 
 Q_SIGNALS:
-    void tileError(const QGeoTileSpec &spec, const QString &errorString);
-    void mapVersionChanged();
+	void tileError(const QGeoTileSpec &spec, const QString &errorString);
+	void mapVersionChanged();
 
 protected:
-    void setTileFetcher(QGeoTileFetcher *fetcher);
-    void setTileSize(const QSize &tileSize);
-    void setCacheHint(QGeoTiledMappingManagerEngine::CacheAreas cacheHint);
+	void setTileFetcher(QGeoTileFetcher *fetcher);
+	void setTileSize(const QSize &tileSize);
+	void setCacheHint(QGeoTiledMappingManagerEngine::CacheAreas cacheHint);
 
-    QGeoTileCache *createTileCacheWithDir(const QString &cacheDirectory);
+	QGeoTileCache *createTileCacheWithDir(const QString &cacheDirectory);
 
 private:
-    QGeoTiledMappingManagerEnginePrivate *d_ptr;
+	QGeoTiledMappingManagerEnginePrivate *d_ptr;
 
-    Q_DECLARE_PRIVATE(QGeoTiledMappingManagerEngine)
-    Q_DISABLE_COPY(QGeoTiledMappingManagerEngine)
+	Q_DECLARE_PRIVATE(QGeoTiledMappingManagerEngine)
+	Q_DISABLE_COPY(QGeoTiledMappingManagerEngine)
 
-    friend class QGeoTileFetcher;
+	friend class QGeoTileFetcher;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(QGeoTiledMappingManagerEngine::CacheAreas)

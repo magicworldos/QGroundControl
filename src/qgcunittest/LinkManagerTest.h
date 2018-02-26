@@ -22,36 +22,38 @@
 
 class LinkManagerTest : public UnitTest
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    LinkManagerTest(void);
-    
+	LinkManagerTest(void);
+
 private slots:
-    void init(void);
-    void cleanup(void);
-    
-    void _add_test(void);
-    void _delete_test(void);
-    void _addSignals_test(void);
-    void _deleteSignals_test(void);
+	void init(void);
+	void cleanup(void);
+
+	void _add_test(void);
+	void _delete_test(void);
+	void _addSignals_test(void);
+	void _deleteSignals_test(void);
 
 private:
-    enum {
-        newLinkSignalIndex = 0,
-        linkDeletedSignalIndex,
-        maxSignalIndex
-    };
-    
-    enum {
-        newLinkSignalMask =     1 << newLinkSignalIndex,
-        linkDeletedSignalMask = 1 << linkDeletedSignalIndex,
-    };
+	enum
+	{
+		newLinkSignalIndex = 0,
+		linkDeletedSignalIndex,
+		maxSignalIndex
+	};
 
-    LinkManager*        _linkMgr;
-    MultiSignalSpy*     _multiSpy;
-    static const size_t _cSignals = maxSignalIndex;
-    const char*         _rgSignals[_cSignals];
+	enum
+	{
+		newLinkSignalMask =     1 << newLinkSignalIndex,
+		linkDeletedSignalMask = 1 << linkDeletedSignalIndex,
+	};
+
+	LinkManager        *_linkMgr;
+	MultiSignalSpy     *_multiSpy;
+	static const size_t _cSignals = maxSignalIndex;
+	const char         *_rgSignals[_cSignals];
 };
 
 #endif

@@ -11,12 +11,12 @@
 #include "HILDockWidget.h"
 #include "QGCHilConfiguration.h"
 
-HILDockWidget::HILDockWidget(const QString& title, QAction* action, QWidget *parent)
-    : MultiVehicleDockWidget(title, action, parent)
+HILDockWidget::HILDockWidget(const QString &title, QAction *action, QWidget *parent)
+	: MultiVehicleDockWidget(title, action, parent)
 {
-    init();
-    
-    loadSettings();
+	init();
+
+	loadSettings();
 }
 
 HILDockWidget::~HILDockWidget()
@@ -24,7 +24,7 @@ HILDockWidget::~HILDockWidget()
 
 }
 
-QWidget* HILDockWidget::_newVehicleWidget(Vehicle* vehicle, QWidget* parent)
+QWidget *HILDockWidget::_newVehicleWidget(Vehicle *vehicle, QWidget *parent)
 {
-    return new QGCHilConfiguration(vehicle, parent);
+	return new QGCHilConfiguration(vehicle, parent);
 }

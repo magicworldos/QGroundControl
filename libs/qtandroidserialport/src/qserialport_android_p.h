@@ -57,78 +57,78 @@ QT_BEGIN_NAMESPACE
 
 class QSerialPortPrivate : public QSerialPortPrivateData
 {
-    Q_DECLARE_PUBLIC(QSerialPort)
+	Q_DECLARE_PUBLIC(QSerialPort)
 
 public:
-    QSerialPortPrivate(QSerialPort *q);
+	QSerialPortPrivate(QSerialPort *q);
 
-    bool open(QIODevice::OpenMode mode);
-    void close();
+	bool open(QIODevice::OpenMode mode);
+	void close();
 
-    QSerialPort::PinoutSignals pinoutSignals();
+	QSerialPort::PinoutSignals pinoutSignals();
 
-    bool setDataTerminalReady(bool set);
-    bool setRequestToSend(bool set);
+	bool setDataTerminalReady(bool set);
+	bool setRequestToSend(bool set);
 
-    bool flush();
-    bool clear(QSerialPort::Directions directions);
+	bool flush();
+	bool clear(QSerialPort::Directions directions);
 
-    bool sendBreak(int duration);
-    bool setBreakEnabled(bool set);
+	bool sendBreak(int duration);
+	bool setBreakEnabled(bool set);
 
-    void startWriting();
+	void startWriting();
 
-    bool waitForReadyRead(int msecs);
-    bool waitForBytesWritten(int msecs);
+	bool waitForReadyRead(int msecs);
+	bool waitForBytesWritten(int msecs);
 
-    bool setBaudRate();
-    bool setBaudRate(qint32 baudRate, QSerialPort::Directions directions);
-    bool setDataBits(QSerialPort::DataBits dataBits);
-    bool setParity(QSerialPort::Parity parity);
-    bool setStopBits(QSerialPort::StopBits stopBits);
-    bool setFlowControl(QSerialPort::FlowControl flowControl);
-    bool setDataErrorPolicy(QSerialPort::DataErrorPolicy policy);
+	bool setBaudRate();
+	bool setBaudRate(qint32 baudRate, QSerialPort::Directions directions);
+	bool setDataBits(QSerialPort::DataBits dataBits);
+	bool setParity(QSerialPort::Parity parity);
+	bool setStopBits(QSerialPort::StopBits stopBits);
+	bool setFlowControl(QSerialPort::FlowControl flowControl);
+	bool setDataErrorPolicy(QSerialPort::DataErrorPolicy policy);
 
-    bool startAsyncWrite();
-    bool completeAsyncWrite();
-    void newDataArrived(char *bytesA, int lengthA);
-    void exceptionArrived(QString strA);
+	bool startAsyncWrite();
+	bool completeAsyncWrite();
+	void newDataArrived(char *bytesA, int lengthA);
+	void exceptionArrived(QString strA);
 
-    void stopReadThread();
-    void startReadThread();
-    qint64 bytesToWrite() const;
-    qint64 writeData(const char *data, qint64 maxSize);
+	void stopReadThread();
+	void startReadThread();
+	qint64 bytesToWrite() const;
+	qint64 writeData(const char *data, qint64 maxSize);
 
-    static qint32 baudRateFromSetting(qint32 setting);
-    static qint32 settingFromBaudRate(qint32 baudRate);
+	static qint32 baudRateFromSetting(qint32 setting);
+	static qint32 settingFromBaudRate(qint32 baudRate);
 
-    static QList<qint32> standardBaudRates();
+	static QList<qint32> standardBaudRates();
 
-    int descriptor;
-    bool isCustomBaudRateSupported;
+	int descriptor;
+	bool isCustomBaudRateSupported;
 
-    bool emittedBytesWritten;
+	bool emittedBytesWritten;
 
-    qint64 pendingBytesWritten;
+	qint64 pendingBytesWritten;
 
-    static void setNativeMethods(void);
+	static void setNativeMethods(void);
 
 private:
-    QIODevice::OpenMode rwMode;
-    int deviceId;
-    int jniDataBits;
-    int jniStopBits;
-    int jniParity;
-    qint64 internalWriteTimeoutMsec;
-    bool isReadStopped;
+	QIODevice::OpenMode rwMode;
+	int deviceId;
+	int jniDataBits;
+	int jniStopBits;
+	int jniParity;
+	qint64 internalWriteTimeoutMsec;
+	bool isReadStopped;
 
-    bool setParameters(int baudRateA, int dataBitsA, int stopBitsA, int parityA);
+	bool setParameters(int baudRateA, int dataBitsA, int stopBitsA, int parityA);
 
-    QSerialPort::SerialPortError decodeSystemError() const;
+	QSerialPort::SerialPortError decodeSystemError() const;
 
-    qint64 writeToPort(const char *data, qint64 maxSize);
+	qint64 writeToPort(const char *data, qint64 maxSize);
 
-    bool writeDataOneShot();
+	bool writeDataOneShot();
 };
 
 QT_END_NAMESPACE

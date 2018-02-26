@@ -27,7 +27,7 @@ namespace QGC
 quint64 groundTimeUsecs();
 /** @brief Get the current ground time in milliseconds */
 quint64 groundTimeMilliseconds();
-/** 
+/**
  * @brief Get the current ground time in fractional seconds
  * @note Precision is limited to milliseconds.
  */
@@ -41,11 +41,11 @@ const static int MAX_FLIGHT_TIME = 60 * 60 * 24 * 21;
 
 class SLEEP : public QThread
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    using QThread::sleep;
-    using QThread::msleep;
-    using QThread::usleep;
+	using QThread::sleep;
+	using QThread::msleep;
+	using QThread::usleep;
 };
 
 quint32 crc32(const quint8 *src, unsigned len, unsigned state);

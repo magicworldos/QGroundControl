@@ -56,13 +56,14 @@ extern "C" {
 /*
  * Context structure for the random number generator state.
  */
-  typedef struct {
-    unsigned int a;
-    unsigned int x;
-    unsigned int c;
-    unsigned int ah;
-    unsigned int al;
-  } SDLTest_RandomContext;
+typedef struct
+{
+	unsigned int a;
+	unsigned int x;
+	unsigned int c;
+	unsigned int ah;
+	unsigned int al;
+} SDLTest_RandomContext;
 
 
 /* --- Function prototypes */
@@ -78,8 +79,8 @@ extern "C" {
  *  \param ci         integer that defines the random sequence
  *
  */
- void SDLTest_RandomInit(SDLTest_RandomContext * rndContext, unsigned int xi,
-                  unsigned int ci);
+void SDLTest_RandomInit(SDLTest_RandomContext *rndContext, unsigned int xi,
+			unsigned int ci);
 
 /**
  *  \brief Initialize random number generator based on current system time.
@@ -87,7 +88,7 @@ extern "C" {
  *  \param rndContext     pointer to context structure
  *
  */
- void SDLTest_RandomInitTime(SDLTest_RandomContext *rndContext);
+void SDLTest_RandomInitTime(SDLTest_RandomContext *rndContext);
 
 
 /**
@@ -101,7 +102,7 @@ extern "C" {
  *  \returns A random number (32bit unsigned integer)
  *
  */
- unsigned int SDLTest_Random(SDLTest_RandomContext *rndContext);
+unsigned int SDLTest_Random(SDLTest_RandomContext *rndContext);
 
 
 /* Ends C function definitions when using C++ */

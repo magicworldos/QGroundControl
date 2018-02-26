@@ -62,18 +62,18 @@ class QGeoTileRequestManagerPrivate;
 class QGeoTileRequestManager
 {
 public:
-    explicit QGeoTileRequestManager(QGeoTiledMap *map, QGeoTiledMappingManagerEngine *engine);
-    ~QGeoTileRequestManager();
+	explicit QGeoTileRequestManager(QGeoTiledMap *map, QGeoTiledMappingManagerEngine *engine);
+	~QGeoTileRequestManager();
 
-    QList<QSharedPointer<QGeoTileTexture> > requestTiles(const QSet<QGeoTileSpec> &tiles);
+	QList<QSharedPointer<QGeoTileTexture> > requestTiles(const QSet<QGeoTileSpec> &tiles);
 
-    void tileError(const QGeoTileSpec &tile, const QString &errorString);
-    void tileFetched(const QGeoTileSpec &spec);
-    QSharedPointer<QGeoTileTexture> tileTexture(const QGeoTileSpec &spec);
+	void tileError(const QGeoTileSpec &tile, const QString &errorString);
+	void tileFetched(const QGeoTileSpec &spec);
+	QSharedPointer<QGeoTileTexture> tileTexture(const QGeoTileSpec &spec);
 
 private:
-    QScopedPointer<QGeoTileRequestManagerPrivate> d_ptr;
-    Q_DISABLE_COPY(QGeoTileRequestManager)
+	QScopedPointer<QGeoTileRequestManagerPrivate> d_ptr;
+	Q_DISABLE_COPY(QGeoTileRequestManager)
 };
 
 QT_END_NAMESPACE

@@ -48,121 +48,121 @@ class QwtRoundScaleDraw;
 
 class QWT_EXPORT QwtDial: public QwtAbstractSlider
 {
-    Q_OBJECT
+	Q_OBJECT
 
-    Q_ENUMS( Shadow Mode Direction )
+	Q_ENUMS(Shadow Mode Direction)
 
-    Q_PROPERTY( int lineWidth READ lineWidth WRITE setLineWidth )
-    Q_PROPERTY( Shadow frameShadow READ frameShadow WRITE setFrameShadow )
-    Q_PROPERTY( Mode mode READ mode WRITE setMode )
-    Q_PROPERTY( double origin READ origin WRITE setOrigin )
-    Q_PROPERTY( double minScaleArc READ minScaleArc WRITE setMinScaleArc )
-    Q_PROPERTY( double maxScaleArc READ maxScaleArc WRITE setMaxScaleArc )
+	Q_PROPERTY(int lineWidth READ lineWidth WRITE setLineWidth)
+	Q_PROPERTY(Shadow frameShadow READ frameShadow WRITE setFrameShadow)
+	Q_PROPERTY(Mode mode READ mode WRITE setMode)
+	Q_PROPERTY(double origin READ origin WRITE setOrigin)
+	Q_PROPERTY(double minScaleArc READ minScaleArc WRITE setMinScaleArc)
+	Q_PROPERTY(double maxScaleArc READ maxScaleArc WRITE setMaxScaleArc)
 
 public:
 
-    /*!
-        \brief Frame shadow
+	/*!
+	    \brief Frame shadow
 
-         Unfortunately it is not possible to use QFrame::Shadow
-         as a property of a widget that is not derived from QFrame.
-         The following enum is made for the designer only. It is safe
-         to use QFrame::Shadow instead.
-     */
-    enum Shadow
-    {
-        //! QFrame::Plain
-        Plain = QFrame::Plain,
+	     Unfortunately it is not possible to use QFrame::Shadow
+	     as a property of a widget that is not derived from QFrame.
+	     The following enum is made for the designer only. It is safe
+	     to use QFrame::Shadow instead.
+	 */
+	enum Shadow
+	{
+		//! QFrame::Plain
+		Plain = QFrame::Plain,
 
-        //! QFrame::Raised
-        Raised = QFrame::Raised,
+		//! QFrame::Raised
+		Raised = QFrame::Raised,
 
-        //! QFrame::Sunken
-        Sunken = QFrame::Sunken
-    };
+		//! QFrame::Sunken
+		Sunken = QFrame::Sunken
+	};
 
-    //! Mode controlling whether the needle or the scale is rotating
-    enum Mode
-    {
-        //! The needle is rotating
-        RotateNeedle,
+	//! Mode controlling whether the needle or the scale is rotating
+	enum Mode
+	{
+		//! The needle is rotating
+		RotateNeedle,
 
-        //! The needle is fixed, the scales are rotating
-        RotateScale
-    };
+		//! The needle is fixed, the scales are rotating
+		RotateScale
+	};
 
-    explicit QwtDial( QWidget *parent = NULL );
-    virtual ~QwtDial();
+	explicit QwtDial(QWidget *parent = NULL);
+	virtual ~QwtDial();
 
-    void setFrameShadow( Shadow );
-    Shadow frameShadow() const;
+	void setFrameShadow(Shadow);
+	Shadow frameShadow() const;
 
-    void setLineWidth( int );
-    int lineWidth() const;
+	void setLineWidth(int);
+	int lineWidth() const;
 
-    void setMode( Mode );
-    Mode mode() const;
+	void setMode(Mode);
+	Mode mode() const;
 
-    void setScaleArc( double min, double max );
+	void setScaleArc(double min, double max);
 
-    void setMinScaleArc( double min );
-    double minScaleArc() const;
+	void setMinScaleArc(double min);
+	double minScaleArc() const;
 
-    void setMaxScaleArc( double min );
-    double maxScaleArc() const;
+	void setMaxScaleArc(double min);
+	double maxScaleArc() const;
 
-    virtual void setOrigin( double );
-    double origin() const;
+	virtual void setOrigin(double);
+	double origin() const;
 
-    void setNeedle( QwtDialNeedle * );
-    const QwtDialNeedle *needle() const;
-    QwtDialNeedle *needle();
+	void setNeedle(QwtDialNeedle *);
+	const QwtDialNeedle *needle() const;
+	QwtDialNeedle *needle();
 
-    QRect boundingRect() const;
-    QRect innerRect() const;
+	QRect boundingRect() const;
+	QRect innerRect() const;
 
-    virtual QRect scaleInnerRect() const;
+	virtual QRect scaleInnerRect() const;
 
-    virtual QSize sizeHint() const;
-    virtual QSize minimumSizeHint() const;
+	virtual QSize sizeHint() const;
+	virtual QSize minimumSizeHint() const;
 
-    void setScaleDraw( QwtRoundScaleDraw * );
+	void setScaleDraw(QwtRoundScaleDraw *);
 
-    QwtRoundScaleDraw *scaleDraw();
-    const QwtRoundScaleDraw *scaleDraw() const;
+	QwtRoundScaleDraw *scaleDraw();
+	const QwtRoundScaleDraw *scaleDraw() const;
 
 protected:
-    virtual void wheelEvent( QWheelEvent * );
-    virtual void paintEvent( QPaintEvent * );
-    virtual void changeEvent( QEvent * );
+	virtual void wheelEvent(QWheelEvent *);
+	virtual void paintEvent(QPaintEvent *);
+	virtual void changeEvent(QEvent *);
 
-    virtual void drawFrame( QPainter *p );
-    virtual void drawContents( QPainter * ) const;
-    virtual void drawFocusIndicator( QPainter * ) const;
+	virtual void drawFrame(QPainter *p);
+	virtual void drawContents(QPainter *) const;
+	virtual void drawFocusIndicator(QPainter *) const;
 
-    void invalidateCache();
+	void invalidateCache();
 
-    virtual void drawScale( QPainter *, 
-        const QPointF &center, double radius ) const;
+	virtual void drawScale(QPainter *,
+			       const QPointF &center, double radius) const;
 
-    virtual void drawScaleContents( QPainter *painter, 
-        const QPointF &center, double radius ) const;
+	virtual void drawScaleContents(QPainter *painter,
+				       const QPointF &center, double radius) const;
 
-    virtual void drawNeedle( QPainter *, const QPointF &,
-        double radius, double direction, QPalette::ColorGroup ) const;
+	virtual void drawNeedle(QPainter *, const QPointF &,
+				double radius, double direction, QPalette::ColorGroup) const;
 
-    virtual double scrolledTo( const QPoint & ) const;
-    virtual bool isScrollPosition( const QPoint & ) const;
+	virtual double scrolledTo(const QPoint &) const;
+	virtual bool isScrollPosition(const QPoint &) const;
 
-    virtual void sliderChange();
-    virtual void scaleChange();
+	virtual void sliderChange();
+	virtual void scaleChange();
 
 private:
-    void setAngleRange( double angle, double span );
-    void drawNeedle( QPainter * ) const;
+	void setAngleRange(double angle, double span);
+	void drawNeedle(QPainter *) const;
 
-    class PrivateData;
-    PrivateData *d_data;
+	class PrivateData;
+	PrivateData *d_data;
 };
 
 #endif

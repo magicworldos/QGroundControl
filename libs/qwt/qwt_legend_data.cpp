@@ -28,9 +28,9 @@ QwtLegendData::~QwtLegendData()
   \param map Values
   \sa values()
  */
-void QwtLegendData::setValues( const QMap<int, QVariant> &map )
+void QwtLegendData::setValues(const QMap<int, QVariant> &map)
 {
-    d_map = map;
+	d_map = map;
 }
 
 /*!
@@ -39,16 +39,16 @@ void QwtLegendData::setValues( const QMap<int, QVariant> &map )
  */
 const QMap<int, QVariant> &QwtLegendData::values() const
 {
-    return d_map;
+	return d_map;
 }
 
 /*!
   \param role Attribute role
   \return True, when the internal map has an entry for role
  */
-bool QwtLegendData::hasRole( int role ) const
+bool QwtLegendData::hasRole(int role) const
 {
-    return d_map.contains( role );
+	return d_map.contains(role);
 }
 
 /*!
@@ -59,71 +59,77 @@ bool QwtLegendData::hasRole( int role ) const
 
   \sa value()
  */
-void QwtLegendData::setValue( int role, const QVariant &data )
+void QwtLegendData::setValue(int role, const QVariant &data)
 {
-    d_map[role] = data;
+	d_map[role] = data;
 }
 
 /*!
   \param role Attribute role
   \return Attribute value for a specific role
  */
-QVariant QwtLegendData::value( int role ) const
+QVariant QwtLegendData::value(int role) const
 {
-    if ( !d_map.contains( role ) )
-        return QVariant();
+	if (!d_map.contains(role))
+	{
+		return QVariant();
+	}
 
-    return d_map[role];
+	return d_map[role];
 }
 
 //! \return True, when the internal map is empty
 bool QwtLegendData::isValid() const
 {
-    return !d_map.isEmpty();
+	return !d_map.isEmpty();
 }
 
 //! \return Value of the TitleRole attribute
 QwtText QwtLegendData::title() const
 {
-    QwtText text;
+	QwtText text;
 
-    const QVariant titleValue = value( QwtLegendData::TitleRole );
-    if ( titleValue.canConvert<QwtText>() )
-    {
-        text = qvariant_cast<QwtText>( titleValue );
-    }
-    else if ( titleValue.canConvert<QString>() )
-    {
-        text.setText( qvariant_cast<QString>( titleValue ) );
-    }
+	const QVariant titleValue = value(QwtLegendData::TitleRole);
 
-    return text;
+	if (titleValue.canConvert<QwtText>())
+	{
+		text = qvariant_cast<QwtText>(titleValue);
+	}
+
+	else if (titleValue.canConvert<QString>())
+	{
+		text.setText(qvariant_cast<QString>(titleValue));
+	}
+
+	return text;
 }
 
 //! \return Value of the IconRole attribute
 QwtGraphic QwtLegendData::icon() const
 {
-    const QVariant iconValue = value( QwtLegendData::IconRole );
+	const QVariant iconValue = value(QwtLegendData::IconRole);
 
-    QwtGraphic graphic;
-    if ( iconValue.canConvert<QwtGraphic>() )
-    {
-        graphic = qvariant_cast<QwtGraphic>( iconValue );
-    }
+	QwtGraphic graphic;
 
-    return graphic;
+	if (iconValue.canConvert<QwtGraphic>())
+	{
+		graphic = qvariant_cast<QwtGraphic>(iconValue);
+	}
+
+	return graphic;
 }
 
 //! \return Value of the ModeRole attribute
 QwtLegendData::Mode QwtLegendData::mode() const
 {
-    const QVariant modeValue = value( QwtLegendData::ModeRole );
-    if ( modeValue.canConvert<int>() )
-    {
-        const int mode = qvariant_cast<int>( modeValue );
-        return static_cast<QwtLegendData::Mode>( mode );
-    }
-    
-    return QwtLegendData::ReadOnly;
+	const QVariant modeValue = value(QwtLegendData::ModeRole);
+
+	if (modeValue.canConvert<int>())
+	{
+		const int mode = qvariant_cast<int>(modeValue);
+		return static_cast<QwtLegendData::Mode>(mode);
+	}
+
+	return QwtLegendData::ReadOnly;
 }
 

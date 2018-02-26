@@ -19,26 +19,26 @@
 /// @brief A SettingsFact is Fact which holds a QSettings value.
 class SettingsFact : public Fact
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 public:
-    SettingsFact(QObject* parent = NULL);
-    SettingsFact(QString settingGroup, FactMetaData* metaData, QObject* parent = NULL);
-    SettingsFact(const SettingsFact& other, QObject* parent = NULL);
+	SettingsFact(QObject *parent = NULL);
+	SettingsFact(QString settingGroup, FactMetaData *metaData, QObject *parent = NULL);
+	SettingsFact(const SettingsFact &other, QObject *parent = NULL);
 
-    const SettingsFact& operator=(const SettingsFact& other);
+	const SettingsFact &operator=(const SettingsFact &other);
 
-    Q_PROPERTY(bool visible MEMBER _visible CONSTANT)
+	Q_PROPERTY(bool visible MEMBER _visible CONSTANT)
 
-    // Must be called before any references to fact
-    void setVisible(bool visible) { _visible = visible; }
+	// Must be called before any references to fact
+	void setVisible(bool visible) { _visible = visible; }
 
 private slots:
-    void _rawValueChanged(QVariant value);
+	void _rawValueChanged(QVariant value);
 
 private:
-    QString _settingGroup;
-    bool    _visible;
+	QString _settingGroup;
+	bool    _visible;
 };
 
 #endif

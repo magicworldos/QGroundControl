@@ -59,25 +59,25 @@ template <class Key, class T>
 class QCache3QDefaultEvictionPolicy
 {
 protected:
-    /* called just before a key/value pair is about to be _evicted_ */
-    void aboutToBeEvicted(const Key &key, QSharedPointer<T> obj);
-    /* called just before a key/value pair is about to be removed, by
-     * clear(), remove() or by the destructor (which calls clear) */
-    void aboutToBeRemoved(const Key &key, QSharedPointer<T> obj);
+	/* called just before a key/value pair is about to be _evicted_ */
+	void aboutToBeEvicted(const Key &key, QSharedPointer<T> obj);
+	/* called just before a key/value pair is about to be removed, by
+	 * clear(), remove() or by the destructor (which calls clear) */
+	void aboutToBeRemoved(const Key &key, QSharedPointer<T> obj);
 };
 
 template <class Key, class T>
-void QCache3QDefaultEvictionPolicy<Key,T>::aboutToBeEvicted(const Key &key, QSharedPointer<T> obj)
+void QCache3QDefaultEvictionPolicy<Key, T>::aboutToBeEvicted(const Key &key, QSharedPointer<T> obj)
 {
-    Q_UNUSED(key);
-    Q_UNUSED(obj);
+	Q_UNUSED(key);
+	Q_UNUSED(obj);
 }
 
 template <class Key, class T>
-void QCache3QDefaultEvictionPolicy<Key,T>::aboutToBeRemoved(const Key &key, QSharedPointer<T> obj)
+void QCache3QDefaultEvictionPolicy<Key, T>::aboutToBeRemoved(const Key &key, QSharedPointer<T> obj)
 {
-    Q_UNUSED(key);
-    Q_UNUSED(obj);
+	Q_UNUSED(key);
+	Q_UNUSED(obj);
 }
 
 /*
@@ -107,363 +107,443 @@ void QCache3QDefaultEvictionPolicy<Key,T>::aboutToBeRemoved(const Key &key, QSha
  *  * promoteAt = minimum popularity necessary to promote a node from
  *                "newbie" to "regular"
  */
-template <class Key, class T, class EvPolicy = QCache3QDefaultEvictionPolicy<Key,T> >
+template <class Key, class T, class EvPolicy = QCache3QDefaultEvictionPolicy<Key, T> >
 class QCache3Q : public EvPolicy
 {
 private:
-    class Queue;
-    class Node
-    {
-    public:
-        inline explicit Node() : q(0), n(0), p(0), pop(0), cost(0) {}
+	class Queue;
+	class Node
+	{
+	public:
+		inline explicit Node() : q(0), n(0), p(0), pop(0), cost(0) {}
 
-        Queue *q;
-        Node *n;
-        Node *p;
-        Key k;
-        QSharedPointer<T> v;
-        quint64 pop;                // popularity, incremented each ping
-        int cost;
-    };
+		Queue *q;
+		Node *n;
+		Node *p;
+		Key k;
+		QSharedPointer<T> v;
+		quint64 pop;                // popularity, incremented each ping
+		int cost;
+	};
 
-    class Queue
-    {
-    public:
-        inline explicit Queue() : f(0), l(0), cost(0), pop(0), size(0) {}
+	class Queue
+	{
+	public:
+		inline explicit Queue() : f(0), l(0), cost(0), pop(0), size(0) {}
 
-        Node *f;
-        Node *l;
-        int cost;               // total cost of nodes on the queue
-        quint64 pop;            // sum of popularity values on the queue
-        int size;               // size of the queue
-    };
+		Node *f;
+		Node *l;
+		int cost;               // total cost of nodes on the queue
+		quint64 pop;            // sum of popularity values on the queue
+		int size;               // size of the queue
+	};
 
-    Queue *q1_;          // "newbies": seen only once, evicted LRA (least-recently-added)
-    Queue *q2_;          // regular nodes, promoted from newbies, evicted LRU
-    Queue *q3_;          // "hobos": evicted from q2 but were very popular (above mean)
-    Queue *q1_evicted_;  // ghosts of recently evicted newbies and regulars
-    QHash<Key, Node *> lookup_;
+	Queue *q1_;          // "newbies": seen only once, evicted LRA (least-recently-added)
+	Queue *q2_;          // regular nodes, promoted from newbies, evicted LRU
+	Queue *q3_;          // "hobos": evicted from q2 but were very popular (above mean)
+	Queue *q1_evicted_;  // ghosts of recently evicted newbies and regulars
+	QHash<Key, Node *> lookup_;
 
 public:
-    explicit QCache3Q(int maxCost = 100, int minRecent = -1, int maxOldPopular = -1);
-    inline ~QCache3Q() { clear(); delete q1_; delete q2_; delete q3_; delete q1_evicted_; }
+	explicit QCache3Q(int maxCost = 100, int minRecent = -1, int maxOldPopular = -1);
+	inline ~QCache3Q() { clear(); delete q1_; delete q2_; delete q3_; delete q1_evicted_; }
 
-    inline int maxCost() const { return maxCost_; }
-    void setMaxCost(int maxCost, int minRecent = -1, int maxOldPopular = -1);
+	inline int maxCost() const { return maxCost_; }
+	void setMaxCost(int maxCost, int minRecent = -1, int maxOldPopular = -1);
 
-    inline int promoteAt() const { return promote_; }
-    inline void setPromoteAt(int p) { promote_ = p; }
+	inline int promoteAt() const { return promote_; }
+	inline void setPromoteAt(int p) { promote_ = p; }
 
-    inline int totalCost() const { return q1_->cost + q2_->cost + q3_->cost; }
+	inline int totalCost() const { return q1_->cost + q2_->cost + q3_->cost; }
 
-    void clear();
-    bool insert(const Key &key, QSharedPointer<T> object, int cost = 1);
-    QSharedPointer<T> object(const Key &key) const;
-    QSharedPointer<T> operator[](const Key &key) const;
+	void clear();
+	bool insert(const Key &key, QSharedPointer<T> object, int cost = 1);
+	QSharedPointer<T> object(const Key &key) const;
+	QSharedPointer<T> operator[](const Key &key) const;
 
-    void remove(const Key &key);
+	void remove(const Key &key);
 
-    void printStats();
+	void printStats();
 
-    // Copy data directly into a queue. Designed for single use after construction
-    void deserializeQueue(int queueNumber, const QList<Key> &keys,
-                          const QList<QSharedPointer<T> > &values, const QList<int> &costs);
-    // Copy data from specific queue into list
-    void serializeQueue(int queueNumber, QList<QSharedPointer<T> > &buffer);
-
-private:
-    int maxCost_, minRecent_, maxOldPopular_;
-    int hitCount_, missCount_, promote_;
-
-    void rebalance();
-    void unlink(Node *n);
-    void link_front(Node *n, Queue *q);
+	// Copy data directly into a queue. Designed for single use after construction
+	void deserializeQueue(int queueNumber, const QList<Key> &keys,
+			      const QList<QSharedPointer<T> > &values, const QList<int> &costs);
+	// Copy data from specific queue into list
+	void serializeQueue(int queueNumber, QList<QSharedPointer<T> > &buffer);
 
 private:
-    // make these private so they can't be used
-    inline QCache3Q(const QCache3Q<Key,T,EvPolicy> &) {}
-    inline QCache3Q<Key,T,EvPolicy> &operator=(const QCache3Q<Key,T,EvPolicy> &) {}
+	int maxCost_, minRecent_, maxOldPopular_;
+	int hitCount_, missCount_, promote_;
+
+	void rebalance();
+	void unlink(Node *n);
+	void link_front(Node *n, Queue *q);
+
+private:
+	// make these private so they can't be used
+	inline QCache3Q(const QCache3Q<Key, T, EvPolicy> &) {}
+	inline QCache3Q<Key, T, EvPolicy> &operator=(const QCache3Q<Key, T, EvPolicy> &) {}
 };
 
 template <class Key, class T, class EvPolicy>
-void QCache3Q<Key,T,EvPolicy>::printStats()
+void QCache3Q<Key, T, EvPolicy>::printStats()
 {
-    qDebug("\n=== cache %p ===", this);
-    qDebug("hits: %d (%.2f%%)\tmisses: %d\tfill: %.2f%%", hitCount_,
-           100.0 * float(hitCount_) / (float(hitCount_ + missCount_)),
-           missCount_,
-           100.0 * float(totalCost()) / float(maxCost()));
-    qDebug("q1g: size=%d, pop=%llu", q1_evicted_->size, q1_evicted_->pop);
-    qDebug("q1:  cost=%d, size=%d, pop=%llu", q1_->cost, q1_->size, q1_->pop);
-    qDebug("q2:  cost=%d, size=%d, pop=%llu", q2_->cost, q2_->size, q2_->pop);
-    qDebug("q3:  cost=%d, size=%d, pop=%llu", q3_->cost, q3_->size, q3_->pop);
+	qDebug("\n=== cache %p ===", this);
+	qDebug("hits: %d (%.2f%%)\tmisses: %d\tfill: %.2f%%", hitCount_,
+	       100.0 * float(hitCount_) / (float(hitCount_ + missCount_)),
+	       missCount_,
+	       100.0 * float(totalCost()) / float(maxCost()));
+	qDebug("q1g: size=%d, pop=%llu", q1_evicted_->size, q1_evicted_->pop);
+	qDebug("q1:  cost=%d, size=%d, pop=%llu", q1_->cost, q1_->size, q1_->pop);
+	qDebug("q2:  cost=%d, size=%d, pop=%llu", q2_->cost, q2_->size, q2_->pop);
+	qDebug("q3:  cost=%d, size=%d, pop=%llu", q3_->cost, q3_->size, q3_->pop);
 }
 
 template <class Key, class T, class EvPolicy>
-QCache3Q<Key,T,EvPolicy>::QCache3Q(int maxCost, int minRecent, int maxOldPopular)
-    : q1_(new Queue), q2_(new Queue), q3_(new Queue), q1_evicted_(new Queue),
-      maxCost_(maxCost), minRecent_(minRecent), maxOldPopular_(maxOldPopular),
-      hitCount_(0), missCount_(0), promote_(0)
+QCache3Q<Key, T, EvPolicy>::QCache3Q(int maxCost, int minRecent, int maxOldPopular)
+	: q1_(new Queue), q2_(new Queue), q3_(new Queue), q1_evicted_(new Queue),
+	  maxCost_(maxCost), minRecent_(minRecent), maxOldPopular_(maxOldPopular),
+	  hitCount_(0), missCount_(0), promote_(0)
 {
-    if (minRecent_ < 0)
-        minRecent_ = maxCost_ / 3;
-    if (maxOldPopular_ < 0)
-        maxOldPopular_ = maxCost_ / 5;
+	if (minRecent_ < 0)
+	{
+		minRecent_ = maxCost_ / 3;
+	}
+
+	if (maxOldPopular_ < 0)
+	{
+		maxOldPopular_ = maxCost_ / 5;
+	}
 }
 
 template <class Key, class T, class EvPolicy>
-void QCache3Q<Key,T,EvPolicy>::serializeQueue(int queueNumber, QList<QSharedPointer<T> > &buffer)
+void QCache3Q<Key, T, EvPolicy>::serializeQueue(int queueNumber, QList<QSharedPointer<T> > &buffer)
 {
-    Q_ASSERT(queueNumber >= 1 && queueNumber <= 4);
-    Queue *queue = queueNumber == 1 ? q1_ :
-                   queueNumber == 2 ? q2_ :
-                   queueNumber == 3 ? q3_ :
-                                      q1_evicted_;
-    for (Node *node = queue->f; node; node = node->n)
-        buffer.append(node->v);
+	Q_ASSERT(queueNumber >= 1 && queueNumber <= 4);
+	Queue *queue = queueNumber == 1 ? q1_ :
+		       queueNumber == 2 ? q2_ :
+		       queueNumber == 3 ? q3_ :
+		       q1_evicted_;
+
+	for (Node *node = queue->f; node; node = node->n)
+	{
+		buffer.append(node->v);
+	}
 }
 
 template <class Key, class T, class EvPolicy>
-void QCache3Q<Key,T,EvPolicy>::deserializeQueue(int queueNumber, const QList<Key> &keys,
-                       const QList<QSharedPointer<T> > &values, const QList<int> &costs)
+void QCache3Q<Key, T, EvPolicy>::deserializeQueue(int queueNumber, const QList<Key> &keys,
+		const QList<QSharedPointer<T> > &values, const QList<int> &costs)
 {
-    Q_ASSERT(queueNumber >= 1 && queueNumber <= 4);
-    int bufferSize = keys.size();
-    if (bufferSize == 0)
-        return;
-    clear();
-    Queue *queue = queueNumber == 1 ? q1_ :
-                   queueNumber == 2 ? q2_ :
-                   queueNumber == 3 ? q3_ :
-                                      q1_evicted_;
-    for (int i = 0; i<bufferSize; ++i) {
-        Node *node = new Node;
-        node->v = values[i];
-        node->k = keys[i];
-        node->cost = costs[i];
-        link_front(node, queue);
-        lookup_[keys[i]] = node;
-    }
+	Q_ASSERT(queueNumber >= 1 && queueNumber <= 4);
+	int bufferSize = keys.size();
+
+	if (bufferSize == 0)
+	{
+		return;
+	}
+
+	clear();
+	Queue *queue = queueNumber == 1 ? q1_ :
+		       queueNumber == 2 ? q2_ :
+		       queueNumber == 3 ? q3_ :
+		       q1_evicted_;
+
+	for (int i = 0; i < bufferSize; ++i)
+	{
+		Node *node = new Node;
+		node->v = values[i];
+		node->k = keys[i];
+		node->cost = costs[i];
+		link_front(node, queue);
+		lookup_[keys[i]] = node;
+	}
 }
 
 
 template <class Key, class T, class EvPolicy>
-inline void QCache3Q<Key,T,EvPolicy>::setMaxCost(int maxCost, int minRecent, int maxOldPopular)
+inline void QCache3Q<Key, T, EvPolicy>::setMaxCost(int maxCost, int minRecent, int maxOldPopular)
 {
-    maxCost_ = maxCost;
-    minRecent_ = minRecent;
-    maxOldPopular_ = maxOldPopular;
-    if (minRecent_ < 0)
-        minRecent_ = maxCost_ / 3;
-    if (maxOldPopular_ < 0)
-        maxOldPopular_ = maxCost_ / 5;
-    rebalance();
+	maxCost_ = maxCost;
+	minRecent_ = minRecent;
+	maxOldPopular_ = maxOldPopular;
+
+	if (minRecent_ < 0)
+	{
+		minRecent_ = maxCost_ / 3;
+	}
+
+	if (maxOldPopular_ < 0)
+	{
+		maxOldPopular_ = maxCost_ / 5;
+	}
+
+	rebalance();
 }
 
 template <class Key, class T, class EvPolicy>
-bool QCache3Q<Key,T,EvPolicy>::insert(const Key &key, QSharedPointer<T> object, int cost)
+bool QCache3Q<Key, T, EvPolicy>::insert(const Key &key, QSharedPointer<T> object, int cost)
 {
-    if (cost > maxCost_) {
-        return false;
-    }
+	if (cost > maxCost_)
+	{
+		return false;
+	}
 
-    if (lookup_.contains(key)) {
-        Node *n = lookup_[key];
-        n->v = object;
-        n->q->cost -= n->cost;
-        n->cost = cost;
-        n->q->cost += cost;
+	if (lookup_.contains(key))
+	{
+		Node *n = lookup_[key];
+		n->v = object;
+		n->q->cost -= n->cost;
+		n->cost = cost;
+		n->q->cost += cost;
 
-        if (n->q == q1_evicted_) {
-            if (n->pop > (uint)promote_) {
-                unlink(n);
-                link_front(n, q2_);
-                rebalance();
-            }
-        } else if (n->q != q1_) {
-            Queue *q = n->q;
-            unlink(n);
-            link_front(n, q);
-            rebalance();
-        }
+		if (n->q == q1_evicted_)
+		{
+			if (n->pop > (uint)promote_)
+			{
+				unlink(n);
+				link_front(n, q2_);
+				rebalance();
+			}
+		}
 
-        return true;
-    }
+		else if (n->q != q1_)
+		{
+			Queue *q = n->q;
+			unlink(n);
+			link_front(n, q);
+			rebalance();
+		}
 
-    Node *n = new Node;
-    n->v = object;
-    n->k = key;
-    n->cost = cost;
-    link_front(n, q1_);
-    lookup_[key] = n;
+		return true;
+	}
 
-    rebalance();
+	Node *n = new Node;
+	n->v = object;
+	n->k = key;
+	n->cost = cost;
+	link_front(n, q1_);
+	lookup_[key] = n;
 
-    return true;
+	rebalance();
+
+	return true;
 }
 
 template <class Key, class T, class EvPolicy>
-void QCache3Q<Key,T,EvPolicy>::clear()
+void QCache3Q<Key, T, EvPolicy>::clear()
 {
-    while (q1_evicted_->f) {
-        Node *n = q1_evicted_->f;
-        unlink(n);
-        delete n;
-    }
+	while (q1_evicted_->f)
+	{
+		Node *n = q1_evicted_->f;
+		unlink(n);
+		delete n;
+	}
 
-    while (q1_->f) {
-        Node *n = q1_->f;
-        unlink(n);
-        EvPolicy::aboutToBeRemoved(n->k, n->v);
-        delete n;
-    }
+	while (q1_->f)
+	{
+		Node *n = q1_->f;
+		unlink(n);
+		EvPolicy::aboutToBeRemoved(n->k, n->v);
+		delete n;
+	}
 
-    while (q2_->f) {
-        Node *n = q2_->f;
-        unlink(n);
-        EvPolicy::aboutToBeRemoved(n->k, n->v);
-        delete n;
-    }
+	while (q2_->f)
+	{
+		Node *n = q2_->f;
+		unlink(n);
+		EvPolicy::aboutToBeRemoved(n->k, n->v);
+		delete n;
+	}
 
-    while (q3_->f) {
-        Node *n = q3_->f;
-        unlink(n);
-        EvPolicy::aboutToBeRemoved(n->k, n->v);
-        delete n;
-    }
+	while (q3_->f)
+	{
+		Node *n = q3_->f;
+		unlink(n);
+		EvPolicy::aboutToBeRemoved(n->k, n->v);
+		delete n;
+	}
 
-    lookup_.clear();
+	lookup_.clear();
 }
 
 template <class Key, class T, class EvPolicy>
-void QCache3Q<Key,T,EvPolicy>::unlink(Node *n)
+void QCache3Q<Key, T, EvPolicy>::unlink(Node *n)
 {
-    if (n->n)
-        n->n->p = n->p;
-    if (n->p)
-        n->p->n = n->n;
-    if (n->q->f == n)
-        n->q->f = n->n;
-    if (n->q->l == n)
-        n->q->l = n->p;
-    n->n = 0;
-    n->p = 0;
-    n->q->pop -= n->pop;
-    n->q->cost -= n->cost;
-    n->q->size--;
-    n->q = 0;
+	if (n->n)
+	{
+		n->n->p = n->p;
+	}
+
+	if (n->p)
+	{
+		n->p->n = n->n;
+	}
+
+	if (n->q->f == n)
+	{
+		n->q->f = n->n;
+	}
+
+	if (n->q->l == n)
+	{
+		n->q->l = n->p;
+	}
+
+	n->n = 0;
+	n->p = 0;
+	n->q->pop -= n->pop;
+	n->q->cost -= n->cost;
+	n->q->size--;
+	n->q = 0;
 }
 
 template <class Key, class T, class EvPolicy>
-void QCache3Q<Key,T,EvPolicy>::link_front(Node *n, Queue *q)
+void QCache3Q<Key, T, EvPolicy>::link_front(Node *n, Queue *q)
 {
-    n->n = q->f;
-    n->p = 0;
-    n->q = q;
-    if (q->f)
-        q->f->p = n;
-    q->f = n;
-    if (!q->l)
-        q->l = n;
+	n->n = q->f;
+	n->p = 0;
+	n->q = q;
 
-    q->pop += n->pop;
-    q->cost += n->cost;
-    q->size++;
+	if (q->f)
+	{
+		q->f->p = n;
+	}
+
+	q->f = n;
+
+	if (!q->l)
+	{
+		q->l = n;
+	}
+
+	q->pop += n->pop;
+	q->cost += n->cost;
+	q->size++;
 }
 
 template <class Key, class T, class EvPolicy>
-void QCache3Q<Key,T,EvPolicy>::rebalance()
+void QCache3Q<Key, T, EvPolicy>::rebalance()
 {
-    while (q1_evicted_->size > (q1_->size + q2_->size + q3_->size) * 4) {
-        Node *n = q1_evicted_->l;
-        unlink(n);
-        lookup_.remove(n->k);
-        delete n;
-    }
+	while (q1_evicted_->size > (q1_->size + q2_->size + q3_->size) * 4)
+	{
+		Node *n = q1_evicted_->l;
+		unlink(n);
+		lookup_.remove(n->k);
+		delete n;
+	}
 
-    while ((q1_->cost + q2_->cost + q3_->cost) > maxCost_) {
-        if (q3_->cost > maxOldPopular_) {
-            Node *n = q3_->l;
-            unlink(n);
-            EvPolicy::aboutToBeEvicted(n->k, n->v);
-            lookup_.remove(n->k);
-            delete n;
-        } else if (q1_->cost > minRecent_) {
-            Node *n = q1_->l;
-            unlink(n);
-            EvPolicy::aboutToBeEvicted(n->k, n->v);
-            n->v.clear();
-            n->cost = 0;
-            link_front(n, q1_evicted_);
-        } else {
-            Node *n = q2_->l;
-            unlink(n);
-            if (n->pop > (q2_->pop / q2_->size)) {
-                link_front(n, q3_);
-            } else {
-                EvPolicy::aboutToBeEvicted(n->k, n->v);
-                n->v.clear();
-                n->cost = 0;
-                link_front(n, q1_evicted_);
-            }
-        }
-    }
+	while ((q1_->cost + q2_->cost + q3_->cost) > maxCost_)
+	{
+		if (q3_->cost > maxOldPopular_)
+		{
+			Node *n = q3_->l;
+			unlink(n);
+			EvPolicy::aboutToBeEvicted(n->k, n->v);
+			lookup_.remove(n->k);
+			delete n;
+		}
+
+		else if (q1_->cost > minRecent_)
+		{
+			Node *n = q1_->l;
+			unlink(n);
+			EvPolicy::aboutToBeEvicted(n->k, n->v);
+			n->v.clear();
+			n->cost = 0;
+			link_front(n, q1_evicted_);
+		}
+
+		else
+		{
+			Node *n = q2_->l;
+			unlink(n);
+
+			if (n->pop > (q2_->pop / q2_->size))
+			{
+				link_front(n, q3_);
+			}
+
+			else
+			{
+				EvPolicy::aboutToBeEvicted(n->k, n->v);
+				n->v.clear();
+				n->cost = 0;
+				link_front(n, q1_evicted_);
+			}
+		}
+	}
 }
 
 template <class Key, class T, class EvPolicy>
-void QCache3Q<Key,T,EvPolicy>::remove(const Key &key)
+void QCache3Q<Key, T, EvPolicy>::remove(const Key &key)
 {
-    if (!lookup_.contains(key)) {
-        return;
-    }
-    Node *n = lookup_[key];
-    unlink(n);
-    if (n->q != q1_evicted_)
-        EvPolicy::aboutToBeRemoved(n->k, n->v);
-    lookup_.remove(key);
-    delete n;
+	if (!lookup_.contains(key))
+	{
+		return;
+	}
+
+	Node *n = lookup_[key];
+	unlink(n);
+
+	if (n->q != q1_evicted_)
+	{
+		EvPolicy::aboutToBeRemoved(n->k, n->v);
+	}
+
+	lookup_.remove(key);
+	delete n;
 }
 
 template <class Key, class T, class EvPolicy>
-QSharedPointer<T> QCache3Q<Key,T,EvPolicy>::object(const Key &key) const
+QSharedPointer<T> QCache3Q<Key, T, EvPolicy>::object(const Key &key) const
 {
-    if (!lookup_.contains(key)) {
-        const_cast<QCache3Q<Key,T,EvPolicy> *>(this)->missCount_++;
-        return QSharedPointer<T>(0);
-    }
+	if (!lookup_.contains(key))
+	{
+		const_cast<QCache3Q<Key, T, EvPolicy> *>(this)->missCount_++;
+		return QSharedPointer<T>(0);
+	}
 
-    QCache3Q<Key,T,EvPolicy> *me = const_cast<QCache3Q<Key,T,EvPolicy> *>(this);
+	QCache3Q<Key, T, EvPolicy> *me = const_cast<QCache3Q<Key, T, EvPolicy> *>(this);
 
-    Node *n = me->lookup_[key];
-    n->pop++;
-    n->q->pop++;
+	Node *n = me->lookup_[key];
+	n->pop++;
+	n->q->pop++;
 
-    if (n->q == q1_) {
-        me->hitCount_++;
+	if (n->q == q1_)
+	{
+		me->hitCount_++;
 
-        if (n->pop > (quint64)promote_) {
-            me->unlink(n);
-            me->link_front(n, q2_);
-            me->rebalance();
-        }
-    } else if (n->q != q1_evicted_) {
-        me->hitCount_++;
+		if (n->pop > (quint64)promote_)
+		{
+			me->unlink(n);
+			me->link_front(n, q2_);
+			me->rebalance();
+		}
+	}
 
-        Queue *q = n->q;
-        me->unlink(n);
-        me->link_front(n, q);
-        me->rebalance();
-    } else {
-        me->missCount_++;
-    }
+	else if (n->q != q1_evicted_)
+	{
+		me->hitCount_++;
 
-    return n->v;
+		Queue *q = n->q;
+		me->unlink(n);
+		me->link_front(n, q);
+		me->rebalance();
+	}
+
+	else
+	{
+		me->missCount_++;
+	}
+
+	return n->v;
 }
 
 template <class Key, class T, class EvPolicy>
-inline QSharedPointer<T> QCache3Q<Key,T,EvPolicy>::operator[](const Key &key) const
+inline QSharedPointer<T> QCache3Q<Key, T, EvPolicy>::operator[](const Key &key) const
 {
-    return object(key);
+	return object(key);
 }
 
 QT_END_NAMESPACE

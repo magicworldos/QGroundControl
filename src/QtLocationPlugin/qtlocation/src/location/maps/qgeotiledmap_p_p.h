@@ -68,33 +68,33 @@ class QQuickWindow;
 
 class QGeoTiledMapPrivate : public QGeoMapPrivate
 {
-    Q_DECLARE_PUBLIC(QGeoTiledMap)
+	Q_DECLARE_PUBLIC(QGeoTiledMap)
 public:
-    QGeoTiledMapPrivate(QGeoTiledMappingManagerEngine *engine);
-    ~QGeoTiledMapPrivate();
+	QGeoTiledMapPrivate(QGeoTiledMappingManagerEngine *engine);
+	~QGeoTiledMapPrivate();
 
-    QSGNode *updateSceneGraph(QSGNode *node, QQuickWindow *window);
+	QSGNode *updateSceneGraph(QSGNode *node, QQuickWindow *window);
 
-    void changeMapVersion(int mapVersion);
-    void resized(int width, int height);
+	void changeMapVersion(int mapVersion);
+	void resized(int width, int height);
 
-    QGeoCoordinate itemPositionToCoordinate(const QDoubleVector2D &pos) const;
-    QDoubleVector2D coordinateToItemPosition(const QGeoCoordinate &coordinate) const;
+	QGeoCoordinate itemPositionToCoordinate(const QDoubleVector2D &pos) const;
+	QDoubleVector2D coordinateToItemPosition(const QGeoCoordinate &coordinate) const;
 
-    void updateTile(const QGeoTileSpec &spec);
-    void prefetchTiles();
+	void updateTile(const QGeoTileSpec &spec);
+	void prefetchTiles();
 
 protected:
-    void mapResized(int width, int height) Q_DECL_OVERRIDE;
-    void changeCameraData(const QGeoCameraData &oldCameraData) Q_DECL_OVERRIDE;
-    void changeActiveMapType(const QGeoMapType mapType) Q_DECL_OVERRIDE;
+	void mapResized(int width, int height) Q_DECL_OVERRIDE;
+	void changeCameraData(const QGeoCameraData &oldCameraData) Q_DECL_OVERRIDE;
+	void changeActiveMapType(const QGeoMapType mapType) Q_DECL_OVERRIDE;
 
 private:
-    QGeoTileCache *m_cache;
-    QGeoCameraTiles *m_cameraTiles;
-    QGeoMapScene *m_mapScene;
-    QGeoTileRequestManager *m_tileRequests;
-    Q_DISABLE_COPY(QGeoTiledMapPrivate)
+	QGeoTileCache *m_cache;
+	QGeoCameraTiles *m_cameraTiles;
+	QGeoMapScene *m_mapScene;
+	QGeoTileRequestManager *m_tileRequests;
+	Q_DISABLE_COPY(QGeoTiledMapPrivate)
 };
 
 QT_END_NAMESPACE

@@ -21,18 +21,19 @@
 ///
 ///     @author Don Gagne <don@thegagnes.com>
 
-class QGCQuickWidget : public QQuickWidget {
-    Q_OBJECT
-    
+class QGCQuickWidget : public QQuickWidget
+{
+	Q_OBJECT
+
 public:
-    QGCQuickWidget(QWidget* parent = NULL);
-    
-    /// Sets the UAS into the widget which in turn will load facts into the context
-    void setAutoPilot(AutoPilotPlugin* autoPilot);
-    
-    /// Sets the QML into the control. Will display errors message box if error occurs loading source.
-    ///     @return true: source loaded, false: source not loaded, errors occurred
-    bool setSource(const QUrl& qmlUrl);
+	QGCQuickWidget(QWidget *parent = NULL);
+
+	/// Sets the UAS into the widget which in turn will load facts into the context
+	void setAutoPilot(AutoPilotPlugin *autoPilot);
+
+	/// Sets the QML into the control. Will display errors message box if error occurs loading source.
+	///     @return true: source loaded, false: source not loaded, errors occurred
+	bool setSource(const QUrl &qmlUrl);
 };
 
 #endif

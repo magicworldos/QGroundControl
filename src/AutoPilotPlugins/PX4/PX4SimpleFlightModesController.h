@@ -24,29 +24,29 @@
 /// MVC Controller for PX4SimpleFlightModes.qml
 class PX4SimpleFlightModesController : public FactPanelController
 {
-    Q_OBJECT
-    
-public:
-    PX4SimpleFlightModesController(void);
-    
-    Q_PROPERTY(int          activeFlightMode    READ activeFlightMode       NOTIFY activeFlightModeChanged)
-    Q_PROPERTY(int          channelCount        MEMBER _channelCount        CONSTANT)
-    Q_PROPERTY(QVariantList rcChannelValues     MEMBER _rcChannelValues     NOTIFY rcChannelValuesChanged)
+	Q_OBJECT
 
-    int activeFlightMode(void) const { return _activeFlightMode; }
+public:
+	PX4SimpleFlightModesController(void);
+
+	Q_PROPERTY(int          activeFlightMode    READ activeFlightMode       NOTIFY activeFlightModeChanged)
+	Q_PROPERTY(int          channelCount        MEMBER _channelCount        CONSTANT)
+	Q_PROPERTY(QVariantList rcChannelValues     MEMBER _rcChannelValues     NOTIFY rcChannelValuesChanged)
+
+	int activeFlightMode(void) const { return _activeFlightMode; }
 
 signals:
-    void activeFlightModeChanged(int activeFlightMode);
-    void channelOptionEnabledChanged(void);
-    void rcChannelValuesChanged(void);
-    
+	void activeFlightModeChanged(int activeFlightMode);
+	void channelOptionEnabledChanged(void);
+	void rcChannelValuesChanged(void);
+
 private slots:
-    void _rcChannelsChanged(int channelCount, int pwmValues[Vehicle::cMaxRcChannels]);
-    
+	void _rcChannelsChanged(int channelCount, int pwmValues[Vehicle::cMaxRcChannels]);
+
 private:
-    int             _activeFlightMode;
-    int             _channelCount;
-    QVariantList    _rcChannelValues;
+	int             _activeFlightMode;
+	int             _channelCount;
+	QVariantList    _rcChannelValues;
 };
 
 #endif

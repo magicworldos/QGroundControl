@@ -22,19 +22,19 @@
  */
 class RTCMMavlink : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    RTCMMavlink(QGCToolbox& toolbox);
-    //TODO: API to select device(s)?
+	RTCMMavlink(QGCToolbox &toolbox);
+	//TODO: API to select device(s)?
 
 public slots:
-    void RTCMDataUpdate(QByteArray message);
+	void RTCMDataUpdate(QByteArray message);
 
 private:
-    void sendMessageToVehicle(const mavlink_gps_rtcm_data_t& msg);
+	void sendMessageToVehicle(const mavlink_gps_rtcm_data_t &msg);
 
-    QGCToolbox& _toolbox;
-    QElapsedTimer _bandwidthTimer;
-    int _bandwidthByteCounter = 0;
-    uint8_t _sequenceId = 0;
+	QGCToolbox &_toolbox;
+	QElapsedTimer _bandwidthTimer;
+	int _bandwidthByteCounter = 0;
+	uint8_t _sequenceId = 0;
 };

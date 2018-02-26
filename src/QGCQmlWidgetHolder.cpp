@@ -13,17 +13,19 @@
 
 #include "QGCQmlWidgetHolder.h"
 
-QGCQmlWidgetHolder::QGCQmlWidgetHolder(const QString& title, QAction* action, QWidget *parent) :
-    QGCDockWidget(title, action, parent)
+QGCQmlWidgetHolder::QGCQmlWidgetHolder(const QString &title, QAction *action, QWidget *parent) :
+	QGCDockWidget(title, action, parent)
 {
-    _ui.setupUi(this);
+	_ui.setupUi(this);
 
-    layout()->setContentsMargins(0,0,0,0);
+	layout()->setContentsMargins(0, 0, 0, 0);
 
-    if (action) {
-        setWindowTitle(title);
-    }
-    setResizeMode(QQuickWidget::SizeRootObjectToView);
+	if (action)
+	{
+		setWindowTitle(title);
+	}
+
+	setResizeMode(QQuickWidget::SizeRootObjectToView);
 }
 
 QGCQmlWidgetHolder::~QGCQmlWidgetHolder()
@@ -31,38 +33,38 @@ QGCQmlWidgetHolder::~QGCQmlWidgetHolder()
 
 }
 
-void QGCQmlWidgetHolder::setAutoPilot(AutoPilotPlugin* autoPilot)
+void QGCQmlWidgetHolder::setAutoPilot(AutoPilotPlugin *autoPilot)
 {
-    setContextPropertyObject("autopilot", autoPilot);
+	setContextPropertyObject("autopilot", autoPilot);
 }
 
-bool QGCQmlWidgetHolder::setSource(const QUrl& qmlUrl)
+bool QGCQmlWidgetHolder::setSource(const QUrl &qmlUrl)
 {
-    return _ui.qmlWidget->setSource(qmlUrl);
+	return _ui.qmlWidget->setSource(qmlUrl);
 }
 
-void QGCQmlWidgetHolder::setContextPropertyObject(const QString& name, QObject* object)
+void QGCQmlWidgetHolder::setContextPropertyObject(const QString &name, QObject *object)
 {
-    _ui.qmlWidget->rootContext()->setContextProperty(name, object);
+	_ui.qmlWidget->rootContext()->setContextProperty(name, object);
 }
 
-QQmlContext* QGCQmlWidgetHolder::getRootContext(void)
+QQmlContext *QGCQmlWidgetHolder::getRootContext(void)
 {
-    return _ui.qmlWidget->rootContext();
+	return _ui.qmlWidget->rootContext();
 }
 
-QQuickItem* QGCQmlWidgetHolder::getRootObject(void)
+QQuickItem *QGCQmlWidgetHolder::getRootObject(void)
 {
-    return _ui.qmlWidget->rootObject();
+	return _ui.qmlWidget->rootObject();
 }
 
-QQmlEngine*	QGCQmlWidgetHolder::getEngine()
+QQmlEngine	*QGCQmlWidgetHolder::getEngine()
 {
-    return _ui.qmlWidget->engine();
+	return _ui.qmlWidget->engine();
 }
 
 
 void QGCQmlWidgetHolder::setResizeMode(QQuickWidget::ResizeMode resizeMode)
 {
-    _ui.qmlWidget->setResizeMode(resizeMode);
+	_ui.qmlWidget->setResizeMode(resizeMode);
 }

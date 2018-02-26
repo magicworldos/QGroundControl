@@ -53,38 +53,38 @@ class QGeoAreaMonitorInfoPrivate;
 class Q_POSITIONING_EXPORT QGeoAreaMonitorInfo
 {
 public:
-    explicit QGeoAreaMonitorInfo(const QString &name = QString());
-    QGeoAreaMonitorInfo(const QGeoAreaMonitorInfo &other);
-    ~QGeoAreaMonitorInfo();
+	explicit QGeoAreaMonitorInfo(const QString &name = QString());
+	QGeoAreaMonitorInfo(const QGeoAreaMonitorInfo &other);
+	~QGeoAreaMonitorInfo();
 
-    QGeoAreaMonitorInfo &operator=(const QGeoAreaMonitorInfo &other);
+	QGeoAreaMonitorInfo &operator=(const QGeoAreaMonitorInfo &other);
 
-    bool operator==(const QGeoAreaMonitorInfo &other) const;
-    bool operator!=(const QGeoAreaMonitorInfo &other) const;
+	bool operator==(const QGeoAreaMonitorInfo &other) const;
+	bool operator!=(const QGeoAreaMonitorInfo &other) const;
 
-    QString name() const;
-    void setName(const QString &name);
+	QString name() const;
+	void setName(const QString &name);
 
-    QString identifier() const;
-    bool isValid() const;
+	QString identifier() const;
+	bool isValid() const;
 
-    QGeoShape area() const;
-    void setArea(const QGeoShape &newShape);
+	QGeoShape area() const;
+	void setArea(const QGeoShape &newShape);
 
-    QDateTime expiration() const;
-    void setExpiration(const QDateTime &expiry);
+	QDateTime expiration() const;
+	void setExpiration(const QDateTime &expiry);
 
-    bool isPersistent() const;
-    void setPersistent(bool isPersistent);
+	bool isPersistent() const;
+	void setPersistent(bool isPersistent);
 
-    QVariantMap notificationParameters() const;
-    void setNotificationParameters(const QVariantMap &parameters);
+	QVariantMap notificationParameters() const;
+	void setNotificationParameters(const QVariantMap &parameters);
 private:
-    QSharedDataPointer<QGeoAreaMonitorInfoPrivate> d;
+	QSharedDataPointer<QGeoAreaMonitorInfoPrivate> d;
 
 #ifndef QT_NO_DATASTREAM
-    friend Q_POSITIONING_EXPORT QDataStream &operator<<(QDataStream &, const QGeoAreaMonitorInfo &);
-    friend Q_POSITIONING_EXPORT QDataStream &operator>>(QDataStream &, QGeoAreaMonitorInfo &);
+	friend Q_POSITIONING_EXPORT QDataStream &operator<<(QDataStream &, const QGeoAreaMonitorInfo &);
+	friend Q_POSITIONING_EXPORT QDataStream &operator>>(QDataStream &, QGeoAreaMonitorInfo &);
 #endif
 };
 

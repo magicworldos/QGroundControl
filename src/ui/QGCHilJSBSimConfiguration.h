@@ -7,26 +7,27 @@
 #include "QGCFlightGearLink.h"
 #include "Vehicle.h"
 
-namespace Ui {
+namespace Ui
+{
 class QGCHilJSBSimConfiguration;
 }
 
 class QGCHilJSBSimConfiguration : public QWidget
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 public:
-    explicit QGCHilJSBSimConfiguration(Vehicle* vehicle, QWidget *parent = 0);
-    ~QGCHilJSBSimConfiguration();
+	explicit QGCHilJSBSimConfiguration(Vehicle *vehicle, QWidget *parent = 0);
+	~QGCHilJSBSimConfiguration();
 
 private slots:
-    void on_startButton_clicked();
-    void on_stopButton_clicked();
+	void on_startButton_clicked();
+	void on_stopButton_clicked();
 
 private:
-    Vehicle*    _vehicle;
+	Vehicle    *_vehicle;
 
-    Ui::QGCHilJSBSimConfiguration *ui;
+	Ui::QGCHilJSBSimConfiguration *ui;
 };
 
 #endif // QGCHILJSBSIMCONFIGURATION_H

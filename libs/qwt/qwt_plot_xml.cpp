@@ -15,12 +15,12 @@
 
   \warning The plot editor has never been implemented.
 */
-void QwtPlot::applyProperties( const QString & /* xmlDocument */ )
+void QwtPlot::applyProperties(const QString & /* xmlDocument */)
 {
 #if 0
-    // Temporary dummy code, for designer tests
-    setTitle( xmlDocument );
-    replot();
+	// Temporary dummy code, for designer tests
+	setTitle(xmlDocument);
+	replot();
 #endif
 }
 
@@ -34,9 +34,9 @@ void QwtPlot::applyProperties( const QString & /* xmlDocument */ )
 QString QwtPlot::grabProperties() const
 {
 #if 0
-    // Temporary dummy code, for designer tests
-    return title().text();
+	// Temporary dummy code, for designer tests
+	return title().text();
 #else
-    return QString::null;
+	return QString::null;
 #endif
 }

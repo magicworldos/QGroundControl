@@ -47,66 +47,69 @@ class QDataStream;
 class QGeoCoordinatePrivate;
 class Q_POSITIONING_EXPORT QGeoCoordinate
 {
-    Q_GADGET
+	Q_GADGET
 
-    Q_PROPERTY(double latitude READ latitude WRITE setLatitude)
-    Q_PROPERTY(double longitude READ longitude WRITE setLongitude)
-    Q_PROPERTY(double altitude READ altitude WRITE setAltitude)
-    Q_PROPERTY(bool isValid READ isValid)
+	Q_PROPERTY(double latitude READ latitude WRITE setLatitude)
+	Q_PROPERTY(double longitude READ longitude WRITE setLongitude)
+	Q_PROPERTY(double altitude READ altitude WRITE setAltitude)
+	Q_PROPERTY(bool isValid READ isValid)
 
 public:
 
-    enum CoordinateType {
-        InvalidCoordinate,
-        Coordinate2D,
-        Coordinate3D
-    };
+	enum CoordinateType
+	{
+		InvalidCoordinate,
+		Coordinate2D,
+		Coordinate3D
+	};
 
-    enum CoordinateFormat {
-        Degrees,
-        DegreesWithHemisphere,
-        DegreesMinutes,
-        DegreesMinutesWithHemisphere,
-        DegreesMinutesSeconds,
-        DegreesMinutesSecondsWithHemisphere
-    };
+	enum CoordinateFormat
+	{
+		Degrees,
+		DegreesWithHemisphere,
+		DegreesMinutes,
+		DegreesMinutesWithHemisphere,
+		DegreesMinutesSeconds,
+		DegreesMinutesSecondsWithHemisphere
+	};
 
-    QGeoCoordinate();
-    QGeoCoordinate(double latitude, double longitude);
-    QGeoCoordinate(double latitude, double longitude, double altitude);
-    QGeoCoordinate(const QGeoCoordinate &other);
-    ~QGeoCoordinate();
+	QGeoCoordinate();
+	QGeoCoordinate(double latitude, double longitude);
+	QGeoCoordinate(double latitude, double longitude, double altitude);
+	QGeoCoordinate(const QGeoCoordinate &other);
+	~QGeoCoordinate();
 
-    QGeoCoordinate &operator=(const QGeoCoordinate &other);
+	QGeoCoordinate &operator=(const QGeoCoordinate &other);
 
-    bool operator==(const QGeoCoordinate &other) const;
-    inline bool operator!=(const QGeoCoordinate &other) const {
-        return !operator==(other);
-    }
+	bool operator==(const QGeoCoordinate &other) const;
+	inline bool operator!=(const QGeoCoordinate &other) const
+	{
+		return !operator==(other);
+	}
 
-    bool isValid() const;
-    CoordinateType type() const;
+	bool isValid() const;
+	CoordinateType type() const;
 
-    void setLatitude(double latitude);
-    double latitude() const;
+	void setLatitude(double latitude);
+	double latitude() const;
 
-    void setLongitude(double longitude);
-    double longitude() const;
+	void setLongitude(double longitude);
+	double longitude() const;
 
-    void setAltitude(double altitude);
-    double altitude() const;
+	void setAltitude(double altitude);
+	double altitude() const;
 
-    Q_INVOKABLE qreal distanceTo(const QGeoCoordinate &other) const;
-    Q_INVOKABLE qreal azimuthTo(const QGeoCoordinate &other) const;
+	Q_INVOKABLE qreal distanceTo(const QGeoCoordinate &other) const;
+	Q_INVOKABLE qreal azimuthTo(const QGeoCoordinate &other) const;
 
-    Q_INVOKABLE QGeoCoordinate atDistanceAndAzimuth(qreal distance, qreal azimuth, qreal distanceUp = 0.0) const;
+	Q_INVOKABLE QGeoCoordinate atDistanceAndAzimuth(qreal distance, qreal azimuth, qreal distanceUp = 0.0) const;
 
-    Q_INVOKABLE QString toString(CoordinateFormat format = DegreesMinutesSecondsWithHemisphere) const;
+	Q_INVOKABLE QString toString(CoordinateFormat format = DegreesMinutesSecondsWithHemisphere) const;
 
 private:
-    QSharedDataPointer<QGeoCoordinatePrivate> d;
+	QSharedDataPointer<QGeoCoordinatePrivate> d;
 
-    friend class QGeoCoordinatePrivate;
+	friend class QGeoCoordinatePrivate;
 };
 
 Q_DECLARE_TYPEINFO(QGeoCoordinate, Q_MOVABLE_TYPE);

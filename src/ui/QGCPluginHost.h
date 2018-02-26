@@ -3,20 +3,21 @@
 
 #include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class QGCPluginHost;
 }
 
 class QGCPluginHost : public QWidget
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 public:
-    explicit QGCPluginHost(QWidget *parent = 0);
-    ~QGCPluginHost();
-    
+	explicit QGCPluginHost(QWidget *parent = 0);
+	~QGCPluginHost();
+
 private:
-    Ui::QGCPluginHost *ui;
+	Ui::QGCPluginHost *ui;
 };
 
 #endif // QGCPLUGINHOST_H

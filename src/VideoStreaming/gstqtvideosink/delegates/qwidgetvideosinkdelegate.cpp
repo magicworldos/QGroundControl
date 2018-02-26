@@ -25,65 +25,74 @@
 #include "qwidgetvideosinkdelegate.h"
 #include <QPainter>
 
-QWidgetVideoSinkDelegate::QWidgetVideoSinkDelegate(GstElement * sink, QObject * parent)
-    : QtVideoSinkDelegate(sink, parent)
+QWidgetVideoSinkDelegate::QWidgetVideoSinkDelegate(GstElement *sink, QObject *parent)
+	: QtVideoSinkDelegate(sink, parent)
 {
 
 }
 
 QWidgetVideoSinkDelegate::~QWidgetVideoSinkDelegate()
 {
-    setWidget(NULL);
+	setWidget(NULL);
 }
 
 QWidget *QWidgetVideoSinkDelegate::widget() const
 {
-    return m_widget.data();
+	return m_widget.data();
 }
 
 void QWidgetVideoSinkDelegate::setWidget(QWidget *widget)
 {
-    GST_LOG_OBJECT(m_sink, "Setting \"widget\" property to %" GST_PTR_FORMAT, widget);
+	GST_LOG_OBJECT(m_sink, "Setting \"widget\" property to %" GST_PTR_FORMAT, widget);
 
-    if (m_widget) {
-        m_widget.data()->removeEventFilter(this);
-        m_widget.data()->setAttribute(Qt::WA_OpaquePaintEvent, m_opaquePaintEventAttribute);
-        m_widget.data()->update();
+	if (m_widget)
+	{
+		m_widget.data()->removeEventFilter(this);
+		m_widget.data()->setAttribute(Qt::WA_OpaquePaintEvent, m_opaquePaintEventAttribute);
+		m_widget.data()->update();
 
-        m_widget = NULL;
-    }
+		m_widget = NULL;
+	}
 
-    if (widget) {
-        widget->installEventFilter(this);
-        m_opaquePaintEventAttribute = widget->testAttribute(Qt::WA_OpaquePaintEvent);
-        widget->setAttribute(Qt::WA_OpaquePaintEvent, true);
-        widget->update();
+	if (widget)
+	{
+		widget->installEventFilter(this);
+		m_opaquePaintEventAttribute = widget->testAttribute(Qt::WA_OpaquePaintEvent);
+		widget->setAttribute(Qt::WA_OpaquePaintEvent, true);
+		widget->update();
 
-        m_widget = widget;
-    }
+		m_widget = widget;
+	}
 }
 
 bool QWidgetVideoSinkDelegate::eventFilter(QObject *filteredObject, QEvent *event)
 {
-    if (filteredObject == m_widget.data()) {
-        switch(event->type()) {
-        case QEvent::Paint:
-          {
-            QPainter painter(m_widget.data());
-            paint(&painter, m_widget.data()->rect());
-            return true;
-          }
-        default:
-            return false;
-        }
-    } else {
-        return QtVideoSinkDelegate::eventFilter(filteredObject, event);
-    }
+	if (filteredObject == m_widget.data())
+	{
+		switch (event->type())
+		{
+		case QEvent::Paint:
+			{
+				QPainter painter(m_widget.data());
+				paint(&painter, m_widget.data()->rect());
+				return true;
+			}
+
+		default:
+			return false;
+		}
+	}
+
+	else
+	{
+		return QtVideoSinkDelegate::eventFilter(filteredObject, event);
+	}
 }
 
 void QWidgetVideoSinkDelegate::update()
 {
-    if (m_widget) {
-        m_widget.data()->update();
-    }
+	if (m_widget)
+	{
+		m_widget.data()->update();
+	}
 }

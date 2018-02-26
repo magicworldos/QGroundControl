@@ -18,16 +18,16 @@
 
 class ParameterManagerTest : public UnitTest
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 private slots:
-    void _noFailure(void);
-    void _requestListNoResponse(void);
-    void _requestListMissingParamSuccess(void);
-    void _requestListMissingParamFail(void);
+	void _noFailure(void);
+	void _requestListNoResponse(void);
+	void _requestListMissingParamSuccess(void);
+	void _requestListMissingParamFail(void);
 
 private:
-    void _noFailureWorker(MockConfiguration::FailureMode_t failureMode);
+	void _noFailureWorker(MockConfiguration::FailureMode_t failureMode);
 };
 
 #endif

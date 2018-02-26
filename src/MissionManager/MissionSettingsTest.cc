@@ -13,52 +13,52 @@
 #include "SettingsManager.h"
 
 MissionSettingsTest::MissionSettingsTest(void)
-    : _settingsItem(NULL)
+	: _settingsItem(NULL)
 {
-    
+
 }
 
 void MissionSettingsTest::init(void)
 {
-    VisualMissionItemTest::init();
+	VisualMissionItemTest::init();
 
-    _settingsItem = new MissionSettingsItem(_offlineVehicle, this);
+	_settingsItem = new MissionSettingsItem(_offlineVehicle, this);
 }
 
 void MissionSettingsTest::cleanup(void)
 {
-    delete _settingsItem;
-    VisualMissionItemTest::cleanup();
+	delete _settingsItem;
+	VisualMissionItemTest::cleanup();
 }
 
 void MissionSettingsTest::_testCameraSectionDirty(void)
 {
-    CameraSection* cameraSection = _settingsItem->cameraSection();
+	CameraSection *cameraSection = _settingsItem->cameraSection();
 
-    QVERIFY(!cameraSection->dirty());
-    QVERIFY(!_settingsItem->dirty());
+	QVERIFY(!cameraSection->dirty());
+	QVERIFY(!_settingsItem->dirty());
 
-    // Dirtying the camera section should also dirty the item
-    cameraSection->setDirty(true);
-    QVERIFY(_settingsItem->dirty());
+	// Dirtying the camera section should also dirty the item
+	cameraSection->setDirty(true);
+	QVERIFY(_settingsItem->dirty());
 
-    // Clearing the dirty bit from the item should also clear the dirty bit on the camera section
-    _settingsItem->setDirty(false);
-    QVERIFY(!cameraSection->dirty());
+	// Clearing the dirty bit from the item should also clear the dirty bit on the camera section
+	_settingsItem->setDirty(false);
+	QVERIFY(!cameraSection->dirty());
 }
 
 void MissionSettingsTest::_testSpeedSectionDirty(void)
 {
-    SpeedSection* speedSection = _settingsItem->speedSection();
+	SpeedSection *speedSection = _settingsItem->speedSection();
 
-    QVERIFY(!speedSection->dirty());
-    QVERIFY(!_settingsItem->dirty());
+	QVERIFY(!speedSection->dirty());
+	QVERIFY(!_settingsItem->dirty());
 
-    // Dirtying the speed section should also dirty the item
-    speedSection->setDirty(true);
-    QVERIFY(_settingsItem->dirty());
+	// Dirtying the speed section should also dirty the item
+	speedSection->setDirty(true);
+	QVERIFY(_settingsItem->dirty());
 
-    // Clearing the dirty bit from the item should also clear the dirty bit on the camera section
-    _settingsItem->setDirty(false);
-    QVERIFY(!speedSection->dirty());
+	// Clearing the dirty bit from the item should also clear the dirty bit on the camera section
+	_settingsItem->setDirty(false);
+	QVERIFY(!speedSection->dirty());
 }

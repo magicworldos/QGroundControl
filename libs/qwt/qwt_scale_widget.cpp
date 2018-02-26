@@ -24,48 +24,48 @@
 class QwtScaleWidget::PrivateData
 {
 public:
-    PrivateData():
-        scaleDraw( NULL )
-    {
-        colorBar.colorMap = NULL;
-    }
+	PrivateData():
+		scaleDraw(NULL)
+	{
+		colorBar.colorMap = NULL;
+	}
 
-    ~PrivateData()
-    {
-        delete scaleDraw;
-        delete colorBar.colorMap;
-    }
+	~PrivateData()
+	{
+		delete scaleDraw;
+		delete colorBar.colorMap;
+	}
 
-    QwtScaleDraw *scaleDraw;
+	QwtScaleDraw *scaleDraw;
 
-    int borderDist[2];
-    int minBorderDist[2];
-    int scaleLength;
-    int margin;
+	int borderDist[2];
+	int minBorderDist[2];
+	int scaleLength;
+	int margin;
 
-    int titleOffset;
-    int spacing;
-    QwtText title;
+	int titleOffset;
+	int spacing;
+	QwtText title;
 
-    QwtScaleWidget::LayoutFlags layoutFlags;
+	QwtScaleWidget::LayoutFlags layoutFlags;
 
-    struct t_colorBar
-    {
-        bool isEnabled;
-        int width;
-        QwtInterval interval;
-        QwtColorMap *colorMap;
-    } colorBar;
+	struct t_colorBar
+	{
+		bool isEnabled;
+		int width;
+		QwtInterval interval;
+		QwtColorMap *colorMap;
+	} colorBar;
 };
 
 /*!
   \brief Create a scale with the position QwtScaleWidget::Left
   \param parent Parent widget
 */
-QwtScaleWidget::QwtScaleWidget( QWidget *parent ):
-    QWidget( parent )
+QwtScaleWidget::QwtScaleWidget(QWidget *parent):
+	QWidget(parent)
 {
-    initScale( QwtScaleDraw::LeftScale );
+	initScale(QwtScaleDraw::LeftScale);
 }
 
 /*!
@@ -74,59 +74,65 @@ QwtScaleWidget::QwtScaleWidget( QWidget *parent ):
   \param parent Parent widget
 */
 QwtScaleWidget::QwtScaleWidget(
-        QwtScaleDraw::Alignment align, QWidget *parent ):
-    QWidget( parent )
+	QwtScaleDraw::Alignment align, QWidget *parent):
+	QWidget(parent)
 {
-    initScale( align );
+	initScale(align);
 }
 
 //! Destructor
 QwtScaleWidget::~QwtScaleWidget()
 {
-    delete d_data;
+	delete d_data;
 }
 
 //! Initialize the scale
-void QwtScaleWidget::initScale( QwtScaleDraw::Alignment align )
+void QwtScaleWidget::initScale(QwtScaleDraw::Alignment align)
 {
-    d_data = new PrivateData;
+	d_data = new PrivateData;
 
-    d_data->layoutFlags = 0;
-    if ( align == QwtScaleDraw::RightScale )
-        d_data->layoutFlags |= TitleInverted;
+	d_data->layoutFlags = 0;
 
-    d_data->borderDist[0] = 0;
-    d_data->borderDist[1] = 0;
-    d_data->minBorderDist[0] = 0;
-    d_data->minBorderDist[1] = 0;
-    d_data->margin = 4;
-    d_data->titleOffset = 0;
-    d_data->spacing = 2;
+	if (align == QwtScaleDraw::RightScale)
+	{
+		d_data->layoutFlags |= TitleInverted;
+	}
 
-    d_data->scaleDraw = new QwtScaleDraw;
-    d_data->scaleDraw->setAlignment( align );
-    d_data->scaleDraw->setLength( 10 );
+	d_data->borderDist[0] = 0;
+	d_data->borderDist[1] = 0;
+	d_data->minBorderDist[0] = 0;
+	d_data->minBorderDist[1] = 0;
+	d_data->margin = 4;
+	d_data->titleOffset = 0;
+	d_data->spacing = 2;
 
-    d_data->scaleDraw->setScaleDiv(
-        QwtLinearScaleEngine().divideScale( 0.0, 100.0, 10, 5 ) );
+	d_data->scaleDraw = new QwtScaleDraw;
+	d_data->scaleDraw->setAlignment(align);
+	d_data->scaleDraw->setLength(10);
 
-    d_data->colorBar.colorMap = new QwtLinearColorMap();
-    d_data->colorBar.isEnabled = false;
-    d_data->colorBar.width = 10;
+	d_data->scaleDraw->setScaleDiv(
+		QwtLinearScaleEngine().divideScale(0.0, 100.0, 10, 5));
 
-    const int flags = Qt::AlignHCenter
-        | Qt::TextExpandTabs | Qt::TextWordWrap;
-    d_data->title.setRenderFlags( flags );
-    d_data->title.setFont( font() );
+	d_data->colorBar.colorMap = new QwtLinearColorMap();
+	d_data->colorBar.isEnabled = false;
+	d_data->colorBar.width = 10;
 
-    QSizePolicy policy( QSizePolicy::MinimumExpanding,
-        QSizePolicy::Fixed );
-    if ( d_data->scaleDraw->orientation() == Qt::Vertical )
-        policy.transpose();
+	const int flags = Qt::AlignHCenter
+			  | Qt::TextExpandTabs | Qt::TextWordWrap;
+	d_data->title.setRenderFlags(flags);
+	d_data->title.setFont(font());
 
-    setSizePolicy( policy );
+	QSizePolicy policy(QSizePolicy::MinimumExpanding,
+			   QSizePolicy::Fixed);
 
-    setAttribute( Qt::WA_WState_OwnSizePolicy, false );
+	if (d_data->scaleDraw->orientation() == Qt::Vertical)
+	{
+		policy.transpose();
+	}
+
+	setSizePolicy(policy);
+
+	setAttribute(Qt::WA_WState_OwnSizePolicy, false);
 }
 
 /*!
@@ -137,15 +143,20 @@ void QwtScaleWidget::initScale( QwtScaleDraw::Alignment align )
 
    \sa testLayoutFlag(), LayoutFlag
 */
-void QwtScaleWidget::setLayoutFlag( LayoutFlag flag, bool on )
+void QwtScaleWidget::setLayoutFlag(LayoutFlag flag, bool on)
 {
-    if ( ( ( d_data->layoutFlags & flag ) != 0 ) != on )
-    {
-        if ( on )
-            d_data->layoutFlags |= flag;
-        else
-            d_data->layoutFlags &= ~flag;
-    }
+	if (((d_data->layoutFlags & flag) != 0) != on)
+	{
+		if (on)
+		{
+			d_data->layoutFlags |= flag;
+		}
+
+		else
+		{
+			d_data->layoutFlags &= ~flag;
+		}
+	}
 }
 
 /*!
@@ -155,9 +166,9 @@ void QwtScaleWidget::setLayoutFlag( LayoutFlag flag, bool on )
    \return true/false
    \sa setLayoutFlag(), LayoutFlag
 */
-bool QwtScaleWidget::testLayoutFlag( LayoutFlag flag ) const
+bool QwtScaleWidget::testLayoutFlag(LayoutFlag flag) const
 {
-    return ( d_data->layoutFlags & flag );
+	return (d_data->layoutFlags & flag);
 }
 
 /*!
@@ -166,13 +177,13 @@ bool QwtScaleWidget::testLayoutFlag( LayoutFlag flag ) const
   \param title New title
   \sa title(), setTitle(const QwtText &);
 */
-void QwtScaleWidget::setTitle( const QString &title )
+void QwtScaleWidget::setTitle(const QString &title)
 {
-    if ( d_data->title.text() != title )
-    {
-        d_data->title.setText( title );
-        layoutScale();
-    }
+	if (d_data->title.text() != title)
+	{
+		d_data->title.setText(title);
+		layoutScale();
+	}
 }
 
 /*!
@@ -184,17 +195,17 @@ void QwtScaleWidget::setTitle( const QString &title )
                direction of the label, AlignTop, AlignBottom can't be set
                as the title will always be aligned to the scale.
 */
-void QwtScaleWidget::setTitle( const QwtText &title )
+void QwtScaleWidget::setTitle(const QwtText &title)
 {
-    QwtText t = title;
-    const int flags = title.renderFlags() & ~( Qt::AlignTop | Qt::AlignBottom );
-    t.setRenderFlags( flags );
+	QwtText t = title;
+	const int flags = title.renderFlags() & ~(Qt::AlignTop | Qt::AlignBottom);
+	t.setRenderFlags(flags);
 
-    if ( t != d_data->title )
-    {
-        d_data->title = t;
-        layoutScale();
-    }
+	if (t != d_data->title)
+	{
+		d_data->title = t;
+		layoutScale();
+	}
 }
 
 /*!
@@ -203,24 +214,29 @@ void QwtScaleWidget::setTitle( const QwtText &title )
   \param alignment New alignment
   \sa alignment()
 */
-void QwtScaleWidget::setAlignment( QwtScaleDraw::Alignment alignment )
+void QwtScaleWidget::setAlignment(QwtScaleDraw::Alignment alignment)
 {
-    if ( d_data->scaleDraw )
-        d_data->scaleDraw->setAlignment( alignment );
+	if (d_data->scaleDraw)
+	{
+		d_data->scaleDraw->setAlignment(alignment);
+	}
 
-    if ( !testAttribute( Qt::WA_WState_OwnSizePolicy ) )
-    {
-        QSizePolicy policy( QSizePolicy::MinimumExpanding,
-            QSizePolicy::Fixed );
-        if ( d_data->scaleDraw->orientation() == Qt::Vertical )
-            policy.transpose();
+	if (!testAttribute(Qt::WA_WState_OwnSizePolicy))
+	{
+		QSizePolicy policy(QSizePolicy::MinimumExpanding,
+				   QSizePolicy::Fixed);
 
-        setSizePolicy( policy );
+		if (d_data->scaleDraw->orientation() == Qt::Vertical)
+		{
+			policy.transpose();
+		}
 
-        setAttribute( Qt::WA_WState_OwnSizePolicy, false );
-    }
+		setSizePolicy(policy);
 
-    layoutScale();
+		setAttribute(Qt::WA_WState_OwnSizePolicy, false);
+	}
+
+	layoutScale();
 }
 
 
@@ -230,10 +246,12 @@ void QwtScaleWidget::setAlignment( QwtScaleDraw::Alignment alignment )
 */
 QwtScaleDraw::Alignment QwtScaleWidget::alignment() const
 {
-    if ( !scaleDraw() )
-        return QwtScaleDraw::LeftScale;
+	if (!scaleDraw())
+	{
+		return QwtScaleDraw::LeftScale;
+	}
 
-    return scaleDraw()->alignment();
+	return scaleDraw()->alignment();
 }
 
 /*!
@@ -244,14 +262,14 @@ QwtScaleDraw::Alignment QwtScaleWidget::alignment() const
   \param dist2 Right or bottom distance
   \sa borderDist()
 */
-void QwtScaleWidget::setBorderDist( int dist1, int dist2 )
+void QwtScaleWidget::setBorderDist(int dist1, int dist2)
 {
-    if ( dist1 != d_data->borderDist[0] || dist2 != d_data->borderDist[1] )
-    {
-        d_data->borderDist[0] = dist1;
-        d_data->borderDist[1] = dist2;
-        layoutScale();
-    }
+	if (dist1 != d_data->borderDist[0] || dist2 != d_data->borderDist[1])
+	{
+		d_data->borderDist[0] = dist1;
+		d_data->borderDist[1] = dist2;
+		layoutScale();
+	}
 }
 
 /*!
@@ -259,14 +277,15 @@ void QwtScaleWidget::setBorderDist( int dist1, int dist2 )
   \param margin Margin
   \sa margin()
 */
-void QwtScaleWidget::setMargin( int margin )
+void QwtScaleWidget::setMargin(int margin)
 {
-    margin = qMax( 0, margin );
-    if ( margin != d_data->margin )
-    {
-        d_data->margin = margin;
-        layoutScale();
-    }
+	margin = qMax(0, margin);
+
+	if (margin != d_data->margin)
+	{
+		d_data->margin = margin;
+		layoutScale();
+	}
 }
 
 /*!
@@ -274,14 +293,15 @@ void QwtScaleWidget::setMargin( int margin )
   \param spacing Spacing
   \sa spacing()
 */
-void QwtScaleWidget::setSpacing( int spacing )
+void QwtScaleWidget::setSpacing(int spacing)
 {
-    spacing = qMax( 0, spacing );
-    if ( spacing != d_data->spacing )
-    {
-        d_data->spacing = spacing;
-        layoutScale();
-    }
+	spacing = qMax(0, spacing);
+
+	if (spacing != d_data->spacing)
+	{
+		d_data->spacing = spacing;
+		layoutScale();
+	}
 }
 
 /*!
@@ -289,10 +309,10 @@ void QwtScaleWidget::setSpacing( int spacing )
 
   \sa QwtScaleDraw::setLabelAlignment(), setLabelRotation()
 */
-void QwtScaleWidget::setLabelAlignment( Qt::Alignment alignment )
+void QwtScaleWidget::setLabelAlignment(Qt::Alignment alignment)
 {
-    d_data->scaleDraw->setLabelAlignment( alignment );
-    layoutScale();
+	d_data->scaleDraw->setLabelAlignment(alignment);
+	layoutScale();
 }
 
 /*!
@@ -302,10 +322,10 @@ void QwtScaleWidget::setLabelAlignment( Qt::Alignment alignment )
   \param rotation Rotation
   \sa QwtScaleDraw::setLabelRotation(), setLabelFlags()
 */
-void QwtScaleWidget::setLabelRotation( double rotation )
+void QwtScaleWidget::setLabelRotation(double rotation)
 {
-    d_data->scaleDraw->setLabelRotation( rotation );
-    layoutScale();
+	d_data->scaleDraw->setLabelRotation(rotation);
+	layoutScale();
 }
 
 /*!
@@ -319,28 +339,34 @@ void QwtScaleWidget::setLabelRotation( double rotation )
   \param scaleDraw ScaleDraw object
   \sa scaleDraw()
 */
-void QwtScaleWidget::setScaleDraw( QwtScaleDraw *scaleDraw )
+void QwtScaleWidget::setScaleDraw(QwtScaleDraw *scaleDraw)
 {
-    if ( ( scaleDraw == NULL ) || ( scaleDraw == d_data->scaleDraw ) )
-        return;
+	if ((scaleDraw == NULL) || (scaleDraw == d_data->scaleDraw))
+	{
+		return;
+	}
 
-    const QwtScaleDraw* sd = d_data->scaleDraw;
-    if ( sd )
-    {
-        scaleDraw->setAlignment( sd->alignment() );
-        scaleDraw->setScaleDiv( sd->scaleDiv() );
+	const QwtScaleDraw *sd = d_data->scaleDraw;
 
-        QwtTransform *transform = NULL;
-        if ( sd->scaleMap().transformation() )
-            transform = sd->scaleMap().transformation()->copy();
+	if (sd)
+	{
+		scaleDraw->setAlignment(sd->alignment());
+		scaleDraw->setScaleDiv(sd->scaleDiv());
 
-        scaleDraw->setTransformation( transform );
-    }
+		QwtTransform *transform = NULL;
 
-    delete d_data->scaleDraw;
-    d_data->scaleDraw = scaleDraw;
+		if (sd->scaleMap().transformation())
+		{
+			transform = sd->scaleMap().transformation()->copy();
+		}
 
-    layoutScale();
+		scaleDraw->setTransformation(transform);
+	}
+
+	delete d_data->scaleDraw;
+	d_data->scaleDraw = scaleDraw;
+
+	layoutScale();
 }
 
 /*!
@@ -349,7 +375,7 @@ void QwtScaleWidget::setScaleDraw( QwtScaleDraw *scaleDraw )
 */
 const QwtScaleDraw *QwtScaleWidget::scaleDraw() const
 {
-    return d_data->scaleDraw;
+	return d_data->scaleDraw;
 }
 
 /*!
@@ -358,7 +384,7 @@ const QwtScaleDraw *QwtScaleWidget::scaleDraw() const
 */
 QwtScaleDraw *QwtScaleWidget::scaleDraw()
 {
-    return d_data->scaleDraw;
+	return d_data->scaleDraw;
 }
 
 /*!
@@ -367,7 +393,7 @@ QwtScaleDraw *QwtScaleWidget::scaleDraw()
 */
 QwtText QwtScaleWidget::title() const
 {
-    return d_data->title;
+	return d_data->title;
 }
 
 /*!
@@ -376,7 +402,7 @@ QwtText QwtScaleWidget::title() const
 */
 int QwtScaleWidget::startBorderDist() const
 {
-    return d_data->borderDist[0];
+	return d_data->borderDist[0];
 }
 
 /*!
@@ -385,7 +411,7 @@ int QwtScaleWidget::startBorderDist() const
 */
 int QwtScaleWidget::endBorderDist() const
 {
-    return d_data->borderDist[1];
+	return d_data->borderDist[1];
 }
 
 /*!
@@ -394,7 +420,7 @@ int QwtScaleWidget::endBorderDist() const
 */
 int QwtScaleWidget::margin() const
 {
-    return d_data->margin;
+	return d_data->margin;
 }
 
 /*!
@@ -403,51 +429,55 @@ int QwtScaleWidget::margin() const
 */
 int QwtScaleWidget::spacing() const
 {
-    return d_data->spacing;
+	return d_data->spacing;
 }
 
 /*!
   \brief paintEvent
 */
-void QwtScaleWidget::paintEvent( QPaintEvent *event )
+void QwtScaleWidget::paintEvent(QPaintEvent *event)
 {
-    QPainter painter( this );
-    painter.setClipRegion( event->region() );
+	QPainter painter(this);
+	painter.setClipRegion(event->region());
 
-    QStyleOption opt;
-    opt.init(this);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
+	QStyleOption opt;
+	opt.init(this);
+	style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 
-    draw( &painter );
+	draw(&painter);
 }
 
 /*!
   \brief draw the scale
 */
-void QwtScaleWidget::draw( QPainter *painter ) const
+void QwtScaleWidget::draw(QPainter *painter) const
 {
-    d_data->scaleDraw->draw( painter, palette() );
+	d_data->scaleDraw->draw(painter, palette());
 
-    if ( d_data->colorBar.isEnabled && d_data->colorBar.width > 0 &&
-        d_data->colorBar.interval.isValid() )
-    {
-        drawColorBar( painter, colorBarRect( contentsRect() ) );
-    }
+	if (d_data->colorBar.isEnabled && d_data->colorBar.width > 0 &&
+			d_data->colorBar.interval.isValid())
+	{
+		drawColorBar(painter, colorBarRect(contentsRect()));
+	}
 
-    QRect r = contentsRect();
-    if ( d_data->scaleDraw->orientation() == Qt::Horizontal )
-    {
-        r.setLeft( r.left() + d_data->borderDist[0] );
-        r.setWidth( r.width() - d_data->borderDist[1] );
-    }
-    else
-    {
-        r.setTop( r.top() + d_data->borderDist[0] );
-        r.setHeight( r.height() - d_data->borderDist[1] );
-    }
+	QRect r = contentsRect();
 
-    if ( !d_data->title.isEmpty() )
-        drawTitle( painter, d_data->scaleDraw->alignment(), r );
+	if (d_data->scaleDraw->orientation() == Qt::Horizontal)
+	{
+		r.setLeft(r.left() + d_data->borderDist[0]);
+		r.setWidth(r.width() - d_data->borderDist[1]);
+	}
+
+	else
+	{
+		r.setTop(r.top() + d_data->borderDist[0]);
+		r.setHeight(r.height() - d_data->borderDist[1]);
+	}
+
+	if (!d_data->title.isEmpty())
+	{
+		drawTitle(painter, d_data->scaleDraw->alignment(), r);
+	}
 }
 
 /*!
@@ -456,65 +486,66 @@ void QwtScaleWidget::draw( QPainter *painter ) const
   \param rect Bounding rectangle for all components of the scale
   \return Rectangle for the color bar
 */
-QRectF QwtScaleWidget::colorBarRect( const QRectF& rect ) const
+QRectF QwtScaleWidget::colorBarRect(const QRectF &rect) const
 {
-    QRectF cr = rect;
+	QRectF cr = rect;
 
-    if ( d_data->scaleDraw->orientation() == Qt::Horizontal )
-    {
-        cr.setLeft( cr.left() + d_data->borderDist[0] );
-        cr.setWidth( cr.width() - d_data->borderDist[1] + 1 );
-    }
-    else
-    {
-        cr.setTop( cr.top() + d_data->borderDist[0] );
-        cr.setHeight( cr.height() - d_data->borderDist[1] + 1 );
-    }
+	if (d_data->scaleDraw->orientation() == Qt::Horizontal)
+	{
+		cr.setLeft(cr.left() + d_data->borderDist[0]);
+		cr.setWidth(cr.width() - d_data->borderDist[1] + 1);
+	}
 
-    switch ( d_data->scaleDraw->alignment() )
-    {
-        case QwtScaleDraw::LeftScale:
-        {
-            cr.setLeft( cr.right() - d_data->margin
-                - d_data->colorBar.width );
-            cr.setWidth( d_data->colorBar.width );
-            break;
-        }
+	else
+	{
+		cr.setTop(cr.top() + d_data->borderDist[0]);
+		cr.setHeight(cr.height() - d_data->borderDist[1] + 1);
+	}
 
-        case QwtScaleDraw::RightScale:
-        {
-            cr.setLeft( cr.left() + d_data->margin );
-            cr.setWidth( d_data->colorBar.width );
-            break;
-        }
+	switch (d_data->scaleDraw->alignment())
+	{
+	case QwtScaleDraw::LeftScale:
+		{
+			cr.setLeft(cr.right() - d_data->margin
+				   - d_data->colorBar.width);
+			cr.setWidth(d_data->colorBar.width);
+			break;
+		}
 
-        case QwtScaleDraw::BottomScale:
-        {
-            cr.setTop( cr.top() + d_data->margin );
-            cr.setHeight( d_data->colorBar.width );
-            break;
-        }
+	case QwtScaleDraw::RightScale:
+		{
+			cr.setLeft(cr.left() + d_data->margin);
+			cr.setWidth(d_data->colorBar.width);
+			break;
+		}
 
-        case QwtScaleDraw::TopScale:
-        {
-            cr.setTop( cr.bottom() - d_data->margin
-                - d_data->colorBar.width );
-            cr.setHeight( d_data->colorBar.width );
-            break;
-        }
-    }
+	case QwtScaleDraw::BottomScale:
+		{
+			cr.setTop(cr.top() + d_data->margin);
+			cr.setHeight(d_data->colorBar.width);
+			break;
+		}
 
-    return cr;
+	case QwtScaleDraw::TopScale:
+		{
+			cr.setTop(cr.bottom() - d_data->margin
+				  - d_data->colorBar.width);
+			cr.setHeight(d_data->colorBar.width);
+			break;
+		}
+	}
+
+	return cr;
 }
 
 /*!
   Event handler for resize events
   \param event Resize event
 */
-void QwtScaleWidget::resizeEvent( QResizeEvent *event )
+void QwtScaleWidget::resizeEvent(QResizeEvent *event)
 {
-    Q_UNUSED( event );
-    layoutScale( false );
+	Q_UNUSED(event);
+	layoutScale(false);
 }
 
 /*!
@@ -525,56 +556,76 @@ void QwtScaleWidget::resizeEvent( QResizeEvent *event )
                          to redraw the scale
 */
 
-void QwtScaleWidget::layoutScale( bool update_geometry )
+void QwtScaleWidget::layoutScale(bool update_geometry)
 {
-    int bd0, bd1;
-    getBorderDistHint( bd0, bd1 );
-    if ( d_data->borderDist[0] > bd0 )
-        bd0 = d_data->borderDist[0];
-    if ( d_data->borderDist[1] > bd1 )
-        bd1 = d_data->borderDist[1];
+	int bd0, bd1;
+	getBorderDistHint(bd0, bd1);
 
-    int colorBarWidth = 0;
-    if ( d_data->colorBar.isEnabled && d_data->colorBar.interval.isValid() )
-        colorBarWidth = d_data->colorBar.width + d_data->spacing;
+	if (d_data->borderDist[0] > bd0)
+	{
+		bd0 = d_data->borderDist[0];
+	}
 
-    const QRectF r = contentsRect();
-    double x, y, length;
+	if (d_data->borderDist[1] > bd1)
+	{
+		bd1 = d_data->borderDist[1];
+	}
 
-    if ( d_data->scaleDraw->orientation() == Qt::Vertical )
-    {
-        y = r.top() + bd0;
-        length = r.height() - ( bd0 + bd1 );
+	int colorBarWidth = 0;
 
-        if ( d_data->scaleDraw->alignment() == QwtScaleDraw::LeftScale )
-            x = r.right() - 1.0 - d_data->margin - colorBarWidth;
-        else
-            x = r.left() + d_data->margin + colorBarWidth;
-    }
-    else
-    {
-        x = r.left() + bd0;
-        length = r.width() - ( bd0 + bd1 );
+	if (d_data->colorBar.isEnabled && d_data->colorBar.interval.isValid())
+	{
+		colorBarWidth = d_data->colorBar.width + d_data->spacing;
+	}
 
-        if ( d_data->scaleDraw->alignment() == QwtScaleDraw::BottomScale )
-            y = r.top() + d_data->margin + colorBarWidth;
-        else
-            y = r.bottom() - 1.0 - d_data->margin - colorBarWidth;
-    }
+	const QRectF r = contentsRect();
+	double x, y, length;
 
-    d_data->scaleDraw->move( x, y );
-    d_data->scaleDraw->setLength( length );
+	if (d_data->scaleDraw->orientation() == Qt::Vertical)
+	{
+		y = r.top() + bd0;
+		length = r.height() - (bd0 + bd1);
 
-    const int extent = qCeil( d_data->scaleDraw->extent( font() ) );
+		if (d_data->scaleDraw->alignment() == QwtScaleDraw::LeftScale)
+		{
+			x = r.right() - 1.0 - d_data->margin - colorBarWidth;
+		}
 
-    d_data->titleOffset =
-        d_data->margin + d_data->spacing + colorBarWidth + extent;
+		else
+		{
+			x = r.left() + d_data->margin + colorBarWidth;
+		}
+	}
 
-    if ( update_geometry )
-    {
-        updateGeometry();
-        update();
-    }
+	else
+	{
+		x = r.left() + bd0;
+		length = r.width() - (bd0 + bd1);
+
+		if (d_data->scaleDraw->alignment() == QwtScaleDraw::BottomScale)
+		{
+			y = r.top() + d_data->margin + colorBarWidth;
+		}
+
+		else
+		{
+			y = r.bottom() - 1.0 - d_data->margin - colorBarWidth;
+		}
+	}
+
+	d_data->scaleDraw->move(x, y);
+	d_data->scaleDraw->setLength(length);
+
+	const int extent = qCeil(d_data->scaleDraw->extent(font()));
+
+	d_data->titleOffset =
+		d_data->margin + d_data->spacing + colorBarWidth + extent;
+
+	if (update_geometry)
+	{
+		updateGeometry();
+		update();
+	}
 }
 
 /*!
@@ -585,16 +636,18 @@ void QwtScaleWidget::layoutScale( bool update_geometry )
 
   \sa setColorBarEnabled()
 */
-void QwtScaleWidget::drawColorBar( QPainter *painter, const QRectF& rect ) const
+void QwtScaleWidget::drawColorBar(QPainter *painter, const QRectF &rect) const
 {
-    if ( !d_data->colorBar.interval.isValid() )
-        return;
+	if (!d_data->colorBar.interval.isValid())
+	{
+		return;
+	}
 
-    const QwtScaleDraw* sd = d_data->scaleDraw;
+	const QwtScaleDraw *sd = d_data->scaleDraw;
 
-    QwtPainter::drawColorBar( painter, *d_data->colorBar.colorMap,
-        d_data->colorBar.interval.normalized(), sd->scaleMap(),
-        sd->orientation(), rect );
+	QwtPainter::drawColorBar(painter, *d_data->colorBar.colorMap,
+				 d_data->colorBar.interval.normalized(), sd->scaleMap(),
+				 sd->orientation(), rect);
 }
 
 /*!
@@ -605,68 +658,71 @@ void QwtScaleWidget::drawColorBar( QPainter *painter, const QRectF& rect ) const
   \param rect Bounding rectangle
 */
 
-void QwtScaleWidget::drawTitle( QPainter *painter,
-    QwtScaleDraw::Alignment align, const QRectF &rect ) const
+void QwtScaleWidget::drawTitle(QPainter *painter,
+			       QwtScaleDraw::Alignment align, const QRectF &rect) const
 {
-    QRectF r = rect;
-    double angle;
-    int flags = d_data->title.renderFlags() &
-        ~( Qt::AlignTop | Qt::AlignBottom | Qt::AlignVCenter );
+	QRectF r = rect;
+	double angle;
+	int flags = d_data->title.renderFlags() &
+		    ~(Qt::AlignTop | Qt::AlignBottom | Qt::AlignVCenter);
 
-    switch ( align )
-    {
-        case QwtScaleDraw::LeftScale:
-            angle = -90.0;
-            flags |= Qt::AlignTop;
-            r.setRect( r.left(), r.bottom(),
-                r.height(), r.width() - d_data->titleOffset );
-            break;
+	switch (align)
+	{
+	case QwtScaleDraw::LeftScale:
+		angle = -90.0;
+		flags |= Qt::AlignTop;
+		r.setRect(r.left(), r.bottom(),
+			  r.height(), r.width() - d_data->titleOffset);
+		break;
 
-        case QwtScaleDraw::RightScale:
-            angle = -90.0;
-            flags |= Qt::AlignTop;
-            r.setRect( r.left() + d_data->titleOffset, r.bottom(),
-                r.height(), r.width() - d_data->titleOffset );
-            break;
+	case QwtScaleDraw::RightScale:
+		angle = -90.0;
+		flags |= Qt::AlignTop;
+		r.setRect(r.left() + d_data->titleOffset, r.bottom(),
+			  r.height(), r.width() - d_data->titleOffset);
+		break;
 
-        case QwtScaleDraw::BottomScale:
-            angle = 0.0;
-            flags |= Qt::AlignBottom;
-            r.setTop( r.top() + d_data->titleOffset );
-            break;
+	case QwtScaleDraw::BottomScale:
+		angle = 0.0;
+		flags |= Qt::AlignBottom;
+		r.setTop(r.top() + d_data->titleOffset);
+		break;
 
-        case QwtScaleDraw::TopScale:
-        default:
-            angle = 0.0;
-            flags |= Qt::AlignTop;
-            r.setBottom( r.bottom() - d_data->titleOffset );
-            break;
-    }
+	case QwtScaleDraw::TopScale:
+	default:
+		angle = 0.0;
+		flags |= Qt::AlignTop;
+		r.setBottom(r.bottom() - d_data->titleOffset);
+		break;
+	}
 
-    if ( d_data->layoutFlags & TitleInverted )
-    {
-        if ( align == QwtScaleDraw::LeftScale
-            || align == QwtScaleDraw::RightScale )
-        {
-            angle = -angle;
-            r.setRect( r.x() + r.height(), r.y() - r.width(),
-                r.width(), r.height() );
-        }
-    }
+	if (d_data->layoutFlags & TitleInverted)
+	{
+		if (align == QwtScaleDraw::LeftScale
+				|| align == QwtScaleDraw::RightScale)
+		{
+			angle = -angle;
+			r.setRect(r.x() + r.height(), r.y() - r.width(),
+				  r.width(), r.height());
+		}
+	}
 
-    painter->save();
-    painter->setFont( font() );
-    painter->setPen( palette().color( QPalette::Text ) );
+	painter->save();
+	painter->setFont(font());
+	painter->setPen(palette().color(QPalette::Text));
 
-    painter->translate( r.x(), r.y() );
-    if ( angle != 0.0 )
-        painter->rotate( angle );
+	painter->translate(r.x(), r.y());
 
-    QwtText title = d_data->title;
-    title.setRenderFlags( flags );
-    title.draw( painter, QRectF( 0.0, 0.0, r.width(), r.height() ) );
+	if (angle != 0.0)
+	{
+		painter->rotate(angle);
+	}
 
-    painter->restore();
+	QwtText title = d_data->title;
+	title.setRenderFlags(flags);
+	title.draw(painter, QRectF(0.0, 0.0, r.width(), r.height()));
+
+	painter->restore();
 }
 
 /*!
@@ -679,7 +735,7 @@ void QwtScaleWidget::drawTitle( QPainter *painter,
 
 void QwtScaleWidget::scaleChange()
 {
-    layoutScale();
+	layoutScale();
 }
 
 /*!
@@ -687,7 +743,7 @@ void QwtScaleWidget::scaleChange()
 */
 QSize QwtScaleWidget::sizeHint() const
 {
-    return minimumSizeHint();
+	return minimumSizeHint();
 }
 
 /*!
@@ -695,32 +751,36 @@ QSize QwtScaleWidget::sizeHint() const
 */
 QSize QwtScaleWidget::minimumSizeHint() const
 {
-    const Qt::Orientation o = d_data->scaleDraw->orientation();
+	const Qt::Orientation o = d_data->scaleDraw->orientation();
 
-    // Border Distance cannot be less than the scale borderDistHint
-    // Note, the borderDistHint is already included in minHeight/minWidth
-    int length = 0;
-    int mbd1, mbd2;
-    getBorderDistHint( mbd1, mbd2 );
-    length += qMax( 0, d_data->borderDist[0] - mbd1 );
-    length += qMax( 0, d_data->borderDist[1] - mbd2 );
-    length += d_data->scaleDraw->minLength( font() );
+	// Border Distance cannot be less than the scale borderDistHint
+	// Note, the borderDistHint is already included in minHeight/minWidth
+	int length = 0;
+	int mbd1, mbd2;
+	getBorderDistHint(mbd1, mbd2);
+	length += qMax(0, d_data->borderDist[0] - mbd1);
+	length += qMax(0, d_data->borderDist[1] - mbd2);
+	length += d_data->scaleDraw->minLength(font());
 
-    int dim = dimForLength( length, font() );
-    if ( length < dim )
-    {
-        // compensate for long titles
-        length = dim;
-        dim = dimForLength( length, font() );
-    }
+	int dim = dimForLength(length, font());
 
-    QSize size( length + 2, dim );
-    if ( o == Qt::Vertical )
-        size.transpose();
+	if (length < dim)
+	{
+		// compensate for long titles
+		length = dim;
+		dim = dimForLength(length, font());
+	}
 
-    int left, right, top, bottom;
-    getContentsMargins( &left, &top, &right, &bottom );
-    return size + QSize( left + right, top + bottom );
+	QSize size(length + 2, dim);
+
+	if (o == Qt::Vertical)
+	{
+		size.transpose();
+	}
+
+	int left, right, top, bottom;
+	getContentsMargins(&left, &top, &right, &bottom);
+	return size + QSize(left + right, top + bottom);
 }
 
 /*!
@@ -729,9 +789,9 @@ QSize QwtScaleWidget::minimumSizeHint() const
   \return height Height
  */
 
-int QwtScaleWidget::titleHeightForWidth( int width ) const
+int QwtScaleWidget::titleHeightForWidth(int width) const
 {
-    return qCeil( d_data->title.heightForWidth( width, font() ) );
+	return qCeil(d_data->title.heightForWidth(width, font()));
 }
 
 /*!
@@ -743,19 +803,23 @@ int QwtScaleWidget::titleHeightForWidth( int width ) const
   \return height for horizontal, width for vertical scales
 */
 
-int QwtScaleWidget::dimForLength( int length, const QFont &scaleFont ) const
+int QwtScaleWidget::dimForLength(int length, const QFont &scaleFont) const
 {
-    const int extent = qCeil( d_data->scaleDraw->extent( scaleFont ) );
+	const int extent = qCeil(d_data->scaleDraw->extent(scaleFont));
 
-    int dim = d_data->margin + extent + 1;
+	int dim = d_data->margin + extent + 1;
 
-    if ( !d_data->title.isEmpty() )
-        dim += titleHeightForWidth( length ) + d_data->spacing;
+	if (!d_data->title.isEmpty())
+	{
+		dim += titleHeightForWidth(length) + d_data->spacing;
+	}
 
-    if ( d_data->colorBar.isEnabled && d_data->colorBar.interval.isValid() )
-        dim += d_data->colorBar.width + d_data->spacing;
+	if (d_data->colorBar.isEnabled && d_data->colorBar.interval.isValid())
+	{
+		dim += d_data->colorBar.width + d_data->spacing;
+	}
 
-    return dim;
+	return dim;
 }
 
 /*!
@@ -767,24 +831,28 @@ int QwtScaleWidget::dimForLength( int length, const QFont &scaleFont ) const
   The maximum of this distance an the minimum border distance
   is returned.
 
-  \param start Return parameter for the border width at 
+  \param start Return parameter for the border width at
                the beginning of the scale
-  \param end Return parameter for the border width at the 
+  \param end Return parameter for the border width at the
              end of the scale
 
   \warning
   <ul> <li>The minimum border distance depends on the font.</ul>
   \sa setMinBorderDist(), getMinBorderDist(), setBorderDist()
 */
-void QwtScaleWidget::getBorderDistHint( int &start, int &end ) const
+void QwtScaleWidget::getBorderDistHint(int &start, int &end) const
 {
-    d_data->scaleDraw->getBorderDistHint( font(), start, end );
+	d_data->scaleDraw->getBorderDistHint(font(), start, end);
 
-    if ( start < d_data->minBorderDist[0] )
-        start = d_data->minBorderDist[0];
+	if (start < d_data->minBorderDist[0])
+	{
+		start = d_data->minBorderDist[0];
+	}
 
-    if ( end < d_data->minBorderDist[1] )
-        end = d_data->minBorderDist[1];
+	if (end < d_data->minBorderDist[1])
+	{
+		end = d_data->minBorderDist[1];
+	}
 }
 
 /*!
@@ -797,27 +865,27 @@ void QwtScaleWidget::getBorderDistHint( int &start, int &end ) const
   \param end Minimum for the end border
   \sa getMinBorderDist(), getBorderDistHint()
 */
-void QwtScaleWidget::setMinBorderDist( int start, int end )
+void QwtScaleWidget::setMinBorderDist(int start, int end)
 {
-    d_data->minBorderDist[0] = start;
-    d_data->minBorderDist[1] = end;
+	d_data->minBorderDist[0] = start;
+	d_data->minBorderDist[1] = end;
 }
 
 /*!
   Get the minimum value for the distances of the scale's endpoints from
   the widget borders.
 
-  \param start Return parameter for the border width at 
+  \param start Return parameter for the border width at
                the beginning of the scale
-  \param end Return parameter for the border width at the 
+  \param end Return parameter for the border width at the
              end of the scale
 
   \sa setMinBorderDist(), getBorderDistHint()
 */
-void QwtScaleWidget::getMinBorderDist( int &start, int &end ) const
+void QwtScaleWidget::getMinBorderDist(int &start, int &end) const
 {
-    start = d_data->minBorderDist[0];
-    end = d_data->minBorderDist[1];
+	start = d_data->minBorderDist[0];
+	end = d_data->minBorderDist[1];
 }
 
 /*!
@@ -828,16 +896,17 @@ void QwtScaleWidget::getMinBorderDist( int &start, int &end ) const
   \param scaleDiv Scale Division
   \sa For more information about scale divisions, see QwtScaleDiv.
 */
-void QwtScaleWidget::setScaleDiv( const QwtScaleDiv &scaleDiv )
+void QwtScaleWidget::setScaleDiv(const QwtScaleDiv &scaleDiv)
 {
-    QwtScaleDraw *sd = d_data->scaleDraw;
-    if ( sd->scaleDiv() != scaleDiv )
-    {
-        sd->setScaleDiv( scaleDiv );
-        layoutScale();
+	QwtScaleDraw *sd = d_data->scaleDraw;
 
-        Q_EMIT scaleDivChanged();
-    }
+	if (sd->scaleDiv() != scaleDiv)
+	{
+		sd->setScaleDiv(scaleDiv);
+		layoutScale();
+
+		Q_EMIT scaleDivChanged();
+	}
 }
 
 /*!
@@ -846,23 +915,23 @@ void QwtScaleWidget::setScaleDiv( const QwtScaleDiv &scaleDiv )
   \param transformation Transformation
   \sa QwtAbstractScaleDraw::scaleDraw(), QwtScaleMap
  */
-void QwtScaleWidget::setTransformation( QwtTransform *transformation )
+void QwtScaleWidget::setTransformation(QwtTransform *transformation)
 {
-    d_data->scaleDraw->setTransformation( transformation );
-    layoutScale();
+	d_data->scaleDraw->setTransformation(transformation);
+	layoutScale();
 }
 
 /*!
   En/disable a color bar associated to the scale
   \sa isColorBarEnabled(), setColorBarWidth()
 */
-void QwtScaleWidget::setColorBarEnabled( bool on )
+void QwtScaleWidget::setColorBarEnabled(bool on)
 {
-    if ( on != d_data->colorBar.isEnabled )
-    {
-        d_data->colorBar.isEnabled = on;
-        layoutScale();
-    }
+	if (on != d_data->colorBar.isEnabled)
+	{
+		d_data->colorBar.isEnabled = on;
+		layoutScale();
+	}
 }
 
 /*!
@@ -871,7 +940,7 @@ void QwtScaleWidget::setColorBarEnabled( bool on )
 */
 bool QwtScaleWidget::isColorBarEnabled() const
 {
-    return d_data->colorBar.isEnabled;
+	return d_data->colorBar.isEnabled;
 }
 
 /*!
@@ -880,14 +949,17 @@ bool QwtScaleWidget::isColorBarEnabled() const
   \param width Width
   \sa colorBarWidth(), setColorBarEnabled()
 */
-void QwtScaleWidget::setColorBarWidth( int width )
+void QwtScaleWidget::setColorBarWidth(int width)
 {
-    if ( width != d_data->colorBar.width )
-    {
-        d_data->colorBar.width = width;
-        if ( isColorBarEnabled() )
-            layoutScale();
-    }
+	if (width != d_data->colorBar.width)
+	{
+		d_data->colorBar.width = width;
+
+		if (isColorBarEnabled())
+		{
+			layoutScale();
+		}
+	}
 }
 
 /*!
@@ -896,7 +968,7 @@ void QwtScaleWidget::setColorBarWidth( int width )
 */
 int QwtScaleWidget::colorBarWidth() const
 {
-    return d_data->colorBar.width;
+	return d_data->colorBar.width;
 }
 
 /*!
@@ -905,7 +977,7 @@ int QwtScaleWidget::colorBarWidth() const
 */
 QwtInterval QwtScaleWidget::colorBarInterval() const
 {
-    return d_data->colorBar.interval;
+	return d_data->colorBar.interval;
 }
 
 /*!
@@ -918,18 +990,20 @@ QwtInterval QwtScaleWidget::colorBarInterval() const
   \sa colorMap(), colorBarInterval()
 */
 void QwtScaleWidget::setColorMap(
-    const QwtInterval &interval, QwtColorMap *colorMap )
+	const QwtInterval &interval, QwtColorMap *colorMap)
 {
-    d_data->colorBar.interval = interval;
+	d_data->colorBar.interval = interval;
 
-    if ( colorMap != d_data->colorBar.colorMap )
-    {
-        delete d_data->colorBar.colorMap;
-        d_data->colorBar.colorMap = colorMap;
-    }
+	if (colorMap != d_data->colorBar.colorMap)
+	{
+		delete d_data->colorBar.colorMap;
+		d_data->colorBar.colorMap = colorMap;
+	}
 
-    if ( isColorBarEnabled() )
-        layoutScale();
+	if (isColorBarEnabled())
+	{
+		layoutScale();
+	}
 }
 
 /*!
@@ -938,5 +1012,5 @@ void QwtScaleWidget::setColorMap(
 */
 const QwtColorMap *QwtScaleWidget::colorMap() const
 {
-    return d_data->colorBar.colorMap;
+	return d_data->colorBar.colorMap;
 }

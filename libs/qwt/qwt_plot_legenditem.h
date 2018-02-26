@@ -23,114 +23,114 @@ class QFont;
   It can be used together with a QwtLegend or instead of it
   to have more space for the plot canvas.
 
-  In opposite to QwtLegend the legend item is not interactive. 
+  In opposite to QwtLegend the legend item is not interactive.
   To identify mouse clicks on a legend item an event filter
   needs to be installed catching mouse events ob the plot canvas.
   The geometries of the legend items are available using
   legendGeometries().
-  
-  The legend item is aligned to plot canvas according to 
+
+  The legend item is aligned to plot canvas according to
   its alignment() flags. It might have a background for the
   complete legend ( usually semi transparent ) or for
   each legend item.
 
-  \note An external QwtLegend with a transparent background 
-        on top the plot canvas might be another option 
+  \note An external QwtLegend with a transparent background
+        on top the plot canvas might be another option
         with a similar effect.
 */
 
 class QWT_EXPORT QwtPlotLegendItem: public QwtPlotItem
 {
 public:
-    /*!
-      \brief Background mode
+	/*!
+	  \brief Background mode
 
-      Depending on the mode the complete legend or each item 
-      might have an background.
+	  Depending on the mode the complete legend or each item
+	  might have an background.
 
-      The default setting is LegendBackground.
+	  The default setting is LegendBackground.
 
-       \sa setBackgroundMode(), setBackgroundBrush(), drawBackground()
-     */
-    enum BackgroundMode
-    {
-        //! The legend has a background
-        LegendBackground,
+	   \sa setBackgroundMode(), setBackgroundBrush(), drawBackground()
+	 */
+	enum BackgroundMode
+	{
+		//! The legend has a background
+		LegendBackground,
 
-        //! Each item has a background
-        ItemBackground
-    };
+		//! Each item has a background
+		ItemBackground
+	};
 
-    explicit QwtPlotLegendItem();
-    virtual ~QwtPlotLegendItem();
+	explicit QwtPlotLegendItem();
+	virtual ~QwtPlotLegendItem();
 
-    virtual int rtti() const;
+	virtual int rtti() const;
 
-    void setAlignment( Qt::Alignment );
-    Qt::Alignment alignment() const;
+	void setAlignment(Qt::Alignment);
+	Qt::Alignment alignment() const;
 
-    void setMaxColumns( uint );
-    uint maxColumns() const;
+	void setMaxColumns(uint);
+	uint maxColumns() const;
 
-    void setMargin( int );
-    int margin() const;
+	void setMargin(int);
+	int margin() const;
 
-    void setSpacing( int );
-    int spacing() const;
+	void setSpacing(int);
+	int spacing() const;
 
-    void setItemMargin( int );
-    int itemMargin() const;
+	void setItemMargin(int);
+	int itemMargin() const;
 
-    void setItemSpacing( int );
-    int itemSpacing() const;
-    
-    void setFont( const QFont& );
-    QFont font() const;
+	void setItemSpacing(int);
+	int itemSpacing() const;
 
-    void setBorderDistance( int numPixels );
-    int borderDistance() const;
+	void setFont(const QFont &);
+	QFont font() const;
 
-    void setBorderRadius( double );
-    double borderRadius() const;
+	void setBorderDistance(int numPixels);
+	int borderDistance() const;
 
-    void setBorderPen( const QPen & );
-    QPen borderPen() const;
+	void setBorderRadius(double);
+	double borderRadius() const;
 
-    void setBackgroundBrush( const QBrush & );
-    QBrush backgroundBrush() const;
+	void setBorderPen(const QPen &);
+	QPen borderPen() const;
 
-    void setBackgroundMode( BackgroundMode );
-    BackgroundMode backgroundMode() const;
+	void setBackgroundBrush(const QBrush &);
+	QBrush backgroundBrush() const;
 
-    void setTextPen( const QPen & );
-    QPen textPen() const;
+	void setBackgroundMode(BackgroundMode);
+	BackgroundMode backgroundMode() const;
 
-    virtual void draw( QPainter *p,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &rect ) const;
+	void setTextPen(const QPen &);
+	QPen textPen() const;
 
-    void clearLegend();
+	virtual void draw(QPainter *p,
+			  const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+			  const QRectF &rect) const;
 
-    virtual void updateLegend( const QwtPlotItem *,
-        const QList<QwtLegendData> & );
+	void clearLegend();
 
-    virtual QRect geometry( const QRectF &canvasRect ) const;
+	virtual void updateLegend(const QwtPlotItem *,
+				  const QList<QwtLegendData> &);
 
-    virtual QSize minimumSize( const QwtLegendData & ) const;
-    virtual int heightForWidth( const QwtLegendData &, int w ) const;
+	virtual QRect geometry(const QRectF &canvasRect) const;
 
-    QList< const QwtPlotItem * > plotItems() const;
-    QList< QRect > legendGeometries( const QwtPlotItem * ) const;
+	virtual QSize minimumSize(const QwtLegendData &) const;
+	virtual int heightForWidth(const QwtLegendData &, int w) const;
+
+	QList< const QwtPlotItem * > plotItems() const;
+	QList< QRect > legendGeometries(const QwtPlotItem *) const;
 
 protected:
-    virtual void drawLegendData( QPainter *painter, 
-        const QwtPlotItem *, const QwtLegendData &, const QRectF & ) const;
+	virtual void drawLegendData(QPainter *painter,
+				    const QwtPlotItem *, const QwtLegendData &, const QRectF &) const;
 
-    virtual void drawBackground( QPainter *, const QRectF &rect ) const;
+	virtual void drawBackground(QPainter *, const QRectF &rect) const;
 
 private:
-    class PrivateData;
-    PrivateData *d_data;
+	class PrivateData;
+	PrivateData *d_data;
 };
 
 #endif

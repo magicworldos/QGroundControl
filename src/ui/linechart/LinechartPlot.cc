@@ -1,4 +1,4 @@
- /*=====================================================================
+/*=====================================================================
 ======================================================================*/
 
 /**
@@ -33,56 +33,56 @@
  * @param interval The maximum interval for which data is stored (default: 30 minutes) in milliseconds
  **/
 LinechartPlot::LinechartPlot(QWidget *parent, int plotid, quint64 interval):
-    ChartPlot(parent),
-    minTime(0),
-    lastTime(0),
-    maxTime(100),
-    maxInterval(MAX_STORAGE_INTERVAL),
-    plotPosition(0),
-    timeScaleStep(DEFAULT_SCALE_INTERVAL), // 10 seconds
-    automaticScrollActive(false),
-    m_active(false),
-    m_groundTime(true),
-    d_data(NULL),
-    d_curve(NULL)
+	ChartPlot(parent),
+	minTime(0),
+	lastTime(0),
+	maxTime(100),
+	maxInterval(MAX_STORAGE_INTERVAL),
+	plotPosition(0),
+	timeScaleStep(DEFAULT_SCALE_INTERVAL), // 10 seconds
+	automaticScrollActive(false),
+	m_active(false),
+	m_groundTime(true),
+	d_data(NULL),
+	d_curve(NULL)
 {
-    this->plotid = plotid;
-    this->plotInterval = interval;
+	this->plotid = plotid;
+	this->plotInterval = interval;
 
-    maxValue = -DBL_MAX;
-    minValue = DBL_MAX;
+	maxValue = -DBL_MAX;
+	minValue = DBL_MAX;
 
-    //lastMaxTimeAdded = QTime();
+	//lastMaxTimeAdded = QTime();
 
-    data = QMap<QString, TimeSeriesData*>();
-    scaleMaps = QMap<QString, QwtScaleMap*>();
+	data = QMap<QString, TimeSeriesData *>();
+	scaleMaps = QMap<QString, QwtScaleMap *>();
 
-    yScaleEngine = new QwtLinearScaleEngine();
-    setAxisScaleEngine(QwtPlot::yLeft, yScaleEngine);
+	yScaleEngine = new QwtLinearScaleEngine();
+	setAxisScaleEngine(QwtPlot::yLeft, yScaleEngine);
 
-    // Set left scale
-    //setAxisOptions(QwtPlot::yLeft, QwtAutoScale::Logarithmic);
+	// Set left scale
+	//setAxisOptions(QwtPlot::yLeft, QwtAutoScale::Logarithmic);
 
-    // Set bottom scale
-    setAxisScaleDraw(QwtPlot::xBottom, new TimeScaleDraw());
-    setAxisLabelRotation(QwtPlot::xBottom, -25.0);
-    setAxisLabelAlignment(QwtPlot::xBottom, Qt::AlignLeft | Qt::AlignBottom);
+	// Set bottom scale
+	setAxisScaleDraw(QwtPlot::xBottom, new TimeScaleDraw());
+	setAxisLabelRotation(QwtPlot::xBottom, -25.0);
+	setAxisLabelAlignment(QwtPlot::xBottom, Qt::AlignLeft | Qt::AlignBottom);
 
-    // Add some space on the left and right side of the scale to prevent flickering
+	// Add some space on the left and right side of the scale to prevent flickering
 
-    QwtScaleWidget* bottomScaleWidget = axisWidget(QwtPlot::xBottom);
-    const int fontMetricsX = QFontMetrics(bottomScaleWidget->font()).height();
-    bottomScaleWidget->setMinBorderDist(fontMetricsX * 2, fontMetricsX / 2);
+	QwtScaleWidget *bottomScaleWidget = axisWidget(QwtPlot::xBottom);
+	const int fontMetricsX = QFontMetrics(bottomScaleWidget->font()).height();
+	bottomScaleWidget->setMinBorderDist(fontMetricsX * 2, fontMetricsX / 2);
 
-    plotLayout()->setAlignCanvasToScales(true);
+	plotLayout()->setAlignCanvasToScales(true);
 
-    // Start QTimer for plot update
-    updateTimer = new QTimer(this);
-    connect(updateTimer, &QTimer::timeout, this, &LinechartPlot::paintRealtime);
-    //updateTimer->start(DEFAULT_REFRESH_RATE);
+	// Start QTimer for plot update
+	updateTimer = new QTimer(this);
+	connect(updateTimer, &QTimer::timeout, this, &LinechartPlot::paintRealtime);
+	//updateTimer->start(DEFAULT_REFRESH_RATE);
 
-    connect(&timeoutTimer, &QTimer::timeout, this, &LinechartPlot::removeTimedOutCurves);
-    //timeoutTimer.start(5000);
+	connect(&timeoutTimer, &QTimer::timeout, this, &LinechartPlot::removeTimedOutCurves);
+	//timeoutTimer.start(5000);
 }
 
 LinechartPlot::~LinechartPlot()
@@ -112,21 +112,21 @@ LinechartPlot::~LinechartPlot()
 //    datalock.unlock();
 }
 
-void LinechartPlot::showEvent(QShowEvent* event)
+void LinechartPlot::showEvent(QShowEvent *event)
 {
-    Q_UNUSED(event);
-    updateTimer->start(DEFAULT_REFRESH_RATE);
+	Q_UNUSED(event);
+	updateTimer->start(DEFAULT_REFRESH_RATE);
 }
 
-void LinechartPlot::hideEvent(QHideEvent* event)
+void LinechartPlot::hideEvent(QHideEvent *event)
 {
-    Q_UNUSED(event);
-    updateTimer->stop();
+	Q_UNUSED(event);
+	updateTimer->stop();
 }
 
 int LinechartPlot::getPlotId()
 {
-    return this->plotid;
+	return this->plotid;
 }
 
 /**
@@ -134,7 +134,7 @@ int LinechartPlot::getPlotId()
  */
 double LinechartPlot::getCurrentValue(QString id)
 {
-    return data.value(id)->getCurrentValue();
+	return data.value(id)->getCurrentValue();
 }
 
 /**
@@ -142,7 +142,7 @@ double LinechartPlot::getCurrentValue(QString id)
  */
 double LinechartPlot::getMean(QString id)
 {
-    return data.value(id)->getMean();
+	return data.value(id)->getMean();
 }
 
 /**
@@ -150,7 +150,7 @@ double LinechartPlot::getMean(QString id)
  */
 double LinechartPlot::getMedian(QString id)
 {
-    return data.value(id)->getMedian();
+	return data.value(id)->getMedian();
 }
 
 /**
@@ -158,12 +158,12 @@ double LinechartPlot::getMedian(QString id)
  */
 double LinechartPlot::getVariance(QString id)
 {
-    return data.value(id)->getVariance();
+	return data.value(id)->getVariance();
 }
 
 int LinechartPlot::getAverageWindow()
 {
-    return averageWindowSize;
+	return averageWindowSize;
 }
 
 /**
@@ -173,41 +173,42 @@ int LinechartPlot::getAverageWindow()
  **/
 void LinechartPlot::setRefreshRate(int ms)
 {
-    updateTimer->setInterval(ms);
+	updateTimer->setInterval(ms);
 }
 
 void LinechartPlot::setActive(bool active)
 {
-    m_active = active;
+	m_active = active;
 }
 
 void LinechartPlot::removeTimedOutCurves()
 {
-    foreach(const QString &key, lastUpdate.keys())
-    {
-        quint64 time = lastUpdate.value(key);
-        if (QGC::groundTimeMilliseconds() - time > 10000)
-        {
-            // Remove this curve
-            // Delete curves
-            QwtPlotCurve* curve = _curves.take(key);
-            // Delete the object
-            delete curve;
-            // Set the pointer null
-            curve = NULL;
+	foreach (const QString &key, lastUpdate.keys())
+	{
+		quint64 time = lastUpdate.value(key);
 
-            // Notify connected components about the removal
-            emit curveRemoved(key);
+		if (QGC::groundTimeMilliseconds() - time > 10000)
+		{
+			// Remove this curve
+			// Delete curves
+			QwtPlotCurve *curve = _curves.take(key);
+			// Delete the object
+			delete curve;
+			// Set the pointer null
+			curve = NULL;
 
-            // Remove from data list
-            TimeSeriesData* d = data.take(key);
-            // Delete the object
-            delete d;
-            // Set the pointer null
-            d = NULL;
-            emit curveRemoved(key);
-        }
-    }
+			// Notify connected components about the removal
+			emit curveRemoved(key);
+
+			// Remove from data list
+			TimeSeriesData *d = data.take(key);
+			// Delete the object
+			delete d;
+			// Set the pointer null
+			d = NULL;
+			emit curveRemoved(key);
+		}
+	}
 }
 
 /**
@@ -219,69 +220,80 @@ void LinechartPlot::removeTimedOutCurves()
  **/
 void LinechartPlot::setZeroValue(QString id, double zeroValue)
 {
-    if(data.contains(id)) {
-        data.value(id)->setZeroValue(zeroValue);
-    } else {
-        data.insert(id, new TimeSeriesData(this, id, maxInterval, zeroValue));
-    }
+	if (data.contains(id))
+	{
+		data.value(id)->setZeroValue(zeroValue);
+	}
+
+	else
+	{
+		data.insert(id, new TimeSeriesData(this, id, maxInterval, zeroValue));
+	}
 }
 
 void LinechartPlot::appendData(QString dataname, quint64 ms, double value)
 {
-    /* Lock resource to ensure data integrity */
-    datalock.lock();
+	/* Lock resource to ensure data integrity */
+	datalock.lock();
 
-    /* Check if dataset identifier already exists */
-    if(!data.contains(dataname)) {
-        addCurve(dataname);
-        enforceGroundTime(m_groundTime);
+	/* Check if dataset identifier already exists */
+	if (!data.contains(dataname))
+	{
+		addCurve(dataname);
+		enforceGroundTime(m_groundTime);
 //        qDebug() << "ADDING CURVE WITH" << dataname << ms << value;
 //        qDebug() << "MINTIME:" << minTime << "MAXTIME:" << maxTime;
 //        qDebug() << "LASTTIME:" << lastTime;
-    }
+	}
 
-    // Add new value
-    TimeSeriesData* dataset = data.value(dataname);
+	// Add new value
+	TimeSeriesData *dataset = data.value(dataname);
 
-    quint64 time;
+	quint64 time;
 
-    // Append data
-    if (!m_groundTime)
-    {
-        // Use timestamp from dataset
-        time = ms;
-    }
-    else
-    {
-        time = QGC::groundTimeMilliseconds();
-    }
-    dataset->append(time, value);
+	// Append data
+	if (!m_groundTime)
+	{
+		// Use timestamp from dataset
+		time = ms;
+	}
 
-    lastUpdate.insert(dataname, time);
+	else
+	{
+		time = QGC::groundTimeMilliseconds();
+	}
 
-    // Scaling values
-    if(ms < minTime) minTime = ms;
-    if(ms > maxTime) maxTime = ms;
-    storageInterval = maxTime - minTime;
+	dataset->append(time, value);
 
-    if(time > lastTime)
-    {
-        //qDebug() << "UPDATED LAST TIME!" << dataname << time << lastTime;
-        lastTime = time;
-    }
+	lastUpdate.insert(dataname, time);
 
-    //
-    if (value < minValue) minValue = value;
-    if (value > maxValue) maxValue = value;
-    valueInterval = maxValue - minValue;
+	// Scaling values
+	if (ms < minTime) { minTime = ms; }
 
-    // Assign dataset to curve
-    QwtPlotCurve* curve = _curves.value(dataname);
-    curve->setRawSamples(dataset->getPlotX(), dataset->getPlotY(), dataset->getPlotCount());
+	if (ms > maxTime) { maxTime = ms; }
 
-    //    qDebug() << "mintime" << minTime << "maxtime" << maxTime << "last max time" << "window position" << getWindowPosition();
+	storageInterval = maxTime - minTime;
 
-    datalock.unlock();
+	if (time > lastTime)
+	{
+		//qDebug() << "UPDATED LAST TIME!" << dataname << time << lastTime;
+		lastTime = time;
+	}
+
+	//
+	if (value < minValue) { minValue = value; }
+
+	if (value > maxValue) { maxValue = value; }
+
+	valueInterval = maxValue - minValue;
+
+	// Assign dataset to curve
+	QwtPlotCurve *curve = _curves.value(dataname);
+	curve->setRawSamples(dataset->getPlotX(), dataset->getPlotY(), dataset->getPlotCount());
+
+	//    qDebug() << "mintime" << minTime << "maxtime" << maxTime << "last max time" << "window position" << getWindowPosition();
+
+	datalock.unlock();
 }
 
 /**
@@ -289,21 +301,22 @@ void LinechartPlot::appendData(QString dataname, quint64 ms, double value)
  */
 void LinechartPlot::enforceGroundTime(bool enforce)
 {
-    m_groundTime = enforce;
+	m_groundTime = enforce;
 
-    if (enforce)
-    {
-        lastTime = QGC::groundTimeMilliseconds();
-        plotPosition = lastTime;
-        maxTime = lastTime;
-    }
-    else
-    {
-        lastTime = 0;
-        plotPosition = 0;
-        minTime = 0;
-        maxTime = 100;
-    }
+	if (enforce)
+	{
+		lastTime = QGC::groundTimeMilliseconds();
+		plotPosition = lastTime;
+		maxTime = lastTime;
+	}
+
+	else
+	{
+		lastTime = 0;
+		plotPosition = 0;
+		minTime = 0;
+		maxTime = 100;
+	}
 }
 
 /**
@@ -311,45 +324,45 @@ void LinechartPlot::enforceGroundTime(bool enforce)
  */
 bool LinechartPlot::groundTime()
 {
-    return m_groundTime;
+	return m_groundTime;
 }
 
 void LinechartPlot::addCurve(QString id)
 {
-    QColor currentColor = getNextColor();
+	QColor currentColor = getNextColor();
 
-    // Create new curve and set style
-    QwtPlotCurve* curve = new QwtPlotCurve(id);
-    // Add curve to list
-    _curves.insert(id, curve);
+	// Create new curve and set style
+	QwtPlotCurve *curve = new QwtPlotCurve(id);
+	// Add curve to list
+	_curves.insert(id, curve);
 
-    curve->setStyle(QwtPlotCurve::Lines);
-    curve->setPaintAttribute(QwtPlotCurve::FilterPoints, true);
-    setCurveColor(id, currentColor);
-    //curve->setBrush(currentColor); Leads to a filled curve
-    //    curve->setRenderHint(QwtPlotItem::RenderAntialiased);
+	curve->setStyle(QwtPlotCurve::Lines);
+	curve->setPaintAttribute(QwtPlotCurve::FilterPoints, true);
+	setCurveColor(id, currentColor);
+	//curve->setBrush(currentColor); Leads to a filled curve
+	//    curve->setRenderHint(QwtPlotItem::RenderAntialiased);
 
-    curve->attach(this);
-    //@TODO Color differentiation between the curves will be necessary
+	curve->attach(this);
+	//@TODO Color differentiation between the curves will be necessary
 
-    /* Create symbol for datapoints on curve */
-    /*
-         * Symbols have significant performance penalty, better avoid them
-         *
-        QwtSymbol sym = QwtSymbol();
-        sym.setStyle(QwtSymbol::Ellipse);
-        sym.setPen(currentColor);
-        sym.setSize(3);
-        curve->setSymbol(sym);*/
+	/* Create symbol for datapoints on curve */
+	/*
+	     * Symbols have significant performance penalty, better avoid them
+	     *
+	    QwtSymbol sym = QwtSymbol();
+	    sym.setStyle(QwtSymbol::Ellipse);
+	    sym.setPen(currentColor);
+	    sym.setSize(3);
+	    curve->setSymbol(sym);*/
 
-    // Create dataset
-    TimeSeriesData* dataset = new TimeSeriesData(this, id, this->plotInterval, maxInterval);
+	// Create dataset
+	TimeSeriesData *dataset = new TimeSeriesData(this, id, this->plotInterval, maxInterval);
 
-    // Add dataset to list
-    data.insert(id, dataset);
+	// Add dataset to list
+	data.insert(id, dataset);
 
-    // Notify connected components about new curve
-    emit curveAdded(id);
+	// Notify connected components about new curve
+	emit curveAdded(id);
 }
 
 /**
@@ -360,13 +373,16 @@ void LinechartPlot::addCurve(QString id)
  * */
 void LinechartPlot::setWindowPosition(quint64 end)
 {
-    windowLock.lock();
-    if(end <= this->getMaxTime() && end >= (this->getMinTime() + this->getPlotInterval())) {
-        plotPosition = end;
-        setAxisScale(QwtPlot::xBottom, (plotPosition - getPlotInterval()), plotPosition, timeScaleStep);
-    }
-    //@TODO Update the rest of the plot and update drawing
-    windowLock.unlock();
+	windowLock.lock();
+
+	if (end <= this->getMaxTime() && end >= (this->getMinTime() + this->getPlotInterval()))
+	{
+		plotPosition = end;
+		setAxisScale(QwtPlot::xBottom, (plotPosition - getPlotInterval()), plotPosition, timeScaleStep);
+	}
+
+	//@TODO Update the rest of the plot and update drawing
+	windowLock.unlock();
 }
 
 /**
@@ -377,7 +393,7 @@ void LinechartPlot::setWindowPosition(quint64 end)
  **/
 quint64 LinechartPlot::getWindowPosition()
 {
-    return plotPosition;
+	return plotPosition;
 }
 
 /**
@@ -395,15 +411,18 @@ quint64 LinechartPlot::getWindowPosition()
  **/
 void LinechartPlot::setScaling(int scaling)
 {
-    this->scaling = scaling;
-    switch (scaling) {
-    case LinechartPlot::SCALE_ABSOLUTE:
-        setLinearScaling();
-        break;
-    case LinechartPlot::SCALE_LOGARITHMIC:
-        setLogarithmicScaling();
-        break;
-    }
+	this->scaling = scaling;
+
+	switch (scaling)
+	{
+	case LinechartPlot::SCALE_ABSOLUTE:
+		setLinearScaling();
+		break;
+
+	case LinechartPlot::SCALE_LOGARITHMIC:
+		setLogarithmicScaling();
+		break;
+	}
 }
 
 /**
@@ -414,17 +433,20 @@ void LinechartPlot::setScaling(int scaling)
  **/
 void LinechartPlot::setVisibleById(QString id, bool visible)
 {
-    if(_curves.contains(id)) {
-        _curves.value(id)->setVisible(visible);
-        if(visible)
-        {
-            _curves.value(id)->attach(this);
-        }
-        else
-        {
-            _curves.value(id)->detach();
-        }
-    }
+	if (_curves.contains(id))
+	{
+		_curves.value(id)->setVisible(visible);
+
+		if (visible)
+		{
+			_curves.value(id)->attach(this);
+		}
+
+		else
+		{
+			_curves.value(id)->detach();
+		}
+	}
 }
 
 /**
@@ -437,7 +459,7 @@ void LinechartPlot::setVisibleById(QString id, bool visible)
  **/
 void LinechartPlot::hideCurve(QString id)
 {
-    setVisibleById(id, false);
+	setVisibleById(id, false);
 }
 
 /**
@@ -450,7 +472,7 @@ void LinechartPlot::hideCurve(QString id)
  **/
 void LinechartPlot::showCurve(QString id)
 {
-    setVisibleById(id, true);
+	setVisibleById(id, true);
 }
 
 //void LinechartPlot::showCurve(QString id, int position)
@@ -467,19 +489,23 @@ void LinechartPlot::showCurve(QString id)
  **/
 void LinechartPlot::setCurveColor(QString id, QColor color)
 {
-    QwtPlotCurve* curve = _curves.value(id);
-    // Change the color of the curve.
-    curve->setPen(QPen(QBrush(color), _curveWidth));
+	QwtPlotCurve *curve = _curves.value(id);
+	// Change the color of the curve.
+	curve->setPen(QPen(QBrush(color), _curveWidth));
 
-    //qDebug() << "Setting curve" << id << "to" << color;
+	//qDebug() << "Setting curve" << id << "to" << color;
 
-    // And change the color of the symbol, making sure to preserve the symbol style
-    const QwtSymbol *oldSymbol = curve->symbol();
-    QwtSymbol *newSymbol = NULL;
-    if (oldSymbol) {
-        newSymbol = new QwtSymbol(oldSymbol->style(), QBrush(color), QPen(color, _symbolWidth), QSize(_symbolWidth, _symbolWidth));
-    }
-    curve->setSymbol(newSymbol);
+	// And change the color of the symbol, making sure to preserve the symbol style
+	const QwtSymbol *oldSymbol = curve->symbol();
+	QwtSymbol *newSymbol = NULL;
+
+	if (oldSymbol)
+	{
+		newSymbol = new QwtSymbol(oldSymbol->style(), QBrush(color), QPen(color, _symbolWidth), QSize(_symbolWidth,
+					  _symbolWidth));
+	}
+
+	curve->setSymbol(newSymbol);
 }
 
 /**
@@ -490,7 +516,7 @@ void LinechartPlot::setCurveColor(QString id, QColor color)
  **/
 bool LinechartPlot::isVisible(QString id)
 {
-    return _curves.value(id)->isVisible();
+	return _curves.value(id)->isVisible();
 }
 
 /**
@@ -498,16 +524,17 @@ bool LinechartPlot::isVisible(QString id)
  **/
 bool LinechartPlot::anyCurveVisible()
 {
-    bool visible = false;
-    foreach (const QString &key, _curves.keys())
-    {
-        if (_curves.value(key)->isVisible())
-        {
-            visible = true;
-        }
-    }
+	bool visible = false;
 
-    return visible;
+	foreach (const QString &key, _curves.keys())
+	{
+		if (_curves.value(key)->isVisible())
+		{
+			visible = true;
+		}
+	}
+
+	return visible;
 }
 
 /**
@@ -520,7 +547,7 @@ bool LinechartPlot::anyCurveVisible()
  **/
 void LinechartPlot::setAutoScroll(bool active)
 {
-    automaticScrollActive = active;
+	automaticScrollActive = active;
 }
 
 /**
@@ -528,9 +555,9 @@ void LinechartPlot::setAutoScroll(bool active)
  *
  * @return The list of curves
  **/
-QList<QwtPlotCurve*> LinechartPlot::getCurves()
+QList<QwtPlotCurve *> LinechartPlot::getCurves()
 {
-    return _curves.values();
+	return _curves.values();
 }
 
 /**
@@ -540,7 +567,7 @@ QList<QwtPlotCurve*> LinechartPlot::getCurves()
  **/
 quint64 LinechartPlot::getMinTime()
 {
-    return minTime;
+	return minTime;
 }
 
 /**
@@ -550,7 +577,7 @@ quint64 LinechartPlot::getMinTime()
  **/
 quint64 LinechartPlot::getMaxTime()
 {
-    return maxTime;
+	return maxTime;
 }
 
 /**
@@ -563,7 +590,7 @@ quint64 LinechartPlot::getMaxTime()
  **/
 quint64 LinechartPlot::getPlotInterval()
 {
-    return plotInterval;
+	return plotInterval;
 }
 
 /**
@@ -574,28 +601,44 @@ quint64 LinechartPlot::getPlotInterval()
  **/
 void LinechartPlot::setPlotInterval(int interval)
 {
-    //Only ever increase the amount of stored data,
-    // so that we allow the user to change between
-    // different intervals without constantly losing
-    // data points
-    if((unsigned)interval > plotInterval) {
+	//Only ever increase the amount of stored data,
+	// so that we allow the user to change between
+	// different intervals without constantly losing
+	// data points
+	if ((unsigned)interval > plotInterval)
+	{
 
-        QMap<QString, TimeSeriesData*>::iterator j;
-        for(j = data.begin(); j != data.end(); ++j)
-        {
-            TimeSeriesData* d = data.value(j.key());
-            d->setInterval(interval);
-        }
-    }
-    plotInterval = interval;
-    if(plotInterval > 5*60*1000) //If the interval is longer than 4 minutes, change the time scale step to 2 minutes
-        timeScaleStep = 2*60*1000;
-    else if(plotInterval >= 4*60*1000) //If the interval is longer than 4 minutes, change the time scale step to 1 minutes
-        timeScaleStep = 1*60*1000;
-    else if(plotInterval >= 60*1000) //If the interval is longer than a minute, change the time scale step to 30 seconds
-        timeScaleStep = 30*1000;
-    else
-        timeScaleStep = DEFAULT_SCALE_INTERVAL;
+		QMap<QString, TimeSeriesData *>::iterator j;
+
+		for (j = data.begin(); j != data.end(); ++j)
+		{
+			TimeSeriesData *d = data.value(j.key());
+			d->setInterval(interval);
+		}
+	}
+
+	plotInterval = interval;
+
+	if (plotInterval > 5 * 60 * 1000) //If the interval is longer than 4 minutes, change the time scale step to 2 minutes
+	{
+		timeScaleStep = 2 * 60 * 1000;
+	}
+
+	else if (plotInterval >= 4 * 60 *
+			1000) //If the interval is longer than 4 minutes, change the time scale step to 1 minutes
+	{
+		timeScaleStep = 1 * 60 * 1000;
+	}
+
+	else if (plotInterval >= 60 * 1000) //If the interval is longer than a minute, change the time scale step to 30 seconds
+	{
+		timeScaleStep = 30 * 1000;
+	}
+
+	else
+	{
+		timeScaleStep = DEFAULT_SCALE_INTERVAL;
+	}
 
 }
 
@@ -609,7 +652,7 @@ void LinechartPlot::setPlotInterval(int interval)
  **/
 quint64 LinechartPlot::getDataInterval()
 {
-    return storageInterval;
+	return storageInterval;
 }
 
 /**
@@ -617,8 +660,8 @@ quint64 LinechartPlot::getDataInterval()
  **/
 void LinechartPlot::setLogarithmicScaling()
 {
-    yScaleEngine = new QwtLogScaleEngine();
-    setAxisScaleEngine(QwtPlot::yLeft, yScaleEngine);
+	yScaleEngine = new QwtLogScaleEngine();
+	setAxisScaleEngine(QwtPlot::yLeft, yScaleEngine);
 }
 
 /**
@@ -626,17 +669,18 @@ void LinechartPlot::setLogarithmicScaling()
  **/
 void LinechartPlot::setLinearScaling()
 {
-    yScaleEngine = new QwtLinearScaleEngine();
-    setAxisScaleEngine(QwtPlot::yLeft, yScaleEngine);
+	yScaleEngine = new QwtLinearScaleEngine();
+	setAxisScaleEngine(QwtPlot::yLeft, yScaleEngine);
 }
 
 void LinechartPlot::setAverageWindow(int windowSize)
 {
-    this->averageWindowSize = windowSize;
-    foreach(TimeSeriesData* series, data)
-    {
-        series->setAverageWindowSize(windowSize);
-    }
+	this->averageWindowSize = windowSize;
+
+	foreach (TimeSeriesData *series, data)
+	{
+		series->setAverageWindowSize(windowSize);
+	}
 }
 
 /**
@@ -646,52 +690,54 @@ void LinechartPlot::setAverageWindow(int windowSize)
  **/
 void LinechartPlot::paintRealtime()
 {
-    if (m_active) {
+	if (m_active)
+	{
 #if (QGC_EVENTLOOP_DEBUG)
-        static quint64 timestamp = 0;
-        qDebug() << "EVENTLOOP: (" << MG::TIME::getGroundTimeNow() - timestamp << ")" << __FILE__ << __LINE__;
-        timestamp = MG::TIME::getGroundTimeNow();
+		static quint64 timestamp = 0;
+		qDebug() << "EVENTLOOP: (" << MG::TIME::getGroundTimeNow() - timestamp << ")" << __FILE__ << __LINE__;
+		timestamp = MG::TIME::getGroundTimeNow();
 #endif
-        // Update plot window value to new max time if the last time was also the max time
-        windowLock.lock();
-        if (automaticScrollActive)
-        {
+		// Update plot window value to new max time if the last time was also the max time
+		windowLock.lock();
 
-            // FIXME Check, but commenting this out should have been
-            // beneficial (does only add complexity)
-            //            if (MG::TIME::getGroundTimeNow() > maxTime && abs(MG::TIME::getGroundTimeNow() - maxTime) < 5000000)
-            //            {
-            //                plotPosition = MG::TIME::getGroundTimeNow();
-            //            }
-            //            else
-            //            {
-            plotPosition = lastTime;// + lastMaxTimeAdded.msec();
-            //            }
-            setAxisScale(QwtPlot::xBottom, plotPosition - plotInterval, plotPosition, timeScaleStep);
+		if (automaticScrollActive)
+		{
 
-            // FIXME Last fix for scroll zoomer is here
-            //setAxisScale(QwtPlot::yLeft, minValue + minValue * 0.05, maxValue + maxValue * 0.05f, (maxValue - minValue) / 10.0);
-            /* Notify about change. Even if the window position was not changed
-                     * itself, the relative position of the window to the interval must
-                     * have changed, as the interval likely increased in length */
-            emit windowPositionChanged(getWindowPosition());
-        }
+			// FIXME Check, but commenting this out should have been
+			// beneficial (does only add complexity)
+			//            if (MG::TIME::getGroundTimeNow() > maxTime && abs(MG::TIME::getGroundTimeNow() - maxTime) < 5000000)
+			//            {
+			//                plotPosition = MG::TIME::getGroundTimeNow();
+			//            }
+			//            else
+			//            {
+			plotPosition = lastTime;// + lastMaxTimeAdded.msec();
+			//            }
+			setAxisScale(QwtPlot::xBottom, plotPosition - plotInterval, plotPosition, timeScaleStep);
 
-        windowLock.unlock();
+			// FIXME Last fix for scroll zoomer is here
+			//setAxisScale(QwtPlot::yLeft, minValue + minValue * 0.05, maxValue + maxValue * 0.05f, (maxValue - minValue) / 10.0);
+			/* Notify about change. Even if the window position was not changed
+			         * itself, the relative position of the window to the interval must
+			         * have changed, as the interval likely increased in length */
+			emit windowPositionChanged(getWindowPosition());
+		}
 
-        replot();
+		windowLock.unlock();
 
-        /*
-        QMap<QString, QwtPlotCurve*>::iterator i;
-        for(i = curves.begin(); i != curves.end(); ++i) {
-                const bool cacheMode = canvas()->testPaintAttribute(QwtPlotCanvas::PaintCached);
-                canvas()->setPaintAttribute(QwtPlotCanvas::PaintCached, false);
-                i.value()->drawItems();
-                canvas()->setPaintAttribute(QwtPlotCanvas::PaintCached, cacheMode);
-        }*/
+		replot();
+
+		/*
+		QMap<QString, QwtPlotCurve*>::iterator i;
+		for(i = curves.begin(); i != curves.end(); ++i) {
+		        const bool cacheMode = canvas()->testPaintAttribute(QwtPlotCanvas::PaintCached);
+		        canvas()->setPaintAttribute(QwtPlotCanvas::PaintCached, false);
+		        i.value()->drawItems();
+		        canvas()->setPaintAttribute(QwtPlotCanvas::PaintCached, cacheMode);
+		}*/
 
 
-    }
+	}
 }
 
 /**
@@ -699,59 +745,63 @@ void LinechartPlot::paintRealtime()
  **/
 void LinechartPlot::removeAllData()
 {
-    datalock.lock();
-    // Delete curves
-    QMap<QString, QwtPlotCurve*>::iterator i;
-    for(i = _curves.begin(); i != _curves.end(); ++i)
-    {
-        // Remove from curve list
-        QwtPlotCurve* curve = _curves.take(i.key());
-        // Delete the object
-        delete curve;
-        // Set the pointer null
-        curve = NULL;
+	datalock.lock();
+	// Delete curves
+	QMap<QString, QwtPlotCurve *>::iterator i;
 
-        // Notify connected components about the removal
-        emit curveRemoved(i.key());
-    }
+	for (i = _curves.begin(); i != _curves.end(); ++i)
+	{
+		// Remove from curve list
+		QwtPlotCurve *curve = _curves.take(i.key());
+		// Delete the object
+		delete curve;
+		// Set the pointer null
+		curve = NULL;
 
-    // Delete data
-    QMap<QString, TimeSeriesData*>::iterator j;
-    for(j = data.begin(); j != data.end(); ++j)
-    {
-        // Remove from data list
-        TimeSeriesData* d = data.take(j.key());
-        // Delete the object
-        delete d;
-        // Set the pointer null
-        d = NULL;
-    }
-    datalock.unlock();
-    replot();
+		// Notify connected components about the removal
+		emit curveRemoved(i.key());
+	}
+
+	// Delete data
+	QMap<QString, TimeSeriesData *>::iterator j;
+
+	for (j = data.begin(); j != data.end(); ++j)
+	{
+		// Remove from data list
+		TimeSeriesData *d = data.take(j.key());
+		// Delete the object
+		delete d;
+		// Set the pointer null
+		d = NULL;
+	}
+
+	datalock.unlock();
+	replot();
 }
 
 
-TimeSeriesData::TimeSeriesData(QwtPlot* plot, QString friendlyName, quint64 plotInterval, quint64 maxInterval, double zeroValue):
-    minValue(DBL_MAX),
-    maxValue(DBL_MIN),
-    zeroValue(0),
-    count(0),
-    mean(0.0),
-    median(0.0),
-    variance(0.0),
-    averageWindow(50)
+TimeSeriesData::TimeSeriesData(QwtPlot *plot, QString friendlyName, quint64 plotInterval, quint64 maxInterval,
+			       double zeroValue):
+	minValue(DBL_MAX),
+	maxValue(DBL_MIN),
+	zeroValue(0),
+	count(0),
+	mean(0.0),
+	median(0.0),
+	variance(0.0),
+	averageWindow(50)
 {
-    this->plot = plot;
-    this->friendlyName = friendlyName;
-    this->maxInterval = maxInterval;
-    this->zeroValue = zeroValue;
-    this->plotInterval = plotInterval;
+	this->plot = plot;
+	this->friendlyName = friendlyName;
+	this->maxInterval = maxInterval;
+	this->zeroValue = zeroValue;
+	this->plotInterval = plotInterval;
 
-    /* initialize time */
-    startTime = QUINT64_MAX;
-    stopTime = QUINT64_MIN;
+	/* initialize time */
+	startTime = QUINT64_MAX;
+	stopTime = QUINT64_MIN;
 
-    plotCount = 0;
+	plotCount = 0;
 }
 
 TimeSeriesData::~TimeSeriesData()
@@ -761,12 +811,12 @@ TimeSeriesData::~TimeSeriesData()
 
 void TimeSeriesData::setInterval(quint64 ms)
 {
-    plotInterval = ms;
+	plotInterval = ms;
 }
 
 void TimeSeriesData::setAverageWindowSize(int windowSize)
 {
-    this->averageWindow = windowSize;
+	this->averageWindow = windowSize;
 }
 
 /**
@@ -777,24 +827,30 @@ void TimeSeriesData::setAverageWindowSize(int windowSize)
  **/
 void TimeSeriesData::append(quint64 ms, double value)
 {
-    dataMutex.lock();
-    // Qt will automatically use a smart growth strategy: http://doc.qt.io/qt-5/containers.html#growth-strategies
-    this->ms.append(ms);
-    this->value.append(value);
-    this->lastValue = value;
-    this->mean = 0;
-    //QList<double> medianList = QList<double>();
-    for (unsigned int i = 0; (i < averageWindow) && (((int)count - (int)i) >= 0); ++i) {
-        this->mean += this->value[count-i];
-        //medianList.append(this->value[count-i]);
-    }
-    this->mean = mean / static_cast<double>(qMin(averageWindow,static_cast<unsigned int>(count)));
+	dataMutex.lock();
+	// Qt will automatically use a smart growth strategy: http://doc.qt.io/qt-5/containers.html#growth-strategies
+	this->ms.append(ms);
+	this->value.append(value);
+	this->lastValue = value;
+	this->mean = 0;
 
-    this->variance = 0;
-    for (unsigned int i = 0; (i < averageWindow) && (((int)count - (int)i) >= 0); ++i) {
-        this->variance += (this->value[count-i] - mean) * (this->value[count-i] - mean);
-    }
-    this->variance = this->variance / static_cast<double>(qMin(averageWindow,static_cast<unsigned int>(count)));
+	//QList<double> medianList = QList<double>();
+	for (unsigned int i = 0; (i < averageWindow) && (((int)count - (int)i) >= 0); ++i)
+	{
+		this->mean += this->value[count - i];
+		//medianList.append(this->value[count-i]);
+	}
+
+	this->mean = mean / static_cast<double>(qMin(averageWindow, static_cast<unsigned int>(count)));
+
+	this->variance = 0;
+
+	for (unsigned int i = 0; (i < averageWindow) && (((int)count - (int)i) >= 0); ++i)
+	{
+		this->variance += (this->value[count - i] - mean) * (this->value[count - i] - mean);
+	}
+
+	this->variance = this->variance / static_cast<double>(qMin(averageWindow, static_cast<unsigned int>(count)));
 
 //    qSort(medianList);
 
@@ -810,39 +866,49 @@ void TimeSeriesData::append(quint64 ms, double value)
 //        }
 //    }
 
-    // Update statistical values
-    if(ms < startTime) startTime = ms;
-    if(ms > stopTime) stopTime = ms;
-    interval = stopTime - startTime;
+	// Update statistical values
+	if (ms < startTime) { startTime = ms; }
 
-    if (interval > plotInterval) {
-        while (this->ms[count - plotCount] < stopTime - plotInterval) {
-            plotCount--;
-        }
-    }
+	if (ms > stopTime) { stopTime = ms; }
 
-    count++;
-    plotCount++;
+	interval = stopTime - startTime;
 
-    if(minValue > value) minValue = value;
-    if(maxValue < value) maxValue = value;
+	if (interval > plotInterval)
+	{
+		while (this->ms[count - plotCount] < stopTime - plotInterval)
+		{
+			plotCount--;
+		}
+	}
 
-    // Trim dataset if necessary
-    if(maxInterval > 0) {
-        // maxInterval = 0 means infinite
+	count++;
+	plotCount++;
 
-        if(interval > maxInterval && !this->ms.isEmpty() && !this->value.isEmpty()) {
-            // The time at which this time series should be cut
-            double minTime = stopTime - maxInterval;
-            // Delete elements from the start of the list as long the time
-            // value of this elements is before the cut time
-            while(this->ms.first() < minTime) {
-                this->ms.pop_front();
-                this->value.pop_front();
-            }
-        }
-    }
-    dataMutex.unlock();
+	if (minValue > value) { minValue = value; }
+
+	if (maxValue < value) { maxValue = value; }
+
+	// Trim dataset if necessary
+	if (maxInterval > 0)
+	{
+		// maxInterval = 0 means infinite
+
+		if (interval > maxInterval && !this->ms.isEmpty() && !this->value.isEmpty())
+		{
+			// The time at which this time series should be cut
+			double minTime = stopTime - maxInterval;
+
+			// Delete elements from the start of the list as long the time
+			// value of this elements is before the cut time
+			while (this->ms.first() < minTime)
+			{
+				this->ms.pop_front();
+				this->value.pop_front();
+			}
+		}
+	}
+
+	dataMutex.unlock();
 }
 
 /**
@@ -852,7 +918,7 @@ void TimeSeriesData::append(quint64 ms, double value)
  **/
 int TimeSeriesData::getID()
 {
-    return id;
+	return id;
 }
 
 /**
@@ -862,7 +928,7 @@ int TimeSeriesData::getID()
  **/
 double TimeSeriesData::getMinValue()
 {
-    return minValue;
+	return minValue;
 }
 
 /**
@@ -872,7 +938,7 @@ double TimeSeriesData::getMinValue()
  **/
 double TimeSeriesData::getMaxValue()
 {
-    return maxValue;
+	return maxValue;
 }
 
 /**
@@ -880,7 +946,7 @@ double TimeSeriesData::getMaxValue()
  */
 double TimeSeriesData::getMean()
 {
-    return mean;
+	return mean;
 }
 
 /**
@@ -888,7 +954,7 @@ double TimeSeriesData::getMean()
  */
 double TimeSeriesData::getMedian()
 {
-    return median;
+	return median;
 }
 
 /**
@@ -896,12 +962,12 @@ double TimeSeriesData::getMedian()
  */
 double TimeSeriesData::getVariance()
 {
-    return variance;
+	return variance;
 }
 
 double TimeSeriesData::getCurrentValue()
 {
-    return lastValue;
+	return lastValue;
 }
 
 /**
@@ -912,7 +978,7 @@ double TimeSeriesData::getCurrentValue()
  **/
 double TimeSeriesData::getZeroValue()
 {
-    return zeroValue;
+	return zeroValue;
 }
 
 /**
@@ -923,7 +989,7 @@ double TimeSeriesData::getZeroValue()
  **/
 void TimeSeriesData::setZeroValue(double zeroValue)
 {
-    this->zeroValue = zeroValue;
+	this->zeroValue = zeroValue;
 }
 
 /**
@@ -933,7 +999,7 @@ void TimeSeriesData::setZeroValue(double zeroValue)
  **/
 int TimeSeriesData::getCount() const
 {
-    return count;
+	return count;
 }
 
 /**
@@ -943,7 +1009,7 @@ int TimeSeriesData::getCount() const
  **/
 int TimeSeriesData::getPlotCount() const
 {
-    return plotCount;
+	return plotCount;
 }
 
 /**
@@ -956,7 +1022,7 @@ int TimeSeriesData::getPlotCount() const
  **/
 int TimeSeriesData::size() const
 {
-    return ms.size();
+	return ms.size();
 }
 
 /**
@@ -964,14 +1030,14 @@ int TimeSeriesData::size() const
  *
  * @return The x values
  **/
-const double* TimeSeriesData::getX() const
+const double *TimeSeriesData::getX() const
 {
-    return ms.data();
+	return ms.data();
 }
 
-const double* TimeSeriesData::getPlotX() const
+const double *TimeSeriesData::getPlotX() const
 {
-    return ms.data() + (count - plotCount);
+	return ms.data() + (count - plotCount);
 }
 
 /**
@@ -979,12 +1045,12 @@ const double* TimeSeriesData::getPlotX() const
  *
  * @return The y values
  **/
-const double* TimeSeriesData::getY() const
+const double *TimeSeriesData::getY() const
 {
-    return value.data();
+	return value.data();
 }
 
-const double* TimeSeriesData::getPlotY() const
+const double *TimeSeriesData::getPlotY() const
 {
-    return value.data() + (count - plotCount);
+	return value.data() + (count - plotCount);
 }

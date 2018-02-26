@@ -44,99 +44,107 @@ class QSerialPortPrivate;
 
 class QSerialPort : public QIODevice
 {
-    Q_OBJECT
-    Q_DECLARE_PRIVATE(QSerialPort)
+	Q_OBJECT
+	Q_DECLARE_PRIVATE(QSerialPort)
 
-    Q_PROPERTY(qint32 baudRate READ baudRate WRITE setBaudRate NOTIFY baudRateChanged)
-    Q_PROPERTY(DataBits dataBits READ dataBits WRITE setDataBits NOTIFY dataBitsChanged)
-    Q_PROPERTY(Parity parity READ parity WRITE setParity NOTIFY parityChanged)
-    Q_PROPERTY(StopBits stopBits READ stopBits WRITE setStopBits NOTIFY stopBitsChanged)
-    Q_PROPERTY(FlowControl flowControl READ flowControl WRITE setFlowControl NOTIFY flowControlChanged)
+	Q_PROPERTY(qint32 baudRate READ baudRate WRITE setBaudRate NOTIFY baudRateChanged)
+	Q_PROPERTY(DataBits dataBits READ dataBits WRITE setDataBits NOTIFY dataBitsChanged)
+	Q_PROPERTY(Parity parity READ parity WRITE setParity NOTIFY parityChanged)
+	Q_PROPERTY(StopBits stopBits READ stopBits WRITE setStopBits NOTIFY stopBitsChanged)
+	Q_PROPERTY(FlowControl flowControl READ flowControl WRITE setFlowControl NOTIFY flowControlChanged)
 #if QT_DEPRECATED_SINCE(5, 2)
-    Q_PROPERTY(DataErrorPolicy dataErrorPolicy READ dataErrorPolicy WRITE setDataErrorPolicy NOTIFY dataErrorPolicyChanged)
+	Q_PROPERTY(DataErrorPolicy dataErrorPolicy READ dataErrorPolicy WRITE setDataErrorPolicy NOTIFY dataErrorPolicyChanged)
 #endif
-    Q_PROPERTY(bool dataTerminalReady READ isDataTerminalReady WRITE setDataTerminalReady NOTIFY dataTerminalReadyChanged)
-    Q_PROPERTY(bool requestToSend READ isRequestToSend WRITE setRequestToSend NOTIFY requestToSendChanged)
-    Q_PROPERTY(SerialPortError error READ error RESET clearError NOTIFY error)
+	Q_PROPERTY(bool dataTerminalReady READ isDataTerminalReady WRITE setDataTerminalReady NOTIFY dataTerminalReadyChanged)
+	Q_PROPERTY(bool requestToSend READ isRequestToSend WRITE setRequestToSend NOTIFY requestToSendChanged)
+	Q_PROPERTY(SerialPortError error READ error RESET clearError NOTIFY error)
 #if QT_DEPRECATED_SINCE(5, 3)
-    Q_PROPERTY(bool settingsRestoredOnClose READ settingsRestoredOnClose WRITE setSettingsRestoredOnClose NOTIFY settingsRestoredOnCloseChanged)
+	Q_PROPERTY(bool settingsRestoredOnClose READ settingsRestoredOnClose WRITE setSettingsRestoredOnClose NOTIFY
+		   settingsRestoredOnCloseChanged)
 #endif
 
-    Q_ENUMS(BaudRate DataBits Parity StopBits FlowControl DataErrorPolicy SerialPortError)
-    Q_FLAGS(Directions PinoutSignals)
+	Q_ENUMS(BaudRate DataBits Parity StopBits FlowControl DataErrorPolicy SerialPortError)
+	Q_FLAGS(Directions PinoutSignals)
 
 #if defined(Q_OS_WIN32) || defined(Q_OS_WINCE)
-    typedef void* Handle;
+	typedef void *Handle;
 #else
-    typedef int Handle;
+	typedef int Handle;
 #endif
 
 public:
 
-    enum Direction  {
-        Input = 1,
-        Output = 2,
-        AllDirections = Input | Output
-    };
-    Q_DECLARE_FLAGS(Directions, Direction)
+	enum Direction
+	{
+		Input = 1,
+		Output = 2,
+		AllDirections = Input | Output
+	};
+	Q_DECLARE_FLAGS(Directions, Direction)
 
-    enum BaudRate {
-        Baud1200 = 1200,
-        Baud2400 = 2400,
-        Baud4800 = 4800,
-        Baud9600 = 9600,
-        Baud19200 = 19200,
-        Baud38400 = 38400,
-        Baud57600 = 57600,
-        Baud115200 = 115200,
-        UnknownBaud = -1
-    };
+	enum BaudRate
+	{
+		Baud1200 = 1200,
+		Baud2400 = 2400,
+		Baud4800 = 4800,
+		Baud9600 = 9600,
+		Baud19200 = 19200,
+		Baud38400 = 38400,
+		Baud57600 = 57600,
+		Baud115200 = 115200,
+		UnknownBaud = -1
+	};
 
-    enum DataBits {
-        Data5 = 5,
-        Data6 = 6,
-        Data7 = 7,
-        Data8 = 8,
-        UnknownDataBits = -1
-    };
+	enum DataBits
+	{
+		Data5 = 5,
+		Data6 = 6,
+		Data7 = 7,
+		Data8 = 8,
+		UnknownDataBits = -1
+	};
 
-    enum Parity {
-        NoParity = 0,
-        EvenParity = 2,
-        OddParity = 3,
-        SpaceParity = 4,
-        MarkParity = 5,
-        UnknownParity = -1
-    };
+	enum Parity
+	{
+		NoParity = 0,
+		EvenParity = 2,
+		OddParity = 3,
+		SpaceParity = 4,
+		MarkParity = 5,
+		UnknownParity = -1
+	};
 
-    enum StopBits {
-        OneStop = 1,
-        OneAndHalfStop = 3,
-        TwoStop = 2,
-        UnknownStopBits = -1
-    };
+	enum StopBits
+	{
+		OneStop = 1,
+		OneAndHalfStop = 3,
+		TwoStop = 2,
+		UnknownStopBits = -1
+	};
 
-    enum FlowControl {
-        NoFlowControl,
-        HardwareControl,
-        SoftwareControl,
-        UnknownFlowControl = -1
-    };
+	enum FlowControl
+	{
+		NoFlowControl,
+		HardwareControl,
+		SoftwareControl,
+		UnknownFlowControl = -1
+	};
 
-    enum PinoutSignal {
-        NoSignal = 0x00,
-        TransmittedDataSignal = 0x01,
-        ReceivedDataSignal = 0x02,
-        DataTerminalReadySignal = 0x04,
-        DataCarrierDetectSignal = 0x08,
-        DataSetReadySignal = 0x10,
-        RingIndicatorSignal = 0x20,
-        RequestToSendSignal = 0x40,
-        ClearToSendSignal = 0x80,
-        SecondaryTransmittedDataSignal = 0x100,
-        SecondaryReceivedDataSignal = 0x200
-    };
-    Q_DECLARE_FLAGS(PinoutSignals, PinoutSignal)
+	enum PinoutSignal
+	{
+		NoSignal = 0x00,
+		TransmittedDataSignal = 0x01,
+		ReceivedDataSignal = 0x02,
+		DataTerminalReadySignal = 0x04,
+		DataCarrierDetectSignal = 0x08,
+		DataSetReadySignal = 0x10,
+		RingIndicatorSignal = 0x20,
+		RequestToSendSignal = 0x40,
+		ClearToSendSignal = 0x80,
+		SecondaryTransmittedDataSignal = 0x100,
+		SecondaryReceivedDataSignal = 0x200
+	};
+	Q_DECLARE_FLAGS(PinoutSignals, PinoutSignal)
 
 #if QT_DEPRECATED_SINCE(5, 2)
 #if defined _MSC_VER
@@ -151,133 +159,135 @@ public:
 #endif
 
 #if QT_DEPRECATED_SINCE(5, 2)
-    enum DataErrorPolicy {
-        SkipPolicy,
-        PassZeroPolicy,
-        IgnorePolicy,
-        StopReceivingPolicy,
-        UnknownPolicy = -1
-    };
+	enum DataErrorPolicy
+	{
+		SkipPolicy,
+		PassZeroPolicy,
+		IgnorePolicy,
+		StopReceivingPolicy,
+		UnknownPolicy = -1
+	};
 #endif
 
-    enum SerialPortError {
-        NoError,
-        DeviceNotFoundError,
-        PermissionError,
-        OpenError,
-        ParityError,
-        FramingError,
-        BreakConditionError,
-        WriteError,
-        ReadError,
-        ResourceError,
-        UnsupportedOperationError,
-        UnknownError,
-        TimeoutError,
-        NotOpenError
-    };
+	enum SerialPortError
+	{
+		NoError,
+		DeviceNotFoundError,
+		PermissionError,
+		OpenError,
+		ParityError,
+		FramingError,
+		BreakConditionError,
+		WriteError,
+		ReadError,
+		ResourceError,
+		UnsupportedOperationError,
+		UnknownError,
+		TimeoutError,
+		NotOpenError
+	};
 
-    explicit QSerialPort(QObject *parent = Q_NULLPTR);
-    explicit QSerialPort(const QString &name, QObject *parent = Q_NULLPTR);
-    explicit QSerialPort(const QSerialPortInfo &info, QObject *parent = Q_NULLPTR);
-    virtual ~QSerialPort();
+	explicit QSerialPort(QObject *parent = Q_NULLPTR);
+	explicit QSerialPort(const QString &name, QObject *parent = Q_NULLPTR);
+	explicit QSerialPort(const QSerialPortInfo &info, QObject *parent = Q_NULLPTR);
+	virtual ~QSerialPort();
 
-    void setPortName(const QString &name);
-    QString portName() const;
+	void setPortName(const QString &name);
+	QString portName() const;
 
-    void setPort(const QSerialPortInfo &info);
+	void setPort(const QSerialPortInfo &info);
 
-    bool open(OpenMode mode) Q_DECL_OVERRIDE;
-    void close() Q_DECL_OVERRIDE;
+	bool open(OpenMode mode) Q_DECL_OVERRIDE;
+	void close() Q_DECL_OVERRIDE;
 
 #if QT_DEPRECATED_SINCE(5, 3)
-    QT_DEPRECATED void setSettingsRestoredOnClose(bool restore);
-    QT_DEPRECATED bool settingsRestoredOnClose() const;
+	QT_DEPRECATED void setSettingsRestoredOnClose(bool restore);
+	QT_DEPRECATED bool settingsRestoredOnClose() const;
 #endif
 
-    bool setBaudRate(qint32 baudRate, Directions directions = AllDirections);
-    qint32 baudRate(Directions directions = AllDirections) const;
+	bool setBaudRate(qint32 baudRate, Directions directions = AllDirections);
+	qint32 baudRate(Directions directions = AllDirections) const;
 
-    bool setDataBits(DataBits dataBits);
-    DataBits dataBits() const;
+	bool setDataBits(DataBits dataBits);
+	DataBits dataBits() const;
 
-    bool setParity(Parity parity);
-    Parity parity() const;
+	bool setParity(Parity parity);
+	Parity parity() const;
 
-    bool setStopBits(StopBits stopBits);
-    StopBits stopBits() const;
+	bool setStopBits(StopBits stopBits);
+	StopBits stopBits() const;
 
-    bool setFlowControl(FlowControl flowControl);
-    FlowControl flowControl() const;
+	bool setFlowControl(FlowControl flowControl);
+	FlowControl flowControl() const;
 
-    bool setDataTerminalReady(bool set);
-    bool isDataTerminalReady();
+	bool setDataTerminalReady(bool set);
+	bool isDataTerminalReady();
 
-    bool setRequestToSend(bool set);
-    bool isRequestToSend();
+	bool setRequestToSend(bool set);
+	bool isRequestToSend();
 
-    PinoutSignals pinoutSignals();
+	PinoutSignals pinoutSignals();
 
-    bool flush();
-    bool clear(Directions directions = AllDirections);
-    bool atEnd() const Q_DECL_OVERRIDE;
+	bool flush();
+	bool clear(Directions directions = AllDirections);
+	bool atEnd() const Q_DECL_OVERRIDE;
 
 #if QT_DEPRECATED_SINCE(5, 2)
-    QT_DEPRECATED bool setDataErrorPolicy(DataErrorPolicy policy = IgnorePolicy);
-    QT_DEPRECATED DataErrorPolicy dataErrorPolicy() const;
+	QT_DEPRECATED bool setDataErrorPolicy(DataErrorPolicy policy = IgnorePolicy);
+	QT_DEPRECATED DataErrorPolicy dataErrorPolicy() const;
 #endif
 
-    SerialPortError error() const;
-    void clearError();
+	SerialPortError error() const;
+	void clearError();
 
-    qint64 readBufferSize() const;
-    void setReadBufferSize(qint64 size);
+	qint64 readBufferSize() const;
+	void setReadBufferSize(qint64 size);
 
-    bool isSequential() const Q_DECL_OVERRIDE;
+	bool isSequential() const Q_DECL_OVERRIDE;
 
-    qint64 bytesAvailable() const Q_DECL_OVERRIDE;
-    qint64 bytesToWrite() const Q_DECL_OVERRIDE;
-    bool canReadLine() const Q_DECL_OVERRIDE;
+	qint64 bytesAvailable() const Q_DECL_OVERRIDE;
+	qint64 bytesToWrite() const Q_DECL_OVERRIDE;
+	bool canReadLine() const Q_DECL_OVERRIDE;
 
-    bool waitForReadyRead(int msecs) Q_DECL_OVERRIDE;
-    bool waitForBytesWritten(int msecs) Q_DECL_OVERRIDE;
+	bool waitForReadyRead(int msecs) Q_DECL_OVERRIDE;
+	bool waitForBytesWritten(int msecs) Q_DECL_OVERRIDE;
 
-    bool sendBreak(int duration = 0);
-    bool setBreakEnabled(bool set = true);
+	bool sendBreak(int duration = 0);
+	bool setBreakEnabled(bool set = true);
 
-    Handle handle() const;
+	Handle handle() const;
 
-    static void setNativeMethods(void);
+	static void setNativeMethods(void);
 
 Q_SIGNALS:
-    void baudRateChanged(qint32 baudRate, QSerialPort::Directions directions);
-    void dataBitsChanged(QSerialPort::DataBits dataBits);
-    void parityChanged(QSerialPort::Parity parity);
-    void stopBitsChanged(QSerialPort::StopBits stopBits);
-    void flowControlChanged(QSerialPort::FlowControl flowControl);
-    void dataErrorPolicyChanged(QSerialPort::DataErrorPolicy policy);
-    void dataTerminalReadyChanged(bool set);
-    void requestToSendChanged(bool set);
-    void error(QSerialPort::SerialPortError serialPortError);
-    void settingsRestoredOnCloseChanged(bool restore);
+	void baudRateChanged(qint32 baudRate, QSerialPort::Directions directions);
+	void dataBitsChanged(QSerialPort::DataBits dataBits);
+	void parityChanged(QSerialPort::Parity parity);
+	void stopBitsChanged(QSerialPort::StopBits stopBits);
+	void flowControlChanged(QSerialPort::FlowControl flowControl);
+	void dataErrorPolicyChanged(QSerialPort::DataErrorPolicy policy);
+	void dataTerminalReadyChanged(bool set);
+	void requestToSendChanged(bool set);
+	void error(QSerialPort::SerialPortError serialPortError);
+	void settingsRestoredOnCloseChanged(bool restore);
 
 protected:
-    qint64 readData(char *data, qint64 maxSize) Q_DECL_OVERRIDE;
-    qint64 readLineData(char *data, qint64 maxSize) Q_DECL_OVERRIDE;
-    qint64 writeData(const char *data, qint64 maxSize) Q_DECL_OVERRIDE;
+	qint64 readData(char *data, qint64 maxSize) Q_DECL_OVERRIDE;
+	qint64 readLineData(char *data, qint64 maxSize) Q_DECL_OVERRIDE;
+	qint64 writeData(const char *data, qint64 maxSize) Q_DECL_OVERRIDE;
 
 private:
-    void setError(QSerialPort::SerialPortError error, const QString &errorString = QString());
+	void setError(QSerialPort::SerialPortError error, const QString &errorString = QString());
 
-    QSerialPortPrivate * const d_ptr;
+	QSerialPortPrivate *const d_ptr;
 
-    Q_DISABLE_COPY(QSerialPort)
+	Q_DISABLE_COPY(QSerialPort)
 
 #if defined (Q_OS_WIN32)
-    Q_PRIVATE_SLOT(d_func(), bool _q_completeAsyncCommunication())
-    Q_PRIVATE_SLOT(d_func(), bool _q_completeAsyncRead())
-    Q_PRIVATE_SLOT(d_func(), bool _q_completeAsyncWrite())
-    Q_PRIVATE_SLOT(d_func(), bool _q_startAsyncWrite())
+	Q_PRIVATE_SLOT(d_func(), bool _q_completeAsyncCommunication())
+	Q_PRIVATE_SLOT(d_func(), bool _q_completeAsyncRead())
+	Q_PRIVATE_SLOT(d_func(), bool _q_completeAsyncWrite())
+	Q_PRIVATE_SLOT(d_func(), bool _q_startAsyncWrite())
 #endif
 };
 

@@ -51,52 +51,53 @@ class Q_LOCATION_EXPORT QGeoManeuver
 {
 
 public:
-    enum InstructionDirection {
-        NoDirection,
-        DirectionForward,
-        DirectionBearRight,
-        DirectionLightRight,
-        DirectionRight,
-        DirectionHardRight,
-        DirectionUTurnRight,
-        DirectionUTurnLeft,
-        DirectionHardLeft,
-        DirectionLeft,
-        DirectionLightLeft,
-        DirectionBearLeft
-    };
+	enum InstructionDirection
+	{
+		NoDirection,
+		DirectionForward,
+		DirectionBearRight,
+		DirectionLightRight,
+		DirectionRight,
+		DirectionHardRight,
+		DirectionUTurnRight,
+		DirectionUTurnLeft,
+		DirectionHardLeft,
+		DirectionLeft,
+		DirectionLightLeft,
+		DirectionBearLeft
+	};
 
-    QGeoManeuver();
-    QGeoManeuver(const QGeoManeuver &other);
-    ~QGeoManeuver();
+	QGeoManeuver();
+	QGeoManeuver(const QGeoManeuver &other);
+	~QGeoManeuver();
 
-    QGeoManeuver &operator= (const QGeoManeuver &other);
+	QGeoManeuver &operator= (const QGeoManeuver &other);
 
-    bool operator== (const QGeoManeuver &other) const;
-    bool operator!= (const QGeoManeuver &other) const;
+	bool operator== (const QGeoManeuver &other) const;
+	bool operator!= (const QGeoManeuver &other) const;
 
-    bool isValid() const;
+	bool isValid() const;
 
-    void setPosition(const QGeoCoordinate &position);
-    QGeoCoordinate position() const;
+	void setPosition(const QGeoCoordinate &position);
+	QGeoCoordinate position() const;
 
-    void setInstructionText(const QString &instructionText);
-    QString instructionText() const;
+	void setInstructionText(const QString &instructionText);
+	QString instructionText() const;
 
-    void setDirection(InstructionDirection direction);
-    InstructionDirection direction() const;
+	void setDirection(InstructionDirection direction);
+	InstructionDirection direction() const;
 
-    void setTimeToNextInstruction(int secs);
-    int timeToNextInstruction() const;
+	void setTimeToNextInstruction(int secs);
+	int timeToNextInstruction() const;
 
-    void setDistanceToNextInstruction(qreal distance);
-    qreal distanceToNextInstruction() const;
+	void setDistanceToNextInstruction(qreal distance);
+	qreal distanceToNextInstruction() const;
 
-    void setWaypoint(const QGeoCoordinate &coordinate);
-    QGeoCoordinate waypoint() const;
+	void setWaypoint(const QGeoCoordinate &coordinate);
+	QGeoCoordinate waypoint() const;
 
 private:
-    QSharedDataPointer<QGeoManeuverPrivate> d_ptr;
+	QSharedDataPointer<QGeoManeuverPrivate> d_ptr;
 };
 
 QT_END_NAMESPACE

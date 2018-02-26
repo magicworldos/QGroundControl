@@ -20,17 +20,17 @@
 
 class FileDialogTest : public UnitTest
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 public:
-    FileDialogTest(void);
-    
+	FileDialogTest(void);
+
 private slots:
-    void _fileDialogExpected_test(void);
-    void _fileDialogUnexpected_test(void);
-    void _previousFileDialog_test(void);
-    void _noFileDialog_test(void);
-    void _fileDialogExpectedIncorrect_test(void);
+	void _fileDialogExpected_test(void);
+	void _fileDialogUnexpected_test(void);
+	void _previousFileDialog_test(void);
+	void _noFileDialog_test(void);
+	void _fileDialogExpectedIncorrect_test(void);
 };
 
 #endif

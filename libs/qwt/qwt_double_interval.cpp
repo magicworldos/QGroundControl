@@ -27,10 +27,15 @@
 */
 QwtDoubleInterval QwtDoubleInterval::normalized() const
 {
-    if ( !isValid() ) {
-        return QwtDoubleInterval(d_maxValue, d_minValue);
-    } else
-        return *this;
+	if (!isValid())
+	{
+		return QwtDoubleInterval(d_maxValue, d_minValue);
+	}
+
+	else
+	{
+		return *this;
+	}
 }
 
 /*!
@@ -40,7 +45,7 @@ QwtDoubleInterval QwtDoubleInterval::normalized() const
 */
 QwtDoubleInterval QwtDoubleInterval::inverted() const
 {
-    return QwtDoubleInterval(d_maxValue, d_minValue);
+	return QwtDoubleInterval(d_maxValue, d_minValue);
 }
 
 /*!
@@ -51,63 +56,80 @@ QwtDoubleInterval QwtDoubleInterval::inverted() const
 */
 bool QwtDoubleInterval::contains(double value) const
 {
-    if ( !isValid() )
-        return false;
+	if (!isValid())
+	{
+		return false;
+	}
 
-    return (value >= d_minValue) && (value <= d_maxValue);
+	return (value >= d_minValue) && (value <= d_maxValue);
 }
 
 //! Unite 2 intervals
 QwtDoubleInterval QwtDoubleInterval::unite(
-    const QwtDoubleInterval &interval) const
+	const QwtDoubleInterval &interval) const
 {
-    if ( !isValid() ) {
-        if ( !interval.isValid() )
-            return QwtDoubleInterval();
-        else
-            return interval;
-    }
-    if ( !interval.isValid() )
-        return *this;
+	if (!isValid())
+	{
+		if (!interval.isValid())
+		{
+			return QwtDoubleInterval();
+		}
 
-    const double minValue = qwtMin(d_minValue, interval.minValue());
-    const double maxValue = qwtMax(d_maxValue, interval.maxValue());
+		else
+		{
+			return interval;
+		}
+	}
 
-    return QwtDoubleInterval(minValue, maxValue);
+	if (!interval.isValid())
+	{
+		return *this;
+	}
+
+	const double minValue = qwtMin(d_minValue, interval.minValue());
+	const double maxValue = qwtMax(d_maxValue, interval.maxValue());
+
+	return QwtDoubleInterval(minValue, maxValue);
 }
 
 //! Intersect 2 intervals
 QwtDoubleInterval QwtDoubleInterval::intersect(
-    const QwtDoubleInterval &interval) const
+	const QwtDoubleInterval &interval) const
 {
-    if ( !interval.isValid() || !isValid() )
-        return QwtDoubleInterval();
+	if (!interval.isValid() || !isValid())
+	{
+		return QwtDoubleInterval();
+	}
 
-    QwtDoubleInterval i1 = *this;
-    QwtDoubleInterval i2 = interval;
+	QwtDoubleInterval i1 = *this;
+	QwtDoubleInterval i2 = interval;
 
-    if ( i1.minValue() > i2.minValue() )
-        qSwap(i1, i2);
+	if (i1.minValue() > i2.minValue())
+	{
+		qSwap(i1, i2);
+	}
 
-    if ( i1.maxValue() < i2.minValue() )
-        return QwtDoubleInterval();
+	if (i1.maxValue() < i2.minValue())
+	{
+		return QwtDoubleInterval();
+	}
 
-    return QwtDoubleInterval(i2.minValue(),
-                             qwtMin(i1.maxValue(), i2.maxValue()));
+	return QwtDoubleInterval(i2.minValue(),
+				 qwtMin(i1.maxValue(), i2.maxValue()));
 }
 
-QwtDoubleInterval& QwtDoubleInterval::operator|=(
-    const QwtDoubleInterval &interval)
+QwtDoubleInterval &QwtDoubleInterval::operator|=(
+	const QwtDoubleInterval &interval)
 {
-    *this = *this | interval;
-    return *this;
+	*this = *this | interval;
+	return *this;
 }
 
-QwtDoubleInterval& QwtDoubleInterval::operator&=(
-    const QwtDoubleInterval &interval)
+QwtDoubleInterval &QwtDoubleInterval::operator&=(
+	const QwtDoubleInterval &interval)
 {
-    *this = *this & interval;
-    return *this;
+	*this = *this & interval;
+	return *this;
 }
 
 /*!
@@ -115,16 +137,20 @@ QwtDoubleInterval& QwtDoubleInterval::operator&=(
 */
 bool QwtDoubleInterval::intersects(const QwtDoubleInterval &interval) const
 {
-    if ( !isValid() || !interval.isValid() )
-        return false;
+	if (!isValid() || !interval.isValid())
+	{
+		return false;
+	}
 
-    QwtDoubleInterval i1 = *this;
-    QwtDoubleInterval i2 = interval;
+	QwtDoubleInterval i1 = *this;
+	QwtDoubleInterval i2 = interval;
 
-    if ( i1.minValue() > i2.minValue() )
-        qSwap(i1, i2);
+	if (i1.minValue() > i2.minValue())
+	{
+		qSwap(i1, i2);
+	}
 
-    return i1.maxValue() >= i2.minValue();
+	return i1.maxValue() >= i2.minValue();
 }
 
 /*!
@@ -136,13 +162,15 @@ bool QwtDoubleInterval::intersects(const QwtDoubleInterval &interval) const
 */
 QwtDoubleInterval QwtDoubleInterval::symmetrize(double value) const
 {
-    if ( !isValid() )
-        return *this;
+	if (!isValid())
+	{
+		return *this;
+	}
 
-    const double delta =
-        qwtMax(qwtAbs(value - d_maxValue), qwtAbs(value - d_minValue));
+	const double delta =
+		qwtMax(qwtAbs(value - d_maxValue), qwtAbs(value - d_minValue));
 
-    return QwtDoubleInterval(value - delta, value + delta);
+	return QwtDoubleInterval(value - delta, value + delta);
 }
 
 /*!
@@ -154,18 +182,20 @@ QwtDoubleInterval QwtDoubleInterval::symmetrize(double value) const
    \return Limited interval
 */
 QwtDoubleInterval QwtDoubleInterval::limited(
-    double lBound, double hBound) const
+	double lBound, double hBound) const
 {
-    if ( !isValid() || lBound > hBound )
-        return QwtDoubleInterval();
+	if (!isValid() || lBound > hBound)
+	{
+		return QwtDoubleInterval();
+	}
 
-    double minValue = qwtMax(d_minValue, lBound);
-    minValue = qwtMin(minValue, hBound);
+	double minValue = qwtMax(d_minValue, lBound);
+	minValue = qwtMin(minValue, hBound);
 
-    double maxValue = qwtMax(d_maxValue, lBound);
-    maxValue = qwtMin(maxValue, hBound);
+	double maxValue = qwtMax(d_maxValue, lBound);
+	maxValue = qwtMin(maxValue, hBound);
 
-    return QwtDoubleInterval(minValue, maxValue);
+	return QwtDoubleInterval(minValue, maxValue);
 }
 
 /*!
@@ -181,15 +211,17 @@ QwtDoubleInterval QwtDoubleInterval::limited(
 */
 QwtDoubleInterval QwtDoubleInterval::extend(double value) const
 {
-    if ( !isValid() )
-        return *this;
+	if (!isValid())
+	{
+		return *this;
+	}
 
-    return QwtDoubleInterval(
-               qwtMin(value, d_minValue), qwtMax(value, d_maxValue) );
+	return QwtDoubleInterval(
+		       qwtMin(value, d_minValue), qwtMax(value, d_maxValue));
 }
 
-QwtDoubleInterval& QwtDoubleInterval::operator|=(double value)
+QwtDoubleInterval &QwtDoubleInterval::operator|=(double value)
 {
-    *this = *this | value;
-    return *this;
+	*this = *this | value;
+	return *this;
 }

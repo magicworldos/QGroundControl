@@ -16,36 +16,36 @@
 
 class ADSBVehicle : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    ADSBVehicle(mavlink_adsb_vehicle_t& adsbVehicle, QObject* parent = NULL);
+	ADSBVehicle(mavlink_adsb_vehicle_t &adsbVehicle, QObject *parent = NULL);
 
-    Q_PROPERTY(int              icaoAddress READ icaoAddress    CONSTANT)
-    Q_PROPERTY(QString          callsign    READ callsign       NOTIFY callsignChanged)
-    Q_PROPERTY(QGeoCoordinate   coordinate  READ coordinate     NOTIFY coordinateChanged)
-    Q_PROPERTY(double           altitude    READ altitude       NOTIFY altitudeChanged)     // NaN for not available
-    Q_PROPERTY(double           heading     READ heading        NOTIFY headingChanged)      // NaN for not available
+	Q_PROPERTY(int              icaoAddress READ icaoAddress    CONSTANT)
+	Q_PROPERTY(QString          callsign    READ callsign       NOTIFY callsignChanged)
+	Q_PROPERTY(QGeoCoordinate   coordinate  READ coordinate     NOTIFY coordinateChanged)
+	Q_PROPERTY(double           altitude    READ altitude       NOTIFY altitudeChanged)     // NaN for not available
+	Q_PROPERTY(double           heading     READ heading        NOTIFY headingChanged)      // NaN for not available
 
-    int             icaoAddress (void) const { return _icaoAddress; }
-    QString         callsign    (void) const { return _callsign; }
-    QGeoCoordinate  coordinate  (void) const { return _coordinate; }
-    double          altitude    (void) const { return _altitude; }
-    double          heading     (void) const { return _heading; }
+	int             icaoAddress(void) const { return _icaoAddress; }
+	QString         callsign(void) const { return _callsign; }
+	QGeoCoordinate  coordinate(void) const { return _coordinate; }
+	double          altitude(void) const { return _altitude; }
+	double          heading(void) const { return _heading; }
 
-    /// Update the vehicle with new information
-    void update(mavlink_adsb_vehicle_t& adsbVehicle);
+	/// Update the vehicle with new information
+	void update(mavlink_adsb_vehicle_t &adsbVehicle);
 
 signals:
-    void coordinateChanged(QGeoCoordinate coordinate);
-    void callsignChanged(QString callsign);
-    void altitudeChanged(double altitude);
-    void headingChanged(double heading);
+	void coordinateChanged(QGeoCoordinate coordinate);
+	void callsignChanged(QString callsign);
+	void altitudeChanged(double altitude);
+	void headingChanged(double heading);
 
 private:
-    uint32_t        _icaoAddress;
-    QString         _callsign;
-    QGeoCoordinate  _coordinate;
-    double          _altitude;
-    double          _heading;
+	uint32_t        _icaoAddress;
+	QString         _callsign;
+	QGeoCoordinate  _coordinate;
+	double          _altitude;
+	double          _heading;
 };

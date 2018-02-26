@@ -25,18 +25,18 @@ QGC_LOGGING_CATEGORY(PX4AirframeLoaderLog, "PX4AirframeLoaderLog")
 
 bool PX4AirframeLoader::_airframeMetaDataLoaded = false;
 
-PX4AirframeLoader::PX4AirframeLoader(AutoPilotPlugin* autopilot, UASInterface* uas, QObject* parent)
+PX4AirframeLoader::PX4AirframeLoader(AutoPilotPlugin *autopilot, UASInterface *uas, QObject *parent)
 {
-    Q_UNUSED(autopilot);
-    Q_UNUSED(uas);
-    Q_UNUSED(parent);
+	Q_UNUSED(autopilot);
+	Q_UNUSED(uas);
+	Q_UNUSED(parent);
 }
 
 QString PX4AirframeLoader::aiframeMetaDataFile(void)
 {
-    QSettings settings;
-    QDir parameterDir = QFileInfo(settings.fileName()).dir();
-    return parameterDir.filePath("PX4AirframeFactMetaData.xml");
+	QSettings settings;
+	QDir parameterDir = QFileInfo(settings.fileName()).dir();
+	return parameterDir.filePath("PX4AirframeFactMetaData.xml");
 }
 
 /// Load Airframe Fact meta data
@@ -44,148 +44,205 @@ QString PX4AirframeLoader::aiframeMetaDataFile(void)
 /// The meta data comes from firmware airframes.xml file.
 void PX4AirframeLoader::loadAirframeMetaData(void)
 {
-    if (_airframeMetaDataLoaded) {
-        return;
-    }
+	if (_airframeMetaDataLoaded)
+	{
+		return;
+	}
 
-    qCDebug(PX4AirframeLoaderLog) << "Loading PX4 airframe fact meta data";
+	qCDebug(PX4AirframeLoaderLog) << "Loading PX4 airframe fact meta data";
 
-    if (AirframeComponentAirframes::get().count() != 0) {
-        qCWarning(PX4AirframeLoaderLog) << "Internal error";
-        return;
-    }
+	if (AirframeComponentAirframes::get().count() != 0)
+	{
+		qCWarning(PX4AirframeLoaderLog) << "Internal error";
+		return;
+	}
 
-    QString airframeFilename;
+	QString airframeFilename;
 
-    // We want unit test builds to always use the resource based meta data to provide repeatable results
-    if (!qgcApp()->runningUnitTests()) {
-        // First look for meta data that comes from a firmware download. Fall back to resource if not there.
-        airframeFilename = aiframeMetaDataFile();
-    }
-    if (airframeFilename.isEmpty() || !QFile(airframeFilename).exists()) {
-        airframeFilename = ":/AutoPilotPlugins/PX4/AirframeFactMetaData.xml";
-    }
+	// We want unit test builds to always use the resource based meta data to provide repeatable results
+	if (!qgcApp()->runningUnitTests())
+	{
+		// First look for meta data that comes from a firmware download. Fall back to resource if not there.
+		airframeFilename = aiframeMetaDataFile();
+	}
 
-    qCDebug(PX4AirframeLoaderLog) << "Loading meta data file:" << airframeFilename;
+	if (airframeFilename.isEmpty() || !QFile(airframeFilename).exists())
+	{
+		airframeFilename = ":/AutoPilotPlugins/PX4/AirframeFactMetaData.xml";
+	}
 
-    QFile xmlFile(airframeFilename);
-    if (!xmlFile.exists()) {
-        qCWarning(PX4AirframeLoaderLog) << "Internal error";
-        return;
-    }
+	qCDebug(PX4AirframeLoaderLog) << "Loading meta data file:" << airframeFilename;
 
-    bool success = xmlFile.open(QIODevice::ReadOnly);
+	QFile xmlFile(airframeFilename);
 
-    if (!success) {
-        qCWarning(PX4AirframeLoaderLog) << "Failed opening airframe XML";
-        return;
-    }
+	if (!xmlFile.exists())
+	{
+		qCWarning(PX4AirframeLoaderLog) << "Internal error";
+		return;
+	}
 
-    QXmlStreamReader xml(xmlFile.readAll());
-    xmlFile.close();
-    if (xml.hasError()) {
-        qCWarning(PX4AirframeLoaderLog) << "Badly formed XML" << xml.errorString();
-        return;
-    }
+	bool success = xmlFile.open(QIODevice::ReadOnly);
 
-    QString         airframeGroup;
-    QString         image;
-    QString         errorString;
-    int             xmlState = XmlStateNone;
+	if (!success)
+	{
+		qCWarning(PX4AirframeLoaderLog) << "Failed opening airframe XML";
+		return;
+	}
 
-    while (!xml.atEnd()) {
-        if (xml.isStartElement()) {
-            QString elementName = xml.name().toString();
+	QXmlStreamReader xml(xmlFile.readAll());
+	xmlFile.close();
 
-            if (elementName == "airframes") {
-                if (xmlState != XmlStateNone) {
-                    qCWarning(PX4AirframeLoaderLog) << "Badly formed XML";
-                    return;
-                }
-                xmlState = XmlStateFoundAirframes;
+	if (xml.hasError())
+	{
+		qCWarning(PX4AirframeLoaderLog) << "Badly formed XML" << xml.errorString();
+		return;
+	}
 
-            } else if (elementName == "version") {
-                if (xmlState != XmlStateFoundAirframes) {
-                    qCWarning(PX4AirframeLoaderLog) << "Badly formed XML";
-                    return;
-                }
-                xmlState = XmlStateFoundVersion;
+	QString         airframeGroup;
+	QString         image;
+	QString         errorString;
+	int             xmlState = XmlStateNone;
 
-                bool convertOk;
-                QString strVersion = xml.readElementText();
-                int intVersion = strVersion.toInt(&convertOk);
-                if (!convertOk) {
-                    qCWarning(PX4AirframeLoaderLog) << "Badly formed XML";
-                    return;
-                }
-                if (intVersion < 1) {
-                    // We can't read these old files
-                    qDebug() << "Airframe version stamp too old, skipping load. Found:" << intVersion << "Want: 3 File:" << airframeFilename;
-                    return;
-                }
+	while (!xml.atEnd())
+	{
+		if (xml.isStartElement())
+		{
+			QString elementName = xml.name().toString();
 
-            } else if (elementName == "airframe_version_major") {
-                // Just skip over for now
-            } else if (elementName == "airframe_version_minor") {
-                // Just skip over for now
+			if (elementName == "airframes")
+			{
+				if (xmlState != XmlStateNone)
+				{
+					qCWarning(PX4AirframeLoaderLog) << "Badly formed XML";
+					return;
+				}
 
-            } else if (elementName == "airframe_group") {
-                if (xmlState != XmlStateFoundVersion) {
-                    // We didn't get a version stamp, assume older version we can't read
-                    qDebug() << "Parameter version stamp not found, skipping load" << airframeFilename;
-                    return;
-                }
-                xmlState = XmlStateFoundGroup;
+				xmlState = XmlStateFoundAirframes;
 
-                if (!xml.attributes().hasAttribute("name") || !xml.attributes().hasAttribute("image")) {
-                    qCWarning(PX4AirframeLoaderLog) << "Badly formed XML";
-                    return;
-                }
-                airframeGroup = xml.attributes().value("name").toString();
-                image = xml.attributes().value("image").toString();
-                qCDebug(PX4AirframeLoaderLog) << "Found group: " << airframeGroup;
+			}
 
-            } else if (elementName == "airframe") {
-                if (xmlState != XmlStateFoundGroup) {
-                    qCWarning(PX4AirframeLoaderLog) << "Badly formed XML";
-                    return;
-                }
-                xmlState = XmlStateFoundAirframe;
+			else if (elementName == "version")
+			{
+				if (xmlState != XmlStateFoundAirframes)
+				{
+					qCWarning(PX4AirframeLoaderLog) << "Badly formed XML";
+					return;
+				}
 
-                if (!xml.attributes().hasAttribute("name") || !xml.attributes().hasAttribute("id")) {
-                    qCWarning(PX4AirframeLoaderLog) << "Badly formed XML";
-                    return;
-                }
+				xmlState = XmlStateFoundVersion;
 
-                QString name = xml.attributes().value("name").toString();
-                QString id = xml.attributes().value("id").toString();
+				bool convertOk;
+				QString strVersion = xml.readElementText();
+				int intVersion = strVersion.toInt(&convertOk);
 
-                qCDebug(PX4AirframeLoaderLog) << "Found airframe name:" << name << " type:" << airframeGroup << " id:" << id;
+				if (!convertOk)
+				{
+					qCWarning(PX4AirframeLoaderLog) << "Badly formed XML";
+					return;
+				}
 
-                // Now that we know type we can airframe meta data object and add it to the system
-                AirframeComponentAirframes::insert(airframeGroup, image, name, id.toInt());
+				if (intVersion < 1)
+				{
+					// We can't read these old files
+					qDebug() << "Airframe version stamp too old, skipping load. Found:" << intVersion << "Want: 3 File:" <<
+						 airframeFilename;
+					return;
+				}
 
-            } else {
-                // We should be getting meta data now
-                if (xmlState != XmlStateFoundAirframe) {
-                    qCWarning(PX4AirframeLoaderLog) << "Badly formed XML";
-                    return;
-                }
-            }
-        } else if (xml.isEndElement()) {
-            QString elementName = xml.name().toString();
+			}
 
-            if (elementName == "airframe") {
-                // Reset for next airframe
-                xmlState = XmlStateFoundGroup;
-            } else if (elementName == "airframe_group") {
-                xmlState = XmlStateFoundVersion;
-            } else if (elementName == "airframes") {
-                xmlState = XmlStateFoundAirframes;
-            }
-        }
-        xml.readNext();
-    }
+			else if (elementName == "airframe_version_major")
+			{
+				// Just skip over for now
+			}
+			else if (elementName == "airframe_version_minor")
+			{
+				// Just skip over for now
 
-    _airframeMetaDataLoaded = true;
+			}
+			else if (elementName == "airframe_group")
+			{
+				if (xmlState != XmlStateFoundVersion)
+				{
+					// We didn't get a version stamp, assume older version we can't read
+					qDebug() << "Parameter version stamp not found, skipping load" << airframeFilename;
+					return;
+				}
+
+				xmlState = XmlStateFoundGroup;
+
+				if (!xml.attributes().hasAttribute("name") || !xml.attributes().hasAttribute("image"))
+				{
+					qCWarning(PX4AirframeLoaderLog) << "Badly formed XML";
+					return;
+				}
+
+				airframeGroup = xml.attributes().value("name").toString();
+				image = xml.attributes().value("image").toString();
+				qCDebug(PX4AirframeLoaderLog) << "Found group: " << airframeGroup;
+
+			}
+
+			else if (elementName == "airframe")
+			{
+				if (xmlState != XmlStateFoundGroup)
+				{
+					qCWarning(PX4AirframeLoaderLog) << "Badly formed XML";
+					return;
+				}
+
+				xmlState = XmlStateFoundAirframe;
+
+				if (!xml.attributes().hasAttribute("name") || !xml.attributes().hasAttribute("id"))
+				{
+					qCWarning(PX4AirframeLoaderLog) << "Badly formed XML";
+					return;
+				}
+
+				QString name = xml.attributes().value("name").toString();
+				QString id = xml.attributes().value("id").toString();
+
+				qCDebug(PX4AirframeLoaderLog) << "Found airframe name:" << name << " type:" << airframeGroup << " id:" << id;
+
+				// Now that we know type we can airframe meta data object and add it to the system
+				AirframeComponentAirframes::insert(airframeGroup, image, name, id.toInt());
+
+			}
+
+			else
+			{
+				// We should be getting meta data now
+				if (xmlState != XmlStateFoundAirframe)
+				{
+					qCWarning(PX4AirframeLoaderLog) << "Badly formed XML";
+					return;
+				}
+			}
+		}
+
+		else if (xml.isEndElement())
+		{
+			QString elementName = xml.name().toString();
+
+			if (elementName == "airframe")
+			{
+				// Reset for next airframe
+				xmlState = XmlStateFoundGroup;
+			}
+
+			else if (elementName == "airframe_group")
+			{
+				xmlState = XmlStateFoundVersion;
+			}
+
+			else if (elementName == "airframes")
+			{
+				xmlState = XmlStateFoundAirframes;
+			}
+		}
+
+		xml.readNext();
+	}
+
+	_airframeMetaDataLoaded = true;
 }

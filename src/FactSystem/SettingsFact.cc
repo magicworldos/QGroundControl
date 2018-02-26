@@ -14,64 +14,71 @@
 
 #include <QSettings>
 
-SettingsFact::SettingsFact(QObject* parent)
-    : Fact(parent)
-{    
-    QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
+SettingsFact::SettingsFact(QObject *parent)
+	: Fact(parent)
+{
+	QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
 }
 
-SettingsFact::SettingsFact(QString settingGroup, FactMetaData* metaData, QObject* parent)
-    : Fact(0, metaData->name(), metaData->type(), parent)
-    , _settingGroup(settingGroup)
-    , _visible(true)
+SettingsFact::SettingsFact(QString settingGroup, FactMetaData *metaData, QObject *parent)
+	: Fact(0, metaData->name(), metaData->type(), parent)
+	, _settingGroup(settingGroup)
+	, _visible(true)
 {
-    QSettings settings;
+	QSettings settings;
 
-    if (!_settingGroup.isEmpty()) {
-        settings.beginGroup(_settingGroup);
-    }
+	if (!_settingGroup.isEmpty())
+	{
+		settings.beginGroup(_settingGroup);
+	}
 
-    // Allow core plugin a chance to override the default value
-    _visible = qgcApp()->toolbox()->corePlugin()->adjustSettingMetaData(*metaData);
-    setMetaData(metaData);
+	// Allow core plugin a chance to override the default value
+	_visible = qgcApp()->toolbox()->corePlugin()->adjustSettingMetaData(*metaData);
+	setMetaData(metaData);
 
-    QVariant rawDefaultValue = metaData->rawDefaultValue();
-    if (_visible) {
-        QVariant typedValue;
-        QString errorString;
-        metaData->convertAndValidateRaw(settings.value(_name, rawDefaultValue), true /* conertOnly */, typedValue, errorString);
-        _rawValue = typedValue;
-    } else {
-        // Setting is not visible, force to default value always
-        settings.setValue(_name, rawDefaultValue);
-        _rawValue = rawDefaultValue;
-    }
+	QVariant rawDefaultValue = metaData->rawDefaultValue();
 
-    connect(this, &Fact::rawValueChanged, this, &SettingsFact::_rawValueChanged);
+	if (_visible)
+	{
+		QVariant typedValue;
+		QString errorString;
+		metaData->convertAndValidateRaw(settings.value(_name, rawDefaultValue), true /* conertOnly */, typedValue, errorString);
+		_rawValue = typedValue;
+	}
+
+	else
+	{
+		// Setting is not visible, force to default value always
+		settings.setValue(_name, rawDefaultValue);
+		_rawValue = rawDefaultValue;
+	}
+
+	connect(this, &Fact::rawValueChanged, this, &SettingsFact::_rawValueChanged);
 }
 
-SettingsFact::SettingsFact(const SettingsFact& other, QObject* parent)
-    : Fact(other, parent)
+SettingsFact::SettingsFact(const SettingsFact &other, QObject *parent)
+	: Fact(other, parent)
 {
-    *this = other;
+	*this = other;
 }
 
-const SettingsFact& SettingsFact::operator=(const SettingsFact& other)
+const SettingsFact &SettingsFact::operator=(const SettingsFact &other)
 {
-    Fact::operator=(other);
-    
-    _settingGroup = other._settingGroup;
+	Fact::operator=(other);
 
-    return *this;
+	_settingGroup = other._settingGroup;
+
+	return *this;
 }
 
 void SettingsFact::_rawValueChanged(QVariant value)
 {
-    QSettings settings;
+	QSettings settings;
 
-    if (!_settingGroup.isEmpty()) {
-        settings.beginGroup(_settingGroup);
-    }
+	if (!_settingGroup.isEmpty())
+	{
+		settings.beginGroup(_settingGroup);
+	}
 
-    settings.setValue(_name, value);
+	settings.setValue(_name, value);
 }

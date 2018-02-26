@@ -59,20 +59,20 @@ QT_BEGIN_NAMESPACE
 class QGeoManeuverPrivate : public QSharedData
 {
 public:
-    QGeoManeuverPrivate();
-    QGeoManeuverPrivate(const QGeoManeuverPrivate &other);
-    ~QGeoManeuverPrivate();
+	QGeoManeuverPrivate();
+	QGeoManeuverPrivate(const QGeoManeuverPrivate &other);
+	~QGeoManeuverPrivate();
 
-    bool operator== (const QGeoManeuverPrivate &other) const;
+	bool operator== (const QGeoManeuverPrivate &other) const;
 
-    bool valid;
-    QString id;
-    QGeoCoordinate position;
-    QString text;
-    QGeoManeuver::InstructionDirection direction;
-    int timeToNextInstruction;
-    qreal distanceToNextInstruction;
-    QGeoCoordinate waypoint;
+	bool valid;
+	QString id;
+	QGeoCoordinate position;
+	QString text;
+	QGeoManeuver::InstructionDirection direction;
+	int timeToNextInstruction;
+	qreal distanceToNextInstruction;
+	QGeoCoordinate waypoint;
 };
 
 QT_END_NAMESPACE

@@ -57,23 +57,23 @@ class QNetworkAccessManager;
 
 class QGeoCodingManagerEngineQGC : public QGeoCodingManagerEngine
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    QGeoCodingManagerEngineQGC(const QVariantMap &parameters, QGeoServiceProvider::Error *error, QString *errorString);
-    ~QGeoCodingManagerEngineQGC();
+	QGeoCodingManagerEngineQGC(const QVariantMap &parameters, QGeoServiceProvider::Error *error, QString *errorString);
+	~QGeoCodingManagerEngineQGC();
 
-    QGeoCodeReply* geocode          (const QGeoAddress &address, const QGeoShape &bounds) Q_DECL_OVERRIDE;
-    QGeoCodeReply* geocode          (const QString &address, int limit, int offset, const QGeoShape &bounds) Q_DECL_OVERRIDE;
-    QGeoCodeReply* reverseGeocode   (const QGeoCoordinate &coordinate, const QGeoShape &bounds) Q_DECL_OVERRIDE;
+	QGeoCodeReply *geocode(const QGeoAddress &address, const QGeoShape &bounds) Q_DECL_OVERRIDE;
+	QGeoCodeReply *geocode(const QString &address, int limit, int offset, const QGeoShape &bounds) Q_DECL_OVERRIDE;
+	QGeoCodeReply *reverseGeocode(const QGeoCoordinate &coordinate, const QGeoShape &bounds) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
-    void replyFinished  ();
-    void replyError     (QGeoCodeReply::Error errorCode, const QString &errorString);
+	void replyFinished();
+	void replyError(QGeoCodeReply::Error errorCode, const QString &errorString);
 
 private:
-    QNetworkAccessManager *m_networkManager;
-    QByteArray m_userAgent;
+	QNetworkAccessManager *m_networkManager;
+	QByteArray m_userAgent;
 };
 
 QT_END_NAMESPACE

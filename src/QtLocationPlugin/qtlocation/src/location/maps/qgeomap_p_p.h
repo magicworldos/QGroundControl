@@ -60,28 +60,28 @@ class QGeoMapController;
 
 class QGeoMapPrivate :  public QObjectPrivate
 {
-    Q_DECLARE_PUBLIC(QGeoMap)
+	Q_DECLARE_PUBLIC(QGeoMap)
 public:
-    QGeoMapPrivate(QGeoMappingManagerEngine *engine);
-    virtual ~QGeoMapPrivate();
+	QGeoMapPrivate(QGeoMappingManagerEngine *engine);
+	virtual ~QGeoMapPrivate();
 
-    void setCameraData(const QGeoCameraData &cameraData);
-    void resize(int width, int height);
-
-protected:
-    virtual void mapResized(int width, int height) = 0;
-    virtual void changeCameraData(const QGeoCameraData &oldCameraData) = 0;
-    virtual void changeActiveMapType(const QGeoMapType mapType) = 0;
+	void setCameraData(const QGeoCameraData &cameraData);
+	void resize(int width, int height);
 
 protected:
-    int m_width;
-    int m_height;
-    double m_aspectRatio;
-    QPointer<QGeoMappingManagerEngine> m_engine;
-    QString m_pluginString;
-    QGeoMapController *m_controller;
-    QGeoCameraData m_cameraData;
-    QGeoMapType m_activeMapType;
+	virtual void mapResized(int width, int height) = 0;
+	virtual void changeCameraData(const QGeoCameraData &oldCameraData) = 0;
+	virtual void changeActiveMapType(const QGeoMapType mapType) = 0;
+
+protected:
+	int m_width;
+	int m_height;
+	double m_aspectRatio;
+	QPointer<QGeoMappingManagerEngine> m_engine;
+	QString m_pluginString;
+	QGeoMapController *m_controller;
+	QGeoCameraData m_cameraData;
+	QGeoMapType m_activeMapType;
 };
 
 QT_END_NAMESPACE

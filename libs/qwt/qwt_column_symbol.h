@@ -28,134 +28,147 @@ class QwtText;
 class QWT_EXPORT QwtColumnRect
 {
 public:
-    //! Direction of the column
-    enum Direction
-    {
-        //! From left to right
-        LeftToRight,
+	//! Direction of the column
+	enum Direction
+	{
+		//! From left to right
+		LeftToRight,
 
-        //! From right to left
-        RightToLeft,
+		//! From right to left
+		RightToLeft,
 
-        //! From bottom to top
-        BottomToTop,
+		//! From bottom to top
+		BottomToTop,
 
-        //! From top to bottom
-        TopToBottom
-    };
+		//! From top to bottom
+		TopToBottom
+	};
 
-    //! Build an rectangle with invalid intervals directed BottomToTop.
-    QwtColumnRect():
-        direction( BottomToTop )
-    {
-    }
+	//! Build an rectangle with invalid intervals directed BottomToTop.
+	QwtColumnRect():
+		direction(BottomToTop)
+	{
+	}
 
-    //! \return A normalized QRect built from the intervals
-    QRectF toRect() const
-    {
-        QRectF r( hInterval.minValue(), vInterval.minValue(),
-            hInterval.maxValue() - hInterval.minValue(),
-            vInterval.maxValue() - vInterval.minValue() );
-        r = r.normalized();
+	//! \return A normalized QRect built from the intervals
+	QRectF toRect() const
+	{
+		QRectF r(hInterval.minValue(), vInterval.minValue(),
+			 hInterval.maxValue() - hInterval.minValue(),
+			 vInterval.maxValue() - vInterval.minValue());
+		r = r.normalized();
 
-        if ( hInterval.borderFlags() & QwtInterval::ExcludeMinimum )
-            r.adjust( 1, 0, 0, 0 );
-        if ( hInterval.borderFlags() & QwtInterval::ExcludeMaximum )
-            r.adjust( 0, 0, -1, 0 );
-        if ( vInterval.borderFlags() & QwtInterval::ExcludeMinimum )
-            r.adjust( 0, 1, 0, 0 );
-        if ( vInterval.borderFlags() & QwtInterval::ExcludeMaximum )
-            r.adjust( 0, 0, 0, -1 );
+		if (hInterval.borderFlags() & QwtInterval::ExcludeMinimum)
+		{
+			r.adjust(1, 0, 0, 0);
+		}
 
-        return r;
-    }
+		if (hInterval.borderFlags() & QwtInterval::ExcludeMaximum)
+		{
+			r.adjust(0, 0, -1, 0);
+		}
 
-    //! \return Orientation
-    Qt::Orientation orientation() const
-    {
-        if ( direction == LeftToRight || direction == RightToLeft )
-            return Qt::Horizontal;
+		if (vInterval.borderFlags() & QwtInterval::ExcludeMinimum)
+		{
+			r.adjust(0, 1, 0, 0);
+		}
 
-        return Qt::Vertical;
-    }
+		if (vInterval.borderFlags() & QwtInterval::ExcludeMaximum)
+		{
+			r.adjust(0, 0, 0, -1);
+		}
 
-    //! Interval for the horizontal coordinates
-    QwtInterval hInterval;
+		return r;
+	}
 
-    //! Interval for the vertical coordinates
-    QwtInterval vInterval;
+	//! \return Orientation
+	Qt::Orientation orientation() const
+	{
+		if (direction == LeftToRight || direction == RightToLeft)
+		{
+			return Qt::Horizontal;
+		}
 
-    //! Direction
-    Direction direction;
+		return Qt::Vertical;
+	}
+
+	//! Interval for the horizontal coordinates
+	QwtInterval hInterval;
+
+	//! Interval for the vertical coordinates
+	QwtInterval vInterval;
+
+	//! Direction
+	Direction direction;
 };
 
 //! A drawing primitive for columns
 class QWT_EXPORT QwtColumnSymbol
 {
 public:
-    /*!
-      Style
-      \sa setStyle(), style()
-    */
-    enum Style
-    {
-        //! No Style, the symbol draws nothing
-        NoStyle = -1,
+	/*!
+	  Style
+	  \sa setStyle(), style()
+	*/
+	enum Style
+	{
+		//! No Style, the symbol draws nothing
+		NoStyle = -1,
 
-        /*!
-          The column is painted with a frame depending on the frameStyle()
-          and lineWidth() using the palette().
-         */
-        Box,
+		/*!
+		  The column is painted with a frame depending on the frameStyle()
+		  and lineWidth() using the palette().
+		 */
+		Box,
 
-        /*!
-          Styles >= QwtColumnSymbol::UserStyle are reserved for derived
-          classes of QwtColumnSymbol that overload draw() with
-          additional application specific symbol types.
-         */
-        UserStyle = 1000
-    };
+		/*!
+		  Styles >= QwtColumnSymbol::UserStyle are reserved for derived
+		  classes of QwtColumnSymbol that overload draw() with
+		  additional application specific symbol types.
+		 */
+		UserStyle = 1000
+	};
 
-    /*!
-      Frame Style used in Box style().
-      \sa Style, setFrameStyle(), frameStyle(), setStyle(), setPalette()
-     */
-    enum FrameStyle
-    {
-        //! No frame
-        NoFrame,
+	/*!
+	  Frame Style used in Box style().
+	  \sa Style, setFrameStyle(), frameStyle(), setStyle(), setPalette()
+	 */
+	enum FrameStyle
+	{
+		//! No frame
+		NoFrame,
 
-        //! A plain frame style
-        Plain,
+		//! A plain frame style
+		Plain,
 
-        //! A raised frame style
-        Raised
-    };
+		//! A raised frame style
+		Raised
+	};
 
 public:
-    QwtColumnSymbol( Style = NoStyle );
-    virtual ~QwtColumnSymbol();
+	QwtColumnSymbol(Style = NoStyle);
+	virtual ~QwtColumnSymbol();
 
-    void setFrameStyle( FrameStyle style );
-    FrameStyle frameStyle() const;
+	void setFrameStyle(FrameStyle style);
+	FrameStyle frameStyle() const;
 
-    void setLineWidth( int width );
-    int lineWidth() const;
+	void setLineWidth(int width);
+	int lineWidth() const;
 
-    void setPalette( const QPalette & );
-    const QPalette &palette() const;
+	void setPalette(const QPalette &);
+	const QPalette &palette() const;
 
-    void setStyle( Style );
-    Style style() const;
+	void setStyle(Style);
+	Style style() const;
 
-    virtual void draw( QPainter *, const QwtColumnRect & ) const;
+	virtual void draw(QPainter *, const QwtColumnRect &) const;
 
 protected:
-    void drawBox( QPainter *, const QwtColumnRect & ) const;
+	void drawBox(QPainter *, const QwtColumnRect &) const;
 
 private:
-    class PrivateData;
-    PrivateData* d_data;
+	class PrivateData;
+	PrivateData *d_data;
 };
 
 #endif

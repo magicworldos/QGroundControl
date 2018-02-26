@@ -46,18 +46,18 @@ QT_BEGIN_NAMESPACE
 class QGeoPositionInfoSourcePrivate
 {
 public:
-    int interval;
-    QGeoPositionInfoSource::PositioningMethods methods;
-    QJsonObject metaData;
-    QGeoPositionInfoSourceFactory *factory;
-    QString providerName;
+	int interval;
+	QGeoPositionInfoSource::PositioningMethods methods;
+	QJsonObject metaData;
+	QGeoPositionInfoSourceFactory *factory;
+	QString providerName;
 
-    void loadMeta();
-    void loadPlugin();
+	void loadMeta();
+	void loadPlugin();
 
-    static QHash<QString, QJsonObject> plugins(bool reload = false);
-    static void loadPluginMetadata(QHash<QString, QJsonObject> &list);
-    static QList<QJsonObject> pluginsSorted();
+	static QHash<QString, QJsonObject> plugins(bool reload = false);
+	static void loadPluginMetadata(QHash<QString, QJsonObject> &list);
+	static QList<QJsonObject> pluginsSorted();
 };
 
 QT_END_NAMESPACE

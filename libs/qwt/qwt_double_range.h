@@ -31,58 +31,58 @@
 class QWT_EXPORT QwtDoubleRange
 {
 public:
-    QwtDoubleRange();
-    virtual ~QwtDoubleRange();
+	QwtDoubleRange();
+	virtual ~QwtDoubleRange();
 
-    void setRange(double vmin, double vmax, double vstep = 0.0,
-                  int pagesize = 1);
+	void setRange(double vmin, double vmax, double vstep = 0.0,
+		      int pagesize = 1);
 
-    void setValid(bool);
-    bool isValid() const;
+	void setValid(bool);
+	bool isValid() const;
 
-    virtual void setValue(double);
-    double value() const;
+	virtual void setValue(double);
+	double value() const;
 
-    void setPeriodic(bool tf);
-    bool periodic() const;
+	void setPeriodic(bool tf);
+	bool periodic() const;
 
-    void setStep(double);
-    double step() const;
+	void setStep(double);
+	double step() const;
 
-    double maxValue() const;
-    double minValue() const;
+	double maxValue() const;
+	double minValue() const;
 
-    int pageSize() const;
+	int pageSize() const;
 
-    virtual void incValue(int);
-    virtual void incPages(int);
-    virtual void fitValue(double);
+	virtual void incValue(int);
+	virtual void incPages(int);
+	virtual void fitValue(double);
 
 protected:
 
-    double exactValue() const;
-    double exactPrevValue() const;
-    double prevValue() const;
+	double exactValue() const;
+	double exactPrevValue() const;
+	double prevValue() const;
 
-    virtual void valueChange();
-    virtual void stepChange();
-    virtual void rangeChange();
+	virtual void valueChange();
+	virtual void stepChange();
+	virtual void rangeChange();
 
 private:
-    void setNewValue(double x, bool align = false);
+	void setNewValue(double x, bool align = false);
 
-    double d_minValue;
-    double d_maxValue;
-    double d_step;
-    int d_pageSize;
+	double d_minValue;
+	double d_maxValue;
+	double d_step;
+	int d_pageSize;
 
-    bool d_isValid;
-    double d_value;
-    double d_exactValue;
-    double d_exactPrevValue;
-    double d_prevValue;
+	bool d_isValid;
+	double d_value;
+	double d_exactValue;
+	double d_exactPrevValue;
+	double d_prevValue;
 
-    bool d_periodic;
+	bool d_periodic;
 };
 
 #endif

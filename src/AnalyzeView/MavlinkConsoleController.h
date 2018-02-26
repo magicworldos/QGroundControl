@@ -23,31 +23,31 @@ class Vehicle;
 /// Controller for MavlinkConsole.qml.
 class MavlinkConsoleController : public QStringListModel
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    MavlinkConsoleController();
-    ~MavlinkConsoleController();
+	MavlinkConsoleController();
+	~MavlinkConsoleController();
 
 public slots:
-    void sendCommand(QString command);
+	void sendCommand(QString command);
 
 signals:
-    void cursorChanged(int);
+	void cursorChanged(int);
 
 private slots:
-    void _setActiveVehicle  (Vehicle* vehicle);
-    void _receiveData(uint8_t device, uint8_t flags, uint16_t timeout, uint32_t baudrate, QByteArray data);
+	void _setActiveVehicle(Vehicle *vehicle);
+	void _receiveData(uint8_t device, uint8_t flags, uint16_t timeout, uint32_t baudrate, QByteArray data);
 
 private:
-    bool _processANSItext(QByteArray &line);
-    void _sendSerialData(QByteArray, bool close = false);
-    void writeLine(int line, const QByteArray &text);
+	bool _processANSItext(QByteArray &line);
+	void _sendSerialData(QByteArray, bool close = false);
+	void writeLine(int line, const QByteArray &text);
 
-    int           _cursor_home_pos;
-    int           _cursor;
-    QByteArray    _incoming_buffer;
-    Vehicle*      _vehicle;
-    QList<QMetaObject::Connection> _uas_connections;
+	int           _cursor_home_pos;
+	int           _cursor;
+	QByteArray    _incoming_buffer;
+	Vehicle      *_vehicle;
+	QList<QMetaObject::Connection> _uas_connections;
 
 };

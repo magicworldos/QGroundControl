@@ -58,18 +58,18 @@ class QGeoCoordinate;
 class QDoubleVector2D;
 
 Q_POSITIONING_EXPORT QVariant geoCoordinateInterpolator(const QGeoCoordinate &from,
-                                                        const QGeoCoordinate &to,
-                                                        qreal progress);
+		const QGeoCoordinate &to,
+		qreal progress);
 
 class Q_POSITIONING_EXPORT QGeoProjection
 {
 public:
-    static QDoubleVector2D coordToMercator(const QGeoCoordinate &coord);
-    static QGeoCoordinate mercatorToCoord(const QDoubleVector2D &mercator);
-    static QGeoCoordinate coordinateInterpolation(const QGeoCoordinate &from, const QGeoCoordinate &to, qreal progress);
+	static QDoubleVector2D coordToMercator(const QGeoCoordinate &coord);
+	static QGeoCoordinate mercatorToCoord(const QDoubleVector2D &mercator);
+	static QGeoCoordinate coordinateInterpolation(const QGeoCoordinate &from, const QGeoCoordinate &to, qreal progress);
 
 private:
-    static double realmod(const double a, const double b);
+	static double realmod(const double a, const double b);
 };
 
 QT_END_NAMESPACE

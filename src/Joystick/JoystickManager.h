@@ -22,55 +22,56 @@ Q_DECLARE_LOGGING_CATEGORY(JoystickManagerLog)
 
 class JoystickManager : public QGCTool
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 public:
-    JoystickManager(QGCApplication* app, QGCToolbox* toolbox);
-    ~JoystickManager();
+	JoystickManager(QGCApplication *app, QGCToolbox *toolbox);
+	~JoystickManager();
 
-    /// List of available joysticks
-    Q_PROPERTY(QVariantList joysticks READ joysticks NOTIFY availableJoysticksChanged)
-    Q_PROPERTY(QStringList  joystickNames READ joystickNames NOTIFY availableJoysticksChanged)
-    
-    /// Active joystick
-    Q_PROPERTY(Joystick* activeJoystick READ activeJoystick WRITE setActiveJoystick NOTIFY activeJoystickChanged)
-    Q_PROPERTY(QString activeJoystickName READ activeJoystickName WRITE setActiveJoystickName NOTIFY activeJoystickNameChanged)
-    
-    QVariantList joysticks();
-    QStringList joystickNames(void);
-    
-    Joystick* activeJoystick(void);
-    void setActiveJoystick(Joystick* joystick);
-    
-    QString activeJoystickName(void);
-    void setActiveJoystickName(const QString& name);
+	/// List of available joysticks
+	Q_PROPERTY(QVariantList joysticks READ joysticks NOTIFY availableJoysticksChanged)
+	Q_PROPERTY(QStringList  joystickNames READ joystickNames NOTIFY availableJoysticksChanged)
 
-    // Override from QGCTool
-    virtual void setToolbox(QGCToolbox *toolbox);
+	/// Active joystick
+	Q_PROPERTY(Joystick *activeJoystick READ activeJoystick WRITE setActiveJoystick NOTIFY activeJoystickChanged)
+	Q_PROPERTY(QString activeJoystickName READ activeJoystickName WRITE setActiveJoystickName NOTIFY
+		   activeJoystickNameChanged)
+
+	QVariantList joysticks();
+	QStringList joystickNames(void);
+
+	Joystick *activeJoystick(void);
+	void setActiveJoystick(Joystick *joystick);
+
+	QString activeJoystickName(void);
+	void setActiveJoystickName(const QString &name);
+
+	// Override from QGCTool
+	virtual void setToolbox(QGCToolbox *toolbox);
 
 public slots:
-    void init();
+	void init();
 
 signals:
-    void activeJoystickChanged(Joystick* joystick);
-    void activeJoystickNameChanged(const QString& name);
-    void availableJoysticksChanged(void);
+	void activeJoystickChanged(Joystick *joystick);
+	void activeJoystickNameChanged(const QString &name);
+	void availableJoysticksChanged(void);
 
 private slots:
-    void _updateAvailableJoysticks(void);
-    
-private:
-    void _setActiveJoystickFromSettings(void);
-    
-private:
-    Joystick*                   _activeJoystick;
-    QMap<QString, Joystick*>    _name2JoystickMap;
-    MultiVehicleManager*        _multiVehicleManager;
-    
-    static const char * _settingsGroup;
-    static const char * _settingsKeyActiveJoystick;
+	void _updateAvailableJoysticks(void);
 
-    QTimer _joystickCheckTimer;
+private:
+	void _setActiveJoystickFromSettings(void);
+
+private:
+	Joystick                   *_activeJoystick;
+	QMap<QString, Joystick *>    _name2JoystickMap;
+	MultiVehicleManager        *_multiVehicleManager;
+
+	static const char *_settingsGroup;
+	static const char *_settingsKeyActiveJoystick;
+
+	QTimer _joystickCheckTimer;
 };
 
 #endif

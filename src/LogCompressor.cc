@@ -36,35 +36,41 @@ LogCompressor::LogCompressor(QString logFileName, QString outFileName, QString d
 	outFileName(outFileName),
 	running(true),
 	currentDataLine(0),
-    delimiter(delimiter),
-    holeFillingEnabled(true)
+	delimiter(delimiter),
+	holeFillingEnabled(true)
 {
-    connect(this, &LogCompressor::logProcessingCriticalError, qgcApp(), &QGCApplication::criticalMessageBoxOnMainThread);
+	connect(this, &LogCompressor::logProcessingCriticalError, qgcApp(), &QGCApplication::criticalMessageBoxOnMainThread);
 }
 
 void LogCompressor::run()
 {
 	// Verify that the input file is useable
 	QFile infile(logFileName);
-	if (!infile.exists() || !infile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		_signalCriticalError(tr("Log Compressor: Cannot start/compress log file, since input file %1 is not readable").arg(QFileInfo(infile.fileName()).absoluteFilePath()));
+
+	if (!infile.exists() || !infile.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		_signalCriticalError(tr("Log Compressor: Cannot start/compress log file, since input file %1 is not readable").arg(
+					     QFileInfo(infile.fileName()).absoluteFilePath()));
 		return;
 	}
 
 //    outFileName = logFileName;
 
-    QString outFileName;
+	QString outFileName;
 
-    QStringList parts = QFileInfo(infile.fileName()).absoluteFilePath().split(".", QString::SkipEmptyParts);
+	QStringList parts = QFileInfo(infile.fileName()).absoluteFilePath().split(".", QString::SkipEmptyParts);
 
-    parts.replace(0, parts.first() + "_compressed");
-    parts.replace(parts.size()-1, "txt");
-    outFileName = parts.join(".");
+	parts.replace(0, parts.first() + "_compressed");
+	parts.replace(parts.size() - 1, "txt");
+	outFileName = parts.join(".");
 
 	// Verify that the output file is useable
-    QFile outTmpFile(outFileName);
-    if (!outTmpFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-		_signalCriticalError(tr("Log Compressor: Cannot start/compress log file, since output file %1 is not writable").arg(QFileInfo(outTmpFile.fileName()).absoluteFilePath()));
+	QFile outTmpFile(outFileName);
+
+	if (!outTmpFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
+	{
+		_signalCriticalError(tr("Log Compressor: Cannot start/compress log file, since output file %1 is not writable").arg(
+					     QFileInfo(outTmpFile.fileName()).absoluteFilePath()));
 		return;
 	}
 
@@ -77,7 +83,8 @@ void LogCompressor::run()
 	QTextStream in(&infile);
 	QMap<QString, int> messageMap;
 
-	while (!in.atEnd() && keyCounter < keySearchLimit) {
+	while (!in.atEnd() && keyCounter < keySearchLimit)
+	{
 		QString messageName = in.readLine().split(delimiter).at(2);
 		messageMap.insert(messageName, 0);
 		++keyCounter;
@@ -85,9 +92,11 @@ void LogCompressor::run()
 
 	// Now update each key with its index in the output string. These are
 	// all offset by one to account for the first field: timestamp_ms.
-    QMap<QString, int>::iterator i = messageMap.begin();
+	QMap<QString, int>::iterator i = messageMap.begin();
 	int j;
-	for (i = messageMap.begin(), j = 1; i != messageMap.end(); ++i, ++j) {
+
+	for (i = messageMap.begin(), j = 1; i != messageMap.end(); ++i, ++j)
+	{
 		i.value() = j;
 	}
 
@@ -95,20 +104,22 @@ void LogCompressor::run()
 	QStringList headerList(messageMap.keys());
 
 	QString headerLine = "timestamp_ms" + delimiter + headerList.join(delimiter) + "\n";
-    // Clean header names from symbols Matlab considers as Latex syntax
-    headerLine = headerLine.replace("timestamp", "TIMESTAMP");
-    headerLine = headerLine.replace(":", "");
-    headerLine = headerLine.replace("_", "");
-    headerLine = headerLine.replace(".", "");
+	// Clean header names from symbols Matlab considers as Latex syntax
+	headerLine = headerLine.replace("timestamp", "TIMESTAMP");
+	headerLine = headerLine.replace(":", "");
+	headerLine = headerLine.replace("_", "");
+	headerLine = headerLine.replace(".", "");
 	outTmpFile.write(headerLine.toLocal8Bit());
 
-    _signalCriticalError(tr("Log compressor: Dataset contains dimensions: ") + headerLine);
+	_signalCriticalError(tr("Log compressor: Dataset contains dimensions: ") + headerLine);
 
-    // Template list stores a list for populating with data as it's parsed from messages.
-    QStringList templateList;
-    for (int i = 0; i < headerList.size() + 1; ++i) {
-        templateList << (holeFillingEnabled?"NaN":"");
-    }
+	// Template list stores a list for populating with data as it's parsed from messages.
+	QStringList templateList;
+
+	for (int i = 0; i < headerList.size() + 1; ++i)
+	{
+		templateList << (holeFillingEnabled ? "NaN" : "");
+	}
 
 
 //	// Reset our position in the input file before we start the main processing loop.
@@ -121,62 +132,72 @@ void LogCompressor::run()
 //        timestampMap.insert(timestamp, templateList);
 //    }
 
-    // Jump back to start of file
-    in.seek(0);
+	// Jump back to start of file
+	in.seek(0);
 
-    // Map of final output lines, key is time
-    QMap<quint64, QStringList> timestampMap;
+	// Map of final output lines, key is time
+	QMap<quint64, QStringList> timestampMap;
 
-    // Run through the whole file and fill map of timestamps
-    while (!in.atEnd()) {
-        QStringList newLine = in.readLine().split(delimiter);
-        quint64 timestamp = newLine.at(0).toULongLong();
+	// Run through the whole file and fill map of timestamps
+	while (!in.atEnd())
+	{
+		QStringList newLine = in.readLine().split(delimiter);
+		quint64 timestamp = newLine.at(0).toULongLong();
 
-        // Check if timestamp does exist - if not, add it
-        if (!timestampMap.contains(timestamp)) {
-            timestampMap.insert(timestamp, templateList);
-        }
+		// Check if timestamp does exist - if not, add it
+		if (!timestampMap.contains(timestamp))
+		{
+			timestampMap.insert(timestamp, templateList);
+		}
 
-        QStringList list = timestampMap.value(timestamp);
+		QStringList list = timestampMap.value(timestamp);
 
-        QString currentDataName = newLine.at(2);
-        QString currentDataValue = newLine.at(3);
-        list.replace(messageMap.value(currentDataName), currentDataValue);
-        timestampMap.insert(timestamp, list);
-    }
+		QString currentDataName = newLine.at(2);
+		QString currentDataValue = newLine.at(3);
+		list.replace(messageMap.value(currentDataName), currentDataValue);
+		timestampMap.insert(timestamp, list);
+	}
 
-    int lineCounter = 0;
+	int lineCounter = 0;
 
-    QStringList lastList = timestampMap.values().at(1);
+	QStringList lastList = timestampMap.values().at(1);
 
-    foreach (QStringList list, timestampMap.values()) {
-        // Write this current time set out to the file
-        // only do so from the 2nd line on, since the first
-        // line could be incomplete
-        if (lineCounter > 1) {
-            // Set the timestamp
-            list.replace(0,QString("%1").arg(timestampMap.keys().at(lineCounter)));
+	foreach (QStringList list, timestampMap.values())
+	{
+		// Write this current time set out to the file
+		// only do so from the 2nd line on, since the first
+		// line could be incomplete
+		if (lineCounter > 1)
+		{
+			// Set the timestamp
+			list.replace(0, QString("%1").arg(timestampMap.keys().at(lineCounter)));
 
-            // Fill holes if necessary
-            if (holeFillingEnabled) {
-                int index = 0;
-                foreach (const QString& str, list) {
-                    if (str == "" || str == "NaN") {
-                        list.replace(index, lastList.at(index));
-                    }
-                    index++;
-                }
-            }
+			// Fill holes if necessary
+			if (holeFillingEnabled)
+			{
+				int index = 0;
 
-            // Set last list
-            lastList = list;
+				foreach (const QString &str, list)
+				{
+					if (str == "" || str == "NaN")
+					{
+						list.replace(index, lastList.at(index));
+					}
 
-            // Write data columns
-            QString output = list.join(delimiter) + "\n";
-            outTmpFile.write(output.toLocal8Bit());
-        }
-        lineCounter++;
-    }
+					index++;
+				}
+			}
+
+			// Set last list
+			lastList = list;
+
+			// Write data columns
+			QString output = list.join(delimiter) + "\n";
+			outTmpFile.write(output.toLocal8Bit());
+		}
+
+		lineCounter++;
+	}
 
 	// We're now done with the source file
 	infile.close();
@@ -208,7 +229,7 @@ int LogCompressor::getCurrentLine()
 }
 
 
-void LogCompressor::_signalCriticalError(const QString& msg)
+void LogCompressor::_signalCriticalError(const QString &msg)
 {
-    emit logProcessingCriticalError(tr("Log Compressor"), msg);
+	emit logProcessingCriticalError(tr("Log Compressor"), msg);
 }

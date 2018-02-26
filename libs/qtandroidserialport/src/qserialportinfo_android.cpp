@@ -54,114 +54,120 @@ static int gErrorCount = 0;
 
 QList<QSerialPortInfo> availablePortsByFiltersOfDevices(bool &ok)
 {
-    QList<QSerialPortInfo> serialPortInfoList;
+	QList<QSerialPortInfo> serialPortInfoList;
 
-    //__android_log_print(ANDROID_LOG_INFO, V_TAG, "Collecting device list");
-    QAndroidJniObject resultL = QAndroidJniObject::callStaticObjectMethod(
-        V_jniClassName,
-        "availableDevicesInfo",
-        "()[Ljava/lang/String;");
-    
-    if (!resultL.isValid()) {
-        //-- If 5 consecutive errors, ignore it.
-        if(gErrorCount < 5) {
-            gErrorCount++;
-            __android_log_print(ANDROID_LOG_ERROR, V_TAG, "Error from availableDevicesInfo");
-        }
-        ok = false;
-        return serialPortInfoList;
-    } else {
-        gErrorCount = 0;
-    }
+	//__android_log_print(ANDROID_LOG_INFO, V_TAG, "Collecting device list");
+	QAndroidJniObject resultL = QAndroidJniObject::callStaticObjectMethod(
+					    V_jniClassName,
+					    "availableDevicesInfo",
+					    "()[Ljava/lang/String;");
 
-    QAndroidJniEnvironment envL;
-    jobjectArray objArrayL = resultL.object<jobjectArray>();
-    int countL = envL->GetArrayLength(objArrayL);
+	if (!resultL.isValid())
+	{
+		//-- If 5 consecutive errors, ignore it.
+		if (gErrorCount < 5)
+		{
+			gErrorCount++;
+			__android_log_print(ANDROID_LOG_ERROR, V_TAG, "Error from availableDevicesInfo");
+		}
 
-    for (int iL = 0; iL < countL; iL++)
-    {
-        QSerialPortInfoPrivate priv;
-        jstring stringL = (jstring)(envL->GetObjectArrayElement(objArrayL, iL));
-        const char *rawStringL = envL->GetStringUTFChars(stringL, 0);
-        //__android_log_print(ANDROID_LOG_INFO, V_TAG, "Adding device: %s", rawStringL);
-        QStringList strListL = QString::fromUtf8(rawStringL).split(QStringLiteral(":"));
-        envL->ReleaseStringUTFChars(stringL, rawStringL);
+		ok = false;
+		return serialPortInfoList;
+	}
 
-        priv.portName               = strListL[0];
-        priv.device                 = strListL[0];
-        priv.manufacturer           = strListL[1];
-        priv.productIdentifier      = strListL[2].toInt();
-        priv.hasProductIdentifier   = (priv.productIdentifier != 0) ? true: false;
-        priv.vendorIdentifier       = strListL[3].toInt();
-        priv.hasVendorIdentifier    = (priv.vendorIdentifier  != 0) ? true: false;
+	else
+	{
+		gErrorCount = 0;
+	}
 
-        serialPortInfoList.append(priv);
-    }
+	QAndroidJniEnvironment envL;
+	jobjectArray objArrayL = resultL.object<jobjectArray>();
+	int countL = envL->GetArrayLength(objArrayL);
 
-    return serialPortInfoList;
+	for (int iL = 0; iL < countL; iL++)
+	{
+		QSerialPortInfoPrivate priv;
+		jstring stringL = (jstring)(envL->GetObjectArrayElement(objArrayL, iL));
+		const char *rawStringL = envL->GetStringUTFChars(stringL, 0);
+		//__android_log_print(ANDROID_LOG_INFO, V_TAG, "Adding device: %s", rawStringL);
+		QStringList strListL = QString::fromUtf8(rawStringL).split(QStringLiteral(":"));
+		envL->ReleaseStringUTFChars(stringL, rawStringL);
+
+		priv.portName               = strListL[0];
+		priv.device                 = strListL[0];
+		priv.manufacturer           = strListL[1];
+		priv.productIdentifier      = strListL[2].toInt();
+		priv.hasProductIdentifier   = (priv.productIdentifier != 0) ? true : false;
+		priv.vendorIdentifier       = strListL[3].toInt();
+		priv.hasVendorIdentifier    = (priv.vendorIdentifier  != 0) ? true : false;
+
+		serialPortInfoList.append(priv);
+	}
+
+	return serialPortInfoList;
 }
 
 QList<QSerialPortInfo> availablePortsBySysfs()
 {
-    bool ok;
-    return availablePortsByFiltersOfDevices(ok);
+	bool ok;
+	return availablePortsByFiltersOfDevices(ok);
 }
 
 QList<QSerialPortInfo> availablePortsByUdev()
 {
-    bool ok;
-    return availablePortsByFiltersOfDevices(ok);
+	bool ok;
+	return availablePortsByFiltersOfDevices(ok);
 }
 
 QList<QSerialPortInfo> QSerialPortInfo::availablePorts()
 {
-    bool ok;
-    return availablePortsByFiltersOfDevices(ok);
+	bool ok;
+	return availablePortsByFiltersOfDevices(ok);
 }
 
 QList<qint32> QSerialPortInfo::standardBaudRates()
 {
-    return QSerialPortPrivate::standardBaudRates();
+	return QSerialPortPrivate::standardBaudRates();
 }
 
 bool QSerialPortInfo::isBusy() const
 {
-    QAndroidJniObject jstrL = QAndroidJniObject::fromString(d_ptr->portName);
-    cleanJavaException();
-    jboolean resultL = QAndroidJniObject::callStaticMethod<jboolean>(
-        V_jniClassName,
-        "isDeviceNameOpen",
-        "(Ljava/lang/String;)Z",
-        jstrL.object<jstring>());
-    cleanJavaException();
-    return resultL;
+	QAndroidJniObject jstrL = QAndroidJniObject::fromString(d_ptr->portName);
+	cleanJavaException();
+	jboolean resultL = QAndroidJniObject::callStaticMethod<jboolean>(
+				   V_jniClassName,
+				   "isDeviceNameOpen",
+				   "(Ljava/lang/String;)Z",
+				   jstrL.object<jstring>());
+	cleanJavaException();
+	return resultL;
 }
 
 bool QSerialPortInfo::isValid() const
 {
-    QAndroidJniObject jstrL = QAndroidJniObject::fromString(d_ptr->portName);
-    cleanJavaException();
-    jboolean resultL = QAndroidJniObject::callStaticMethod<jboolean>(
-        V_jniClassName,
-        "isDeviceNameValid",
-        "(Ljava/lang/String;)Z",
-        jstrL.object<jstring>());
-    cleanJavaException();
-    return resultL;
+	QAndroidJniObject jstrL = QAndroidJniObject::fromString(d_ptr->portName);
+	cleanJavaException();
+	jboolean resultL = QAndroidJniObject::callStaticMethod<jboolean>(
+				   V_jniClassName,
+				   "isDeviceNameValid",
+				   "(Ljava/lang/String;)Z",
+				   jstrL.object<jstring>());
+	cleanJavaException();
+	return resultL;
 }
 
 QString QSerialPortInfoPrivate::portNameToSystemLocation(const QString &source)
 {
-    return (source.startsWith(QLatin1Char('/'))
-            || source.startsWith(QStringLiteral("./"))
-            || source.startsWith(QStringLiteral("../")))
-            ? source : (QStringLiteral("/dev/") + source);
+	return (source.startsWith(QLatin1Char('/'))
+		|| source.startsWith(QStringLiteral("./"))
+		|| source.startsWith(QStringLiteral("../")))
+	       ? source : (QStringLiteral("/dev/") + source);
 }
 
 QString QSerialPortInfoPrivate::portNameFromSystemLocation(const QString &source)
 {
-    return source.startsWith(QStringLiteral("/dev/"))
-            ? source.mid(5) : source;
+	return source.startsWith(QStringLiteral("/dev/"))
+	       ? source.mid(5) : source;
 }
 
 QT_END_NAMESPACE

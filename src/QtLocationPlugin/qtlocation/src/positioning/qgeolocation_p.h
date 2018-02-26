@@ -44,18 +44,18 @@ QT_BEGIN_NAMESPACE
 class QGeoLocationPrivate : public QSharedData
 {
 public:
-    QGeoLocationPrivate();
-    QGeoLocationPrivate(const QGeoLocationPrivate &other);
+	QGeoLocationPrivate();
+	QGeoLocationPrivate(const QGeoLocationPrivate &other);
 
-    ~QGeoLocationPrivate();
+	~QGeoLocationPrivate();
 
-    bool operator==(const QGeoLocationPrivate &other) const;
+	bool operator==(const QGeoLocationPrivate &other) const;
 
-    bool isEmpty() const;
+	bool isEmpty() const;
 
-    QGeoAddress address;
-    QGeoCoordinate coordinate;
-    QGeoRectangle viewport;
+	QGeoAddress address;
+	QGeoCoordinate coordinate;
+	QGeoRectangle viewport;
 };
 
 QT_END_NAMESPACE

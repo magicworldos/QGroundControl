@@ -29,73 +29,74 @@ Q_DECLARE_LOGGING_CATEGORY(GeoFenceManagerLog)
 /// for communicating with the vehicle to set/get geofence settings.
 class GeoFenceManager : public QObject
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 public:
-    GeoFenceManager(Vehicle* vehicle);
-    ~GeoFenceManager();
-    
-    /// Returns true if GeoFence is supported by this vehicle
-    virtual bool supported(void) const;
+	GeoFenceManager(Vehicle *vehicle);
+	~GeoFenceManager();
 
-    /// Returns true if the manager is currently communicating with the vehicle
-    virtual bool inProgress(void) const;
+	/// Returns true if GeoFence is supported by this vehicle
+	virtual bool supported(void) const;
 
-    /// Load the current settings from the vehicle
-    ///     Signals loadComplete when done
-    virtual void loadFromVehicle(void);
+	/// Returns true if the manager is currently communicating with the vehicle
+	virtual bool inProgress(void) const;
 
-    /// Send the geofence settings to the vehicle
-    ///     Signals sendComplete when done
-    virtual void sendToVehicle(const QGeoCoordinate&    breachReturn,   ///< Breach return point
-                               QmlObjectListModel&      polygons,       ///< List of QGCFencePolygons
-                               QmlObjectListModel&      circles);       ///< List of QGCFenceCircles
+	/// Load the current settings from the vehicle
+	///     Signals loadComplete when done
+	virtual void loadFromVehicle(void);
 
-    /// Remove all fence related items from vehicle (does not affect parameters)
-    ///     Signals removeAllComplete when done
-    virtual void removeAll(void);
+	/// Send the geofence settings to the vehicle
+	///     Signals sendComplete when done
+	virtual void sendToVehicle(const QGeoCoordinate    &breachReturn,   ///< Breach return point
+				   QmlObjectListModel      &polygons,       ///< List of QGCFencePolygons
+				   QmlObjectListModel      &circles);       ///< List of QGCFenceCircles
 
-    /// Returns true if polygon fence is currently enabled on this vehicle
-    ///     Signal: polygonEnabledChanged
-    virtual bool polygonEnabled(void) const { return true; }
+	/// Remove all fence related items from vehicle (does not affect parameters)
+	///     Signals removeAllComplete when done
+	virtual void removeAll(void);
 
-    const QList<QGCFencePolygon>&   polygons(void) { return _polygons; }
-    const QList<QGCFenceCircle>&    circles(void) { return _circles; }
-    const QGeoCoordinate&           breachReturnPoint(void) const { return _breachReturnPoint; }
+	/// Returns true if polygon fence is currently enabled on this vehicle
+	///     Signal: polygonEnabledChanged
+	virtual bool polygonEnabled(void) const { return true; }
 
-    /// Error codes returned in error signal
-    typedef enum {
-        InternalError,
-        PolygonTooFewPoints,    ///< Too few points for valid fence polygon
-        PolygonTooManyPoints,   ///< Too many points for valid fence polygon
-        IncompletePolygonLoad,  ///< Incomplete polygon loaded
-        UnsupportedCommand,     ///< Usupported command in mission type
-        BadPolygonItemFormat,   ///< Error re-creating polygons from mission items
-        InvalidCircleRadius,
-    } ErrorCode_t;
-    
+	const QList<QGCFencePolygon>   &polygons(void) { return _polygons; }
+	const QList<QGCFenceCircle>    &circles(void) { return _circles; }
+	const QGeoCoordinate           &breachReturnPoint(void) const { return _breachReturnPoint; }
+
+	/// Error codes returned in error signal
+	typedef enum
+	{
+		InternalError,
+		PolygonTooFewPoints,    ///< Too few points for valid fence polygon
+		PolygonTooManyPoints,   ///< Too many points for valid fence polygon
+		IncompletePolygonLoad,  ///< Incomplete polygon loaded
+		UnsupportedCommand,     ///< Usupported command in mission type
+		BadPolygonItemFormat,   ///< Error re-creating polygons from mission items
+		InvalidCircleRadius,
+	} ErrorCode_t;
+
 signals:
-    void loadComplete                   (void);
-    void inProgressChanged              (bool inProgress);
-    void error                          (int errorCode, const QString& errorMsg);
-    void removeAllComplete              (bool error);
-    void sendComplete                   (bool error);
+	void loadComplete(void);
+	void inProgressChanged(bool inProgress);
+	void error(int errorCode, const QString &errorMsg);
+	void removeAllComplete(bool error);
+	void sendComplete(bool error);
 
 private slots:
-    void _sendComplete              (bool error);
-    void _planManagerLoadComplete   (bool removeAllRequested);
+	void _sendComplete(bool error);
+	void _planManagerLoadComplete(bool removeAllRequested);
 
 private:
-    void _sendError(ErrorCode_t errorCode, const QString& errorMsg);
+	void _sendError(ErrorCode_t errorCode, const QString &errorMsg);
 
-    Vehicle*                _vehicle;
-    PlanManager             _planManager;
-    QList<QGCFencePolygon>  _polygons;
-    QList<QGCFenceCircle>   _circles;
-    QGeoCoordinate          _breachReturnPoint;
-    bool                    _firstParamLoadComplete;
-    QList<QGCFencePolygon>  _sendPolygons;
-    QList<QGCFenceCircle>   _sendCircles;
+	Vehicle                *_vehicle;
+	PlanManager             _planManager;
+	QList<QGCFencePolygon>  _polygons;
+	QList<QGCFenceCircle>   _circles;
+	QGeoCoordinate          _breachReturnPoint;
+	bool                    _firstParamLoadComplete;
+	QList<QGCFencePolygon>  _sendPolygons;
+	QList<QGCFenceCircle>   _sendCircles;
 };
 
 #endif

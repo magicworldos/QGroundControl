@@ -31,42 +31,43 @@ class QGLContext;
 
 class QtVideoSinkDelegate : public BaseDelegate
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    enum PainterType {
-        Generic = 0x00,
-        ArbFp = 0x01,
-        Glsl = 0x02
-    };
-    Q_DECLARE_FLAGS(PainterTypes, PainterType);
+	enum PainterType
+	{
+		Generic = 0x00,
+		ArbFp = 0x01,
+		Glsl = 0x02
+	};
+	Q_DECLARE_FLAGS(PainterTypes, PainterType);
 
-    explicit QtVideoSinkDelegate(GstElement *sink, QObject *parent = 0);
-    virtual ~QtVideoSinkDelegate();
+	explicit QtVideoSinkDelegate(GstElement *sink, QObject *parent = 0);
+	virtual ~QtVideoSinkDelegate();
 
-    PainterTypes supportedPainterTypes() const { return m_supportedPainters; }
+	PainterTypes supportedPainterTypes() const { return m_supportedPainters; }
 
 #ifndef GST_QT_VIDEO_SINK_NO_OPENGL
-    // glcontext property
-    QGLContext *glContext() const;
-    void setGLContext(QGLContext *context);
+	// glcontext property
+	QGLContext *glContext() const;
+	void setGLContext(QGLContext *context);
 #endif
 
-    // paint action
-    void paint(QPainter *painter, const QRectF & targetArea);
+	// paint action
+	void paint(QPainter *painter, const QRectF &targetArea);
 
 protected:
-    // internal event handling
-    virtual bool event(QEvent *event);
+	// internal event handling
+	virtual bool event(QEvent *event);
 
 private:
-    void changePainter(const BufferFormat & format);
-    void destroyPainter();
+	void changePainter(const BufferFormat &format);
+	void destroyPainter();
 
-    AbstractSurfacePainter *m_painter;
-    PainterTypes m_supportedPainters;
+	AbstractSurfacePainter *m_painter;
+	PainterTypes m_supportedPainters;
 
 #ifndef GST_QT_VIDEO_SINK_NO_OPENGL
-    QGLContext *m_glContext;
+	QGLContext *m_glContext;
 #endif
 };
 

@@ -22,18 +22,18 @@
 
 class PlanMasterControllerTest : public UnitTest
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 public:
-    PlanMasterControllerTest(void);
+	PlanMasterControllerTest(void);
 
 private slots:
-    void init(void) final;
-    void cleanup(void) final;
+	void init(void) final;
+	void cleanup(void) final;
 
-    void _testMissionFileLoad(void);
-    void _testMissionPlannerFileLoad(void);
+	void _testMissionFileLoad(void);
+	void _testMissionPlannerFileLoad(void);
 
 private:
-    PlanMasterController*   _masterController;
+	PlanMasterController   *_masterController;
 };

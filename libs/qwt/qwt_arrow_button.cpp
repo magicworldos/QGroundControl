@@ -22,29 +22,47 @@ static const int Spacing = 1;
 class QwtArrowButton::PrivateData
 {
 public:
-    int num;
-    Qt::ArrowType arrowType;
+	int num;
+	Qt::ArrowType arrowType;
 };
 
-static QStyleOptionButton styleOpt( const QwtArrowButton* btn )
+static QStyleOptionButton styleOpt(const QwtArrowButton *btn)
 {
-    QStyleOptionButton option;
-    option.init( btn );
-    option.features = QStyleOptionButton::None;
-    if ( btn->isFlat() )
-        option.features |= QStyleOptionButton::Flat;
-    if ( btn->menu() )
-        option.features |= QStyleOptionButton::HasMenu;
-    if ( btn->autoDefault() || btn->isDefault() )
-        option.features |= QStyleOptionButton::AutoDefaultButton;
-    if ( btn->isDefault() )
-        option.features |= QStyleOptionButton::DefaultButton;
-    if ( btn->isDown() )
-        option.state |= QStyle::State_Sunken;
-    if ( !btn->isFlat() && !btn->isDown() )
-        option.state |= QStyle::State_Raised;
+	QStyleOptionButton option;
+	option.init(btn);
+	option.features = QStyleOptionButton::None;
 
-    return option;
+	if (btn->isFlat())
+	{
+		option.features |= QStyleOptionButton::Flat;
+	}
+
+	if (btn->menu())
+	{
+		option.features |= QStyleOptionButton::HasMenu;
+	}
+
+	if (btn->autoDefault() || btn->isDefault())
+	{
+		option.features |= QStyleOptionButton::AutoDefaultButton;
+	}
+
+	if (btn->isDefault())
+	{
+		option.features |= QStyleOptionButton::DefaultButton;
+	}
+
+	if (btn->isDown())
+	{
+		option.state |= QStyle::State_Sunken;
+	}
+
+	if (!btn->isFlat() && !btn->isDown())
+	{
+		option.state |= QStyle::State_Raised;
+	}
+
+	return option;
 }
 
 /*!
@@ -52,35 +70,36 @@ static QStyleOptionButton styleOpt( const QwtArrowButton* btn )
   \param arrowType see Qt::ArrowType in the Qt docs.
   \param parent Parent widget
 */
-QwtArrowButton::QwtArrowButton( int num,
-        Qt::ArrowType arrowType, QWidget *parent ):
-    QPushButton( parent )
+QwtArrowButton::QwtArrowButton(int num,
+			       Qt::ArrowType arrowType, QWidget *parent):
+	QPushButton(parent)
 {
-    d_data = new PrivateData;
-    d_data->num = qBound( 1, num, MaxNum );
-    d_data->arrowType = arrowType;
+	d_data = new PrivateData;
+	d_data->num = qBound(1, num, MaxNum);
+	d_data->arrowType = arrowType;
 
-    setAutoRepeat( true );
-    setAutoDefault( false );
+	setAutoRepeat(true);
+	setAutoDefault(false);
 
-    switch ( d_data->arrowType )
-    {
-        case Qt::LeftArrow:
-        case Qt::RightArrow:
-            setSizePolicy( QSizePolicy::Expanding,
-                QSizePolicy::Fixed );
-            break;
-        default:
-            setSizePolicy( QSizePolicy::Fixed,
-                QSizePolicy::Expanding );
-    }
+	switch (d_data->arrowType)
+	{
+	case Qt::LeftArrow:
+	case Qt::RightArrow:
+		setSizePolicy(QSizePolicy::Expanding,
+			      QSizePolicy::Fixed);
+		break;
+
+	default:
+		setSizePolicy(QSizePolicy::Fixed,
+			      QSizePolicy::Expanding);
+	}
 }
 
 //! Destructor
 QwtArrowButton::~QwtArrowButton()
 {
-    delete d_data;
-    d_data = NULL;
+	delete d_data;
+	d_data = NULL;
 }
 
 /*!
@@ -88,7 +107,7 @@ QwtArrowButton::~QwtArrowButton()
 */
 Qt::ArrowType QwtArrowButton::arrowType() const
 {
-    return d_data->arrowType;
+	return d_data->arrowType;
 }
 
 /*!
@@ -96,7 +115,7 @@ Qt::ArrowType QwtArrowButton::arrowType() const
 */
 int QwtArrowButton::num() const
 {
-    return d_data->num;
+	return d_data->num;
 }
 
 /*!
@@ -104,35 +123,35 @@ int QwtArrowButton::num() const
 */
 QRect QwtArrowButton::labelRect() const
 {
-    const int m = Margin;
+	const int m = Margin;
 
-    QRect r = rect();
-    r.setRect( r.x() + m, r.y() + m,
-        r.width() - 2 * m, r.height() - 2 * m );
+	QRect r = rect();
+	r.setRect(r.x() + m, r.y() + m,
+		  r.width() - 2 * m, r.height() - 2 * m);
 
-    if ( isDown() )
-    {
-        QStyleOptionButton option = styleOpt( this );
-        const int ph = style()->pixelMetric(
-            QStyle::PM_ButtonShiftHorizontal, &option, this );
-        const int pv = style()->pixelMetric(
-            QStyle::PM_ButtonShiftVertical, &option, this );
+	if (isDown())
+	{
+		QStyleOptionButton option = styleOpt(this);
+		const int ph = style()->pixelMetric(
+				       QStyle::PM_ButtonShiftHorizontal, &option, this);
+		const int pv = style()->pixelMetric(
+				       QStyle::PM_ButtonShiftVertical, &option, this);
 
-        r.translate( ph, pv );
-    }
+		r.translate(ph, pv);
+	}
 
-    return r;
+	return r;
 }
 
 /*!
    Paint event handler
    \param event Paint event
 */
-void QwtArrowButton::paintEvent( QPaintEvent *event )
+void QwtArrowButton::paintEvent(QPaintEvent *event)
 {
-    QPushButton::paintEvent( event );
-    QPainter painter( this );
-    drawButtonLabel( &painter );
+	QPushButton::paintEvent(event);
+	QPainter painter(this);
+	drawButtonLabel(&painter);
 }
 
 /*!
@@ -141,69 +160,83 @@ void QwtArrowButton::paintEvent( QPaintEvent *event )
   \param painter Painter
   \sa The Qt Manual for QPushButton
 */
-void QwtArrowButton::drawButtonLabel( QPainter *painter )
+void QwtArrowButton::drawButtonLabel(QPainter *painter)
 {
-    const bool isVertical = d_data->arrowType == Qt::UpArrow ||
-        d_data->arrowType == Qt::DownArrow;
+	const bool isVertical = d_data->arrowType == Qt::UpArrow ||
+				d_data->arrowType == Qt::DownArrow;
 
-    const QRect r = labelRect();
-    QSize boundingSize = labelRect().size();
-    if ( isVertical )
-        boundingSize.transpose();
+	const QRect r = labelRect();
+	QSize boundingSize = labelRect().size();
 
-    const int w =
-        ( boundingSize.width() - ( MaxNum - 1 ) * Spacing ) / MaxNum;
+	if (isVertical)
+	{
+		boundingSize.transpose();
+	}
 
-    QSize arrow = arrowSize( Qt::RightArrow,
-        QSize( w, boundingSize.height() ) );
+	const int w =
+		(boundingSize.width() - (MaxNum - 1) * Spacing) / MaxNum;
 
-    if ( isVertical )
-        arrow.transpose();
+	QSize arrow = arrowSize(Qt::RightArrow,
+				QSize(w, boundingSize.height()));
 
-    QRect contentsSize; // aligned rect where to paint all arrows
-    if ( d_data->arrowType == Qt::LeftArrow || d_data->arrowType == Qt::RightArrow )
-    {
-        contentsSize.setWidth( d_data->num * arrow.width()
-            + ( d_data->num - 1 ) * Spacing );
-        contentsSize.setHeight( arrow.height() );
-    }
-    else
-    {
-        contentsSize.setWidth( arrow.width() );
-        contentsSize.setHeight( d_data->num * arrow.height()
-            + ( d_data->num - 1 ) * Spacing );
-    }
+	if (isVertical)
+	{
+		arrow.transpose();
+	}
 
-    QRect arrowRect( contentsSize );
-    arrowRect.moveCenter( r.center() );
-    arrowRect.setSize( arrow );
+	QRect contentsSize; // aligned rect where to paint all arrows
 
-    painter->save();
-    for ( int i = 0; i < d_data->num; i++ )
-    {
-        drawArrow( painter, arrowRect, d_data->arrowType );
+	if (d_data->arrowType == Qt::LeftArrow || d_data->arrowType == Qt::RightArrow)
+	{
+		contentsSize.setWidth(d_data->num * arrow.width()
+				      + (d_data->num - 1) * Spacing);
+		contentsSize.setHeight(arrow.height());
+	}
 
-        int dx = 0;
-        int dy = 0;
+	else
+	{
+		contentsSize.setWidth(arrow.width());
+		contentsSize.setHeight(d_data->num * arrow.height()
+				       + (d_data->num - 1) * Spacing);
+	}
 
-        if ( isVertical )
-            dy = arrow.height() + Spacing;
-        else
-            dx = arrow.width() + Spacing;
+	QRect arrowRect(contentsSize);
+	arrowRect.moveCenter(r.center());
+	arrowRect.setSize(arrow);
 
-        arrowRect.translate( dx, dy );
-    }
-    painter->restore();
+	painter->save();
 
-    if ( hasFocus() )
-    {
-        QStyleOptionFocusRect option;
-        option.init( this );
-        option.backgroundColor = palette().color( QPalette::Window );
+	for (int i = 0; i < d_data->num; i++)
+	{
+		drawArrow(painter, arrowRect, d_data->arrowType);
 
-        style()->drawPrimitive( QStyle::PE_FrameFocusRect,
-            &option, painter, this );
-    }
+		int dx = 0;
+		int dy = 0;
+
+		if (isVertical)
+		{
+			dy = arrow.height() + Spacing;
+		}
+
+		else
+		{
+			dx = arrow.width() + Spacing;
+		}
+
+		arrowRect.translate(dx, dy);
+	}
+
+	painter->restore();
+
+	if (hasFocus())
+	{
+		QStyleOptionFocusRect option;
+		option.init(this);
+		option.backgroundColor = palette().color(QPalette::Window);
+
+		style()->drawPrimitive(QStyle::PE_FrameFocusRect,
+				       &option, painter, this);
+	}
 }
 
 /*!
@@ -213,45 +246,49 @@ void QwtArrowButton::drawButtonLabel( QPainter *painter )
     \param r Rectangle where to paint the arrow
     \param arrowType Arrow type
 */
-void QwtArrowButton::drawArrow( QPainter *painter,
-    const QRect &r, Qt::ArrowType arrowType ) const
+void QwtArrowButton::drawArrow(QPainter *painter,
+			       const QRect &r, Qt::ArrowType arrowType) const
 {
-    QPolygon pa( 3 );
+	QPolygon pa(3);
 
-    switch ( arrowType )
-    {
-        case Qt::UpArrow:
-            pa.setPoint( 0, r.bottomLeft() );
-            pa.setPoint( 1, r.bottomRight() );
-            pa.setPoint( 2, r.center().x(), r.top() );
-            break;
-        case Qt::DownArrow:
-            pa.setPoint( 0, r.topLeft() );
-            pa.setPoint( 1, r.topRight() );
-            pa.setPoint( 2, r.center().x(), r.bottom() );
-            break;
-        case Qt::RightArrow:
-            pa.setPoint( 0, r.topLeft() );
-            pa.setPoint( 1, r.bottomLeft() );
-            pa.setPoint( 2, r.right(), r.center().y() );
-            break;
-        case Qt::LeftArrow:
-            pa.setPoint( 0, r.topRight() );
-            pa.setPoint( 1, r.bottomRight() );
-            pa.setPoint( 2, r.left(), r.center().y() );
-            break;
-        default:
-            break;
-    }
+	switch (arrowType)
+	{
+	case Qt::UpArrow:
+		pa.setPoint(0, r.bottomLeft());
+		pa.setPoint(1, r.bottomRight());
+		pa.setPoint(2, r.center().x(), r.top());
+		break;
 
-    painter->save();
+	case Qt::DownArrow:
+		pa.setPoint(0, r.topLeft());
+		pa.setPoint(1, r.topRight());
+		pa.setPoint(2, r.center().x(), r.bottom());
+		break;
 
-    painter->setRenderHint( QPainter::Antialiasing, true );
-    painter->setPen( Qt::NoPen );
-    painter->setBrush( palette().brush( QPalette::ButtonText ) );
-    painter->drawPolygon( pa );
+	case Qt::RightArrow:
+		pa.setPoint(0, r.topLeft());
+		pa.setPoint(1, r.bottomLeft());
+		pa.setPoint(2, r.right(), r.center().y());
+		break;
 
-    painter->restore();
+	case Qt::LeftArrow:
+		pa.setPoint(0, r.topRight());
+		pa.setPoint(1, r.bottomRight());
+		pa.setPoint(2, r.left(), r.center().y());
+		break;
+
+	default:
+		break;
+	}
+
+	painter->save();
+
+	painter->setRenderHint(QPainter::Antialiasing, true);
+	painter->setPen(Qt::NoPen);
+	painter->setBrush(palette().brush(QPalette::ButtonText));
+	painter->drawPolygon(pa);
+
+	painter->restore();
 }
 
 /*!
@@ -259,8 +296,8 @@ void QwtArrowButton::drawArrow( QPainter *painter,
 */
 QSize QwtArrowButton::sizeHint() const
 {
-    const QSize hint = minimumSizeHint();
-    return hint.expandedTo( QApplication::globalStrut() );
+	const QSize hint = minimumSizeHint();
+	return hint.expandedTo(QApplication::globalStrut());
 }
 
 /*!
@@ -268,23 +305,25 @@ QSize QwtArrowButton::sizeHint() const
 */
 QSize QwtArrowButton::minimumSizeHint() const
 {
-    const QSize asz = arrowSize( Qt::RightArrow, QSize() );
+	const QSize asz = arrowSize(Qt::RightArrow, QSize());
 
-    QSize sz(
-        2 * Margin + ( MaxNum - 1 ) * Spacing + MaxNum * asz.width(),
-        2 * Margin + asz.height()
-    );
+	QSize sz(
+		2 * Margin + (MaxNum - 1) * Spacing + MaxNum * asz.width(),
+		2 * Margin + asz.height()
+	);
 
-    if ( d_data->arrowType == Qt::UpArrow || d_data->arrowType == Qt::DownArrow )
-        sz.transpose();
+	if (d_data->arrowType == Qt::UpArrow || d_data->arrowType == Qt::DownArrow)
+	{
+		sz.transpose();
+	}
 
-    QStyleOption styleOption;
-    styleOption.init( this );
+	QStyleOption styleOption;
+	styleOption.init(this);
 
-    sz = style()->sizeFromContents( QStyle::CT_PushButton,
-        &styleOption, sz, this );
+	sz = style()->sizeFromContents(QStyle::CT_PushButton,
+				       &styleOption, sz, this);
 
-    return sz;
+	return sz;
 }
 
 /*!
@@ -294,40 +333,48 @@ QSize QwtArrowButton::minimumSizeHint() const
    \param boundingSize Bounding size
    \return Size of the arrow
 */
-QSize QwtArrowButton::arrowSize( Qt::ArrowType arrowType,
-    const QSize &boundingSize ) const
+QSize QwtArrowButton::arrowSize(Qt::ArrowType arrowType,
+				const QSize &boundingSize) const
 {
-    QSize bs = boundingSize;
-    if ( arrowType == Qt::UpArrow || arrowType == Qt::DownArrow )
-        bs.transpose();
+	QSize bs = boundingSize;
 
-    const int MinLen = 2;
-    const QSize sz = bs.expandedTo(
-        QSize( MinLen, 2 * MinLen - 1 ) ); // minimum
+	if (arrowType == Qt::UpArrow || arrowType == Qt::DownArrow)
+	{
+		bs.transpose();
+	}
 
-    int w = sz.width();
-    int h = 2 * w - 1;
+	const int MinLen = 2;
+	const QSize sz = bs.expandedTo(
+				 QSize(MinLen, 2 * MinLen - 1));    // minimum
 
-    if ( h > sz.height() )
-    {
-        h = sz.height();
-        w = ( h + 1 ) / 2;
-    }
+	int w = sz.width();
+	int h = 2 * w - 1;
 
-    QSize arrSize( w, h );
-    if ( arrowType == Qt::UpArrow || arrowType == Qt::DownArrow )
-        arrSize.transpose();
+	if (h > sz.height())
+	{
+		h = sz.height();
+		w = (h + 1) / 2;
+	}
 
-    return arrSize;
+	QSize arrSize(w, h);
+
+	if (arrowType == Qt::UpArrow || arrowType == Qt::DownArrow)
+	{
+		arrSize.transpose();
+	}
+
+	return arrSize;
 }
 
 /*!
   \brief autoRepeat for the space keys
 */
-void QwtArrowButton::keyPressEvent( QKeyEvent *event )
+void QwtArrowButton::keyPressEvent(QKeyEvent *event)
 {
-    if ( event->isAutoRepeat() && event->key() == Qt::Key_Space )
-        Q_EMIT clicked();
+	if (event->isAutoRepeat() && event->key() == Qt::Key_Space)
+	{
+		Q_EMIT clicked();
+	}
 
-    QPushButton::keyPressEvent( event );
+	QPushButton::keyPressEvent(event);
 }

@@ -59,52 +59,52 @@ class QGeoMap;
 
 class Q_LOCATION_EXPORT QGeoMapController : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
-    Q_PROPERTY(QGeoCoordinate center READ center WRITE setCenter NOTIFY centerChanged)
-    Q_PROPERTY(qreal bearing READ bearing WRITE setBearing NOTIFY bearingChanged)
-    Q_PROPERTY(qreal tilt READ tilt WRITE setTilt NOTIFY tiltChanged)
-    Q_PROPERTY(qreal roll READ roll WRITE setRoll NOTIFY rollChanged)
-    Q_PROPERTY(qreal zoom READ zoom WRITE setZoom NOTIFY zoomChanged)
+	Q_PROPERTY(QGeoCoordinate center READ center WRITE setCenter NOTIFY centerChanged)
+	Q_PROPERTY(qreal bearing READ bearing WRITE setBearing NOTIFY bearingChanged)
+	Q_PROPERTY(qreal tilt READ tilt WRITE setTilt NOTIFY tiltChanged)
+	Q_PROPERTY(qreal roll READ roll WRITE setRoll NOTIFY rollChanged)
+	Q_PROPERTY(qreal zoom READ zoom WRITE setZoom NOTIFY zoomChanged)
 
 public:
-    QGeoMapController(QGeoMap *map);
-    ~QGeoMapController();
+	QGeoMapController(QGeoMap *map);
+	~QGeoMapController();
 
-    QGeoCoordinate center() const;
-    void setCenter(const QGeoCoordinate &center);
+	QGeoCoordinate center() const;
+	void setCenter(const QGeoCoordinate &center);
 
-    void setLatitude(qreal latitude);
-    void setLongitude(qreal longitude);
-    void setAltitude(qreal altitude);
+	void setLatitude(qreal latitude);
+	void setLongitude(qreal longitude);
+	void setAltitude(qreal altitude);
 
-    qreal bearing() const;
-    void setBearing(qreal bearing);
+	qreal bearing() const;
+	void setBearing(qreal bearing);
 
-    qreal tilt() const;
-    void setTilt(qreal tilt);
+	qreal tilt() const;
+	void setTilt(qreal tilt);
 
-    qreal roll() const;
-    void setRoll(qreal roll);
+	qreal roll() const;
+	void setRoll(qreal roll);
 
-    qreal zoom() const;
-    void setZoom(qreal zoom);
+	qreal zoom() const;
+	void setZoom(qreal zoom);
 
-    void pan(qreal dx, qreal dy);
+	void pan(qreal dx, qreal dy);
 
 private Q_SLOTS:
-    void cameraDataChanged(const QGeoCameraData &cameraData);
+	void cameraDataChanged(const QGeoCameraData &cameraData);
 
 Q_SIGNALS:
-    void centerChanged(const QGeoCoordinate &center);
-    void bearingChanged(qreal bearing);
-    void tiltChanged(qreal tilt);
-    void rollChanged(qreal roll);
-    void zoomChanged(qreal zoom);
+	void centerChanged(const QGeoCoordinate &center);
+	void bearingChanged(qreal bearing);
+	void tiltChanged(qreal tilt);
+	void rollChanged(qreal roll);
+	void zoomChanged(qreal zoom);
 
 private:
-    QGeoMap *map_;
-    QGeoCameraData oldCameraData_;
+	QGeoMap *map_;
+	QGeoCameraData oldCameraData_;
 };
 
 QT_END_NAMESPACE

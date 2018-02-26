@@ -35,55 +35,55 @@
 class QWT_EXPORT QwtTransform
 {
 public:
-    QwtTransform();
-    virtual ~QwtTransform();
+	QwtTransform();
+	virtual ~QwtTransform();
 
-    /*!
-       Modify value to be a valid value for the transformation.
-       The default implementation does nothing.
-     */
-    virtual double bounded( double value ) const;
+	/*!
+	   Modify value to be a valid value for the transformation.
+	   The default implementation does nothing.
+	 */
+	virtual double bounded(double value) const;
 
-    /*!
-        Transformation function
+	/*!
+	    Transformation function
 
-        \param value Value
-        \return Modified value
+	    \param value Value
+	    \return Modified value
 
-        \sa invTransform()
-     */
-    virtual double transform( double value ) const = 0;
+	    \sa invTransform()
+	 */
+	virtual double transform(double value) const = 0;
 
-    /*!
-        Inverse transformation function
+	/*!
+	    Inverse transformation function
 
-        \param value Value
-        \return Modified value
+	    \param value Value
+	    \return Modified value
 
-        \sa transform()
-     */
-    virtual double invTransform( double value ) const = 0;
+	    \sa transform()
+	 */
+	virtual double invTransform(double value) const = 0;
 
-    //! Virtualized copy operation
-    virtual QwtTransform *copy() const = 0;
+	//! Virtualized copy operation
+	virtual QwtTransform *copy() const = 0;
 };
 
 /*!
    \brief Null transformation
 
    QwtNullTransform returns the values unmodified.
-   
+
  */
 class QWT_EXPORT QwtNullTransform: public QwtTransform
 {
 public:
-    QwtNullTransform();
-    virtual ~QwtNullTransform();
+	QwtNullTransform();
+	virtual ~QwtNullTransform();
 
-    virtual double transform( double value ) const;
-    virtual double invTransform( double value ) const;
+	virtual double transform(double value) const;
+	virtual double invTransform(double value) const;
 
-    virtual QwtTransform *copy() const;
+	virtual QwtTransform *copy() const;
 };
 /*!
    \brief Logarithmic transformation
@@ -91,30 +91,30 @@ public:
    QwtLogTransform modifies the values using log() and exp().
 
    \note In the calculations of QwtScaleMap the base of the log function
-         has no effect on the mapping. So QwtLogTransform can be used 
+         has no effect on the mapping. So QwtLogTransform can be used
          for log2(), log10() or any other logarithmic scale.
  */
 class QWT_EXPORT QwtLogTransform: public QwtTransform
-{   
+{
 public:
-    QwtLogTransform();
-    virtual ~QwtLogTransform();
-    
-    virtual double transform( double value ) const;
-    virtual double invTransform( double value ) const;
+	QwtLogTransform();
+	virtual ~QwtLogTransform();
 
-    virtual double bounded( double value ) const;
+	virtual double transform(double value) const;
+	virtual double invTransform(double value) const;
 
-    virtual QwtTransform *copy() const;
+	virtual double bounded(double value) const;
 
-    static const double LogMin;
-    static const double LogMax;
+	virtual QwtTransform *copy() const;
+
+	static const double LogMin;
+	static const double LogMax;
 };
 
 /*!
    \brief A transformation using pow()
 
-   QwtPowerTransform preserves the sign of a value. 
+   QwtPowerTransform preserves the sign of a value.
    F.e. a transformation with a factor of 2
    transforms a value of -3 to -9 and v.v. Thus QwtPowerTransform
    can be used for scales including negative values.
@@ -122,16 +122,16 @@ public:
 class QWT_EXPORT QwtPowerTransform: public QwtTransform
 {
 public:
-    QwtPowerTransform( double exponent );
-    virtual ~QwtPowerTransform();
+	QwtPowerTransform(double exponent);
+	virtual ~QwtPowerTransform();
 
-    virtual double transform( double value ) const;
-    virtual double invTransform( double value ) const;
+	virtual double transform(double value) const;
+	virtual double invTransform(double value) const;
 
-    virtual QwtTransform *copy() const;
+	virtual QwtTransform *copy() const;
 
 private:
-    const double d_exponent;
+	const double d_exponent;
 };
 
 #endif

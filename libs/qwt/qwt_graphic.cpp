@@ -17,311 +17,353 @@
 #include <qpainterpath.h>
 #include <qmath.h>
 
-static bool qwtHasScalablePen( const QPainter *painter )
+static bool qwtHasScalablePen(const QPainter *painter)
 {
-    const QPen pen = painter->pen();
+	const QPen pen = painter->pen();
 
-    bool scalablePen = false;
+	bool scalablePen = false;
 
-    if ( pen.style() != Qt::NoPen && pen.brush().style() != Qt::NoBrush )
-    {
-        scalablePen = !pen.isCosmetic();
-        if ( !scalablePen && pen.widthF() == 0.0 )
-        {
-            const QPainter::RenderHints hints = painter->renderHints();
-            if ( hints.testFlag( QPainter::NonCosmeticDefaultPen ) )
-                scalablePen = true;
-        }
-    }
+	if (pen.style() != Qt::NoPen && pen.brush().style() != Qt::NoBrush)
+	{
+		scalablePen = !pen.isCosmetic();
 
-    return scalablePen;
+		if (!scalablePen && pen.widthF() == 0.0)
+		{
+			const QPainter::RenderHints hints = painter->renderHints();
+
+			if (hints.testFlag(QPainter::NonCosmeticDefaultPen))
+			{
+				scalablePen = true;
+			}
+		}
+	}
+
+	return scalablePen;
 }
 
-static QRectF qwtStrokedPathRect( 
-    const QPainter *painter, const QPainterPath &path )
+static QRectF qwtStrokedPathRect(
+	const QPainter *painter, const QPainterPath &path)
 {
-    QPainterPathStroker stroker;
-    stroker.setWidth( painter->pen().widthF() );
-    stroker.setCapStyle( painter->pen().capStyle() );
-    stroker.setJoinStyle( painter->pen().joinStyle() );
-    stroker.setMiterLimit( painter->pen().miterLimit() );
+	QPainterPathStroker stroker;
+	stroker.setWidth(painter->pen().widthF());
+	stroker.setCapStyle(painter->pen().capStyle());
+	stroker.setJoinStyle(painter->pen().joinStyle());
+	stroker.setMiterLimit(painter->pen().miterLimit());
 
-    QRectF rect;
-    if ( qwtHasScalablePen( painter ) )
-    {
-        QPainterPath stroke = stroker.createStroke(path);
-        rect = painter->transform().map(stroke).boundingRect();
-    }
-    else
-    {
-        QPainterPath mappedPath = painter->transform().map(path);
-        mappedPath = stroker.createStroke( mappedPath );
+	QRectF rect;
 
-        rect = mappedPath.boundingRect();
-    }
+	if (qwtHasScalablePen(painter))
+	{
+		QPainterPath stroke = stroker.createStroke(path);
+		rect = painter->transform().map(stroke).boundingRect();
+	}
 
-    return rect;
+	else
+	{
+		QPainterPath mappedPath = painter->transform().map(path);
+		mappedPath = stroker.createStroke(mappedPath);
+
+		rect = mappedPath.boundingRect();
+	}
+
+	return rect;
 }
 
-static inline void qwtExecCommand( 
-    QPainter *painter, const QwtPainterCommand &cmd, 
-    QwtGraphic::RenderHints renderHints,
-    const QTransform &transform )
+static inline void qwtExecCommand(
+	QPainter *painter, const QwtPainterCommand &cmd,
+	QwtGraphic::RenderHints renderHints,
+	const QTransform &transform)
 {
-    switch( cmd.type() )
-    {
-        case QwtPainterCommand::Path:
-        {
-            bool doMap = false;
+	switch (cmd.type())
+	{
+	case QwtPainterCommand::Path:
+		{
+			bool doMap = false;
 
-            if ( renderHints.testFlag( QwtGraphic::RenderPensUnscaled )
-                && painter->transform().isScaling() )
-            {
-                bool isCosmetic = painter->pen().isCosmetic();
-                if ( isCosmetic && painter->pen().widthF() == 0.0 )
-                {
-                    QPainter::RenderHints hints = painter->renderHints();
-                    if ( hints.testFlag( QPainter::NonCosmeticDefaultPen ) )
-                        isCosmetic = false;
-                }
+			if (renderHints.testFlag(QwtGraphic::RenderPensUnscaled)
+					&& painter->transform().isScaling())
+			{
+				bool isCosmetic = painter->pen().isCosmetic();
 
-                doMap = !isCosmetic;
-            }
+				if (isCosmetic && painter->pen().widthF() == 0.0)
+				{
+					QPainter::RenderHints hints = painter->renderHints();
 
-            if ( doMap )
-            {
-                const QTransform transform = painter->transform();
+					if (hints.testFlag(QPainter::NonCosmeticDefaultPen))
+					{
+						isCosmetic = false;
+					}
+				}
 
-                painter->resetTransform();
-                painter->drawPath( transform.map( *cmd.path() ) );
+				doMap = !isCosmetic;
+			}
 
-                painter->setTransform( transform );
-            }
-            else
-            {
-                painter->drawPath( *cmd.path() );
-            }
-            break;
-        }
-        case QwtPainterCommand::Pixmap:
-        {
-            const QwtPainterCommand::PixmapData *data = cmd.pixmapData();
-            painter->drawPixmap( data->rect, data->pixmap, data->subRect );
-            break;
-        }
-        case QwtPainterCommand::Image:
-        {
-            const QwtPainterCommand::ImageData *data = cmd.imageData();
-            painter->drawImage( data->rect, data->image, 
-                data->subRect, data->flags );
-            break;
-        }
-        case QwtPainterCommand::State:
-        {
-            const QwtPainterCommand::StateData *data = cmd.stateData();
+			if (doMap)
+			{
+				const QTransform transform = painter->transform();
 
-            if ( data->flags & QPaintEngine::DirtyPen ) 
-                painter->setPen( data->pen );
+				painter->resetTransform();
+				painter->drawPath(transform.map(*cmd.path()));
 
-            if ( data->flags & QPaintEngine::DirtyBrush ) 
-                painter->setBrush( data->brush );
+				painter->setTransform(transform);
+			}
 
-            if ( data->flags & QPaintEngine::DirtyBrushOrigin ) 
-                painter->setBrushOrigin( data->brushOrigin );
+			else
+			{
+				painter->drawPath(*cmd.path());
+			}
 
-            if ( data->flags & QPaintEngine::DirtyFont ) 
-                painter->setFont( data->font );
+			break;
+		}
 
-            if ( data->flags & QPaintEngine::DirtyBackground ) 
-            {
-                painter->setBackgroundMode( data->backgroundMode );
-                painter->setBackground( data->backgroundBrush );
-            }
+	case QwtPainterCommand::Pixmap:
+		{
+			const QwtPainterCommand::PixmapData *data = cmd.pixmapData();
+			painter->drawPixmap(data->rect, data->pixmap, data->subRect);
+			break;
+		}
 
-            if ( data->flags & QPaintEngine::DirtyTransform ) 
-            {
-                painter->setTransform( data->transform * transform );
-            }
+	case QwtPainterCommand::Image:
+		{
+			const QwtPainterCommand::ImageData *data = cmd.imageData();
+			painter->drawImage(data->rect, data->image,
+					   data->subRect, data->flags);
+			break;
+		}
 
-            if ( data->flags & QPaintEngine::DirtyClipEnabled ) 
-                painter->setClipping( data->isClipEnabled );
+	case QwtPainterCommand::State:
+		{
+			const QwtPainterCommand::StateData *data = cmd.stateData();
 
-            if ( data->flags & QPaintEngine::DirtyClipRegion) 
-            {
-                painter->setClipRegion( data->clipRegion, 
-                    data->clipOperation );
-            }
+			if (data->flags & QPaintEngine::DirtyPen)
+			{
+				painter->setPen(data->pen);
+			}
 
-            if ( data->flags & QPaintEngine::DirtyClipPath ) 
-            {
-                painter->setClipPath( data->clipPath, data->clipOperation );
-            }
+			if (data->flags & QPaintEngine::DirtyBrush)
+			{
+				painter->setBrush(data->brush);
+			}
 
-            if ( data->flags & QPaintEngine::DirtyHints) 
-            {
-                const QPainter::RenderHints hints = data->renderHints;
+			if (data->flags & QPaintEngine::DirtyBrushOrigin)
+			{
+				painter->setBrushOrigin(data->brushOrigin);
+			}
 
-                painter->setRenderHint( QPainter::Antialiasing,
-                    hints.testFlag( QPainter::Antialiasing ) );
+			if (data->flags & QPaintEngine::DirtyFont)
+			{
+				painter->setFont(data->font);
+			}
 
-                painter->setRenderHint( QPainter::TextAntialiasing,
-                    hints.testFlag( QPainter::TextAntialiasing ) );
+			if (data->flags & QPaintEngine::DirtyBackground)
+			{
+				painter->setBackgroundMode(data->backgroundMode);
+				painter->setBackground(data->backgroundBrush);
+			}
 
-                painter->setRenderHint( QPainter::SmoothPixmapTransform,
-                    hints.testFlag( QPainter::SmoothPixmapTransform ) );
+			if (data->flags & QPaintEngine::DirtyTransform)
+			{
+				painter->setTransform(data->transform * transform);
+			}
 
-                painter->setRenderHint( QPainter::HighQualityAntialiasing,
-                    hints.testFlag( QPainter::HighQualityAntialiasing ) );
+			if (data->flags & QPaintEngine::DirtyClipEnabled)
+			{
+				painter->setClipping(data->isClipEnabled);
+			}
 
-                painter->setRenderHint( QPainter::NonCosmeticDefaultPen,
-                    hints.testFlag( QPainter::NonCosmeticDefaultPen ) );
-            }
+			if (data->flags & QPaintEngine::DirtyClipRegion)
+			{
+				painter->setClipRegion(data->clipRegion,
+						       data->clipOperation);
+			}
 
-            if ( data->flags & QPaintEngine::DirtyCompositionMode) 
-                painter->setCompositionMode( data->compositionMode );
+			if (data->flags & QPaintEngine::DirtyClipPath)
+			{
+				painter->setClipPath(data->clipPath, data->clipOperation);
+			}
 
-            if ( data->flags & QPaintEngine::DirtyOpacity) 
-                painter->setOpacity( data->opacity );
+			if (data->flags & QPaintEngine::DirtyHints)
+			{
+				const QPainter::RenderHints hints = data->renderHints;
 
-            break;
-        }
-        default:
-            break;
-    }
+				painter->setRenderHint(QPainter::Antialiasing,
+						       hints.testFlag(QPainter::Antialiasing));
+
+				painter->setRenderHint(QPainter::TextAntialiasing,
+						       hints.testFlag(QPainter::TextAntialiasing));
+
+				painter->setRenderHint(QPainter::SmoothPixmapTransform,
+						       hints.testFlag(QPainter::SmoothPixmapTransform));
+
+				painter->setRenderHint(QPainter::HighQualityAntialiasing,
+						       hints.testFlag(QPainter::HighQualityAntialiasing));
+
+				painter->setRenderHint(QPainter::NonCosmeticDefaultPen,
+						       hints.testFlag(QPainter::NonCosmeticDefaultPen));
+			}
+
+			if (data->flags & QPaintEngine::DirtyCompositionMode)
+			{
+				painter->setCompositionMode(data->compositionMode);
+			}
+
+			if (data->flags & QPaintEngine::DirtyOpacity)
+			{
+				painter->setOpacity(data->opacity);
+			}
+
+			break;
+		}
+
+	default:
+		break;
+	}
 
 }
 
 class QwtGraphic::PathInfo
 {
 public:
-    PathInfo():
-        d_scalablePen( false )
-    {
-        // QVector needs a default constructor
-    }
+	PathInfo():
+		d_scalablePen(false)
+	{
+		// QVector needs a default constructor
+	}
 
-    PathInfo( const QRectF &pointRect, 
-            const QRectF &boundingRect, bool scalablePen ):
-        d_pointRect( pointRect ),
-        d_boundingRect( boundingRect ),
-        d_scalablePen( scalablePen )
-    {
-    }
+	PathInfo(const QRectF &pointRect,
+		 const QRectF &boundingRect, bool scalablePen):
+		d_pointRect(pointRect),
+		d_boundingRect(boundingRect),
+		d_scalablePen(scalablePen)
+	{
+	}
 
-    inline QRectF scaledBoundingRect( double sx, double sy,
-        bool scalePens ) const
-    {
-        if ( sx == 1.0 && sy == 1.0 )
-            return d_boundingRect;
+	inline QRectF scaledBoundingRect(double sx, double sy,
+					 bool scalePens) const
+	{
+		if (sx == 1.0 && sy == 1.0)
+		{
+			return d_boundingRect;
+		}
 
-        QTransform transform;
-        transform.scale( sx, sy );
+		QTransform transform;
+		transform.scale(sx, sy);
 
-        QRectF rect;
-        if ( scalePens && d_scalablePen )
-        {
-            rect = transform.mapRect( d_boundingRect );
-        }
-        else
-        {
-            rect = transform.mapRect( d_pointRect );
+		QRectF rect;
 
-            const double l = qAbs( d_pointRect.left() - d_boundingRect.left() );
-            const double r = qAbs( d_pointRect.right() - d_boundingRect.right() );
-            const double t = qAbs( d_pointRect.top() - d_boundingRect.top() );
-            const double b = qAbs( d_pointRect.bottom() - d_boundingRect.bottom() );
+		if (scalePens && d_scalablePen)
+		{
+			rect = transform.mapRect(d_boundingRect);
+		}
 
-            rect.adjust( -l, -t, r, b );
-        }
+		else
+		{
+			rect = transform.mapRect(d_pointRect);
 
-        return rect;
-    }
+			const double l = qAbs(d_pointRect.left() - d_boundingRect.left());
+			const double r = qAbs(d_pointRect.right() - d_boundingRect.right());
+			const double t = qAbs(d_pointRect.top() - d_boundingRect.top());
+			const double b = qAbs(d_pointRect.bottom() - d_boundingRect.bottom());
 
-    inline double scaleFactorX( const QRectF& pathRect, 
-        const QRectF &targetRect, bool scalePens ) const
-    {
-        if ( pathRect.width() <= 0.0 )
-            return 0.0;
+			rect.adjust(-l, -t, r, b);
+		}
 
-        const QPointF p0 = d_pointRect.center();
+		return rect;
+	}
 
-        const double l = qAbs( pathRect.left() - p0.x() );
-        const double r = qAbs( pathRect.right() - p0.x() );
+	inline double scaleFactorX(const QRectF &pathRect,
+				   const QRectF &targetRect, bool scalePens) const
+	{
+		if (pathRect.width() <= 0.0)
+		{
+			return 0.0;
+		}
 
-        const double w = 2.0 * qMin( l, r ) 
-            * targetRect.width() / pathRect.width();
+		const QPointF p0 = d_pointRect.center();
 
-        double sx;
-        if ( scalePens && d_scalablePen )
-        {
-            sx = w / d_boundingRect.width();
-        }
-        else
-        {
-            const double pw = qMax( 
-                qAbs( d_boundingRect.left() - d_pointRect.left() ),
-                qAbs( d_boundingRect.right() - d_pointRect.right() ) );
+		const double l = qAbs(pathRect.left() - p0.x());
+		const double r = qAbs(pathRect.right() - p0.x());
 
-            sx = ( w - 2 * pw ) / d_pointRect.width();
-        }
+		const double w = 2.0 * qMin(l, r)
+				 * targetRect.width() / pathRect.width();
 
-        return sx;
-    }
+		double sx;
 
-    inline double scaleFactorY( const QRectF& pathRect, 
-        const QRectF &targetRect, bool scalePens ) const
-    {
-        if ( pathRect.height() <= 0.0 )
-            return 0.0;
+		if (scalePens && d_scalablePen)
+		{
+			sx = w / d_boundingRect.width();
+		}
 
-        const QPointF p0 = d_pointRect.center();
+		else
+		{
+			const double pw = qMax(
+						  qAbs(d_boundingRect.left() - d_pointRect.left()),
+						  qAbs(d_boundingRect.right() - d_pointRect.right()));
 
-        const double t = qAbs( pathRect.top() - p0.y() );
-        const double b = qAbs( pathRect.bottom() - p0.y() );
+			sx = (w - 2 * pw) / d_pointRect.width();
+		}
 
-        const double h = 2.0 * qMin( t, b ) 
-            * targetRect.height() / pathRect.height();
+		return sx;
+	}
 
-        double sy;
-        if ( scalePens && d_scalablePen )
-        {
-            sy = h / d_boundingRect.height();
-        }
-        else
-        {
-            const double pw = 
-                qMax( qAbs( d_boundingRect.top() - d_pointRect.top() ),
-                qAbs( d_boundingRect.bottom() - d_pointRect.bottom() ) );
+	inline double scaleFactorY(const QRectF &pathRect,
+				   const QRectF &targetRect, bool scalePens) const
+	{
+		if (pathRect.height() <= 0.0)
+		{
+			return 0.0;
+		}
 
-            sy = ( h - 2 * pw ) / d_pointRect.height();
-        }
+		const QPointF p0 = d_pointRect.center();
 
-        return sy;
-    }
+		const double t = qAbs(pathRect.top() - p0.y());
+		const double b = qAbs(pathRect.bottom() - p0.y());
+
+		const double h = 2.0 * qMin(t, b)
+				 * targetRect.height() / pathRect.height();
+
+		double sy;
+
+		if (scalePens && d_scalablePen)
+		{
+			sy = h / d_boundingRect.height();
+		}
+
+		else
+		{
+			const double pw =
+				qMax(qAbs(d_boundingRect.top() - d_pointRect.top()),
+				     qAbs(d_boundingRect.bottom() - d_pointRect.bottom()));
+
+			sy = (h - 2 * pw) / d_pointRect.height();
+		}
+
+		return sy;
+	}
 
 private:
-    QRectF d_pointRect;
-    QRectF d_boundingRect;
-    bool d_scalablePen;
+	QRectF d_pointRect;
+	QRectF d_boundingRect;
+	bool d_scalablePen;
 };
 
 class QwtGraphic::PrivateData
 {
 public:
-    PrivateData():
-        boundingRect( 0.0, 0.0, -1.0, -1.0 ),
-        pointRect( 0.0, 0.0, -1.0, -1.0 )
-    {
-    }
+	PrivateData():
+		boundingRect(0.0, 0.0, -1.0, -1.0),
+		pointRect(0.0, 0.0, -1.0, -1.0)
+	{
+	}
 
-    QSizeF defaultSize;
-    QVector<QwtPainterCommand> commands;
-    QVector<QwtGraphic::PathInfo> pathInfos;
+	QSizeF defaultSize;
+	QVector<QwtPainterCommand> commands;
+	QVector<QwtGraphic::PathInfo> pathInfos;
 
-    QRectF boundingRect;
-    QRectF pointRect;
+	QRectF boundingRect;
+	QRectF pointRect;
 
-    QwtGraphic::RenderHints renderHints;
+	QwtGraphic::RenderHints renderHints;
 };
 
 /*!
@@ -331,57 +373,57 @@ public:
   \sa isNull()
  */
 QwtGraphic::QwtGraphic():
-    QwtNullPaintDevice()
+	QwtNullPaintDevice()
 {
-    setMode( QwtNullPaintDevice::PathMode );
-    d_data = new PrivateData;
+	setMode(QwtNullPaintDevice::PathMode);
+	d_data = new PrivateData;
 }
 
 /*!
   \brief Copy constructor
 
-  \param other Source 
+  \param other Source
   \sa operator=()
  */
-QwtGraphic::QwtGraphic( const QwtGraphic &other ):
-    QwtNullPaintDevice()
+QwtGraphic::QwtGraphic(const QwtGraphic &other):
+	QwtNullPaintDevice()
 {
-    setMode( other.mode() );
-    d_data = new PrivateData( *other.d_data );
+	setMode(other.mode());
+	d_data = new PrivateData(*other.d_data);
 }
 
 //! Destructor
 QwtGraphic::~QwtGraphic()
 {
-    delete d_data;
+	delete d_data;
 }
 
 /*!
   \brief Assignment operator
 
-  \param other Source 
+  \param other Source
   \return A reference of this object
  */
-QwtGraphic& QwtGraphic::operator=(const QwtGraphic &other)
+QwtGraphic &QwtGraphic::operator=(const QwtGraphic &other)
 {
-    setMode( other.mode() );
-    *d_data = *other.d_data;
+	setMode(other.mode());
+	*d_data = *other.d_data;
 
-    return *this;
+	return *this;
 }
 
 /*!
-  \brief Clear all stored commands 
+  \brief Clear all stored commands
   \sa isNull()
  */
-void QwtGraphic::reset() 
+void QwtGraphic::reset()
 {
-    d_data->commands.clear();
-    d_data->pathInfos.clear();
+	d_data->commands.clear();
+	d_data->pathInfos.clear();
 
-    d_data->boundingRect = QRectF( 0.0, 0.0, -1.0, -1.0 );
-    d_data->pointRect = QRectF( 0.0, 0.0, -1.0, -1.0 );
-    d_data->defaultSize = QSizeF();
+	d_data->boundingRect = QRectF(0.0, 0.0, -1.0, -1.0);
+	d_data->pointRect = QRectF(0.0, 0.0, -1.0, -1.0);
+	d_data->defaultSize = QSizeF();
 
 }
 
@@ -391,7 +433,7 @@ void QwtGraphic::reset()
 */
 bool QwtGraphic::isNull() const
 {
-    return d_data->commands.isEmpty();
+	return d_data->commands.isEmpty();
 }
 
 /*!
@@ -400,7 +442,7 @@ bool QwtGraphic::isNull() const
 */
 bool QwtGraphic::isEmpty() const
 {
-    return d_data->boundingRect.isEmpty();
+	return d_data->boundingRect.isEmpty();
 }
 
 /*!
@@ -411,12 +453,17 @@ bool QwtGraphic::isEmpty() const
 
   \sa testRenderHint(), RenderHint
 */
-void QwtGraphic::setRenderHint( RenderHint hint, bool on )
+void QwtGraphic::setRenderHint(RenderHint hint, bool on)
 {
-    if ( on )
-        d_data->renderHints |= hint;
-    else
-        d_data->renderHints &= ~hint;
+	if (on)
+	{
+		d_data->renderHints |= hint;
+	}
+
+	else
+	{
+		d_data->renderHints &= ~hint;
+	}
 }
 
 /*!
@@ -426,9 +473,9 @@ void QwtGraphic::setRenderHint( RenderHint hint, bool on )
   \return true/false
   \sa setRenderHint(), RenderHint
 */
-bool QwtGraphic::testRenderHint( RenderHint hint ) const
+bool QwtGraphic::testRenderHint(RenderHint hint) const
 {
-    return d_data->renderHints.testFlag( hint );
+	return d_data->renderHints.testFlag(hint);
 }
 
 /*!
@@ -441,14 +488,16 @@ bool QwtGraphic::testRenderHint( RenderHint hint ) const
  */
 QRectF QwtGraphic::boundingRect() const
 {
-    if ( d_data->boundingRect.width() < 0 )
-        return QRectF();
+	if (d_data->boundingRect.width() < 0)
+	{
+		return QRectF();
+	}
 
-    return d_data->boundingRect;
+	return d_data->boundingRect;
 }
 
 /*!
-  The control point rectangle is the bounding rectangle 
+  The control point rectangle is the bounding rectangle
   of all control points of the paths and the target
   rectangles of the images/pixmaps.
 
@@ -457,49 +506,53 @@ QRectF QwtGraphic::boundingRect() const
  */
 QRectF QwtGraphic::controlPointRect() const
 {
-    if ( d_data->pointRect.width() < 0 )
-        return QRectF();
+	if (d_data->pointRect.width() < 0)
+	{
+		return QRectF();
+	}
 
-    return d_data->pointRect;
+	return d_data->pointRect;
 }
 
 /*!
   \brief Calculate the target rectangle for scaling the graphic
 
-  \param sx Horizontal scaling factor 
-  \param sy Vertical scaling factor 
+  \param sx Horizontal scaling factor
+  \param sy Vertical scaling factor
 
-  \note In case of paths that are painted with a cosmetic pen 
+  \note In case of paths that are painted with a cosmetic pen
         ( see QPen::isCosmetic() ) the target rectangle is different to
         multiplying the bounding rectangle.
 
   \return Scaled bounding rectangle
   \sa boundingRect(), controlPointRect()
  */
-QRectF QwtGraphic::scaledBoundingRect( double sx, double sy ) const
+QRectF QwtGraphic::scaledBoundingRect(double sx, double sy) const
 {
-    if ( sx == 1.0 && sy == 1.0 )
-        return d_data->boundingRect;
+	if (sx == 1.0 && sy == 1.0)
+	{
+		return d_data->boundingRect;
+	}
 
-    QTransform transform;
-    transform.scale( sx, sy );
+	QTransform transform;
+	transform.scale(sx, sy);
 
-    QRectF rect = transform.mapRect( d_data->pointRect );
+	QRectF rect = transform.mapRect(d_data->pointRect);
 
-    for ( int i = 0; i < d_data->pathInfos.size(); i++ )
-    {
-        rect |= d_data->pathInfos[i].scaledBoundingRect( sx, sy, 
-            !d_data->renderHints.testFlag( RenderPensUnscaled ) );
-    }
+	for (int i = 0; i < d_data->pathInfos.size(); i++)
+	{
+		rect |= d_data->pathInfos[i].scaledBoundingRect(sx, sy,
+				!d_data->renderHints.testFlag(RenderPensUnscaled));
+	}
 
-    return rect;
+	return rect;
 }
 
 //! \return Ceiled defaultSize()
 QSize QwtGraphic::sizeMetrics() const
 {
-    const QSizeF sz = defaultSize();
-    return QSize( qCeil( sz.width() ), qCeil( sz.height() ) );
+	const QSizeF sz = defaultSize();
+	return QSize(qCeil(sz.width()), qCeil(sz.height()));
 }
 
 /*!
@@ -507,21 +560,21 @@ QSize QwtGraphic::sizeMetrics() const
 
   The default size is used in all methods rendering the graphic,
   where no size is explicitly specified. Assigning an empty size
-  means, that the default size will be calculated from the bounding 
+  means, that the default size will be calculated from the bounding
   rectangle.
 
   The default setting is an empty size.
-    
+
   \param size Default size
 
   \sa defaultSize(), boundingRect()
  */
-void QwtGraphic::setDefaultSize( const QSizeF &size )
+void QwtGraphic::setDefaultSize(const QSizeF &size)
 {
-    const double w = qMax( qreal( 0.0 ), size.width() );
-    const double h = qMax( qreal( 0.0 ), size.height() );
+	const double w = qMax(qreal(0.0), size.width());
+	const double h = qMax(qreal(0.0), size.height());
 
-    d_data->defaultSize = QSizeF( w, h );
+	d_data->defaultSize = QSizeF(w, h);
 }
 
 /*!
@@ -532,42 +585,46 @@ void QwtGraphic::setDefaultSize( const QSizeF &size )
   of the bounding rectangle.
 
   The default size is used in all methods rendering the graphic,
-  where no size is explicitly specified. 
+  where no size is explicitly specified.
 
   \return Default size
   \sa setDefaultSize(), boundingRect()
  */
 QSizeF QwtGraphic::defaultSize() const
 {
-    if ( !d_data->defaultSize.isEmpty() )
-        return d_data->defaultSize;
+	if (!d_data->defaultSize.isEmpty())
+	{
+		return d_data->defaultSize;
+	}
 
-    return boundingRect().size();
+	return boundingRect().size();
 }
 
 /*!
   \brief Replay all recorded painter commands
   \param painter Qt painter
  */
-void QwtGraphic::render( QPainter *painter ) const
+void QwtGraphic::render(QPainter *painter) const
 {
-    if ( isNull() )
-        return;
+	if (isNull())
+	{
+		return;
+	}
 
-    const int numCommands = d_data->commands.size();
-    const QwtPainterCommand *commands = d_data->commands.constData();
+	const int numCommands = d_data->commands.size();
+	const QwtPainterCommand *commands = d_data->commands.constData();
 
-    const QTransform transform = painter->transform();
+	const QTransform transform = painter->transform();
 
-    painter->save();
+	painter->save();
 
-    for ( int i = 0; i < numCommands; i++ )
-    {
-        qwtExecCommand( painter, commands[i], 
-            d_data->renderHints, transform );
-    }
+	for (int i = 0; i < numCommands; i++)
+	{
+		qwtExecCommand(painter, commands[i],
+			       d_data->renderHints, transform);
+	}
 
-    painter->restore();
+	painter->restore();
 }
 
 /*!
@@ -580,11 +637,11 @@ void QwtGraphic::render( QPainter *painter ) const
   \param size Size for the scaled graphic
   \param aspectRatioMode Mode how to scale - See Qt::AspectRatioMode
  */
-void QwtGraphic::render( QPainter *painter, const QSizeF &size, 
-    Qt::AspectRatioMode aspectRatioMode ) const
+void QwtGraphic::render(QPainter *painter, const QSizeF &size,
+			Qt::AspectRatioMode aspectRatioMode) const
 {
-    const QRectF r( 0.0, 0.0, size.width(), size.height() );
-    render( painter, r, aspectRatioMode );
+	const QRectF r(0.0, 0.0, size.width(), size.height());
+	render(painter, r, aspectRatioMode);
 }
 
 /*!
@@ -596,66 +653,77 @@ void QwtGraphic::render( QPainter *painter, const QSizeF &size,
   \param rect Rectangle for the scaled graphic
   \param aspectRatioMode Mode how to scale - See Qt::AspectRatioMode
  */
-void QwtGraphic::render( QPainter *painter, const QRectF &rect, 
-    Qt::AspectRatioMode aspectRatioMode ) const
+void QwtGraphic::render(QPainter *painter, const QRectF &rect,
+			Qt::AspectRatioMode aspectRatioMode) const
 {
-    if ( isEmpty() || rect.isEmpty() )
-        return;
+	if (isEmpty() || rect.isEmpty())
+	{
+		return;
+	}
 
-    double sx = 1.0; 
-    double sy = 1.0;
+	double sx = 1.0;
+	double sy = 1.0;
 
-    if ( d_data->pointRect.width() > 0.0 )
-        sx = rect.width() / d_data->pointRect.width();
+	if (d_data->pointRect.width() > 0.0)
+	{
+		sx = rect.width() / d_data->pointRect.width();
+	}
 
-    if ( d_data->pointRect.height() > 0.0 )
-        sy = rect.height() / d_data->pointRect.height();
+	if (d_data->pointRect.height() > 0.0)
+	{
+		sy = rect.height() / d_data->pointRect.height();
+	}
 
-    const bool scalePens = 
-        !d_data->renderHints.testFlag( RenderPensUnscaled );
+	const bool scalePens =
+		!d_data->renderHints.testFlag(RenderPensUnscaled);
 
-    for ( int i = 0; i < d_data->pathInfos.size(); i++ )
-    {
-        const PathInfo info = d_data->pathInfos[i];
+	for (int i = 0; i < d_data->pathInfos.size(); i++)
+	{
+		const PathInfo info = d_data->pathInfos[i];
 
-        const double ssx = info.scaleFactorX( 
-            d_data->pointRect, rect, scalePens );
+		const double ssx = info.scaleFactorX(
+					   d_data->pointRect, rect, scalePens);
 
-        if ( ssx > 0.0 )
-            sx = qMin( sx, ssx );
+		if (ssx > 0.0)
+		{
+			sx = qMin(sx, ssx);
+		}
 
-        const double ssy = info.scaleFactorY( 
-            d_data->pointRect, rect, scalePens );
+		const double ssy = info.scaleFactorY(
+					   d_data->pointRect, rect, scalePens);
 
-        if ( ssy > 0.0 )
-            sy = qMin( sy, ssy );
-    }
+		if (ssy > 0.0)
+		{
+			sy = qMin(sy, ssy);
+		}
+	}
 
-    if ( aspectRatioMode == Qt::KeepAspectRatio )
-    {
-        const double s = qMin( sx, sy );
-        sx = s;
-        sy = s;
-    }
-    else if ( aspectRatioMode == Qt::KeepAspectRatioByExpanding )
-    {
-        const double s = qMax( sx, sy );
-        sx = s;
-        sy = s;
-    }
+	if (aspectRatioMode == Qt::KeepAspectRatio)
+	{
+		const double s = qMin(sx, sy);
+		sx = s;
+		sy = s;
+	}
 
-    QTransform tr;
-    tr.translate( rect.center().x() - 0.5 * sx * d_data->pointRect.width(),
-        rect.center().y() - 0.5 * sy * d_data->pointRect.height() );
-    tr.scale( sx, sy );
-    tr.translate( -d_data->pointRect.x(), -d_data->pointRect.y() );
+	else if (aspectRatioMode == Qt::KeepAspectRatioByExpanding)
+	{
+		const double s = qMax(sx, sy);
+		sx = s;
+		sy = s;
+	}
 
-    const QTransform transform = painter->transform();
+	QTransform tr;
+	tr.translate(rect.center().x() - 0.5 * sx * d_data->pointRect.width(),
+		     rect.center().y() - 0.5 * sy * d_data->pointRect.height());
+	tr.scale(sx, sy);
+	tr.translate(-d_data->pointRect.x(), -d_data->pointRect.y());
 
-    painter->setTransform( tr, true );
-    render( painter );
+	const QTransform transform = painter->transform();
 
-    painter->setTransform( transform );
+	painter->setTransform(tr, true);
+	render(painter);
+
+	painter->setTransform(transform);
 }
 
 /*!
@@ -666,75 +734,81 @@ void QwtGraphic::render( QPainter *painter, const QRectF &rect,
 
   \param painter Qt painter
   \param pos Reference point, where to render
-  \param alignment Flags how to align the target rectangle 
+  \param alignment Flags how to align the target rectangle
                    to pos.
  */
-void QwtGraphic::render( QPainter *painter, 
-    const QPointF &pos, Qt::Alignment alignment ) const
+void QwtGraphic::render(QPainter *painter,
+			const QPointF &pos, Qt::Alignment alignment) const
 {
-    QRectF r( pos, defaultSize() );
+	QRectF r(pos, defaultSize());
 
-    if ( alignment & Qt::AlignLeft )
-    {
-        r.moveLeft( pos.x() );
-    }
-    else if ( alignment & Qt::AlignHCenter )
-    {
-        r.moveCenter( QPointF( pos.x(), r.center().y() ) );
-    }
-    else if ( alignment & Qt::AlignRight )
-    {
-        r.moveRight( pos.x() );
-    }
+	if (alignment & Qt::AlignLeft)
+	{
+		r.moveLeft(pos.x());
+	}
 
-    if ( alignment & Qt::AlignTop )
-    {
-        r.moveTop( pos.y() );
-    }
-    else if ( alignment & Qt::AlignVCenter )
-    {
-        r.moveCenter( QPointF( r.center().x(), pos.y() ) );
-    }
-    else if ( alignment & Qt::AlignBottom )
-    {
-        r.moveBottom( pos.y() );
-    }
+	else if (alignment & Qt::AlignHCenter)
+	{
+		r.moveCenter(QPointF(pos.x(), r.center().y()));
+	}
 
-    render( painter, r );
+	else if (alignment & Qt::AlignRight)
+	{
+		r.moveRight(pos.x());
+	}
+
+	if (alignment & Qt::AlignTop)
+	{
+		r.moveTop(pos.y());
+	}
+
+	else if (alignment & Qt::AlignVCenter)
+	{
+		r.moveCenter(QPointF(r.center().x(), pos.y()));
+	}
+
+	else if (alignment & Qt::AlignBottom)
+	{
+		r.moveBottom(pos.y());
+	}
+
+	render(painter, r);
 }
 
 /*!
   \brief Convert the graphic to a QPixmap
-    
+
   All pixels of the pixmap get initialized by Qt::transparent
   before the graphic is scaled and rendered on it.
-    
+
   The size of the pixmap is the default size ( ceiled to integers )
   of the graphic.
 
   \return The graphic as pixmap in default size
   \sa defaultSize(), toImage(), render()
- */ 
+ */
 QPixmap QwtGraphic::toPixmap() const
 {
-    if ( isNull() )
-        return QPixmap();
+	if (isNull())
+	{
+		return QPixmap();
+	}
 
-    const QSizeF sz = defaultSize();
+	const QSizeF sz = defaultSize();
 
-    const int w = qCeil( sz.width() );
-    const int h = qCeil( sz.height() );
+	const int w = qCeil(sz.width());
+	const int h = qCeil(sz.height());
 
-    QPixmap pixmap( w, h );
-    pixmap.fill( Qt::transparent );
+	QPixmap pixmap(w, h);
+	pixmap.fill(Qt::transparent);
 
-    const QRectF r( 0.0, 0.0, sz.width(), sz.height() );
+	const QRectF r(0.0, 0.0, sz.width(), sz.height());
 
-    QPainter painter( &pixmap );
-    render( &painter, r, Qt::KeepAspectRatio );
-    painter.end();
+	QPainter painter(&pixmap);
+	render(&painter, r, Qt::KeepAspectRatio);
+	painter.end();
 
-    return pixmap;
+	return pixmap;
 }
 
 /*!
@@ -749,19 +823,19 @@ QPixmap QwtGraphic::toPixmap() const
   \return The graphic as pixmap
   \sa toImage(), render()
  */
-QPixmap QwtGraphic::toPixmap( const QSize &size,
-    Qt::AspectRatioMode aspectRatioMode ) const
+QPixmap QwtGraphic::toPixmap(const QSize &size,
+			     Qt::AspectRatioMode aspectRatioMode) const
 {
-    QPixmap pixmap( size );
-    pixmap.fill( Qt::transparent );
+	QPixmap pixmap(size);
+	pixmap.fill(Qt::transparent);
 
-    const QRect r( 0, 0, size.width(), size.height() );
+	const QRect r(0, 0, size.width(), size.height());
 
-    QPainter painter( &pixmap );
-    render( &painter, r, aspectRatioMode );
-    painter.end();
+	QPainter painter(&pixmap);
+	render(&painter, r, aspectRatioMode);
+	painter.end();
 
-    return pixmap;
+	return pixmap;
 }
 
 /*!
@@ -778,24 +852,24 @@ QPixmap QwtGraphic::toPixmap( const QSize &size,
   \return The graphic as image
   \sa toPixmap(), render()
  */
-QImage QwtGraphic::toImage( const QSize &size,
-    Qt::AspectRatioMode aspectRatioMode  ) const
+QImage QwtGraphic::toImage(const QSize &size,
+			   Qt::AspectRatioMode aspectRatioMode) const
 {
-    QImage image( size, QImage::Format_ARGB32_Premultiplied );
-    image.fill( 0 );
+	QImage image(size, QImage::Format_ARGB32_Premultiplied);
+	image.fill(0);
 
-    const QRect r( 0, 0, size.width(), size.height() );
+	const QRect r(0, 0, size.width(), size.height());
 
-    QPainter painter( &image );
-    render( &painter, r, aspectRatioMode );
-    painter.end();
+	QPainter painter(&image);
+	render(&painter, r, aspectRatioMode);
+	painter.end();
 
-    return image;
+	return image;
 }
 
 /*!
   \brief Convert the graphic to a QImage
-    
+
   All pixels of the image get initialized by 0 ( transparent )
   before the graphic is scaled and rendered on it.
 
@@ -803,30 +877,32 @@ QImage QwtGraphic::toImage( const QSize &size,
 
   The size of the image is the default size ( ceiled to integers )
   of the graphic.
-    
+
   \return The graphic as image in default size
   \sa defaultSize(), toPixmap(), render()
  */
 QImage QwtGraphic::toImage() const
 {
-    if ( isNull() )
-        return QImage();
+	if (isNull())
+	{
+		return QImage();
+	}
 
-    const QSizeF sz = defaultSize();
+	const QSizeF sz = defaultSize();
 
-    const int w = qCeil( sz.width() );
-    const int h = qCeil( sz.height() );
+	const int w = qCeil(sz.width());
+	const int h = qCeil(sz.height());
 
-    QImage image( w, h, QImage::Format_ARGB32 );
-    image.fill( 0 );
+	QImage image(w, h, QImage::Format_ARGB32);
+	image.fill(0);
 
-    const QRect r( 0, 0, sz.width(), sz.height() );
+	const QRect r(0, 0, sz.width(), sz.height());
 
-    QPainter painter( &image );
-    render( &painter, r, Qt::KeepAspectRatio );
-    painter.end();
+	QPainter painter(&image);
+	render(&painter, r, Qt::KeepAspectRatio);
+	painter.end();
 
-    return image;
+	return image;
 }
 
 /*!
@@ -835,33 +911,36 @@ QImage QwtGraphic::toImage() const
   \param path Painter path
   \sa QPaintEngine::drawPath()
 */
-void QwtGraphic::drawPath( const QPainterPath &path )
+void QwtGraphic::drawPath(const QPainterPath &path)
 {
-    const QPainter *painter = paintEngine()->painter();
-    if ( painter == NULL )
-        return;
+	const QPainter *painter = paintEngine()->painter();
 
-    d_data->commands += QwtPainterCommand( path );
+	if (painter == NULL)
+	{
+		return;
+	}
 
-    if ( !path.isEmpty() )
-    {
-        const QPainterPath scaledPath = painter->transform().map( path );
+	d_data->commands += QwtPainterCommand(path);
 
-        QRectF pointRect = scaledPath.boundingRect();
-        QRectF boundingRect = pointRect;
+	if (!path.isEmpty())
+	{
+		const QPainterPath scaledPath = painter->transform().map(path);
 
-        if ( painter->pen().style() != Qt::NoPen 
-            && painter->pen().brush().style() != Qt::NoBrush )
-        {
-            boundingRect = qwtStrokedPathRect( painter, path );
-        }
+		QRectF pointRect = scaledPath.boundingRect();
+		QRectF boundingRect = pointRect;
 
-        updateControlPointRect( pointRect );
-        updateBoundingRect( boundingRect );
+		if (painter->pen().style() != Qt::NoPen
+				&& painter->pen().brush().style() != Qt::NoBrush)
+		{
+			boundingRect = qwtStrokedPathRect(painter, path);
+		}
 
-        d_data->pathInfos += PathInfo( pointRect, 
-            boundingRect, qwtHasScalablePen( painter ) );
-    }
+		updateControlPointRect(pointRect);
+		updateBoundingRect(boundingRect);
+
+		d_data->pathInfos += PathInfo(pointRect,
+					      boundingRect, qwtHasScalablePen(painter));
+	}
 }
 
 /*!
@@ -873,18 +952,21 @@ void QwtGraphic::drawPath( const QPainterPath &path )
 
   \sa QPaintEngine::drawPixmap()
 */
-void QwtGraphic::drawPixmap( const QRectF &rect, 
-    const QPixmap &pixmap, const QRectF &subRect )
+void QwtGraphic::drawPixmap(const QRectF &rect,
+			    const QPixmap &pixmap, const QRectF &subRect)
 {
-    const QPainter *painter = paintEngine()->painter();
-    if ( painter == NULL )
-        return;
+	const QPainter *painter = paintEngine()->painter();
 
-    d_data->commands += QwtPainterCommand( rect, pixmap, subRect );
+	if (painter == NULL)
+	{
+		return;
+	}
 
-    const QRectF r = painter->transform().mapRect( rect );
-    updateControlPointRect( r );
-    updateBoundingRect( r );
+	d_data->commands += QwtPainterCommand(rect, pixmap, subRect);
+
+	const QRectF r = painter->transform().mapRect(rect);
+	updateControlPointRect(r);
+	updateBoundingRect(r);
 }
 
 /*!
@@ -897,19 +979,22 @@ void QwtGraphic::drawPixmap( const QRectF &rect,
 
   \sa QPaintEngine::drawImage()
  */
-void QwtGraphic::drawImage( const QRectF &rect, const QImage &image,
-    const QRectF &subRect, Qt::ImageConversionFlags flags)
+void QwtGraphic::drawImage(const QRectF &rect, const QImage &image,
+			   const QRectF &subRect, Qt::ImageConversionFlags flags)
 {
-    const QPainter *painter = paintEngine()->painter();
-    if ( painter == NULL )
-        return;
+	const QPainter *painter = paintEngine()->painter();
 
-    d_data->commands += QwtPainterCommand( rect, image, subRect, flags );
+	if (painter == NULL)
+	{
+		return;
+	}
 
-    const QRectF r = painter->transform().mapRect( rect );
+	d_data->commands += QwtPainterCommand(rect, image, subRect, flags);
 
-    updateControlPointRect( r );
-    updateBoundingRect( r );
+	const QRectF r = painter->transform().mapRect(rect);
+
+	updateControlPointRect(r);
+	updateBoundingRect(r);
 }
 
 /*!
@@ -918,36 +1003,47 @@ void QwtGraphic::drawImage( const QRectF &rect, const QImage &image,
   \param state State to be stored
   \sa QPaintEngine::updateState()
  */
-void QwtGraphic::updateState( const QPaintEngineState &state)
+void QwtGraphic::updateState(const QPaintEngineState &state)
 {
-    d_data->commands += QwtPainterCommand( state );
+	d_data->commands += QwtPainterCommand(state);
 }
 
-void QwtGraphic::updateBoundingRect( const QRectF &rect )
+void QwtGraphic::updateBoundingRect(const QRectF &rect)
 {
-    QRectF br = rect;
+	QRectF br = rect;
 
-    const QPainter *painter = paintEngine()->painter();
-    if ( painter && painter->hasClipping() )
-    {
-        QRectF cr = painter->clipRegion().boundingRect();
-        cr = painter->transform().mapRect( br );
+	const QPainter *painter = paintEngine()->painter();
 
-        br &= cr;
-    }
+	if (painter && painter->hasClipping())
+	{
+		QRectF cr = painter->clipRegion().boundingRect();
+		cr = painter->transform().mapRect(br);
 
-    if ( d_data->boundingRect.width() < 0 )
-        d_data->boundingRect = br;
-    else
-        d_data->boundingRect |= br;
+		br &= cr;
+	}
+
+	if (d_data->boundingRect.width() < 0)
+	{
+		d_data->boundingRect = br;
+	}
+
+	else
+	{
+		d_data->boundingRect |= br;
+	}
 }
 
-void QwtGraphic::updateControlPointRect( const QRectF &rect )
+void QwtGraphic::updateControlPointRect(const QRectF &rect)
 {
-    if ( d_data->pointRect.width() < 0.0 )
-        d_data->pointRect = rect;
-    else
-        d_data->pointRect |= rect;
+	if (d_data->pointRect.width() < 0.0)
+	{
+		d_data->pointRect = rect;
+	}
+
+	else
+	{
+		d_data->pointRect |= rect;
+	}
 }
 
 /*!
@@ -956,7 +1052,7 @@ void QwtGraphic::updateControlPointRect( const QRectF &rect )
  */
 const QVector< QwtPainterCommand > &QwtGraphic::commands() const
 {
-    return d_data->commands;
+	return d_data->commands;
 }
 
 /*!
@@ -965,22 +1061,28 @@ const QVector< QwtPainterCommand > &QwtGraphic::commands() const
   \param commands Paint commands
   \sa commands()
  */
-void QwtGraphic::setCommands( QVector< QwtPainterCommand > &commands )
+void QwtGraphic::setCommands(QVector< QwtPainterCommand > &commands)
 {
-    reset();
+	reset();
 
-    const int numCommands = commands.size();
-    if ( numCommands <= 0 )
-        return;
+	const int numCommands = commands.size();
 
-    // to calculate a proper bounding rectangle we don't simply copy 
-    // the commands. 
+	if (numCommands <= 0)
+	{
+		return;
+	}
 
-    const QwtPainterCommand *cmds = commands.constData();
+	// to calculate a proper bounding rectangle we don't simply copy
+	// the commands.
 
-    QPainter painter( this );
-    for ( int i = 0; i < numCommands; i++ )
-        qwtExecCommand( &painter, cmds[i], RenderHints(), QTransform() );
+	const QwtPainterCommand *cmds = commands.constData();
 
-    painter.end();
+	QPainter painter(this);
+
+	for (int i = 0; i < numCommands; i++)
+	{
+		qwtExecCommand(&painter, cmds[i], RenderHints(), QTransform());
+	}
+
+	painter.end();
 }

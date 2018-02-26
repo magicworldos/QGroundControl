@@ -29,17 +29,17 @@
 class QGCImageProvider : public QGCTool, public QQuickImageProvider
 {
 public:
-    QGCImageProvider        (QGCApplication* app, QGCToolbox* toolbox);
-    ~QGCImageProvider       ();
-    QImage  requestImage    (const QString & id, QSize * size, const QSize & requestedSize);
-    void    setImage        (QImage* pImage, int id = 0);
-    void    setToolbox      (QGCToolbox *toolbox);
+	QGCImageProvider(QGCApplication *app, QGCToolbox *toolbox);
+	~QGCImageProvider();
+	QImage  requestImage(const QString &id, QSize *size, const QSize &requestedSize);
+	void    setImage(QImage *pImage, int id = 0);
+	void    setToolbox(QGCToolbox *toolbox);
 private:
-    //-- TODO: For now this is holding a single image. If you happen to have two
-    //   or more vehicles with flow, it will not work. To properly manage that condition
-    //   this should be a map between each vehicle and its image. The URL provided
-    //   for the image request would contain the vehicle identification.
-    QImage _pImage;
+	//-- TODO: For now this is holding a single image. If you happen to have two
+	//   or more vehicles with flow, it will not work. To properly manage that condition
+	//   this should be a map between each vehicle and its image. The URL provided
+	//   for the image request would contain the vehicle identification.
+	QImage _pImage;
 };
 
 

@@ -12,9 +12,9 @@
 
 QGC_LOGGING_CATEGORY(RallyPointManagerLog, "RallyPointManagerLog")
 
-RallyPointManager::RallyPointManager(Vehicle* vehicle)
-    : QObject(vehicle)
-    , _vehicle(vehicle)
+RallyPointManager::RallyPointManager(Vehicle *vehicle)
+	: QObject(vehicle)
+	, _vehicle(vehicle)
 {
 
 }
@@ -24,33 +24,33 @@ RallyPointManager::~RallyPointManager()
 
 }
 
-void RallyPointManager::_sendError(ErrorCode_t errorCode, const QString& errorMsg)
+void RallyPointManager::_sendError(ErrorCode_t errorCode, const QString &errorMsg)
 {
-    qCDebug(RallyPointManagerLog) << "Sending error" << errorCode << errorMsg;
+	qCDebug(RallyPointManagerLog) << "Sending error" << errorCode << errorMsg;
 
-    emit error(errorCode, errorMsg);
+	emit error(errorCode, errorMsg);
 }
 
 void RallyPointManager::loadFromVehicle(void)
 {
-    // No support in generic vehicle
-    emit loadComplete(QList<QGeoCoordinate>());
+	// No support in generic vehicle
+	emit loadComplete(QList<QGeoCoordinate>());
 }
 
-void RallyPointManager::sendToVehicle(const QList<QGeoCoordinate>& rgPoints)
+void RallyPointManager::sendToVehicle(const QList<QGeoCoordinate> &rgPoints)
 {
-    // No support in generic vehicle
-    Q_UNUSED(rgPoints);
-    emit sendComplete(false /* error */);
+	// No support in generic vehicle
+	Q_UNUSED(rgPoints);
+	emit sendComplete(false /* error */);
 }
 
 void RallyPointManager::removeAll(void)
 {
-    // No support in generic vehicle
-    emit removeAllComplete(false /* error */);
+	// No support in generic vehicle
+	emit removeAllComplete(false /* error */);
 }
 
 bool RallyPointManager::supported(void) const
 {
-    return (_vehicle->capabilityBits() & MAV_PROTOCOL_CAPABILITY_MISSION_RALLY) && (_vehicle->maxProtoVersion() >= 200);
+	return (_vehicle->capabilityBits() & MAV_PROTOCOL_CAPABILITY_MISSION_RALLY) && (_vehicle->maxProtoVersion() >= 200);
 }

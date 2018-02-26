@@ -62,35 +62,35 @@ class QGeoMapScenePrivate;
 
 class Q_LOCATION_EXPORT QGeoMapScene : public QObject
 {
-    Q_OBJECT
-    Q_DECLARE_PRIVATE(QGeoMapScene)
+	Q_OBJECT
+	Q_DECLARE_PRIVATE(QGeoMapScene)
 public:
-    explicit QGeoMapScene(QObject *parent = 0);
-    virtual ~QGeoMapScene();
+	explicit QGeoMapScene(QObject *parent = 0);
+	virtual ~QGeoMapScene();
 
-    void setScreenSize(const QSize &size);
-    void setTileSize(int tileSize);
-    void setCameraData(const QGeoCameraData &cameraData);
+	void setScreenSize(const QSize &size);
+	void setTileSize(int tileSize);
+	void setCameraData(const QGeoCameraData &cameraData);
 
-    void setVisibleTiles(const QSet<QGeoTileSpec> &tiles);
+	void setVisibleTiles(const QSet<QGeoTileSpec> &tiles);
 
-    void setUseVerticalLock(bool lock);
+	void setUseVerticalLock(bool lock);
 
-    void addTile(const QGeoTileSpec &spec, QSharedPointer<QGeoTileTexture> texture);
+	void addTile(const QGeoTileSpec &spec, QSharedPointer<QGeoTileTexture> texture);
 
-    QDoubleVector2D itemPositionToMercator(const QDoubleVector2D &pos) const;
-    QDoubleVector2D mercatorToItemPosition(const QDoubleVector2D &mercator) const;
+	QDoubleVector2D itemPositionToMercator(const QDoubleVector2D &pos) const;
+	QDoubleVector2D mercatorToItemPosition(const QDoubleVector2D &mercator) const;
 
-    QSGNode *updateSceneGraph(QSGNode *oldNode, QQuickWindow *window);
+	QSGNode *updateSceneGraph(QSGNode *oldNode, QQuickWindow *window);
 
-    bool verticalLock() const;
-    QSet<QGeoTileSpec> texturedTiles();
+	bool verticalLock() const;
+	QSet<QGeoTileSpec> texturedTiles();
 
 Q_SIGNALS:
-    void newTilesVisible(const QSet<QGeoTileSpec> &newTiles);
+	void newTilesVisible(const QSet<QGeoTileSpec> &newTiles);
 
 private:
-    Q_DISABLE_COPY(QGeoMapScene)
+	Q_DISABLE_COPY(QGeoMapScene)
 };
 
 QT_END_NAMESPACE

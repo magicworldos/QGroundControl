@@ -59,49 +59,50 @@ class QGeoTiledMapReplyPrivate;
 
 class Q_LOCATION_EXPORT QGeoTiledMapReply : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    enum Error {
-        NoError,
-        CommunicationError,
-        ParseError,
-        UnknownError
-    };
+	enum Error
+	{
+		NoError,
+		CommunicationError,
+		ParseError,
+		UnknownError
+	};
 
-    QGeoTiledMapReply(const QGeoTileSpec &spec, QObject *parent = 0);
-    QGeoTiledMapReply(Error error, const QString &errorString, QObject *parent = 0);
-    virtual ~QGeoTiledMapReply();
+	QGeoTiledMapReply(const QGeoTileSpec &spec, QObject *parent = 0);
+	QGeoTiledMapReply(Error error, const QString &errorString, QObject *parent = 0);
+	virtual ~QGeoTiledMapReply();
 
-    bool isFinished() const;
-    Error error() const;
-    QString errorString() const;
+	bool isFinished() const;
+	Error error() const;
+	QString errorString() const;
 
-    bool isCached() const;
+	bool isCached() const;
 
-    QGeoTileSpec tileSpec() const;
+	QGeoTileSpec tileSpec() const;
 
-    QByteArray mapImageData() const;
-    QString mapImageFormat() const;
+	QByteArray mapImageData() const;
+	QString mapImageFormat() const;
 
-    virtual void abort();
+	virtual void abort();
 
 Q_SIGNALS:
-    void finished();
-    void error(QGeoTiledMapReply::Error error, const QString &errorString = QString());
+	void finished();
+	void error(QGeoTiledMapReply::Error error, const QString &errorString = QString());
 
 protected:
-    void setError(Error error, const QString &errorString);
-    void setFinished(bool finished);
+	void setError(Error error, const QString &errorString);
+	void setFinished(bool finished);
 
-    void setCached(bool cached);
+	void setCached(bool cached);
 
-    void setMapImageData(const QByteArray &data);
-    void setMapImageFormat(const QString &format);
+	void setMapImageData(const QByteArray &data);
+	void setMapImageFormat(const QString &format);
 
 private:
-    QGeoTiledMapReplyPrivate *d_ptr;
-    Q_DISABLE_COPY(QGeoTiledMapReply)
+	QGeoTiledMapReplyPrivate *d_ptr;
+	Q_DISABLE_COPY(QGeoTiledMapReply)
 };
 
 QT_END_NAMESPACE

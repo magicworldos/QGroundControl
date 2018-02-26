@@ -56,18 +56,18 @@ QT_BEGIN_NAMESPACE
 class QGeoTiledMapReplyPrivate
 {
 public:
-    QGeoTiledMapReplyPrivate(const QGeoTileSpec &spec);
-    QGeoTiledMapReplyPrivate(QGeoTiledMapReply::Error error, const QString &errorString);
-    ~QGeoTiledMapReplyPrivate();
+	QGeoTiledMapReplyPrivate(const QGeoTileSpec &spec);
+	QGeoTiledMapReplyPrivate(QGeoTiledMapReply::Error error, const QString &errorString);
+	~QGeoTiledMapReplyPrivate();
 
-    QGeoTiledMapReply::Error error;
-    QString errorString;
-    bool isFinished;
-    bool isCached;
+	QGeoTiledMapReply::Error error;
+	QString errorString;
+	bool isFinished;
+	bool isCached;
 
-    QGeoTileSpec spec;
-    QByteArray mapImageData;
-    QString mapImageFormat;
+	QGeoTileSpec spec;
+	QByteArray mapImageData;
+	QString mapImageFormat;
 };
 
 QT_END_NAMESPACE

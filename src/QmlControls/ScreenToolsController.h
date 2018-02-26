@@ -25,79 +25,79 @@
 /// This Qml control is used to return screen parameters
 class ScreenToolsController : public QQuickItem
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    ScreenToolsController();
+	ScreenToolsController();
 
-    Q_PROPERTY(bool     isAndroid           READ isAndroid       CONSTANT)
-    Q_PROPERTY(bool     isiOS               READ isiOS           CONSTANT)
-    Q_PROPERTY(bool     isMobile            READ isMobile        CONSTANT)
-    Q_PROPERTY(bool     testHighDPI         READ testHighDPI     CONSTANT)
-    Q_PROPERTY(bool     isDebug             READ isDebug         CONSTANT)
-    Q_PROPERTY(bool     isMacOS             READ isMacOS         CONSTANT)
-    Q_PROPERTY(bool     isLinux             READ isLinux         CONSTANT)
-    Q_PROPERTY(bool     isWindows           READ isWindows       CONSTANT)
-    Q_PROPERTY(QString  iOSDevice           READ iOSDevice       CONSTANT)
-    Q_PROPERTY(QString  fixedFontFamily     READ fixedFontFamily CONSTANT)
+	Q_PROPERTY(bool     isAndroid           READ isAndroid       CONSTANT)
+	Q_PROPERTY(bool     isiOS               READ isiOS           CONSTANT)
+	Q_PROPERTY(bool     isMobile            READ isMobile        CONSTANT)
+	Q_PROPERTY(bool     testHighDPI         READ testHighDPI     CONSTANT)
+	Q_PROPERTY(bool     isDebug             READ isDebug         CONSTANT)
+	Q_PROPERTY(bool     isMacOS             READ isMacOS         CONSTANT)
+	Q_PROPERTY(bool     isLinux             READ isLinux         CONSTANT)
+	Q_PROPERTY(bool     isWindows           READ isWindows       CONSTANT)
+	Q_PROPERTY(QString  iOSDevice           READ iOSDevice       CONSTANT)
+	Q_PROPERTY(QString  fixedFontFamily     READ fixedFontFamily CONSTANT)
 
-    // Returns current mouse position
-    Q_INVOKABLE int mouseX(void) { return QCursor::pos().x(); }
-    Q_INVOKABLE int mouseY(void) { return QCursor::pos().y(); }
+	// Returns current mouse position
+	Q_INVOKABLE int mouseX(void) { return QCursor::pos().x(); }
+	Q_INVOKABLE int mouseY(void) { return QCursor::pos().y(); }
 
 #if defined(__mobile__)
-    bool    isMobile            () { return true;  }
+	bool    isMobile() { return true;  }
 #else
-    bool    isMobile            () { return qgcApp()->fakeMobile(); }
+	bool    isMobile() { return qgcApp()->fakeMobile(); }
 #endif
 
 #if defined (__android__)
-    bool    isAndroid           () { return true;  }
-    bool    isiOS               () { return false; }
-    bool    isLinux             () { return false; }
-    bool    isMacOS             () { return false; }
-    bool    isWindows           () { return false; }
+	bool    isAndroid() { return true;  }
+	bool    isiOS() { return false; }
+	bool    isLinux() { return false; }
+	bool    isMacOS() { return false; }
+	bool    isWindows() { return false; }
 #elif defined(__ios__)
-    bool    isAndroid           () { return false; }
-    bool    isiOS               () { return true; }
-    bool    isLinux             () { return false; }
-    bool    isMacOS             () { return false; }
-    bool    isWindows           () { return false; }
+	bool    isAndroid() { return false; }
+	bool    isiOS() { return true; }
+	bool    isLinux() { return false; }
+	bool    isMacOS() { return false; }
+	bool    isWindows() { return false; }
 #elif defined(__macos__)
-    bool    isAndroid           () { return false; }
-    bool    isiOS               () { return false; }
-    bool    isLinux             () { return false; }
-    bool    isMacOS             () { return true; }
-    bool    isWindows           () { return false; }
+	bool    isAndroid() { return false; }
+	bool    isiOS() { return false; }
+	bool    isLinux() { return false; }
+	bool    isMacOS() { return true; }
+	bool    isWindows() { return false; }
 #elif defined(Q_OS_LINUX)
-    bool    isAndroid           () { return false; }
-    bool    isiOS               () { return false; }
-    bool    isLinux             () { return true; }
-    bool    isMacOS             () { return false; }
-    bool    isWindows           () { return false; }
+	bool    isAndroid() { return false; }
+	bool    isiOS() { return false; }
+	bool    isLinux() { return true; }
+	bool    isMacOS() { return false; }
+	bool    isWindows() { return false; }
 #elif defined(Q_OS_WIN)
-    bool    isAndroid           () { return false; }
-    bool    isiOS               () { return false; }
-    bool    isLinux             () { return false; }
-    bool    isMacOS             () { return false; }
-    bool    isWindows           () { return true; }
+	bool    isAndroid() { return false; }
+	bool    isiOS() { return false; }
+	bool    isLinux() { return false; }
+	bool    isMacOS() { return false; }
+	bool    isWindows() { return true; }
 #else
-    bool    isAndroid           () { return false; }
-    bool    isiOS               () { return false; }
-    bool    isLinux             () { return false; }
-    bool    isMacOS             () { return false; }
-    bool    isWindows           () { return false; }
+	bool    isAndroid() { return false; }
+	bool    isiOS() { return false; }
+	bool    isLinux() { return false; }
+	bool    isMacOS() { return false; }
+	bool    isWindows() { return false; }
 #endif
 
 #ifdef QT_DEBUG
-    bool testHighDPI            () { return qgcApp()->testHighDPI(); }
-    bool isDebug                () { return true; }
+	bool testHighDPI() { return qgcApp()->testHighDPI(); }
+	bool isDebug() { return true; }
 #else
-    bool isDebug                () { return false; }
-    bool testHighDPI            () { return false; }
+	bool isDebug() { return false; }
+	bool testHighDPI() { return false; }
 #endif
 
-    QString  iOSDevice          () const;
-    QString  fixedFontFamily    () const;
+	QString  iOSDevice() const;
+	QString  fixedFontFamily() const;
 
 };
 

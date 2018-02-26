@@ -12,21 +12,21 @@
 
 class Linecharts : public MultiVehicleDockWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit Linecharts(const QString& title, QAction* action, MAVLinkDecoder* decoder, QWidget *parent = 0);
+	explicit Linecharts(const QString &title, QAction *action, MAVLinkDecoder *decoder, QWidget *parent = 0);
 
 signals:
-    /** @brief This signal is emitted once a logfile has been finished writing */
-    void logfileWritten(QString fileName);
-    void visibilityChanged(bool visible);
+	/** @brief This signal is emitted once a logfile has been finished writing */
+	void logfileWritten(QString fileName);
+	void visibilityChanged(bool visible);
 
 protected:
-    // Override from MultiVehicleDockWidget
-    virtual QWidget* _newVehicleWidget(Vehicle* vehicle, QWidget* parent);
+	// Override from MultiVehicleDockWidget
+	virtual QWidget *_newVehicleWidget(Vehicle *vehicle, QWidget *parent);
 
 private:
-    MAVLinkDecoder* _mavlinkDecoder;
+	MAVLinkDecoder *_mavlinkDecoder;
 };
 
 #endif // LINECHARTS_H

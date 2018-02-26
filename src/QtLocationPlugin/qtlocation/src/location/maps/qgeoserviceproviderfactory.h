@@ -48,24 +48,24 @@ QT_BEGIN_NAMESPACE
 class Q_LOCATION_EXPORT QGeoServiceProviderFactory
 {
 public:
-    virtual ~QGeoServiceProviderFactory() {}
+	virtual ~QGeoServiceProviderFactory() {}
 
-    virtual QGeoCodingManagerEngine *createGeocodingManagerEngine(const QVariantMap &parameters,
-            QGeoServiceProvider::Error *error,
-            QString *errorString) const;
-    virtual QGeoMappingManagerEngine *createMappingManagerEngine(const QVariantMap &parameters,
-            QGeoServiceProvider::Error *error,
-            QString *errorString) const;
-    virtual QGeoRoutingManagerEngine *createRoutingManagerEngine(const QVariantMap &parameters,
-            QGeoServiceProvider::Error *error,
-            QString *errorString) const;
-    virtual QPlaceManagerEngine *createPlaceManagerEngine(const QVariantMap &parameters,
-            QGeoServiceProvider::Error *error,
-            QString *errorString) const;
+	virtual QGeoCodingManagerEngine *createGeocodingManagerEngine(const QVariantMap &parameters,
+			QGeoServiceProvider::Error *error,
+			QString *errorString) const;
+	virtual QGeoMappingManagerEngine *createMappingManagerEngine(const QVariantMap &parameters,
+			QGeoServiceProvider::Error *error,
+			QString *errorString) const;
+	virtual QGeoRoutingManagerEngine *createRoutingManagerEngine(const QVariantMap &parameters,
+			QGeoServiceProvider::Error *error,
+			QString *errorString) const;
+	virtual QPlaceManagerEngine *createPlaceManagerEngine(const QVariantMap &parameters,
+			QGeoServiceProvider::Error *error,
+			QString *errorString) const;
 };
 
 Q_DECLARE_INTERFACE(QGeoServiceProviderFactory,
-                    "org.qt-project.qt.geoservice.serviceproviderfactory/5.0")
+		    "org.qt-project.qt.geoservice.serviceproviderfactory/5.0")
 
 QT_END_NAMESPACE
 

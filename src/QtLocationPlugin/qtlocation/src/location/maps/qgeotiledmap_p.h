@@ -72,31 +72,32 @@ class QPointF;
 
 class Q_LOCATION_EXPORT QGeoTiledMap : public QGeoMap
 {
-    Q_OBJECT
-    Q_DECLARE_PRIVATE(QGeoTiledMap)
+	Q_OBJECT
+	Q_DECLARE_PRIVATE(QGeoTiledMap)
 
 public:
-    QGeoTiledMap(QGeoTiledMappingManagerEngine *engine, QObject *parent);
-    virtual ~QGeoTiledMap();
+	QGeoTiledMap(QGeoTiledMappingManagerEngine *engine, QObject *parent);
+	virtual ~QGeoTiledMap();
 
-    QGeoTileCache *tileCache();
-    QGeoTileRequestManager *requestManager();
-    void updateTile(const QGeoTileSpec &spec);
+	QGeoTileCache *tileCache();
+	QGeoTileRequestManager *requestManager();
+	void updateTile(const QGeoTileSpec &spec);
 
-    QGeoCoordinate itemPositionToCoordinate(const QDoubleVector2D &pos, bool clipToViewport = true) const Q_DECL_OVERRIDE;
-    QDoubleVector2D coordinateToItemPosition(const QGeoCoordinate &coordinate, bool clipToViewport = true) const Q_DECL_OVERRIDE;
-    void prefetchData() Q_DECL_OVERRIDE;
+	QGeoCoordinate itemPositionToCoordinate(const QDoubleVector2D &pos, bool clipToViewport = true) const Q_DECL_OVERRIDE;
+	QDoubleVector2D coordinateToItemPosition(const QGeoCoordinate &coordinate,
+			bool clipToViewport = true) const Q_DECL_OVERRIDE;
+	void prefetchData() Q_DECL_OVERRIDE;
 
 
 protected:
-    QSGNode *updateSceneGraph(QSGNode *, QQuickWindow *window) Q_DECL_OVERRIDE;
+	QSGNode *updateSceneGraph(QSGNode *, QQuickWindow *window) Q_DECL_OVERRIDE;
 
 protected Q_SLOTS:
-    virtual void evaluateCopyrights(const QSet<QGeoTileSpec> &visibleTiles);
-    void updateMapVersion();
+	virtual void evaluateCopyrights(const QSet<QGeoTileSpec> &visibleTiles);
+	void updateMapVersion();
 
 private:
-    Q_DISABLE_COPY(QGeoTiledMap)
+	Q_DISABLE_COPY(QGeoTiledMap)
 
 };
 

@@ -11,81 +11,91 @@
 #include "QGCApplication.h"
 
 CameraCalcTest::CameraCalcTest(void)
-    : _offlineVehicle(NULL)
+	: _offlineVehicle(NULL)
 {
 
 }
 
 void CameraCalcTest::init(void)
 {
-    UnitTest::init();
+	UnitTest::init();
 
-    _offlineVehicle = new Vehicle(MAV_AUTOPILOT_PX4, MAV_TYPE_QUADROTOR, qgcApp()->toolbox()->firmwarePluginManager(), this);
-    _cameraCalc = new CameraCalc(_offlineVehicle, this);
+	_offlineVehicle = new Vehicle(MAV_AUTOPILOT_PX4, MAV_TYPE_QUADROTOR, qgcApp()->toolbox()->firmwarePluginManager(),
+				      this);
+	_cameraCalc = new CameraCalc(_offlineVehicle, this);
 
-    _rgSignals[cameraNameChangedIndex] =                SIGNAL(cameraNameChanged(QString));
-    _rgSignals[dirtyChangedIndex] =                     SIGNAL(dirtyChanged(bool));
-    _rgSignals[imageFootprintSideChangedIndex] =        SIGNAL(imageFootprintSideChanged(double));
-    _rgSignals[imageFootprintFrontalChangedIndex] =     SIGNAL(imageFootprintFrontalChanged(double));
-    _rgSignals[distanceToSurfaceRelativeChangedIndex] = SIGNAL(distanceToSurfaceRelativeChanged(bool));
+	_rgSignals[cameraNameChangedIndex] =                SIGNAL(cameraNameChanged(QString));
+	_rgSignals[dirtyChangedIndex] =                     SIGNAL(dirtyChanged(bool));
+	_rgSignals[imageFootprintSideChangedIndex] =        SIGNAL(imageFootprintSideChanged(double));
+	_rgSignals[imageFootprintFrontalChangedIndex] =     SIGNAL(imageFootprintFrontalChanged(double));
+	_rgSignals[distanceToSurfaceRelativeChangedIndex] = SIGNAL(distanceToSurfaceRelativeChanged(bool));
 
-    _multiSpy = new MultiSignalSpy();
-    QCOMPARE(_multiSpy->init(_cameraCalc, _rgSignals, _cSignals), true);
+	_multiSpy = new MultiSignalSpy();
+	QCOMPARE(_multiSpy->init(_cameraCalc, _rgSignals, _cSignals), true);
 }
 
 void CameraCalcTest::cleanup(void)
 {
-    delete _cameraCalc;
-    delete _offlineVehicle;
-    delete _multiSpy;
+	delete _cameraCalc;
+	delete _offlineVehicle;
+	delete _multiSpy;
 }
 
 void CameraCalcTest::_testDirty(void)
 {
-    QVERIFY(!_cameraCalc->dirty());
-    _cameraCalc->setDirty(false);
-    QVERIFY(!_cameraCalc->dirty());
-    QVERIFY(_multiSpy->checkNoSignals());
+	QVERIFY(!_cameraCalc->dirty());
+	_cameraCalc->setDirty(false);
+	QVERIFY(!_cameraCalc->dirty());
+	QVERIFY(_multiSpy->checkNoSignals());
 
-    _cameraCalc->setDirty(true);
-    QVERIFY(_cameraCalc->dirty());
-    QVERIFY(_multiSpy->checkOnlySignalByMask(dirtyChangedMask));
-    QVERIFY(_multiSpy->pullBoolFromSignalIndex(dirtyChangedIndex));
-    _multiSpy->clearAllSignals();
+	_cameraCalc->setDirty(true);
+	QVERIFY(_cameraCalc->dirty());
+	QVERIFY(_multiSpy->checkOnlySignalByMask(dirtyChangedMask));
+	QVERIFY(_multiSpy->pullBoolFromSignalIndex(dirtyChangedIndex));
+	_multiSpy->clearAllSignals();
 
-    _cameraCalc->setDirty(false);
-    QVERIFY(!_cameraCalc->dirty());
-    QVERIFY(_multiSpy->checkOnlySignalByMask(dirtyChangedMask));
-    _multiSpy->clearAllSignals();
+	_cameraCalc->setDirty(false);
+	QVERIFY(!_cameraCalc->dirty());
+	QVERIFY(_multiSpy->checkOnlySignalByMask(dirtyChangedMask));
+	_multiSpy->clearAllSignals();
 
-    // These facts should set dirty when changed
-    QList<Fact*> rgFacts;
-    rgFacts << _cameraCalc->valueSetIsDistance()
-            << _cameraCalc->distanceToSurface()
-            << _cameraCalc->imageDensity()
-            << _cameraCalc->frontalOverlap ()
-            << _cameraCalc->sideOverlap ()
-            << _cameraCalc->adjustedFootprintSide()
-            << _cameraCalc->adjustedFootprintFrontal();
-    foreach(Fact* fact, rgFacts) {
-        qDebug() << fact->name();
-        QVERIFY(!_cameraCalc->dirty());
-        if (fact->typeIsBool()) {
-            fact->setRawValue(!fact->rawValue().toBool());
-        } else {
-            fact->setRawValue(fact->rawValue().toDouble() + 1);
-        }
-        QVERIFY(_multiSpy->checkSignalByMask(dirtyChangedMask));
-        _cameraCalc->setDirty(false);
-        _multiSpy->clearAllSignals();
-    }
-    rgFacts.clear();
+	// These facts should set dirty when changed
+	QList<Fact *> rgFacts;
+	rgFacts << _cameraCalc->valueSetIsDistance()
+		<< _cameraCalc->distanceToSurface()
+		<< _cameraCalc->imageDensity()
+		<< _cameraCalc->frontalOverlap()
+		<< _cameraCalc->sideOverlap()
+		<< _cameraCalc->adjustedFootprintSide()
+		<< _cameraCalc->adjustedFootprintFrontal();
 
-    _cameraCalc->setCameraName(_cameraCalc->customCameraName());
-    QVERIFY(_cameraCalc->dirty());
-    _multiSpy->clearAllSignals();
+	foreach (Fact *fact, rgFacts)
+	{
+		qDebug() << fact->name();
+		QVERIFY(!_cameraCalc->dirty());
 
-    _cameraCalc->setDistanceToSurfaceRelative(!_cameraCalc->distanceToSurfaceRelative());
-    QVERIFY(_cameraCalc->dirty());
-    _multiSpy->clearAllSignals();
+		if (fact->typeIsBool())
+		{
+			fact->setRawValue(!fact->rawValue().toBool());
+		}
+
+		else
+		{
+			fact->setRawValue(fact->rawValue().toDouble() + 1);
+		}
+
+		QVERIFY(_multiSpy->checkSignalByMask(dirtyChangedMask));
+		_cameraCalc->setDirty(false);
+		_multiSpy->clearAllSignals();
+	}
+
+	rgFacts.clear();
+
+	_cameraCalc->setCameraName(_cameraCalc->customCameraName());
+	QVERIFY(_cameraCalc->dirty());
+	_multiSpy->clearAllSignals();
+
+	_cameraCalc->setDistanceToSurfaceRelative(!_cameraCalc->distanceToSurfaceRelative());
+	QVERIFY(_cameraCalc->dirty());
+	_multiSpy->clearAllSignals();
 }

@@ -12,39 +12,39 @@
 class QwtPlotSeriesItem::PrivateData
 {
 public:
-    PrivateData():
-        orientation( Qt::Vertical )
-    {
-    }
+	PrivateData():
+		orientation(Qt::Vertical)
+	{
+	}
 
-    Qt::Orientation orientation;
+	Qt::Orientation orientation;
 };
 
 /*!
   Constructor
   \param title Title of the curve
 */
-QwtPlotSeriesItem::QwtPlotSeriesItem( const QwtText &title ):
-    QwtPlotItem( title )
+QwtPlotSeriesItem::QwtPlotSeriesItem(const QwtText &title):
+	QwtPlotItem(title)
 {
-    d_data = new PrivateData();
-    setItemInterest( QwtPlotItem::ScaleInterest, true );
+	d_data = new PrivateData();
+	setItemInterest(QwtPlotItem::ScaleInterest, true);
 }
 
 /*!
   Constructor
   \param title Title of the curve
 */
-QwtPlotSeriesItem::QwtPlotSeriesItem( const QString &title ):
-    QwtPlotItem( QwtText( title ) )
+QwtPlotSeriesItem::QwtPlotSeriesItem(const QString &title):
+	QwtPlotItem(QwtText(title))
 {
-    d_data = new PrivateData();
+	d_data = new PrivateData();
 }
 
 //! Destructor
 QwtPlotSeriesItem::~QwtPlotSeriesItem()
 {
-    delete d_data;
+	delete d_data;
 }
 
 /*!
@@ -56,15 +56,15 @@ QwtPlotSeriesItem::~QwtPlotSeriesItem()
 
   \sa orientation()
 */
-void QwtPlotSeriesItem::setOrientation( Qt::Orientation orientation )
+void QwtPlotSeriesItem::setOrientation(Qt::Orientation orientation)
 {
-    if ( d_data->orientation != orientation )
-    {
-        d_data->orientation = orientation;
+	if (d_data->orientation != orientation)
+	{
+		d_data->orientation = orientation;
 
-        legendChanged();
-        itemChanged();
-    }
+		legendChanged();
+		itemChanged();
+	}
 }
 
 /*!
@@ -73,7 +73,7 @@ void QwtPlotSeriesItem::setOrientation( Qt::Orientation orientation )
 */
 Qt::Orientation QwtPlotSeriesItem::orientation() const
 {
-    return d_data->orientation;
+	return d_data->orientation;
 }
 
 /*!
@@ -84,29 +84,29 @@ Qt::Orientation QwtPlotSeriesItem::orientation() const
   \param yMap Maps y-values into pixel coordinates.
   \param canvasRect Contents rectangle of the canvas
 */
-void QwtPlotSeriesItem::draw( QPainter *painter,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &canvasRect ) const
+void QwtPlotSeriesItem::draw(QPainter *painter,
+			     const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+			     const QRectF &canvasRect) const
 {
-    drawSeries( painter, xMap, yMap, canvasRect, 0, -1 );
+	drawSeries(painter, xMap, yMap, canvasRect, 0, -1);
 }
 
 QRectF QwtPlotSeriesItem::boundingRect() const
 {
-    return dataRect();
+	return dataRect();
 }
 
 void QwtPlotSeriesItem::updateScaleDiv(
-    const QwtScaleDiv &xScaleDiv, const QwtScaleDiv &yScaleDiv )
-{   
-    const QRectF rect = QRectF(
-        xScaleDiv.lowerBound(), yScaleDiv.lowerBound(),
-        xScaleDiv.range(), yScaleDiv.range() );
-        
-    setRectOfInterest( rect );
-}   
+	const QwtScaleDiv &xScaleDiv, const QwtScaleDiv &yScaleDiv)
+{
+	const QRectF rect = QRectF(
+				    xScaleDiv.lowerBound(), yScaleDiv.lowerBound(),
+				    xScaleDiv.range(), yScaleDiv.range());
+
+	setRectOfInterest(rect);
+}
 
 void QwtPlotSeriesItem::dataChanged()
 {
-    itemChanged();
+	itemChanged();
 }

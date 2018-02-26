@@ -57,45 +57,45 @@ QPolygonF interpolate(const QPolygonF& points, int numValues)
 class QWT_EXPORT QwtSpline
 {
 public:
-    //! Spline type
-    enum SplineType
-    {
-        //! A natural spline
-        Natural,
+	//! Spline type
+	enum SplineType
+	{
+		//! A natural spline
+		Natural,
 
-        //! A periodic spline
-        Periodic
-    };
+		//! A periodic spline
+		Periodic
+	};
 
-    QwtSpline();
-    QwtSpline( const QwtSpline & );
+	QwtSpline();
+	QwtSpline(const QwtSpline &);
 
-    ~QwtSpline();
+	~QwtSpline();
 
-    QwtSpline &operator=( const QwtSpline & );
+	QwtSpline &operator=(const QwtSpline &);
 
-    void setSplineType( SplineType );
-    SplineType splineType() const;
+	void setSplineType(SplineType);
+	SplineType splineType() const;
 
-    bool setPoints( const QPolygonF& points );
-    QPolygonF points() const;
+	bool setPoints(const QPolygonF &points);
+	QPolygonF points() const;
 
-    void reset();
+	void reset();
 
-    bool isValid() const;
-    double value( double x ) const;
+	bool isValid() const;
+	double value(double x) const;
 
-    const QVector<double> &coefficientsA() const;
-    const QVector<double> &coefficientsB() const;
-    const QVector<double> &coefficientsC() const;
+	const QVector<double> &coefficientsA() const;
+	const QVector<double> &coefficientsB() const;
+	const QVector<double> &coefficientsC() const;
 
 protected:
-    bool buildNaturalSpline( const QPolygonF & );
-    bool buildPeriodicSpline( const QPolygonF & );
+	bool buildNaturalSpline(const QPolygonF &);
+	bool buildPeriodicSpline(const QPolygonF &);
 
 private:
-    class PrivateData;
-    PrivateData *d_data;
+	class PrivateData;
+	PrivateData *d_data;
 };
 
 #endif

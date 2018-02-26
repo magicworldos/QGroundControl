@@ -26,30 +26,30 @@
 class QwtPlotSpectrogram::PrivateData
 {
 public:
-    PrivateData():
-        data( NULL )
-    {
-        colorMap = new QwtLinearColorMap();
-        displayMode = ImageMode;
+	PrivateData():
+		data(NULL)
+	{
+		colorMap = new QwtLinearColorMap();
+		displayMode = ImageMode;
 
-        conrecFlags = QwtRasterData::IgnoreAllVerticesOnLevel;
+		conrecFlags = QwtRasterData::IgnoreAllVerticesOnLevel;
 #if 0
-        conrecFlags |= QwtRasterData::IgnoreOutOfRange;
+		conrecFlags |= QwtRasterData::IgnoreOutOfRange;
 #endif
-    }
-    ~PrivateData()
-    {
-        delete data;
-        delete colorMap;
-    }
+	}
+	~PrivateData()
+	{
+		delete data;
+		delete colorMap;
+	}
 
-    QwtRasterData *data;
-    QwtColorMap *colorMap;
-    DisplayModes displayMode;
+	QwtRasterData *data;
+	QwtColorMap *colorMap;
+	DisplayModes displayMode;
 
-    QList<double> contourLevels;
-    QPen defaultContourPen;
-    QwtRasterData::ConrecFlags conrecFlags;
+	QList<double> contourLevels;
+	QPen defaultContourPen;
+	QwtRasterData::ConrecFlags conrecFlags;
 };
 
 /*!
@@ -63,27 +63,27 @@ public:
 
    \sa QwtPlotItem::setItemAttribute(), QwtPlotItem::setZ()
 */
-QwtPlotSpectrogram::QwtPlotSpectrogram( const QString &title ):
-    QwtPlotRasterItem( title )
+QwtPlotSpectrogram::QwtPlotSpectrogram(const QString &title):
+	QwtPlotRasterItem(title)
 {
-    d_data = new PrivateData();
+	d_data = new PrivateData();
 
-    setItemAttribute( QwtPlotItem::AutoScale, true );
-    setItemAttribute( QwtPlotItem::Legend, false );
+	setItemAttribute(QwtPlotItem::AutoScale, true);
+	setItemAttribute(QwtPlotItem::Legend, false);
 
-    setZ( 8.0 );
+	setZ(8.0);
 }
 
 //! Destructor
 QwtPlotSpectrogram::~QwtPlotSpectrogram()
 {
-    delete d_data;
+	delete d_data;
 }
 
 //! \return QwtPlotItem::Rtti_PlotSpectrogram
 int QwtPlotSpectrogram::rtti() const
 {
-    return QwtPlotItem::Rtti_PlotSpectrogram;
+	return QwtPlotItem::Rtti_PlotSpectrogram;
 }
 
 /*!
@@ -96,18 +96,23 @@ int QwtPlotSpectrogram::rtti() const
 
    \sa DisplayMode, displayMode()
 */
-void QwtPlotSpectrogram::setDisplayMode( DisplayMode mode, bool on )
+void QwtPlotSpectrogram::setDisplayMode(DisplayMode mode, bool on)
 {
-    if ( on != bool( mode & d_data->displayMode ) )
-    {
-        if ( on )
-            d_data->displayMode |= mode;
-        else
-            d_data->displayMode &= ~mode;
-    }
+	if (on != bool(mode & d_data->displayMode))
+	{
+		if (on)
+		{
+			d_data->displayMode |= mode;
+		}
 
-    legendChanged();
-    itemChanged();
+		else
+		{
+			d_data->displayMode &= ~mode;
+		}
+	}
+
+	legendChanged();
+	itemChanged();
 }
 
 /*!
@@ -116,9 +121,9 @@ void QwtPlotSpectrogram::setDisplayMode( DisplayMode mode, bool on )
    \param mode Display mode
    \return true if mode is enabled
 */
-bool QwtPlotSpectrogram::testDisplayMode( DisplayMode mode ) const
+bool QwtPlotSpectrogram::testDisplayMode(DisplayMode mode) const
 {
-    return ( d_data->displayMode & mode );
+	return (d_data->displayMode & mode);
 }
 
 /*!
@@ -132,18 +137,18 @@ bool QwtPlotSpectrogram::testDisplayMode( DisplayMode mode ) const
   \sa colorMap(), QwtScaleWidget::setColorBarEnabled(),
       QwtScaleWidget::setColorMap()
 */
-void QwtPlotSpectrogram::setColorMap( QwtColorMap *colorMap )
+void QwtPlotSpectrogram::setColorMap(QwtColorMap *colorMap)
 {
-    if ( d_data->colorMap != colorMap )
-    {
-        delete d_data->colorMap;
-        d_data->colorMap = colorMap;
-    }
+	if (d_data->colorMap != colorMap)
+	{
+		delete d_data->colorMap;
+		d_data->colorMap = colorMap;
+	}
 
-    invalidateCache();
+	invalidateCache();
 
-    legendChanged();
-    itemChanged();
+	legendChanged();
+	itemChanged();
 }
 
 /*!
@@ -152,26 +157,26 @@ void QwtPlotSpectrogram::setColorMap( QwtColorMap *colorMap )
 */
 const QwtColorMap *QwtPlotSpectrogram::colorMap() const
 {
-    return d_data->colorMap;
+	return d_data->colorMap;
 }
 
-/*! 
+/*!
   Build and assign the default pen for the contour lines
-    
+
   In Qt5 the default pen width is 1.0 ( 0.0 in Qt4 ) what makes it
   non cosmetic ( see QPen::isCosmetic() ). This method has been introduced
   to hide this incompatibility.
-    
+
   \param color Pen color
   \param width Pen width
   \param style Pen style
-    
+
   \sa pen(), brush()
- */ 
-void QwtPlotSpectrogram::setDefaultContourPen( 
-    const QColor &color, qreal width, Qt::PenStyle style )
-{   
-    setDefaultContourPen( QPen( color, width, style ) );
+ */
+void QwtPlotSpectrogram::setDefaultContourPen(
+	const QColor &color, qreal width, Qt::PenStyle style)
+{
+	setDefaultContourPen(QPen(color, width, style));
 }
 
 /*!
@@ -184,15 +189,15 @@ void QwtPlotSpectrogram::setDefaultContourPen(
 
    \sa defaultContourPen(), contourPen()
 */
-void QwtPlotSpectrogram::setDefaultContourPen( const QPen &pen )
+void QwtPlotSpectrogram::setDefaultContourPen(const QPen &pen)
 {
-    if ( pen != d_data->defaultContourPen )
-    {
-        d_data->defaultContourPen = pen;
+	if (pen != d_data->defaultContourPen)
+	{
+		d_data->defaultContourPen = pen;
 
-        legendChanged();
-        itemChanged();
-    }
+		legendChanged();
+		itemChanged();
+	}
 }
 
 /*!
@@ -201,7 +206,7 @@ void QwtPlotSpectrogram::setDefaultContourPen( const QPen &pen )
 */
 QPen QwtPlotSpectrogram::defaultContourPen() const
 {
-    return d_data->defaultContourPen;
+	return d_data->defaultContourPen;
 }
 
 /*!
@@ -215,15 +220,17 @@ QPen QwtPlotSpectrogram::defaultContourPen() const
 
    \sa setDefaultContourPen(), setColorMap(), setContourLevels()
 */
-QPen QwtPlotSpectrogram::contourPen( double level ) const
+QPen QwtPlotSpectrogram::contourPen(double level) const
 {
-    if ( d_data->data == NULL || d_data->colorMap == NULL )
-        return QPen();
+	if (d_data->data == NULL || d_data->colorMap == NULL)
+	{
+		return QPen();
+	}
 
-    const QwtInterval intensityRange = d_data->data->interval(Qt::ZAxis);
-    const QColor c( d_data->colorMap->rgb( intensityRange, level ) );
+	const QwtInterval intensityRange = d_data->data->interval(Qt::ZAxis);
+	const QColor c(d_data->colorMap->rgb(intensityRange, level));
 
-    return QPen( c );
+	return QPen(c);
 }
 
 /*!
@@ -237,17 +244,24 @@ QPen QwtPlotSpectrogram::contourPen( double level ) const
        QwtRasterData::contourLines()
 */
 void QwtPlotSpectrogram::setConrecFlag(
-    QwtRasterData::ConrecFlag flag, bool on )
+	QwtRasterData::ConrecFlag flag, bool on)
 {
-    if ( bool( d_data->conrecFlags & flag ) == on )
-        return;
+	if (bool(d_data->conrecFlags & flag) == on)
+	{
+		return;
+	}
 
-    if ( on )
-        d_data->conrecFlags |= flag;
-    else
-        d_data->conrecFlags &= ~flag;
+	if (on)
+	{
+		d_data->conrecFlags |= flag;
+	}
 
-    itemChanged();
+	else
+	{
+		d_data->conrecFlags &= ~flag;
+	}
+
+	itemChanged();
 }
 
 /*!
@@ -263,9 +277,9 @@ void QwtPlotSpectrogram::setConrecFlag(
        QwtRasterData::contourLines()
 */
 bool QwtPlotSpectrogram::testConrecFlag(
-    QwtRasterData::ConrecFlag flag ) const
+	QwtRasterData::ConrecFlag flag) const
 {
-    return d_data->conrecFlags & flag;
+	return d_data->conrecFlags & flag;
 }
 
 /*!
@@ -277,13 +291,13 @@ bool QwtPlotSpectrogram::testConrecFlag(
 
    \note contourLevels returns the same levels but sorted.
 */
-void QwtPlotSpectrogram::setContourLevels( const QList<double> &levels )
+void QwtPlotSpectrogram::setContourLevels(const QList<double> &levels)
 {
-    d_data->contourLevels = levels;
-    qSort( d_data->contourLevels );
+	d_data->contourLevels = levels;
+	qSort(d_data->contourLevels);
 
-    legendChanged();
-    itemChanged();
+	legendChanged();
+	itemChanged();
 }
 
 /*!
@@ -296,7 +310,7 @@ void QwtPlotSpectrogram::setContourLevels( const QList<double> &levels )
 */
 QList<double> QwtPlotSpectrogram::contourLevels() const
 {
-    return d_data->contourLevels;
+	return d_data->contourLevels;
 }
 
 /*!
@@ -305,16 +319,16 @@ QList<double> QwtPlotSpectrogram::contourLevels() const
   \param data Spectrogram Data
   \sa data()
 */
-void QwtPlotSpectrogram::setData( QwtRasterData *data )
+void QwtPlotSpectrogram::setData(QwtRasterData *data)
 {
-    if ( data != d_data->data )
-    {
-        delete d_data->data;
-        d_data->data = data;
+	if (data != d_data->data)
+	{
+		delete d_data->data;
+		d_data->data = data;
 
-        invalidateCache();
-        itemChanged();
-    }
+		invalidateCache();
+		itemChanged();
+	}
 }
 
 /*!
@@ -323,7 +337,7 @@ void QwtPlotSpectrogram::setData( QwtRasterData *data )
 */
 const QwtRasterData *QwtPlotSpectrogram::data() const
 {
-    return d_data->data;
+	return d_data->data;
 }
 
 /*!
@@ -332,7 +346,7 @@ const QwtRasterData *QwtPlotSpectrogram::data() const
 */
 QwtRasterData *QwtPlotSpectrogram::data()
 {
-    return d_data->data;
+	return d_data->data;
 }
 
 /*!
@@ -346,17 +360,19 @@ QwtRasterData *QwtPlotSpectrogram::data()
 */
 QwtInterval QwtPlotSpectrogram::interval(Qt::Axis axis) const
 {
-    if ( d_data->data == NULL )
-        return QwtInterval();
+	if (d_data->data == NULL)
+	{
+		return QwtInterval();
+	}
 
-    return d_data->data->interval( axis );
+	return d_data->data->interval(axis);
 }
 
 /*!
    \brief Pixel hint
 
    The geometry of a pixel is used to calculated the resolution and
-   alignment of the rendered image. 
+   alignment of the rendered image.
 
    The default implementation returns data()->pixelHint( rect );
 
@@ -365,15 +381,17 @@ QwtInterval QwtPlotSpectrogram::interval(Qt::Axis axis) const
 
    \return Bounding rectangle of a pixel
 
-   \sa QwtPlotRasterItem::pixelHint(), QwtRasterData::pixelHint(), 
+   \sa QwtPlotRasterItem::pixelHint(), QwtRasterData::pixelHint(),
        render(), renderImage()
 */
-QRectF QwtPlotSpectrogram::pixelHint( const QRectF &area ) const
+QRectF QwtPlotSpectrogram::pixelHint(const QRectF &area) const
 {
-    if ( d_data->data == NULL )
-        return QRectF();
+	if (d_data->data == NULL)
+	{
+		return QRectF();
+	}
 
-    return d_data->data->pixelHint( area );
+	return d_data->data->pixelHint(area);
 }
 
 /*!
@@ -393,67 +411,82 @@ QRectF QwtPlotSpectrogram::pixelHint( const QRectF &area ) const
        QwtColorMap::colorIndex()
 */
 QImage QwtPlotSpectrogram::renderImage(
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QRectF &area, const QSize &imageSize ) const
+	const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+	const QRectF &area, const QSize &imageSize) const
 {
-    if ( imageSize.isEmpty() || d_data->data == NULL 
-        || d_data->colorMap == NULL )
-    {
-        return QImage();
-    }
+	if (imageSize.isEmpty() || d_data->data == NULL
+			|| d_data->colorMap == NULL)
+	{
+		return QImage();
+	}
 
-    const QwtInterval intensityRange = d_data->data->interval( Qt::ZAxis );
-    if ( !intensityRange.isValid() )
-        return QImage();
+	const QwtInterval intensityRange = d_data->data->interval(Qt::ZAxis);
 
-    QImage::Format format = ( d_data->colorMap->format() == QwtColorMap::RGB )
-        ? QImage::Format_ARGB32 : QImage::Format_Indexed8;
+	if (!intensityRange.isValid())
+	{
+		return QImage();
+	}
 
-    QImage image( imageSize, format );
+	QImage::Format format = (d_data->colorMap->format() == QwtColorMap::RGB)
+				? QImage::Format_ARGB32 : QImage::Format_Indexed8;
 
-    if ( d_data->colorMap->format() == QwtColorMap::Indexed )
-        image.setColorTable( d_data->colorMap->colorTable( intensityRange ) );
+	QImage image(imageSize, format);
 
-    d_data->data->initRaster( area, image.size() );
+	if (d_data->colorMap->format() == QwtColorMap::Indexed)
+	{
+		image.setColorTable(d_data->colorMap->colorTable(intensityRange));
+	}
+
+	d_data->data->initRaster(area, image.size());
 
 #if QT_VERSION >= 0x040400 && !defined(QT_NO_QFUTURE)
-    uint numThreads = renderThreadCount();
+	uint numThreads = renderThreadCount();
 
-    if ( numThreads <= 0 )
-        numThreads = QThread::idealThreadCount();
+	if (numThreads <= 0)
+	{
+		numThreads = QThread::idealThreadCount();
+	}
 
-    if ( numThreads <= 0 )
-        numThreads = 1;
+	if (numThreads <= 0)
+	{
+		numThreads = 1;
+	}
 
-    const int numRows = imageSize.height() / numThreads;
+	const int numRows = imageSize.height() / numThreads;
 
-    QList< QFuture<void> > futures;
-    for ( uint i = 0; i < numThreads; i++ )
-    {
-        QRect tile( 0, i * numRows, image.width(), numRows );
-        if ( i == numThreads - 1 )
-        {
-            tile.setHeight( image.height() - i * numRows );
-            renderTile( xMap, yMap, tile, &image );
-        }
-        else
-        {
-            futures += QtConcurrent::run(
-                this, &QwtPlotSpectrogram::renderTile,
-                xMap, yMap, tile, &image );
-        }
-    }
-    for ( int i = 0; i < futures.size(); i++ )
-        futures[i].waitForFinished();
+	QList< QFuture<void> > futures;
+
+	for (uint i = 0; i < numThreads; i++)
+	{
+		QRect tile(0, i * numRows, image.width(), numRows);
+
+		if (i == numThreads - 1)
+		{
+			tile.setHeight(image.height() - i * numRows);
+			renderTile(xMap, yMap, tile, &image);
+		}
+
+		else
+		{
+			futures += QtConcurrent::run(
+					   this, &QwtPlotSpectrogram::renderTile,
+					   xMap, yMap, tile, &image);
+		}
+	}
+
+	for (int i = 0; i < futures.size(); i++)
+	{
+		futures[i].waitForFinished();
+	}
 
 #else // QT_VERSION < 0x040400
-    const QRect tile( 0, 0, image.width(), image.height() );
-    renderTile( xMap, yMap, tile, &image );
+	const QRect tile(0, 0, image.width(), image.height());
+	renderTile(xMap, yMap, tile, &image);
 #endif
 
-    d_data->data->discardRaster();
+	d_data->data->discardRaster();
 
-    return image;
+	return image;
 }
 
 /*!
@@ -468,49 +501,53 @@ QImage QwtPlotSpectrogram::renderImage(
     \param image Image to be rendered
 */
 void QwtPlotSpectrogram::renderTile(
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QRect &tile, QImage *image ) const
+	const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+	const QRect &tile, QImage *image) const
 {
-    const QwtInterval range = d_data->data->interval( Qt::ZAxis );
-    if ( !range.isValid() )
-        return;
+	const QwtInterval range = d_data->data->interval(Qt::ZAxis);
 
-    if ( d_data->colorMap->format() == QwtColorMap::RGB )
-    {
-        for ( int y = tile.top(); y <= tile.bottom(); y++ )
-        {
-            const double ty = yMap.invTransform( y );
+	if (!range.isValid())
+	{
+		return;
+	}
 
-            QRgb *line = reinterpret_cast<QRgb *>( image->scanLine( y ) );
-            line += tile.left();
+	if (d_data->colorMap->format() == QwtColorMap::RGB)
+	{
+		for (int y = tile.top(); y <= tile.bottom(); y++)
+		{
+			const double ty = yMap.invTransform(y);
 
-            for ( int x = tile.left(); x <= tile.right(); x++ )
-            {
-                const double tx = xMap.invTransform( x );
+			QRgb *line = reinterpret_cast<QRgb *>(image->scanLine(y));
+			line += tile.left();
 
-                *line++ = d_data->colorMap->rgb( range,
-                    d_data->data->value( tx, ty ) );
-            }
-        }
-    }
-    else if ( d_data->colorMap->format() == QwtColorMap::Indexed )
-    {
-        for ( int y = tile.top(); y <= tile.bottom(); y++ )
-        {
-            const double ty = yMap.invTransform( y );
+			for (int x = tile.left(); x <= tile.right(); x++)
+			{
+				const double tx = xMap.invTransform(x);
 
-            unsigned char *line = image->scanLine( y );
-            line += tile.left();
+				*line++ = d_data->colorMap->rgb(range,
+								d_data->data->value(tx, ty));
+			}
+		}
+	}
 
-            for ( int x = tile.left(); x <= tile.right(); x++ )
-            {
-                const double tx = xMap.invTransform( x );
+	else if (d_data->colorMap->format() == QwtColorMap::Indexed)
+	{
+		for (int y = tile.top(); y <= tile.bottom(); y++)
+		{
+			const double ty = yMap.invTransform(y);
 
-                *line++ = d_data->colorMap->colorIndex( range,
-                    d_data->data->value( tx, ty ) );
-            }
-        }
-    }
+			unsigned char *line = image->scanLine(y);
+			line += tile.left();
+
+			for (int x = tile.left(); x <= tile.right(); x++)
+			{
+				const double tx = xMap.invTransform(x);
+
+				*line++ = d_data->colorMap->colorIndex(range,
+								       d_data->data->value(tx, ty));
+			}
+		}
+	}
 }
 
 /*!
@@ -530,20 +567,21 @@ void QwtPlotSpectrogram::renderTile(
 
    \sa drawContourLines(), QwtRasterData::contourLines()
 */
-QSize QwtPlotSpectrogram::contourRasterSize( 
-    const QRectF &area, const QRect &rect ) const
+QSize QwtPlotSpectrogram::contourRasterSize(
+	const QRectF &area, const QRect &rect) const
 {
-    QSize raster = rect.size() / 2;
+	QSize raster = rect.size() / 2;
 
-    const QRectF pixelRect = pixelHint( area );
-    if ( !pixelRect.isEmpty() )
-    {
-        const QSize res( qCeil( rect.width() / pixelRect.width() ),
-            qCeil( rect.height() / pixelRect.height() ) );
-        raster = raster.boundedTo( res );
-    }
+	const QRectF pixelRect = pixelHint(area);
 
-    return raster;
+	if (!pixelRect.isEmpty())
+	{
+		const QSize res(qCeil(rect.width() / pixelRect.width()),
+				qCeil(rect.height() / pixelRect.height()));
+		raster = raster.boundedTo(res);
+	}
+
+	return raster;
 }
 
 /*!
@@ -557,13 +595,15 @@ QSize QwtPlotSpectrogram::contourRasterSize(
        QwtRasterData::contourLines()
 */
 QwtRasterData::ContourLines QwtPlotSpectrogram::renderContourLines(
-    const QRectF &rect, const QSize &raster ) const
+	const QRectF &rect, const QSize &raster) const
 {
-    if ( d_data->data == NULL )
-        return QwtRasterData::ContourLines();
+	if (d_data->data == NULL)
+	{
+		return QwtRasterData::ContourLines();
+	}
 
-    return d_data->data->contourLines( rect, raster,
-        d_data->contourLevels, d_data->conrecFlags );
+	return d_data->data->contourLines(rect, raster,
+					  d_data->contourLevels, d_data->conrecFlags);
 }
 
 /*!
@@ -576,38 +616,47 @@ QwtRasterData::ContourLines QwtPlotSpectrogram::renderContourLines(
 
    \sa renderContourLines(), defaultContourPen(), contourPen()
 */
-void QwtPlotSpectrogram::drawContourLines( QPainter *painter,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QwtRasterData::ContourLines &contourLines ) const
+void QwtPlotSpectrogram::drawContourLines(QPainter *painter,
+		const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+		const QwtRasterData::ContourLines &contourLines) const
 {
-    if ( d_data->data == NULL )
-        return;
+	if (d_data->data == NULL)
+	{
+		return;
+	}
 
-    const int numLevels = d_data->contourLevels.size();
-    for ( int l = 0; l < numLevels; l++ )
-    {
-        const double level = d_data->contourLevels[l];
+	const int numLevels = d_data->contourLevels.size();
 
-        QPen pen = defaultContourPen();
-        if ( pen.style() == Qt::NoPen )
-            pen = contourPen( level );
+	for (int l = 0; l < numLevels; l++)
+	{
+		const double level = d_data->contourLevels[l];
 
-        if ( pen.style() == Qt::NoPen )
-            continue;
+		QPen pen = defaultContourPen();
 
-        painter->setPen( pen );
+		if (pen.style() == Qt::NoPen)
+		{
+			pen = contourPen(level);
+		}
 
-        const QPolygonF &lines = contourLines[level];
-        for ( int i = 0; i < lines.size(); i += 2 )
-        {
-            const QPointF p1( xMap.transform( lines[i].x() ),
-                yMap.transform( lines[i].y() ) );
-            const QPointF p2( xMap.transform( lines[i+1].x() ),
-                yMap.transform( lines[i+1].y() ) );
+		if (pen.style() == Qt::NoPen)
+		{
+			continue;
+		}
 
-            QwtPainter::drawLine( painter, p1, p2 );
-        }
-    }
+		painter->setPen(pen);
+
+		const QPolygonF &lines = contourLines[level];
+
+		for (int i = 0; i < lines.size(); i += 2)
+		{
+			const QPointF p1(xMap.transform(lines[i].x()),
+					 yMap.transform(lines[i].y()));
+			const QPointF p2(xMap.transform(lines[i + 1].x()),
+					 yMap.transform(lines[i + 1].y()));
+
+			QwtPainter::drawLine(painter, p1, p2);
+		}
+	}
 }
 
 /*!
@@ -621,40 +670,47 @@ void QwtPlotSpectrogram::drawContourLines( QPainter *painter,
   \sa setDisplayMode(), renderImage(),
       QwtPlotRasterItem::draw(), drawContourLines()
 */
-void QwtPlotSpectrogram::draw( QPainter *painter,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QRectF &canvasRect ) const
+void QwtPlotSpectrogram::draw(QPainter *painter,
+			      const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+			      const QRectF &canvasRect) const
 {
-    if ( d_data->displayMode & ImageMode )
-        QwtPlotRasterItem::draw( painter, xMap, yMap, canvasRect );
+	if (d_data->displayMode & ImageMode)
+	{
+		QwtPlotRasterItem::draw(painter, xMap, yMap, canvasRect);
+	}
 
-    if ( d_data->displayMode & ContourMode )
-    {
-        // Add some pixels at the borders
-        const int margin = 2;
-        QRectF rasterRect( canvasRect.x() - margin, canvasRect.y() - margin,
-            canvasRect.width() + 2 * margin, canvasRect.height() + 2 * margin );
+	if (d_data->displayMode & ContourMode)
+	{
+		// Add some pixels at the borders
+		const int margin = 2;
+		QRectF rasterRect(canvasRect.x() - margin, canvasRect.y() - margin,
+				  canvasRect.width() + 2 * margin, canvasRect.height() + 2 * margin);
 
-        QRectF area = QwtScaleMap::invTransform( xMap, yMap, rasterRect );
+		QRectF area = QwtScaleMap::invTransform(xMap, yMap, rasterRect);
 
-        const QRectF br = boundingRect();
-        if ( br.isValid() )
-        {
-            area &= br;
-            if ( area.isEmpty() )
-                return;
+		const QRectF br = boundingRect();
 
-            rasterRect = QwtScaleMap::transform( xMap, yMap, area );
-        }
+		if (br.isValid())
+		{
+			area &= br;
 
-        QSize raster = contourRasterSize( area, rasterRect.toRect() );
-        raster = raster.boundedTo( rasterRect.toRect().size() );
-        if ( raster.isValid() )
-        {
-            const QwtRasterData::ContourLines lines =
-                renderContourLines( area, raster );
+			if (area.isEmpty())
+			{
+				return;
+			}
 
-            drawContourLines( painter, xMap, yMap, lines );
-        }
-    }
+			rasterRect = QwtScaleMap::transform(xMap, yMap, area);
+		}
+
+		QSize raster = contourRasterSize(area, rasterRect.toRect());
+		raster = raster.boundedTo(rasterRect.toRect().size());
+
+		if (raster.isValid())
+		{
+			const QwtRasterData::ContourLines lines =
+				renderContourLines(area, raster);
+
+			drawContourLines(painter, xMap, yMap, lines);
+		}
+	}
 }

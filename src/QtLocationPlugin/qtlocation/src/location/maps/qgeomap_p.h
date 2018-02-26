@@ -64,50 +64,51 @@ class QQuickWindow;
 
 class Q_LOCATION_EXPORT QGeoMap : public QObject
 {
-    Q_OBJECT
-    Q_DECLARE_PRIVATE(QGeoMap)
+	Q_OBJECT
+	Q_DECLARE_PRIVATE(QGeoMap)
 
 public:
-    virtual ~QGeoMap();
+	virtual ~QGeoMap();
 
-    QGeoMapController *mapController();
+	QGeoMapController *mapController();
 
-    void resize(int width, int height);
-    int width() const;
-    int height() const;
+	void resize(int width, int height);
+	int width() const;
+	int height() const;
 
-    QGeoCameraData cameraData() const;
+	QGeoCameraData cameraData() const;
 
-    void setActiveMapType(const QGeoMapType mapType);
-    const QGeoMapType activeMapType() const;
+	void setActiveMapType(const QGeoMapType mapType);
+	const QGeoMapType activeMapType() const;
 
-    virtual QGeoCoordinate itemPositionToCoordinate(const QDoubleVector2D &pos, bool clipToViewport = true) const = 0;
-    virtual QDoubleVector2D coordinateToItemPosition(const QGeoCoordinate &coordinate, bool clipToViewport = true) const = 0;
-    virtual int mapVersion();
-    virtual void prefetchData();
+	virtual QGeoCoordinate itemPositionToCoordinate(const QDoubleVector2D &pos, bool clipToViewport = true) const = 0;
+	virtual QDoubleVector2D coordinateToItemPosition(const QGeoCoordinate &coordinate,
+			bool clipToViewport = true) const = 0;
+	virtual int mapVersion();
+	virtual void prefetchData();
 
-    QString pluginString();
-    QGeoCameraCapabilities cameraCapabilities();
+	QString pluginString();
+	QGeoCameraCapabilities cameraCapabilities();
 
 protected:
-    QGeoMap(QGeoMapPrivate &dd, QObject *parent = 0);
-    void setCameraData(const QGeoCameraData &cameraData);
-    virtual QSGNode *updateSceneGraph(QSGNode *node, QQuickWindow *window) = 0;
+	QGeoMap(QGeoMapPrivate &dd, QObject *parent = 0);
+	void setCameraData(const QGeoCameraData &cameraData);
+	virtual QSGNode *updateSceneGraph(QSGNode *node, QQuickWindow *window) = 0;
 
 public Q_SLOTS:
-    void update();
+	void update();
 
 Q_SIGNALS:
-    void cameraDataChanged(const QGeoCameraData &cameraData);
-    void updateRequired();
-    void activeMapTypeChanged();
-    void copyrightsChanged(const QImage &copyrightsImage);
-    void copyrightsChanged(const QString &copyrightsHtml);
+	void cameraDataChanged(const QGeoCameraData &cameraData);
+	void updateRequired();
+	void activeMapTypeChanged();
+	void copyrightsChanged(const QImage &copyrightsImage);
+	void copyrightsChanged(const QString &copyrightsHtml);
 
 private:
-    Q_DISABLE_COPY(QGeoMap)
-    friend class QGeoMapController; //setCameraData
-    friend class QDeclarativeGeoMap; //updateSceneGraph
+	Q_DISABLE_COPY(QGeoMap)
+	friend class QGeoMapController; //setCameraData
+	friend class QDeclarativeGeoMap; //updateSceneGraph
 };
 
 QT_END_NAMESPACE

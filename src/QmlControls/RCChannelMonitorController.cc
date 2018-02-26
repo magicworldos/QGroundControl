@@ -11,30 +11,33 @@
 #include "RCChannelMonitorController.h"
 
 RCChannelMonitorController::RCChannelMonitorController(void)
-    : _chanCount(0)
+	: _chanCount(0)
 {
-    connect(_vehicle, &Vehicle::rcChannelsChanged, this, &RCChannelMonitorController::_rcChannelsChanged);
+	connect(_vehicle, &Vehicle::rcChannelsChanged, this, &RCChannelMonitorController::_rcChannelsChanged);
 }
 
 void RCChannelMonitorController::_rcChannelsChanged(int channelCount, int pwmValues[Vehicle::cMaxRcChannels])
 {
-    int maxChannel = std::min(channelCount, _chanMax());
+	int maxChannel = std::min(channelCount, _chanMax());
 
-    for (int channel=0; channel<maxChannel; channel++) {
-        int channelValue = pwmValues[channel];
+	for (int channel = 0; channel < maxChannel; channel++)
+	{
+		int channelValue = pwmValues[channel];
 
-        if (_chanCount != channelCount) {
-            _chanCount = channelCount;
-            emit channelCountChanged(_chanCount);
-        }
+		if (_chanCount != channelCount)
+		{
+			_chanCount = channelCount;
+			emit channelCountChanged(_chanCount);
+		}
 
-        if (channelValue != -1) {
-            emit channelRCValueChanged(channel, channelValue);
-        }
-    }
+		if (channelValue != -1)
+		{
+			emit channelRCValueChanged(channel, channelValue);
+		}
+	}
 }
 
 int RCChannelMonitorController::_chanMax(void) const
 {
-    return _vehicle->firmwareType() == MAV_AUTOPILOT_PX4 ? _chanMaxPX4 : _chanMaxAPM;
+	return _vehicle->firmwareType() == MAV_AUTOPILOT_PX4 ? _chanMaxPX4 : _chanMaxAPM;
 }

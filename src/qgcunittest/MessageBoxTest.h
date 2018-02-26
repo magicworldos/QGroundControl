@@ -20,17 +20,17 @@
 
 class MessageBoxTest : public UnitTest
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 public:
-    MessageBoxTest(void);
-    
+	MessageBoxTest(void);
+
 private slots:
-    void _messageBoxExpected_test(void);
-    void _messageBoxUnexpected_test(void);
-    void _previousMessageBox_test(void);
-    void _noMessageBox_test(void);
-    void _badResponseButton_test(void);
+	void _messageBoxExpected_test(void);
+	void _messageBoxUnexpected_test(void);
+	void _previousMessageBox_test(void);
+	void _noMessageBox_test(void);
+	void _badResponseButton_test(void);
 };
 
 #endif
