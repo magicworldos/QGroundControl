@@ -33,7 +33,7 @@ PX4AdvancedFlightModesController::PX4AdvancedFlightModesController(void) :
 {
 	QStringList usedParams;
 	usedParams << "RC_MAP_THROTTLE" << "RC_MAP_YAW" << "RC_MAP_PITCH" << "RC_MAP_ROLL" << "RC_MAP_FLAPS" << "RC_MAP_AUX1" <<
-		   "RC_MAP_AUX2" <<
+		   "RC_MAP_AUX2" << "RC_MAP_AUX3" << "RC_MAP_AUX4" << "RC_MAP_AUX5" <<
 		   "RC_MAP_MODE_SW" << "RC_MAP_RETURN_SW" << "RC_MAP_LOITER_SW" << "RC_MAP_POSCTL_SW" << "RC_MAP_OFFB_SW" <<
 		   "RC_MAP_ACRO_SW";
 
@@ -124,7 +124,7 @@ void PX4AdvancedFlightModesController::_init(void)
 	QStringList attitudeParams;
 
 	attitudeParams << "RC_MAP_THROTTLE" << "RC_MAP_YAW" << "RC_MAP_PITCH" << "RC_MAP_ROLL" << "RC_MAP_FLAPS" <<
-		       "RC_MAP_AUX1" << "RC_MAP_AUX2";
+		       "RC_MAP_AUX1" << "RC_MAP_AUX2" << "RC_MAP_AUX3" << "RC_MAP_AUX4" << "RC_MAP_AUX5";
 
 	foreach (const QString &attitudeParam, attitudeParams)
 	{
@@ -198,7 +198,7 @@ void PX4AdvancedFlightModesController::_validateConfiguration(void)
 	QStringList attitudeParams;
 
 	attitudeParams << "RC_MAP_THROTTLE" << "RC_MAP_YAW" << "RC_MAP_PITCH" << "RC_MAP_ROLL" << "RC_MAP_FLAPS" <<
-		       "RC_MAP_AUX1" << "RC_MAP_AUX2";
+		       "RC_MAP_AUX1" << "RC_MAP_AUX2" << "RC_MAP_AUX3" << "RC_MAP_AUX4" << "RC_MAP_AUX5";
 
 	for (int i = 0; i < attitudeParams.count(); i++)
 	{
