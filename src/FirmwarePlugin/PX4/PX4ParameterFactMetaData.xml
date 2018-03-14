@@ -3705,46 +3705,6 @@ Used to calculate increased terrain random walk nosie due to movement</short_des
       <scope>drivers/mkblctrl</scope>
     </parameter>
   </group>
-  <group name="MPU9x50 Configuration">
-    <parameter default="4" name="MPU_ACC_LPF_ENM" type="INT32">
-      <short_desc>Low pass filter frequency for Accelerometer</short_desc>
-      <scope>platforms/qurt/fc_addon/mpu_spi</scope>
-      <values>
-        <value code="0">MPU9X50_ACC_LPF_460HZ</value>
-        <value code="1">MPU9X50_ACC_LPF_184HZ</value>
-        <value code="2">MPU9X50_ACC_LPF_92HZ</value>
-        <value code="3">MPU9X50_ACC_LPF_41HZ</value>
-        <value code="4">MPU9X50_ACC_LPF_20HZ</value>
-        <value code="5">MPU9X50_ACC_LPF_10HZ</value>
-        <value code="6">MPU9X50_ACC_LPF_5HZ</value>
-        <value code="7">MPU9X50_ACC_LPF_460HZ_NOLPF</value>
-      </values>
-    </parameter>
-    <parameter default="4" name="MPU_GYRO_LPF_ENM" type="INT32">
-      <short_desc>Low pass filter frequency for Gyro</short_desc>
-      <scope>platforms/qurt/fc_addon/mpu_spi</scope>
-      <values>
-        <value code="0">MPU9X50_GYRO_LPF_250HZ</value>
-        <value code="1">MPU9X50_GYRO_LPF_184HZ</value>
-        <value code="2">MPU9X50_GYRO_LPF_92HZ</value>
-        <value code="3">MPU9X50_GYRO_LPF_41HZ</value>
-        <value code="4">MPU9X50_GYRO_LPF_20HZ</value>
-        <value code="5">MPU9X50_GYRO_LPF_10HZ</value>
-        <value code="6">MPU9X50_GYRO_LPF_5HZ</value>
-        <value code="7">MPU9X50_GYRO_LPF_3600HZ_NOLPF</value>
-      </values>
-    </parameter>
-    <parameter default="2" name="MPU_SAMPLE_R_ENM" type="INT32">
-      <short_desc>Sample rate in Hz</short_desc>
-      <scope>platforms/qurt/fc_addon/mpu_spi</scope>
-      <values>
-        <value code="0">MPU9x50_SAMPLE_RATE_100HZ</value>
-        <value code="1">MPU9x50_SAMPLE_RATE_200HZ</value>
-        <value code="2">MPU9x50_SAMPLE_RATE_500HZ</value>
-        <value code="3">MPU9x50_SAMPLE_RATE_1000HZ</value>
-      </values>
-    </parameter>
-  </group>
   <group name="Mission">
     <parameter default="0" name="COM_OBL_ACT" type="INT32">
       <short_desc>Set offboard loss failsafe mode</short_desc>
@@ -4189,7 +4149,17 @@ default 1.5 turns per second</short_desc>
       <boolean />
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.003" name="MC_PITCHRATE_D" type="FLOAT">
+    <parameter default="0." name="MC_DTERM_CUTOFF" type="FLOAT">
+      <short_desc>Cutoff frequency for the low pass filter on the D-term in the rate controller</short_desc>
+      <long_desc>The D-term uses the derivative of the rate and thus is the most susceptible to noise. Therefore, using a D-term filter allows to decrease the driver-level filtering, which leads to reduced control latency and permits to increase the P gains. A value of 0 disables the filter.</long_desc>
+      <min>0</min>
+      <max>1000</max>
+      <unit>Hz</unit>
+      <decimal>0</decimal>
+      <increment>10</increment>
+      <scope>modules/mc_att_control</scope>
+    </parameter>
+    <parameter default="0.002" name="MC_PITCHRATE_D" type="FLOAT">
       <short_desc>Pitch rate D gain</short_desc>
       <long_desc>Pitch rate differential gain. Small values help reduce fast oscillations. If value is too big oscillations will appear again.</long_desc>
       <min>0.0</min>
@@ -4204,7 +4174,7 @@ default 1.5 turns per second</short_desc>
       <decimal>4</decimal>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.05" name="MC_PITCHRATE_I" type="FLOAT">
+    <parameter default="0.03" name="MC_PITCHRATE_I" type="FLOAT">
       <short_desc>Pitch rate I gain</short_desc>
       <long_desc>Pitch rate integral gain. Can be set to compensate static thrust difference or gravity center offset.</long_desc>
       <min>0.0</min>
@@ -4222,7 +4192,7 @@ default 1.5 turns per second</short_desc>
       <increment>5</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.15" name="MC_PITCHRATE_P" type="FLOAT">
+    <parameter default="0.06" name="MC_PITCHRATE_P" type="FLOAT">
       <short_desc>Pitch rate P gain</short_desc>
       <long_desc>Pitch rate proportional gain, i.e. control output for angular speed error 1 rad/s.</long_desc>
       <min>0.0</min>
@@ -4235,7 +4205,7 @@ default 1.5 turns per second</short_desc>
       <short_desc>Pitch P gain</short_desc>
       <long_desc>Pitch proportional gain, i.e. desired angular speed in rad/s for error 1 rad.</long_desc>
       <min>0.0</min>
-      <max>10</max>
+      <max>12</max>
       <unit>1/s</unit>
       <decimal>2</decimal>
       <increment>0.1</increment>
@@ -4268,7 +4238,7 @@ default 1.5 turns per second</short_desc>
       <increment>0.01</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.003" name="MC_ROLLRATE_D" type="FLOAT">
+    <parameter default="0.002" name="MC_ROLLRATE_D" type="FLOAT">
       <short_desc>Roll rate D gain</short_desc>
       <long_desc>Roll rate differential gain. Small values help reduce fast oscillations. If value is too big oscillations will appear again.</long_desc>
       <min>0.0</min>
@@ -4284,7 +4254,7 @@ default 1.5 turns per second</short_desc>
       <decimal>4</decimal>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.05" name="MC_ROLLRATE_I" type="FLOAT">
+    <parameter default="0.03" name="MC_ROLLRATE_I" type="FLOAT">
       <short_desc>Roll rate I gain</short_desc>
       <long_desc>Roll rate integral gain. Can be set to compensate static thrust difference or gravity center offset.</long_desc>
       <min>0.0</min>
@@ -4302,7 +4272,7 @@ default 1.5 turns per second</short_desc>
       <increment>5</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.15" name="MC_ROLLRATE_P" type="FLOAT">
+    <parameter default="0.06" name="MC_ROLLRATE_P" type="FLOAT">
       <short_desc>Roll rate P gain</short_desc>
       <long_desc>Roll rate proportional gain, i.e. control output for angular speed error 1 rad/s.</long_desc>
       <min>0.0</min>
@@ -4315,7 +4285,7 @@ default 1.5 turns per second</short_desc>
       <short_desc>Roll P gain</short_desc>
       <long_desc>Roll proportional gain, i.e. desired angular speed in rad/s for error 1 rad.</long_desc>
       <min>0.0</min>
-      <max>8</max>
+      <max>12</max>
       <unit>1/s</unit>
       <decimal>2</decimal>
       <increment>0.1</increment>
@@ -4454,7 +4424,7 @@ default 1.5 turns per second</short_desc>
       <increment>0.01</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="2.8" name="MC_YAW_P" type="FLOAT">
+    <parameter default="1.8" name="MC_YAW_P" type="FLOAT">
       <short_desc>Yaw P gain</short_desc>
       <long_desc>Yaw proportional gain, i.e. desired angular speed in rad/s for error 1 rad.</long_desc>
       <min>0.0</min>
@@ -4615,9 +4585,9 @@ towards MPC_ACC_HOR_MAX/MPC_ACC_UP_MAX with jerk limit</short_desc>
       <decimal>1</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.7" name="MPC_LAND_SPEED" type="FLOAT">
+    <parameter default="0.5" name="MPC_LAND_SPEED" type="FLOAT">
       <short_desc>Landing descend rate</short_desc>
-      <min>0.6</min>
+      <min>0.1</min>
       <unit>m/s</unit>
       <decimal>1</decimal>
       <scope>modules/mc_pos_control</scope>
@@ -4765,14 +4735,14 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <decimal>2</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.01" name="MPC_XY_VEL_D" type="FLOAT">
+    <parameter default="0.005" name="MPC_XY_VEL_D" type="FLOAT">
       <short_desc>Differential gain for horizontal velocity error. Small values help reduce fast oscillations. If value is too big oscillations will appear again</short_desc>
       <min>0.005</min>
       <max>0.1</max>
       <decimal>3</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.02" name="MPC_XY_VEL_I" type="FLOAT">
+    <parameter default="0.008" name="MPC_XY_VEL_I" type="FLOAT">
       <short_desc>Integral gain for horizontal velocity error</short_desc>
       <long_desc>Non-zero value allows to resist wind.</long_desc>
       <min>0.0</min>
@@ -4790,7 +4760,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <increment>1</increment>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.09" name="MPC_XY_VEL_P" type="FLOAT">
+    <parameter default="0.06" name="MPC_XY_VEL_P" type="FLOAT">
       <short_desc>Proportional gain for horizontal velocity error</short_desc>
       <min>0.06</min>
       <max>0.15</max>
@@ -5025,7 +4995,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <decimal>2</decimal>
       <scope>drivers/px4fmu</scope>
     </parameter>
-    <parameter default="900" name="PWM_DISARMED" type="INT32">
+    <parameter default="800" name="PWM_DISARMED" type="INT32">
       <short_desc>Set the disarmed PWM for the main outputs</short_desc>
       <long_desc>This is the PWM pulse the autopilot is outputting if not armed. The main use of this parameter is to silence ESCs when they are disarmed.</long_desc>
       <min>0</min>
@@ -5227,7 +5197,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <reboot_required>true</reboot_required>
       <scope>modules/sensors</scope>
     </parameter>
-    <parameter default="1000" name="PWM_MIN" type="INT32">
+    <parameter default="880" name="PWM_MIN" type="INT32">
       <short_desc>Set the minimum PWM for the main outputs</short_desc>
       <long_desc>Set to 1000 for industry default or 900 to increase servo travel.</long_desc>
       <min>800</min>
@@ -5563,13 +5533,6 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <decimal>1</decimal>
       <increment>0.1</increment>
       <scope>modules/navigator</scope>
-    </parameter>
-  </group>
-  <group name="RC Receiver Configuration">
-    <parameter default="1" name="RC_RECEIVER_TYPE" type="INT32">
-      <short_desc>RC receiver type</short_desc>
-      <long_desc>Acceptable values: - RC_RECEIVER_SPEKTRUM = 1, - RC_RECEIVER_LEMONRX = 2,</long_desc>
-      <scope>platforms/qurt/fc_addon/rc_receiver</scope>
     </parameter>
   </group>
   <group name="Radio Calibration">
@@ -6350,8 +6313,8 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
     </parameter>
     <parameter default="10.0" name="RC_FLT_CUTOFF" type="FLOAT">
       <short_desc>Cutoff frequency for the low pass filter on roll, pitch, yaw and throttle</short_desc>
-      <long_desc>Does not get set unless below RC_FLT_SMP_RATE/2 because of filter instability characteristics.</long_desc>
-      <min>0.1</min>
+      <long_desc>Does not get set unless below RC_FLT_SMP_RATE/2 because of filter instability characteristics. Set to 0 to disable the filter.</long_desc>
+      <min>0</min>
       <unit>Hz</unit>
       <scope>modules/sensors</scope>
     </parameter>
@@ -7302,7 +7265,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
     </parameter>
   </group>
   <group name="Return To Land">
-    <parameter default="30" name="RTL_DESCEND_ALT" type="FLOAT">
+    <parameter default="3.0" name="RTL_DESCEND_ALT" type="FLOAT">
       <short_desc>RTL loiter altitude</short_desc>
       <long_desc>Stay at this altitude above home position after RTL descending. Land (i.e. slowly descend) from this altitude if autolanding allowed.</long_desc>
       <min>2</min>
@@ -7312,7 +7275,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <increment>0.5</increment>
       <scope>modules/navigator</scope>
     </parameter>
-    <parameter default="-1.0" name="RTL_LAND_DELAY" type="FLOAT">
+    <parameter default="0.0" name="RTL_LAND_DELAY" type="FLOAT">
       <short_desc>RTL delay</short_desc>
       <long_desc>Delay after descend before landing in RTL mode. If set to -1 the system will not land but loiter at RTL_DESCEND_ALT.</long_desc>
       <min>-1</min>
@@ -7331,7 +7294,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
         <value code="1">Planned Landing (Mission)</value>
       </values>
     </parameter>
-    <parameter default="5.0" name="RTL_MIN_DIST" type="FLOAT">
+    <parameter default="3.0" name="RTL_MIN_DIST" type="FLOAT">
       <short_desc>Minimum distance to trigger rising to a safe altitude</short_desc>
       <long_desc>If the system is horizontally closer than this distance to home it will land straight on home instead of raising to the return altitude first.</long_desc>
       <min>0.5</min>
@@ -7341,7 +7304,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <increment>0.5</increment>
       <scope>modules/navigator</scope>
     </parameter>
-    <parameter default="60" name="RTL_RETURN_ALT" type="FLOAT">
+    <parameter default="3.0" name="RTL_RETURN_ALT" type="FLOAT">
       <short_desc>RTL altitude</short_desc>
       <long_desc>Altitude to fly back in RTL in meters</long_desc>
       <min>0</min>
@@ -7529,20 +7492,6 @@ This is used for gathering replay logs for the ekf2 module</short_desc>
       <long_desc>If set to 1, add an ID to the log, which uniquely identifies the vehicle</long_desc>
       <boolean />
       <scope>modules/logger</scope>
-    </parameter>
-  </group>
-  <group name="SITL">
-    <parameter default="60" name="SIM_BAT_DRAIN" type="FLOAT">
-      <short_desc>Simulator Battery drain interval</short_desc>
-      <min>1</min>
-      <max>86400</max>
-      <unit>s</unit>
-      <increment>1</increment>
-      <scope>modules/simulator</scope>
-    </parameter>
-    <parameter default="14560" name="SITL_UDP_PRT" type="INT32">
-      <short_desc>Simulator UDP port</short_desc>
-      <scope>modules/simulator</scope>
     </parameter>
   </group>
   <group name="Sensor Calibration">
@@ -8095,18 +8044,18 @@ This is used for gathering replay logs for the ekf2 module</short_desc>
       </values>
     </parameter>
     <parameter default="30.0" name="IMU_ACCEL_CUTOFF" type="FLOAT">
-      <short_desc>Driver level cut frequency for accel</short_desc>
-      <long_desc>The cut frequency for the 2nd order butterworth filter on the accel driver. This features is currently supported by the mpu6000 and mpu9250. This only affects the signal sent to the controllers, not the estimators. 0 disables the filter.</long_desc>
-      <min>5</min>
+      <short_desc>Driver level cutoff frequency for accel</short_desc>
+      <long_desc>The cutoff frequency for the 2nd order butterworth filter on the accel driver. This features is currently supported by the mpu6000 and mpu9250. This only affects the signal sent to the controllers, not the estimators. 0 disables the filter.</long_desc>
+      <min>0</min>
       <max>1000</max>
       <unit>Hz</unit>
       <reboot_required>true</reboot_required>
       <scope>modules/sensors</scope>
     </parameter>
     <parameter default="30.0" name="IMU_GYRO_CUTOFF" type="FLOAT">
-      <short_desc>Driver level cut frequency for gyro</short_desc>
-      <long_desc>The cut frequency for the 2nd order butterworth filter on the gyro driver. This features is currently supported by the mpu6000 and mpu9250. This only affects the signal sent to the controllers, not the estimators. 0 disables the filter.</long_desc>
-      <min>5</min>
+      <short_desc>Driver level cutoff frequency for gyro</short_desc>
+      <long_desc>The cutoff frequency for the 2nd order butterworth filter on the gyro driver. This features is currently supported by the mpu6000 and mpu9250. This only affects the signal sent to the controllers, not the estimators. 0 disables the filter.</long_desc>
+      <min>0</min>
       <max>1000</max>
       <unit>Hz</unit>
       <reboot_required>true</reboot_required>
@@ -8269,72 +8218,6 @@ This is used for gathering replay logs for the ekf2 module</short_desc>
       </values>
     </parameter>
   </group>
-  <group name="Snapdragon UART ESC">
-    <parameter default="250000" name="UART_ESC_BAUD" type="INT32">
-      <short_desc>ESC UART baud rate</short_desc>
-      <long_desc>Default rate is 250Kbps, whic is used in off-the-shelf QRP ESC products.</long_desc>
-      <scope>platforms/qurt/fc_addon/uart_esc</scope>
-    </parameter>
-    <parameter default="2" name="UART_ESC_MODEL" type="INT32">
-      <short_desc>ESC model</short_desc>
-      <long_desc>See esc_model_t enum definition in uart_esc_dev.h for all supported ESC model enum values.</long_desc>
-      <scope>platforms/qurt/fc_addon/uart_esc</scope>
-      <values>
-        <value code="0">ESC_200QX</value>
-        <value code="1">ESC_350QX</value>
-        <value code="2">ESC_210QC</value>
-      </values>
-    </parameter>
-    <parameter default="4" name="UART_ESC_MOTOR1" type="INT32">
-      <short_desc>Motor 1 Mapping</short_desc>
-      <scope>platforms/qurt/fc_addon/uart_esc</scope>
-    </parameter>
-    <parameter default="2" name="UART_ESC_MOTOR2" type="INT32">
-      <short_desc>Motor 2 Mapping</short_desc>
-      <scope>platforms/qurt/fc_addon/uart_esc</scope>
-    </parameter>
-    <parameter default="1" name="UART_ESC_MOTOR3" type="INT32">
-      <short_desc>Motor 3 Mapping</short_desc>
-      <scope>platforms/qurt/fc_addon/uart_esc</scope>
-    </parameter>
-    <parameter default="3" name="UART_ESC_MOTOR4" type="INT32">
-      <short_desc>Motor 4 Mapping</short_desc>
-      <scope>platforms/qurt/fc_addon/uart_esc</scope>
-    </parameter>
-  </group>
-  <group name="Subscriber Example">
-    <parameter default="100" name="SUB_INTERV" type="INT32">
-      <short_desc>Interval of one subscriber in the example in ms</short_desc>
-      <unit>ms</unit>
-      <scope>examples/subscriber</scope>
-    </parameter>
-    <parameter default="3.14" name="SUB_TESTF" type="FLOAT">
-      <short_desc>Float Demonstration Parameter in the Example</short_desc>
-      <scope>examples/subscriber</scope>
-    </parameter>
-  </group>
-  <group name="Syslink">
-    <parameter default="231" name="SLNK_RADIO_ADDR1" type="INT32">
-      <short_desc>Operating address of the NRF51 (most significant byte)</short_desc>
-      <scope>modules/syslink</scope>
-    </parameter>
-    <parameter default="3890735079" name="SLNK_RADIO_ADDR2" type="INT32">
-      <short_desc>Operating address of the NRF51 (least significant 4 bytes)</short_desc>
-      <scope>modules/syslink</scope>
-    </parameter>
-    <parameter default="80" name="SLNK_RADIO_CHAN" type="INT32">
-      <short_desc>Operating channel of the NRF51</short_desc>
-      <min>0</min>
-      <max>125</max>
-      <scope>modules/syslink</scope>
-    </parameter>
-    <parameter default="2" name="SLNK_RADIO_RATE" type="INT32">
-      <short_desc>Operating datarate of the NRF51</short_desc>
-      <min>0</min>
-      <max>2</max>
-      <scope>modules/syslink</scope>
-    </parameter>
-  </group>
   <group name="System">
     <parameter default="15" name="LED_RGB_MAXBRT" type="INT32">
       <short_desc>RGB Led brightness limit</short_desc>
@@ -8439,7 +8322,7 @@ This is used for gathering replay logs for the ekf2 module</short_desc>
       <reboot_required>true</reboot_required>
       <scope>modules/systemlib</scope>
     </parameter>
-    <parameter default="1" name="SYS_LOGGER" type="INT32">
+    <parameter default="0" name="SYS_LOGGER" type="INT32">
       <short_desc>SD logger</short_desc>
       <min>0</min>
       <max>1</max>
@@ -9181,32 +9064,6 @@ This is used for gathering replay logs for the ekf2 module</short_desc>
     </parameter>
   </group>
   <group name="UAVCAN">
-    <parameter default="1000000" name="CANNODE_BITRATE" type="INT32">
-      <short_desc>UAVCAN CAN bus bitrate</short_desc>
-      <min>20000</min>
-      <max>1000000</max>
-      <scope>modules/uavcannode</scope>
-    </parameter>
-    <parameter default="120" name="CANNODE_NODE_ID" type="INT32">
-      <short_desc>UAVCAN Node ID</short_desc>
-      <long_desc>Read the specs at http://uavcan.org to learn more about Node ID.</long_desc>
-      <min>1</min>
-      <max>125</max>
-      <scope>modules/uavcannode</scope>
-    </parameter>
-    <parameter default="1000000" name="ESC_BITRATE" type="INT32">
-      <short_desc>UAVCAN CAN bus bitrate</short_desc>
-      <min>20000</min>
-      <max>1000000</max>
-      <scope>modules/uavcanesc</scope>
-    </parameter>
-    <parameter default="120" name="ESC_NODE_ID" type="INT32">
-      <short_desc>UAVCAN Node ID</short_desc>
-      <long_desc>Read the specs at http://uavcan.org to learn more about Node ID.</long_desc>
-      <min>1</min>
-      <max>125</max>
-      <scope>modules/uavcanesc</scope>
-    </parameter>
     <parameter default="1000000" name="UAVCAN_BITRATE" type="INT32">
       <short_desc>UAVCAN CAN bus bitrate</short_desc>
       <min>20000</min>
