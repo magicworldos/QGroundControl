@@ -235,7 +235,7 @@ Set to 2 to use heading from motion capture</short_desc>
       <decimal>8</decimal>
       <scope>modules/sensors</scope>
     </parameter>
-    <parameter default="0.07" name="BAT_CRIT_THR" type="FLOAT">
+    <parameter default="0.10" name="BAT_CRIT_THR" type="FLOAT">
       <short_desc>Critical threshold</short_desc>
       <long_desc>Sets the threshold when the battery will be reported as critically low. This has to be lower than the low threshold. This threshold commonly will trigger RTL.</long_desc>
       <min>0.05</min>
@@ -313,7 +313,7 @@ Set to 2 to use heading from motion capture</short_desc>
         <value code="1">External</value>
       </values>
     </parameter>
-    <parameter default="4.05" name="BAT_V_CHARGED" type="FLOAT">
+    <parameter default="4.20" name="BAT_V_CHARGED" type="FLOAT">
       <short_desc>Full cell voltage (5C load)</short_desc>
       <long_desc>Defines the voltage where a single cell of the battery is considered full under a mild load. This will never be the nominal voltage of 4.2V</long_desc>
       <unit>V</unit>
@@ -328,7 +328,7 @@ Set to 2 to use heading from motion capture</short_desc>
       <decimal>8</decimal>
       <scope>modules/sensors</scope>
     </parameter>
-    <parameter default="3.5" name="BAT_V_EMPTY" type="FLOAT">
+    <parameter default="3.7" name="BAT_V_EMPTY" type="FLOAT">
       <short_desc>Empty cell voltage (5C load)</short_desc>
       <long_desc>Defines the voltage where a single cell of the battery is considered empty. The voltage should be chosen before the steep dropoff to 2.8V. A typical lithium battery can only be discharged down to 10% before it drops off to a voltage level damaging the cells.</long_desc>
       <unit>V</unit>
@@ -4159,7 +4159,7 @@ default 1.5 turns per second</short_desc>
       <increment>10</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.002" name="MC_PITCHRATE_D" type="FLOAT">
+    <parameter default="0.003" name="MC_PITCHRATE_D" type="FLOAT">
       <short_desc>Pitch rate D gain</short_desc>
       <long_desc>Pitch rate differential gain. Small values help reduce fast oscillations. If value is too big oscillations will appear again.</long_desc>
       <min>0.0</min>
@@ -4174,7 +4174,7 @@ default 1.5 turns per second</short_desc>
       <decimal>4</decimal>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.03" name="MC_PITCHRATE_I" type="FLOAT">
+    <parameter default="0.012" name="MC_PITCHRATE_I" type="FLOAT">
       <short_desc>Pitch rate I gain</short_desc>
       <long_desc>Pitch rate integral gain. Can be set to compensate static thrust difference or gravity center offset.</long_desc>
       <min>0.0</min>
@@ -4192,7 +4192,7 @@ default 1.5 turns per second</short_desc>
       <increment>5</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.06" name="MC_PITCHRATE_P" type="FLOAT">
+    <parameter default="0.09" name="MC_PITCHRATE_P" type="FLOAT">
       <short_desc>Pitch rate P gain</short_desc>
       <long_desc>Pitch rate proportional gain, i.e. control output for angular speed error 1 rad/s.</long_desc>
       <min>0.0</min>
@@ -4238,7 +4238,7 @@ default 1.5 turns per second</short_desc>
       <increment>0.01</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.002" name="MC_ROLLRATE_D" type="FLOAT">
+    <parameter default="0.003" name="MC_ROLLRATE_D" type="FLOAT">
       <short_desc>Roll rate D gain</short_desc>
       <long_desc>Roll rate differential gain. Small values help reduce fast oscillations. If value is too big oscillations will appear again.</long_desc>
       <min>0.0</min>
@@ -4254,7 +4254,7 @@ default 1.5 turns per second</short_desc>
       <decimal>4</decimal>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.03" name="MC_ROLLRATE_I" type="FLOAT">
+    <parameter default="0.012" name="MC_ROLLRATE_I" type="FLOAT">
       <short_desc>Roll rate I gain</short_desc>
       <long_desc>Roll rate integral gain. Can be set to compensate static thrust difference or gravity center offset.</long_desc>
       <min>0.0</min>
@@ -4272,7 +4272,7 @@ default 1.5 turns per second</short_desc>
       <increment>5</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.06" name="MC_ROLLRATE_P" type="FLOAT">
+    <parameter default="0.09" name="MC_ROLLRATE_P" type="FLOAT">
       <short_desc>Roll rate P gain</short_desc>
       <long_desc>Roll rate proportional gain, i.e. control output for angular speed error 1 rad/s.</long_desc>
       <min>0.0</min>
@@ -4742,7 +4742,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <decimal>3</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.008" name="MPC_XY_VEL_I" type="FLOAT">
+    <parameter default="0.006" name="MPC_XY_VEL_I" type="FLOAT">
       <short_desc>Integral gain for horizontal velocity error</short_desc>
       <long_desc>Non-zero value allows to resist wind.</long_desc>
       <min>0.0</min>
@@ -5197,7 +5197,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <reboot_required>true</reboot_required>
       <scope>modules/sensors</scope>
     </parameter>
-    <parameter default="880" name="PWM_MIN" type="INT32">
+    <parameter default="800" name="PWM_MIN" type="INT32">
       <short_desc>Set the minimum PWM for the main outputs</short_desc>
       <long_desc>Set to 1000 for industry default or 900 to increase servo travel.</long_desc>
       <min>800</min>
