@@ -3778,6 +3778,17 @@ Used to calculate increased terrain random walk nosie due to movement</short_des
       <increment>100</increment>
       <scope>modules/navigator</scope>
     </parameter>
+    <parameter default="0" name="MIS_LOOP_TASK" type="INT32">
+      <short_desc>Enable loop task when the last mission finished</short_desc>
+      <long_desc>If enabled, start from first mission when the last mission finished</long_desc>
+      <min>0</min>
+      <max>1</max>
+      <scope>modules/navigator</scope>
+      <values>
+        <value code="0">Disable</value>
+        <value code="1">Enable</value>
+      </values>
+    </parameter>
     <parameter default="-1.0" name="MIS_LTRMIN_ALT" type="FLOAT">
       <short_desc>Minimum Loiter altitude</short_desc>
       <long_desc>This is the minimum altitude the system will always obey. The intent is to stay out of ground effect. set to -1, if there shouldn't be a minimum loiter altitude</long_desc>
