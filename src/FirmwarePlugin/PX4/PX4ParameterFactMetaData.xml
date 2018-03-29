@@ -5060,7 +5060,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <reboot_required>true</reboot_required>
       <scope>modules/sensors</scope>
     </parameter>
-    <parameter default="1000" name="PWM_MIN" type="INT32">
+    <parameter default="880" name="PWM_MIN" type="INT32">
       <short_desc>Set the minimum PWM for the main outputs</short_desc>
       <long_desc>Set to 1000 for industry default or 900 to increase servo travel.</long_desc>
       <min>800</min>
