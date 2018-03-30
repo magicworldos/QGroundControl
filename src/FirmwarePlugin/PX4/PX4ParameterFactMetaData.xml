@@ -4615,7 +4615,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <decimal>3</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.02" name="MPC_XY_VEL_I" type="FLOAT">
+    <parameter default="0.04" name="MPC_XY_VEL_I" type="FLOAT">
       <short_desc>Integral gain for horizontal velocity error</short_desc>
       <long_desc>Non-zero value allows to resist wind.</long_desc>
       <min>0.0</min>
@@ -4633,7 +4633,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <increment>1</increment>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.06" name="MPC_XY_VEL_P" type="FLOAT">
+    <parameter default="0.09" name="MPC_XY_VEL_P" type="FLOAT">
       <short_desc>Proportional gain for horizontal velocity error</short_desc>
       <min>0.06</min>
       <max>0.15</max>
