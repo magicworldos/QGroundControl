@@ -17,30 +17,27 @@ ViewWidgetController::ViewWidgetController(void) :
 	_autopilot(NULL),
 	_uas(NULL)
 {
-	connect(qgcApp()->toolbox()->multiVehicleManager(), &MultiVehicleManager::parameterReadyVehicleAvailableChanged, this,
-		&ViewWidgetController::_vehicleAvailable);
+    connect(qgcApp()->toolbox()->multiVehicleManager(), &MultiVehicleManager::parameterReadyVehicleAvailableChanged, this, &ViewWidgetController::_vehicleAvailable);
 }
 
 void ViewWidgetController::_vehicleAvailable(bool available)
 {
-	if (_uas)
-	{
-		_uas = NULL;
-		_autopilot = NULL;
-		emit pluginDisconnected();
-	}
-
-	if (available)
-	{
-		Vehicle *vehicle = qgcApp()->toolbox()->multiVehicleManager()->activeVehicle();
-
-		_uas = vehicle->uas();
-		_autopilot = vehicle->autopilotPlugin();
-		emit pluginConnected(QVariant::fromValue(_autopilot));
-	}
+    if (_uas) {
+        _uas = NULL;
+        _autopilot = NULL;
+        emit pluginDisconnected();
+    }
+    
+    if (available) {
+        Vehicle* vehicle = qgcApp()->toolbox()->multiVehicleManager()->activeVehicle();
+        
+        _uas = vehicle->uas();
+        _autopilot = vehicle->autopilotPlugin();
+        emit pluginConnected(QVariant::fromValue(_autopilot));
+    }
 }
 
 void ViewWidgetController::checkForVehicle(void)
 {
-	_vehicleAvailable(qgcApp()->toolbox()->multiVehicleManager()->activeVehicle());
+    _vehicleAvailable(qgcApp()->toolbox()->multiVehicleManager()->activeVehicle());
 }

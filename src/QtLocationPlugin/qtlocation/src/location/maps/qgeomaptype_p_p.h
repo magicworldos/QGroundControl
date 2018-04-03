@@ -59,22 +59,21 @@ QT_BEGIN_NAMESPACE
 class QGeoMapTypePrivate : public QSharedData
 {
 public:
-	QGeoMapTypePrivate();
-	QGeoMapTypePrivate(QGeoMapType::MapStyle style, const QString &name, const QString &description, bool mobile,
-			   bool night, int mapId);
-	QGeoMapTypePrivate(const QGeoMapTypePrivate &other);
-	~QGeoMapTypePrivate();
+    QGeoMapTypePrivate();
+    QGeoMapTypePrivate(QGeoMapType::MapStyle style, const QString &name, const QString &description, bool mobile, bool night, int mapId);
+    QGeoMapTypePrivate(const QGeoMapTypePrivate &other);
+    ~QGeoMapTypePrivate();
 
-	QGeoMapTypePrivate &operator = (const QGeoMapTypePrivate &other);
+    QGeoMapTypePrivate &operator = (const QGeoMapTypePrivate &other);
 
-	bool operator == (const QGeoMapTypePrivate &other) const;
+    bool operator == (const QGeoMapTypePrivate &other) const;
 
-	QGeoMapType::MapStyle style_;
-	QString name_;
-	QString description_;
-	bool mobile_;
-	bool night_;
-	int mapId_;
+    QGeoMapType::MapStyle style_;
+    QString name_;
+    QString description_;
+    bool mobile_;
+    bool night_;
+    int mapId_;
 };
 
 QT_END_NAMESPACE

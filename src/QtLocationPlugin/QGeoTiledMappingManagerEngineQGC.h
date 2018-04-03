@@ -56,9 +56,9 @@
 #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
 class QGeoTiledMapQGC : public QGeoTiledMap
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	QGeoTiledMapQGC(QGeoTiledMappingManagerEngine *engine, QObject *parent = 0);
+    QGeoTiledMapQGC(QGeoTiledMappingManagerEngine *engine, QObject *parent = 0);
 };
 #endif
 
@@ -66,19 +66,18 @@ class QGeoTileFetcherQGC;
 
 class QGeoTiledMappingManagerEngineQGC : public QGeoTiledMappingManagerEngine
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	QGeoTiledMappingManagerEngineQGC(const QVariantMap &parameters, QGeoServiceProvider::Error *error,
-					 QString *errorString);
-	~QGeoTiledMappingManagerEngineQGC();
+    QGeoTiledMappingManagerEngineQGC(const QVariantMap &parameters, QGeoServiceProvider::Error *error, QString *errorString);
+    ~QGeoTiledMappingManagerEngineQGC();
 #if QT_VERSION < QT_VERSION_CHECK(5, 5, 0)
-	QGeoMapData *createMapData();
+    QGeoMapData *createMapData();
 #else
-	QGeoMap *createMap();
+    QGeoMap *createMap();
 #endif
 private:
 #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
-	void _setCache(const QVariantMap &parameters);
+    void _setCache(const QVariantMap &parameters);
 #endif
 };
 

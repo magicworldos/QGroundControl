@@ -54,74 +54,57 @@ class QGeoPositionInfo;
 class QLocationUtils
 {
 public:
-	inline static bool isValidLat(double lat)
-	{
-		return lat >= -90 && lat <= 90;
-	}
-	inline static bool isValidLong(double lng)
-	{
-		return lng >= -180 && lng <= 180;
-	}
+    inline static bool isValidLat(double lat) {
+        return lat >= -90 && lat <= 90;
+    }
+    inline static bool isValidLong(double lng) {
+        return lng >= -180 && lng <= 180;
+    }
 
-	inline static double clipLat(double lat)
-	{
-		if (lat > 90)
-		{
-			lat = 90;
-		}
+    inline static double clipLat(double lat) {
+        if (lat > 90)
+            lat = 90;
+        else if (lat < -90)
+            lat = -90;
+        return lat;
+    }
 
-		else if (lat < -90)
-		{
-			lat = -90;
-		}
+    inline static double wrapLong(double lng) {
+        if (lng > 180)
+            lng -= 360;
+        else if (lng < -180)
+            lng += 360;
+        return lng;
+    }
 
-		return lat;
-	}
+    /*
+        Creates a QGeoPositionInfo from a GGA, GLL, RMC, VTG or ZDA sentence.
 
-	inline static double wrapLong(double lng)
-	{
-		if (lng > 180)
-		{
-			lng -= 360;
-		}
+        Note:
+        - GGA and GLL sentences have time but not date so the update's
+          QDateTime object will have an invalid date.
+        - RMC reports date with a two-digit year so in this case the year
+          is assumed to be after the year 2000.
+    */
+    Q_AUTOTEST_EXPORT static bool getPosInfoFromNmea(const char *data, int size,
+                                                     QGeoPositionInfo *info, double uere,
+                                                     bool *hasFix = 0);
 
-		else if (lng < -180)
-		{
-			lng += 360;
-		}
+    /*
+        Returns true if the given NMEA sentence has a valid checksum.
+    */
+    Q_AUTOTEST_EXPORT static bool hasValidNmeaChecksum(const char *data, int size);
 
-		return lng;
-	}
+    /*
+        Returns time from a string in hhmmss or hhmmss.z+ format.
+    */
+    Q_AUTOTEST_EXPORT static bool getNmeaTime(const QByteArray &bytes, QTime *time);
 
-	/*
-	    Creates a QGeoPositionInfo from a GGA, GLL, RMC, VTG or ZDA sentence.
-
-	    Note:
-	    - GGA and GLL sentences have time but not date so the update's
-	      QDateTime object will have an invalid date.
-	    - RMC reports date with a two-digit year so in this case the year
-	      is assumed to be after the year 2000.
-	*/
-	Q_AUTOTEST_EXPORT static bool getPosInfoFromNmea(const char *data, int size,
-			QGeoPositionInfo *info, double uere,
-			bool *hasFix = 0);
-
-	/*
-	    Returns true if the given NMEA sentence has a valid checksum.
-	*/
-	Q_AUTOTEST_EXPORT static bool hasValidNmeaChecksum(const char *data, int size);
-
-	/*
-	    Returns time from a string in hhmmss or hhmmss.z+ format.
-	*/
-	Q_AUTOTEST_EXPORT static bool getNmeaTime(const QByteArray &bytes, QTime *time);
-
-	/*
-	    Accepts for example ("2734.7964", 'S', "15306.0124", 'E') and returns the
-	    lat-long values. Fails if lat or long fail isValidLat() or isValidLong().
-	*/
-	Q_AUTOTEST_EXPORT static bool getNmeaLatLong(const QByteArray &latString, char latDirection,
-			const QByteArray &lngString, char lngDirection, double *lat, double *lon);
+    /*
+        Accepts for example ("2734.7964", 'S', "15306.0124", 'E') and returns the
+        lat-long values. Fails if lat or long fail isValidLat() or isValidLong().
+    */
+    Q_AUTOTEST_EXPORT static bool getNmeaLatLong(const QByteArray &latString, char latDirection, const QByteArray &lngString, char lngDirection, double *lat, double *lon);
 };
 
 QT_END_NAMESPACE

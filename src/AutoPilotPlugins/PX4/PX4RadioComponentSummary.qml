@@ -21,9 +21,6 @@ FactPanel {
     property Fact mapFlapsFact:     controller.getParameterFact(-1, "RC_MAP_FLAPS")
     property Fact mapAux1Fact:      controller.getParameterFact(-1, "RC_MAP_AUX1")
     property Fact mapAux2Fact:      controller.getParameterFact(-1, "RC_MAP_AUX2")
-    property Fact mapAux3Fact:      controller.getParameterFact(-1, "RC_MAP_AUX3")
-    property Fact mapAux4Fact:      controller.getParameterFact(-1, "RC_MAP_AUX4")
-    property Fact mapAux5Fact:      controller.getParameterFact(-1, "RC_MAP_AUX5")
 
     Column {
         anchors.fill:       parent
@@ -62,21 +59,6 @@ FactPanel {
         VehicleSummaryRow {
             labelText: qsTr("Aux2:")
             valueText: mapAux2Fact ? (mapAux2Fact.value === 0 ? qsTr("Disabled") : mapAux2Fact.valueString) : ""
-        }
-        
-        VehicleSummaryRow {
-            labelText: qsTr("Aux3:")
-            valueText: mapAux3Fact ? (mapAux3Fact.value === 0 ? qsTr("Disabled") : mapAux3Fact.valueString) : ""
-        }
-        
-        VehicleSummaryRow {
-            labelText: qsTr("Aux4:")
-            valueText: mapAux4Fact ? (mapAux4Fact.value === 0 ? qsTr("Disabled") : mapAux4Fact.valueString) : ""
-        }
-        
-        VehicleSummaryRow {
-            labelText: qsTr("Aux5:")
-            valueText: mapAux5Fact ? (mapAux5Fact.value === 0 ? qsTr("Disabled") : mapAux5Fact.valueString) : ""
         }
     }
 }

@@ -20,15 +20,15 @@
 
 class QmlTestWidget : public QGCQmlWidgetHolder
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	QmlTestWidget(void);
+    QmlTestWidget(void);
 
-	Q_INVOKABLE void showColorDialog(QQuickItem *item);
+    Q_INVOKABLE void showColorDialog(QQuickItem* item);
 
 private slots:
-	void _colorSelected(const QColor &color);
+    void _colorSelected(const QColor & color);
 
 };
 

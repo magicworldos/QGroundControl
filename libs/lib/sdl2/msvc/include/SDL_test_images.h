@@ -47,12 +47,11 @@ extern "C" {
 /**
  *Type for test images.
  */
-typedef struct SDLTest_SurfaceImage_s
-{
-	int width;
-	int height;
-	unsigned int bytes_per_pixel; /* 3:RGB, 4:RGBA */
-	const char *pixel_data;
+typedef struct SDLTest_SurfaceImage_s {
+  int width;
+  int height;
+  unsigned int bytes_per_pixel; /* 3:RGB, 4:RGBA */
+  const char *pixel_data;
 } SDLTest_SurfaceImage_t;
 
 /* Test images */

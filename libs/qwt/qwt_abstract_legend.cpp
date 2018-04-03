@@ -14,8 +14,8 @@
 
   \param parent Parent widget
 */
-QwtAbstractLegend::QwtAbstractLegend(QWidget *parent):
-	QFrame(parent)
+QwtAbstractLegend::QwtAbstractLegend( QWidget *parent ):
+    QFrame( parent )
 {
 }
 
@@ -31,8 +31,8 @@ QwtAbstractLegend::~QwtAbstractLegend()
    \param orientation Orientation
    \return Extent of the corresponding scroll element
 */
-int QwtAbstractLegend::scrollExtent(Qt::Orientation orientation) const
+int QwtAbstractLegend::scrollExtent( Qt::Orientation orientation ) const
 {
-	Q_UNUSED(orientation);
-	return 0;
+    Q_UNUSED( orientation );
+    return 0;
 }

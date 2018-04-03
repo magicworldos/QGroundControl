@@ -15,31 +15,31 @@
 
 class APMAirframeComponent : public VehicleComponent
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	APMAirframeComponent(Vehicle *vehicle, AutoPilotPlugin *autopilot, QObject *parent = NULL);
+    APMAirframeComponent(Vehicle* vehicle, AutoPilotPlugin* autopilot, QObject* parent = NULL);
+    
+    // Virtuals from VehicleComponent
+    QStringList setupCompleteChangedTriggerList(void) const override;
 
-	// Virtuals from VehicleComponent
-	QStringList setupCompleteChangedTriggerList(void) const override;
-
-	// Virtuals from VehicleComponent
-	QString name(void) const override;
-	QString description(void) const override;
-	QString iconResource(void) const override;
-	bool requiresSetup(void) const override;
-	bool setupComplete(void) const override;
-	QUrl setupSource(void) const override;
-	QUrl summaryQmlSource(void) const override;
+    // Virtuals from VehicleComponent
+    QString name(void) const override;
+    QString description(void) const override;
+    QString iconResource(void) const override;
+    bool requiresSetup(void) const override;
+    bool setupComplete(void) const override;
+    QUrl setupSource(void) const override;
+    QUrl summaryQmlSource(void) const override;
 
 private:
-	bool            _requiresFrameSetup; ///< true: FRAME parameter must be set
-	const QString   _name;
-	Fact           *_frameParamFact;
-	bool            _useNewFrameParam;
+    bool            _requiresFrameSetup; ///< true: FRAME parameter must be set
+    const QString   _name;
+    Fact*           _frameParamFact;
+    bool            _useNewFrameParam;
 
-	static const char *_oldFrameParam;
-	static const char *_newFrameParam;
+    static const char* _oldFrameParam;
+    static const char* _newFrameParam;
 };
 
 #endif

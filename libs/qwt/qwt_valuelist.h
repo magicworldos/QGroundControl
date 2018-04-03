@@ -43,7 +43,7 @@ typedef QValueList<double> QwtValueList;
 #include <qvector.h>
 inline uint qHash(double key)
 {
-	return uint(key);
+    return uint(key);
 }
 #endif
 

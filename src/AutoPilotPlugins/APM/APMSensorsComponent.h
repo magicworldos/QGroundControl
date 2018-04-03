@@ -15,29 +15,29 @@
 
 class APMSensorsComponent : public VehicleComponent
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	APMSensorsComponent(Vehicle *vehicle, AutoPilotPlugin *autopilot, QObject *parent = NULL);
+    APMSensorsComponent(Vehicle* vehicle, AutoPilotPlugin* autopilot, QObject* parent = NULL);
 
-	bool compassSetupNeeded(void) const;
-	bool accelSetupNeeded(void) const;
+    bool compassSetupNeeded(void) const;
+    bool accelSetupNeeded(void) const;
 
-	// Virtuals from VehicleComponent
-	QStringList setupCompleteChangedTriggerList(void) const final;
-
-	// Virtuals from VehicleComponent
-	QString name(void) const final;
-	QString description(void) const final;
-	QString iconResource(void) const final;
-	bool requiresSetup(void) const final;
-	bool setupComplete(void) const final;
-	QUrl setupSource(void) const final;
-	QUrl summaryQmlSource(void) const final;
-
+    // Virtuals from VehicleComponent
+    QStringList setupCompleteChangedTriggerList(void) const final;
+    
+    // Virtuals from VehicleComponent
+    QString name(void) const final;
+    QString description(void) const final;
+    QString iconResource(void) const final;
+    bool requiresSetup(void) const final;
+    bool setupComplete(void) const final;
+    QUrl setupSource(void) const final;
+    QUrl summaryQmlSource(void) const final;
+    
 private:
-	const QString   _name;
-	QVariantList    _summaryItems;
+    const QString   _name;
+    QVariantList    _summaryItems;
 };
 
 #endif

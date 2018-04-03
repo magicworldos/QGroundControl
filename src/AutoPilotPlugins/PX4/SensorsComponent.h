@@ -19,31 +19,31 @@
 
 class SensorsComponent : public VehicleComponent
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	SensorsComponent(Vehicle *vehicle, AutoPilotPlugin *autopilot, QObject *parent = NULL);
-
-	// Virtuals from VehicleComponent
-	QStringList setupCompleteChangedTriggerList(void) const override;
-
-	// Virtuals from VehicleComponent
-	virtual QString name(void) const override;
-	virtual QString description(void) const override;
-	virtual QString iconResource(void) const override;
-	virtual bool requiresSetup(void) const override;
-	virtual bool setupComplete(void) const override;
-	virtual QUrl setupSource(void) const override;
-	virtual QUrl summaryQmlSource(void) const override;
-
+    SensorsComponent(Vehicle* vehicle, AutoPilotPlugin* autopilot, QObject* parent = NULL);
+    
+    // Virtuals from VehicleComponent
+    QStringList setupCompleteChangedTriggerList(void) const override;
+    
+    // Virtuals from VehicleComponent
+    virtual QString name(void) const override;
+    virtual QString description(void) const override;
+    virtual QString iconResource(void) const override;
+    virtual bool requiresSetup(void) const override;
+    virtual bool setupComplete(void) const override;
+    virtual QUrl setupSource(void) const override;
+    virtual QUrl summaryQmlSource(void) const override;
+    
 private:
-	const QString   _name;
-	QVariantList    _summaryItems;
-	QStringList     _deviceIds;
+    const QString   _name;
+    QVariantList    _summaryItems;
+    QStringList     _deviceIds;
 
-	static const char *_airspeedDisabledParam;
-	static const char *_airspeedBreakerParam;
-	static const char *_airspeedCalParam;
+    static const char* _airspeedDisabledParam;
+    static const char* _airspeedBreakerParam;
+    static const char* _airspeedCalParam;
 };
 
 #endif

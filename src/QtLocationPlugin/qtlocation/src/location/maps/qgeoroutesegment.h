@@ -51,37 +51,37 @@ class Q_LOCATION_EXPORT QGeoRouteSegment
 {
 
 public:
-	QGeoRouteSegment();
-	QGeoRouteSegment(const QGeoRouteSegment &other);
-	~QGeoRouteSegment();
+    QGeoRouteSegment();
+    QGeoRouteSegment(const QGeoRouteSegment &other);
+    ~QGeoRouteSegment();
 
-	QGeoRouteSegment &operator= (const QGeoRouteSegment &other);
+    QGeoRouteSegment &operator= (const QGeoRouteSegment &other);
 
-	bool operator ==(const QGeoRouteSegment &other) const;
-	bool operator !=(const QGeoRouteSegment &other) const;
+    bool operator ==(const QGeoRouteSegment &other) const;
+    bool operator !=(const QGeoRouteSegment &other) const;
 
-	bool isValid() const;
+    bool isValid() const;
 
-	void setNextRouteSegment(const QGeoRouteSegment &routeSegment);
-	QGeoRouteSegment nextRouteSegment() const;
+    void setNextRouteSegment(const QGeoRouteSegment &routeSegment);
+    QGeoRouteSegment nextRouteSegment() const;
 
-	void setTravelTime(int secs);
-	int travelTime() const;
+    void setTravelTime(int secs);
+    int travelTime() const;
 
-	void setDistance(qreal distance);
-	qreal distance() const;
+    void setDistance(qreal distance);
+    qreal distance() const;
 
-	void setPath(const QList<QGeoCoordinate> &path);
-	QList<QGeoCoordinate> path() const;
+    void setPath(const QList<QGeoCoordinate> &path);
+    QList<QGeoCoordinate> path() const;
 
-	void setManeuver(const QGeoManeuver &maneuver);
-	QGeoManeuver maneuver() const;
+    void setManeuver(const QGeoManeuver &maneuver);
+    QGeoManeuver maneuver() const;
 
 protected:
-	QGeoRouteSegment(QExplicitlySharedDataPointer<QGeoRouteSegmentPrivate> &d_ptr);
+    QGeoRouteSegment(QExplicitlySharedDataPointer<QGeoRouteSegmentPrivate> &d_ptr);
 
 private:
-	QExplicitlySharedDataPointer<QGeoRouteSegmentPrivate> d_ptr;
+    QExplicitlySharedDataPointer<QGeoRouteSegmentPrivate> d_ptr;
 };
 
 QT_END_NAMESPACE

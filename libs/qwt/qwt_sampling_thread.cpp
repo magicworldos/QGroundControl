@@ -13,26 +13,26 @@
 class QwtSamplingThread::PrivateData
 {
 public:
-	QwtSystemClock clock;
+    QwtSystemClock clock;
 
-	double interval;
-	bool isStopped;
+    double interval;
+    bool isStopped;
 };
 
 
 //! Constructor
-QwtSamplingThread::QwtSamplingThread(QObject *parent):
-	QThread(parent)
+QwtSamplingThread::QwtSamplingThread( QObject *parent ):
+    QThread( parent )
 {
-	d_data = new PrivateData;
-	d_data->interval = 1000; // 1 second
-	d_data->isStopped = true;
+    d_data = new PrivateData;
+    d_data->interval = 1000; // 1 second
+    d_data->isStopped = true;
 }
 
 //! Destructor
 QwtSamplingThread::~QwtSamplingThread()
 {
-	delete d_data;
+    delete d_data;
 }
 
 /*!
@@ -42,14 +42,12 @@ QwtSamplingThread::~QwtSamplingThread()
    \param interval Interval
    \sa interval()
 */
-void QwtSamplingThread::setInterval(double interval)
+void QwtSamplingThread::setInterval( double interval )
 {
-	if (interval < 0.0)
-	{
-		interval = 0.0;
-	}
+    if ( interval < 0.0 )
+        interval = 0.0;
 
-	d_data->interval = interval;
+    d_data->interval = interval;
 }
 
 /*!
@@ -58,7 +56,7 @@ void QwtSamplingThread::setInterval(double interval)
 */
 double QwtSamplingThread::interval() const
 {
-	return d_data->interval;
+    return d_data->interval;
 }
 
 /*!
@@ -67,12 +65,10 @@ double QwtSamplingThread::interval() const
 */
 double QwtSamplingThread::elapsed() const
 {
-	if (d_data->isStopped)
-	{
-		return 0.0;
-	}
+    if ( d_data->isStopped )
+        return 0.0;
 
-	return d_data->clock.elapsed();
+    return d_data->clock.elapsed();
 }
 
 /*!
@@ -81,7 +77,7 @@ double QwtSamplingThread::elapsed() const
 */
 void QwtSamplingThread::stop()
 {
-	d_data->isStopped = true;
+    d_data->isStopped = true;
 }
 
 /*!
@@ -90,23 +86,21 @@ void QwtSamplingThread::stop()
 */
 void QwtSamplingThread::run()
 {
-	d_data->clock.start();
-	d_data->isStopped = false;
+    d_data->clock.start();
+    d_data->isStopped = false;
 
-	while (!d_data->isStopped)
-	{
-		const double elapsed = d_data->clock.elapsed();
-		sample(elapsed / 1000.0);
+    while ( !d_data->isStopped )
+    {
+        const double elapsed = d_data->clock.elapsed();
+        sample( elapsed / 1000.0 );
 
-		if (d_data->interval > 0.0)
-		{
-			const double msecs =
-				d_data->interval - (d_data->clock.elapsed() - elapsed);
+        if ( d_data->interval > 0.0 )
+        {
+            const double msecs =
+                d_data->interval - ( d_data->clock.elapsed() - elapsed );
 
-			if (msecs > 0.0)
-			{
-				usleep(qRound(1000.0 * msecs));
-			}
-		}
-	}
+            if ( msecs > 0.0 )
+                usleep( qRound( 1000.0 * msecs ) );
+        }
+    }
 }

@@ -22,10 +22,10 @@
 class QWT_EXPORT QwtRect : public QRect
 {
 public:
-	QwtRect();
-	QwtRect(const QRect &r);
+    QwtRect();
+    QwtRect(const QRect &r);
 
-	QwtPolygon clip(const QwtPolygon &) const;
+    QwtPolygon clip(const QwtPolygon &) const;
 };
 
 #endif

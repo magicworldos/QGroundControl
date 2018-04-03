@@ -60,21 +60,21 @@ QT_BEGIN_NAMESPACE
 class QGeoRouteRequestPrivate : public QSharedData
 {
 public:
-	QGeoRouteRequestPrivate();
-	QGeoRouteRequestPrivate(const QGeoRouteRequestPrivate &other);
-	~QGeoRouteRequestPrivate();
+    QGeoRouteRequestPrivate();
+    QGeoRouteRequestPrivate(const QGeoRouteRequestPrivate &other);
+    ~QGeoRouteRequestPrivate();
 
-	bool operator ==(const QGeoRouteRequestPrivate &other) const;
+    bool operator ==(const QGeoRouteRequestPrivate &other) const;
 
-	QList<QGeoCoordinate> waypoints;
-	QList<QGeoRectangle> excludeAreas;
-	int numberAlternativeRoutes;
-	QGeoRouteRequest::TravelModes travelModes;
-	QMap < QGeoRouteRequest::FeatureType,
-	     QGeoRouteRequest::FeatureWeight > featureWeights;
-	QGeoRouteRequest::RouteOptimizations routeOptimization;
-	QGeoRouteRequest::SegmentDetail segmentDetail;
-	QGeoRouteRequest::ManeuverDetail maneuverDetail;
+    QList<QGeoCoordinate> waypoints;
+    QList<QGeoRectangle> excludeAreas;
+    int numberAlternativeRoutes;
+    QGeoRouteRequest::TravelModes travelModes;
+    QMap < QGeoRouteRequest::FeatureType,
+         QGeoRouteRequest::FeatureWeight > featureWeights;
+    QGeoRouteRequest::RouteOptimizations routeOptimization;
+    QGeoRouteRequest::SegmentDetail segmentDetail;
+    QGeoRouteRequest::ManeuverDetail maneuverDetail;
 };
 
 QT_END_NAMESPACE

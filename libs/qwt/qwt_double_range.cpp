@@ -20,16 +20,16 @@ static double MinEps = 1.0e-10;
   step size to 1.0, and the value to 0.0.
 */
 QwtDoubleRange::QwtDoubleRange():
-	d_minValue(0.0),
-	d_maxValue(0.0),
-	d_step(1.0),
-	d_pageSize(1),
-	d_isValid(false),
-	d_value(0.0),
-	d_exactValue(0.0),
-	d_exactPrevValue(0.0),
-	d_prevValue(0.0),
-	d_periodic(false)
+    d_minValue(0.0),
+    d_maxValue(0.0),
+    d_step(1.0),
+    d_pageSize(1),
+    d_isValid(false),
+    d_value(0.0),
+    d_exactValue(0.0),
+    d_exactPrevValue(0.0),
+    d_prevValue(0.0),
+    d_periodic(false)
 {
 }
 
@@ -41,17 +41,16 @@ QwtDoubleRange::~QwtDoubleRange()
 //! Set the value to be valid/invalid
 void QwtDoubleRange::setValid(bool isValid)
 {
-	if (isValid != d_isValid)
-	{
-		d_isValid = isValid;
-		valueChange();
-	}
+    if ( isValid != d_isValid ) {
+        d_isValid = isValid;
+        valueChange();
+    }
 }
 
 //! Indicates if the value is valid
 bool QwtDoubleRange::isValid() const
 {
-	return d_isValid;
+    return d_isValid;
 }
 
 /*!
@@ -64,78 +63,55 @@ bool QwtDoubleRange::isValid() const
 */
 void QwtDoubleRange::setNewValue(double x, bool align)
 {
-	double vmin, vmax;
+    double vmin,vmax;
 
-	d_prevValue = d_value;
+    d_prevValue = d_value;
 
-	vmin = qwtMin(d_minValue, d_maxValue);
-	vmax = qwtMax(d_minValue, d_maxValue);
+    vmin = qwtMin(d_minValue, d_maxValue);
+    vmax = qwtMax(d_minValue, d_maxValue);
 
-	//
-	// Range check
-	//
-	if (x < vmin)
-	{
-		if ((d_periodic) && (vmin != vmax))
-			d_value = x + ::ceil((vmin - x) / (vmax - vmin))
-				  * (vmax - vmin);
-		else
-		{
-			d_value = vmin;
-		}
-	}
+    //
+    // Range check
+    //
+    if (x < vmin) {
+        if ((d_periodic) && (vmin != vmax))
+            d_value = x + ::ceil( (vmin - x) / (vmax - vmin ) )
+                      * (vmax - vmin);
+        else
+            d_value = vmin;
+    } else if (x > vmax) {
+        if ((d_periodic) && (vmin != vmax))
+            d_value = x - ::ceil( ( x - vmax) / (vmax - vmin ))
+                      * (vmax - vmin);
+        else
+            d_value = vmax;
+    } else
+        d_value = x;
 
-	else if (x > vmax)
-	{
-		if ((d_periodic) && (vmin != vmax))
-			d_value = x - ::ceil((x - vmax) / (vmax - vmin))
-				  * (vmax - vmin);
-		else
-		{
-			d_value = vmax;
-		}
-	}
+    d_exactPrevValue = d_exactValue;
+    d_exactValue = d_value;
 
-	else
-	{
-		d_value = x;
-	}
+    // align to grid
+    if (align) {
+        if (d_step != 0.0) {
+            d_value = d_minValue +
+                      qwtRound((d_value - d_minValue) / d_step) * d_step;
+        } else
+            d_value = d_minValue;
 
-	d_exactPrevValue = d_exactValue;
-	d_exactValue = d_value;
+        // correct rounding error at the border
+        if (fabs(d_value - d_maxValue) < MinEps * qwtAbs(d_step))
+            d_value = d_maxValue;
 
-	// align to grid
-	if (align)
-	{
-		if (d_step != 0.0)
-		{
-			d_value = d_minValue +
-				  qwtRound((d_value - d_minValue) / d_step) * d_step;
-		}
+        // correct rounding error if value = 0
+        if (::fabs(d_value) < MinEps * qwtAbs(d_step))
+            d_value = 0.0;
+    }
 
-		else
-		{
-			d_value = d_minValue;
-		}
-
-		// correct rounding error at the border
-		if (fabs(d_value - d_maxValue) < MinEps * qwtAbs(d_step))
-		{
-			d_value = d_maxValue;
-		}
-
-		// correct rounding error if value = 0
-		if (::fabs(d_value) < MinEps * qwtAbs(d_step))
-		{
-			d_value = 0.0;
-		}
-	}
-
-	if (!d_isValid || d_prevValue != d_value)
-	{
-		d_isValid = true;
-		valueChange();
-	}
+    if (!d_isValid || d_prevValue != d_value) {
+        d_isValid = true;
+        valueChange();
+    }
 }
 
 /*!
@@ -149,7 +125,7 @@ void QwtDoubleRange::setNewValue(double x, bool align)
 */
 void QwtDoubleRange::fitValue(double x)
 {
-	setNewValue(x, true);
+    setNewValue(x, true);
 }
 
 
@@ -164,7 +140,7 @@ void QwtDoubleRange::fitValue(double x)
 */
 void QwtDoubleRange::setValue(double x)
 {
-	setNewValue(x, false);
+    setNewValue(x, false);
 }
 
 /*!
@@ -186,38 +162,35 @@ void QwtDoubleRange::setValue(double x)
 */
 void QwtDoubleRange::setRange(double vmin, double vmax, double vstep, int pageSize)
 {
-	bool rchg = ((d_maxValue != vmax) || (d_minValue != vmin));
+    bool rchg = ((d_maxValue != vmax) || (d_minValue != vmin));
 
-	if (rchg)
-	{
-		d_minValue = vmin;
-		d_maxValue = vmax;
-	}
+    if (rchg) {
+        d_minValue = vmin;
+        d_maxValue = vmax;
+    }
 
-	//
-	// look if the step width has an acceptable
-	// value or otherwise change it.
-	//
-	setStep(vstep);
+    //
+    // look if the step width has an acceptable
+    // value or otherwise change it.
+    //
+    setStep(vstep);
 
-	//
-	// limit page size
-	//
-	d_pageSize = qwtLim(pageSize, 0,
-			    int(qwtAbs((d_maxValue - d_minValue) / d_step)));
+    //
+    // limit page size
+    //
+    d_pageSize = qwtLim(pageSize,0,
+                        int(qwtAbs((d_maxValue - d_minValue) / d_step)));
 
-	//
-	// If the value lies out of the range, it
-	// will be changed. Note that it will not be adjusted to
-	// the new step width.
-	setNewValue(d_value, false);
+    //
+    // If the value lies out of the range, it
+    // will be changed. Note that it will not be adjusted to
+    // the new step width.
+    setNewValue(d_value, false);
 
-	// call notifier after the step width has been
-	// adjusted.
-	if (rchg)
-	{
-		rangeChange();
-	}
+    // call notifier after the step width has been
+    // adjusted.
+    if (rchg)
+        rangeChange();
 }
 
 /*!
@@ -227,38 +200,25 @@ void QwtDoubleRange::setRange(double vmin, double vmax, double vstep, int pageSi
 */
 void QwtDoubleRange::setStep(double vstep)
 {
-	double intv = d_maxValue - d_minValue;
+    double intv = d_maxValue - d_minValue;
 
-	double newStep;
+    double newStep;
+    if (vstep == 0.0)
+        newStep = intv * DefaultRelStep;
+    else {
+        if (((intv > 0) && (vstep < 0)) || ((intv < 0) && (vstep > 0)))
+            newStep = -vstep;
+        else
+            newStep = vstep;
 
-	if (vstep == 0.0)
-	{
-		newStep = intv * DefaultRelStep;
-	}
+        if ( fabs(newStep) < fabs(MinRelStep * intv) )
+            newStep = MinRelStep * intv;
+    }
 
-	else
-	{
-		if (((intv > 0) && (vstep < 0)) || ((intv < 0) && (vstep > 0)))
-		{
-			newStep = -vstep;
-		}
-
-		else
-		{
-			newStep = vstep;
-		}
-
-		if (fabs(newStep) < fabs(MinRelStep * intv))
-		{
-			newStep = MinRelStep * intv;
-		}
-	}
-
-	if (newStep != d_step)
-	{
-		d_step = newStep;
-		stepChange();
-	}
+    if (newStep != d_step) {
+        d_step = newStep;
+        stepChange();
+    }
 }
 
 
@@ -278,7 +238,7 @@ void QwtDoubleRange::setStep(double vstep)
 */
 void QwtDoubleRange::setPeriodic(bool tf)
 {
-	d_periodic = tf;
+    d_periodic = tf;
 }
 
 /*!
@@ -289,10 +249,8 @@ void QwtDoubleRange::setPeriodic(bool tf)
 */
 void QwtDoubleRange::incValue(int nSteps)
 {
-	if (isValid())
-	{
-		setNewValue(d_value + double(nSteps) * d_step, true);
-	}
+    if ( isValid() )
+        setNewValue(d_value + double(nSteps) * d_step, true);
 }
 
 /*!
@@ -303,10 +261,8 @@ void QwtDoubleRange::incValue(int nSteps)
 */
 void QwtDoubleRange::incPages(int nPages)
 {
-	if (isValid())
-	{
-		setNewValue(d_value + double(nPages) * double(d_pageSize) * d_step, true);
-	}
+    if ( isValid() )
+        setNewValue(d_value + double(nPages) * double(d_pageSize) * d_step, true);
 }
 
 /*!
@@ -347,7 +303,7 @@ void QwtDoubleRange::stepChange()
 */
 double QwtDoubleRange::step() const
 {
-	return qwtAbs(d_step);
+    return qwtAbs(d_step);
 }
 
 /*!
@@ -360,7 +316,7 @@ double QwtDoubleRange::step() const
 */
 double QwtDoubleRange::maxValue() const
 {
-	return d_maxValue;
+    return d_maxValue;
 }
 
 /*!
@@ -373,7 +329,7 @@ double QwtDoubleRange::maxValue() const
 */
 double QwtDoubleRange::minValue() const
 {
-	return d_minValue;
+    return d_minValue;
 }
 
 /*!
@@ -382,19 +338,19 @@ double QwtDoubleRange::minValue() const
 */
 bool QwtDoubleRange::periodic() const
 {
-	return d_periodic;
+    return d_periodic;
 }
 
 //! Returns the page size in steps.
 int QwtDoubleRange::pageSize() const
 {
-	return d_pageSize;
+    return d_pageSize;
 }
 
 //! Returns the current value.
 double QwtDoubleRange::value() const
 {
-	return d_value;
+    return d_value;
 }
 
 /*!
@@ -408,17 +364,17 @@ double QwtDoubleRange::value() const
 */
 double QwtDoubleRange::exactValue() const
 {
-	return d_exactValue;
+    return d_exactValue;
 }
 
 //! Returns the exact previous value
 double QwtDoubleRange::exactPrevValue() const
 {
-	return d_exactPrevValue;
+    return d_exactPrevValue;
 }
 
 //! Returns the previous value
 double QwtDoubleRange::prevValue() const
 {
-	return d_prevValue;
+    return d_prevValue;
 }

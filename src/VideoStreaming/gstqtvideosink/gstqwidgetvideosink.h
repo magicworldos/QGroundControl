@@ -28,35 +28,34 @@
 #include "gstqtvideosinkbase.h"
 
 #define GST_TYPE_QWIDGET_VIDEO_SINK \
-	(GstQWidgetVideoSink::get_type())
+  (GstQWidgetVideoSink::get_type())
 
 struct GstQWidgetVideoSink
 {
 public:
-	GstQtVideoSinkBase parent;
+    GstQtVideoSinkBase parent;
 
-	static GType get_type();
+    static GType get_type();
 
 private:
-	enum
-	{
-		PROP_0,
-		PROP_WIDGET
-	};
+    enum {
+        PROP_0,
+        PROP_WIDGET
+    };
 
-	static void base_init(gpointer g_class);
-	static void class_init(gpointer g_class, gpointer class_data);
-	static void init(GTypeInstance *instance, gpointer g_class);
+    static void base_init(gpointer g_class);
+    static void class_init(gpointer g_class, gpointer class_data);
+    static void init(GTypeInstance *instance, gpointer g_class);
 
-	static void set_property(GObject *object, guint prop_id,
-				 const GValue *value, GParamSpec *pspec);
-	static void get_property(GObject *object, guint prop_id,
-				 GValue *value, GParamSpec *pspec);
+    static void set_property(GObject *object, guint prop_id,
+                             const GValue *value, GParamSpec *pspec);
+    static void get_property(GObject *object, guint prop_id,
+                             GValue *value, GParamSpec *pspec);
 };
 
 struct GstQWidgetVideoSinkClass
 {
-	GstQtVideoSinkBaseClass parent_class;
+    GstQtVideoSinkBaseClass parent_class;
 };
 
 #endif

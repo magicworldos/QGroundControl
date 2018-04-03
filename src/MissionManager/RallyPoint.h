@@ -19,48 +19,48 @@
 /// that it can be used in a QmlObjectListMode for Qml.
 class RallyPoint : public QObject
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	RallyPoint(const QGeoCoordinate &coordinate, QObject *parent = NULL);
-	RallyPoint(const RallyPoint &other, QObject *parent = NULL);
+    RallyPoint(const QGeoCoordinate& coordinate, QObject* parent = NULL);
+    RallyPoint(const RallyPoint& other, QObject* parent = NULL);
 
-	~RallyPoint();
+    ~RallyPoint();
 
-	const RallyPoint &operator=(const RallyPoint &other);
+    const RallyPoint& operator=(const RallyPoint& other);
+    
+    Q_PROPERTY(QGeoCoordinate   coordinate      READ coordinate     WRITE setCoordinate     NOTIFY coordinateChanged)
+    Q_PROPERTY(bool             dirty           READ dirty          WRITE setDirty          NOTIFY dirtyChanged)
+    Q_PROPERTY(QVariantList     textFieldFacts  MEMBER _textFieldFacts                      CONSTANT)
 
-	Q_PROPERTY(QGeoCoordinate   coordinate      READ coordinate     WRITE setCoordinate     NOTIFY coordinateChanged)
-	Q_PROPERTY(bool             dirty           READ dirty          WRITE setDirty          NOTIFY dirtyChanged)
-	Q_PROPERTY(QVariantList     textFieldFacts  MEMBER _textFieldFacts                      CONSTANT)
+    QGeoCoordinate coordinate(void) const;
+    void setCoordinate(const QGeoCoordinate& coordinate);
 
-	QGeoCoordinate coordinate(void) const;
-	void setCoordinate(const QGeoCoordinate &coordinate);
-
-	bool dirty(void) const { return _dirty; }
-	void setDirty(bool dirty);
+    bool dirty(void) const { return _dirty; }
+    void setDirty(bool dirty);
 
 signals:
-	void coordinateChanged(const QGeoCoordinate &coordinate);
-	void dirtyChanged(bool dirty);
+    void coordinateChanged      (const QGeoCoordinate& coordinate);
+    void dirtyChanged           (bool dirty);
 
 private slots:
-	void _sendCoordinateChanged(void);
+    void _sendCoordinateChanged(void);
 
 private:
-	void _factSetup(void);
+    void _factSetup(void);
 
-	bool _dirty;
-	Fact _longitudeFact;
-	Fact _latitudeFact;
-	Fact _altitudeFact;
+    bool _dirty;
+    Fact _longitudeFact;
+    Fact _latitudeFact;
+    Fact _altitudeFact;
 
-	QVariantList _textFieldFacts;
+    QVariantList _textFieldFacts;
 
-	static QMap<QString, FactMetaData *> _metaDataMap;
+    static QMap<QString, FactMetaData*> _metaDataMap;
 
-	static const char *_longitudeFactName;
-	static const char *_latitudeFactName;
-	static const char *_altitudeFactName;
+    static const char* _longitudeFactName;
+    static const char* _latitudeFactName;
+    static const char* _altitudeFactName;
 };
 
 #endif

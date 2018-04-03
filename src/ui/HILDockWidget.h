@@ -15,15 +15,15 @@
 
 class HILDockWidget : public MultiVehicleDockWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit HILDockWidget(const QString &title, QAction *action, QWidget *parent = 0);
-	~HILDockWidget();
+    explicit HILDockWidget(const QString& title, QAction* action, QWidget *parent = 0);
+    ~HILDockWidget();
 
 protected:
-	// Override from MultiVehicleDockWidget
-	virtual QWidget *_newVehicleWidget(Vehicle *vehicle, QWidget *parent);
+    // Override from MultiVehicleDockWidget
+    virtual QWidget* _newVehicleWidget(Vehicle* vehicle, QWidget* parent);
 };
 
 #endif

@@ -42,65 +42,63 @@ QT_BEGIN_NAMESPACE
 class QGeoPositionInfoSourcePrivate;
 class Q_POSITIONING_EXPORT QGeoPositionInfoSource : public QObject
 {
-	Q_OBJECT
-	Q_PROPERTY(int updateInterval READ updateInterval WRITE setUpdateInterval)
-	Q_PROPERTY(int minimumUpdateInterval READ minimumUpdateInterval)
-	Q_PROPERTY(QString sourceName READ sourceName)
+    Q_OBJECT
+    Q_PROPERTY(int updateInterval READ updateInterval WRITE setUpdateInterval)
+    Q_PROPERTY(int minimumUpdateInterval READ minimumUpdateInterval)
+    Q_PROPERTY(QString sourceName READ sourceName)
 
 public:
-	enum Error
-	{
-		AccessError = 0,
-		ClosedError = 1,
-		UnknownSourceError = 2,
-		NoError = 3
-	};
-	Q_ENUMS(Error)
+    enum Error {
+        AccessError = 0,
+        ClosedError = 1,
+        UnknownSourceError = 2,
+        NoError = 3
+    };
+    Q_ENUMS(Error)
 
-	enum PositioningMethod
-	{
-		NoPositioningMethods = 0x00000000,
-		SatellitePositioningMethods = 0x000000ff,
-		NonSatellitePositioningMethods = 0xffffff00,
-		AllPositioningMethods = 0xffffffff
-	};
-	Q_DECLARE_FLAGS(PositioningMethods, PositioningMethod)
+    enum PositioningMethod {
+        NoPositioningMethods = 0x00000000,
+        SatellitePositioningMethods = 0x000000ff,
+        NonSatellitePositioningMethods = 0xffffff00,
+        AllPositioningMethods = 0xffffffff
+    };
+    Q_DECLARE_FLAGS(PositioningMethods, PositioningMethod)
 
-	explicit QGeoPositionInfoSource(QObject *parent);
-	virtual ~QGeoPositionInfoSource();
+    explicit QGeoPositionInfoSource(QObject *parent);
+    virtual ~QGeoPositionInfoSource();
 
-	virtual void setUpdateInterval(int msec);
-	int updateInterval() const;
+    virtual void setUpdateInterval(int msec);
+    int updateInterval() const;
 
-	virtual void setPreferredPositioningMethods(PositioningMethods methods);
-	PositioningMethods preferredPositioningMethods() const;
+    virtual void setPreferredPositioningMethods(PositioningMethods methods);
+    PositioningMethods preferredPositioningMethods() const;
 
-	virtual QGeoPositionInfo lastKnownPosition(bool fromSatellitePositioningMethodsOnly = false) const = 0;
+    virtual QGeoPositionInfo lastKnownPosition(bool fromSatellitePositioningMethodsOnly = false) const = 0;
 
-	virtual PositioningMethods supportedPositioningMethods() const = 0;
-	virtual int minimumUpdateInterval() const = 0;
+    virtual PositioningMethods supportedPositioningMethods() const = 0;
+    virtual int minimumUpdateInterval() const = 0;
 
-	QString sourceName() const;
+    QString sourceName() const;
 
-	static QGeoPositionInfoSource *createDefaultSource(QObject *parent);
-	static QGeoPositionInfoSource *createSource(const QString &sourceName, QObject *parent);
-	static QStringList availableSources();
-	virtual Error error() const = 0;
+    static QGeoPositionInfoSource *createDefaultSource(QObject *parent);
+    static QGeoPositionInfoSource *createSource(const QString &sourceName, QObject *parent);
+    static QStringList availableSources();
+    virtual Error error() const = 0;
 
 public Q_SLOTS:
-	virtual void startUpdates() = 0;
-	virtual void stopUpdates() = 0;
+    virtual void startUpdates() = 0;
+    virtual void stopUpdates() = 0;
 
-	virtual void requestUpdate(int timeout = 0) = 0;
+    virtual void requestUpdate(int timeout = 0) = 0;
 
 Q_SIGNALS:
-	void positionUpdated(const QGeoPositionInfo &update);
-	void updateTimeout();
-	void error(QGeoPositionInfoSource::Error);
+    void positionUpdated(const QGeoPositionInfo &update);
+    void updateTimeout();
+    void error(QGeoPositionInfoSource::Error);
 
 private:
-	Q_DISABLE_COPY(QGeoPositionInfoSource)
-	QGeoPositionInfoSourcePrivate *d;
+    Q_DISABLE_COPY(QGeoPositionInfoSource)
+    QGeoPositionInfoSourcePrivate *d;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(QGeoPositionInfoSource::PositioningMethods)

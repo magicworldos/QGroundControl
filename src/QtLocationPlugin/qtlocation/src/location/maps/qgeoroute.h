@@ -54,41 +54,41 @@ class QGeoRoutePrivate;
 class Q_LOCATION_EXPORT QGeoRoute
 {
 public:
-	QGeoRoute();
-	QGeoRoute(const QGeoRoute &other);
-	~QGeoRoute();
+    QGeoRoute();
+    QGeoRoute(const QGeoRoute &other);
+    ~QGeoRoute();
 
-	QGeoRoute &operator = (const QGeoRoute &other);
+    QGeoRoute &operator = (const QGeoRoute &other);
 
-	bool operator == (const QGeoRoute &other) const;
-	bool operator != (const QGeoRoute &other) const;
+    bool operator == (const QGeoRoute &other) const;
+    bool operator != (const QGeoRoute &other) const;
 
-	void setRouteId(const QString &id);
-	QString routeId() const;
+    void setRouteId(const QString &id);
+    QString routeId() const;
 
-	void setRequest(const QGeoRouteRequest &request);
-	QGeoRouteRequest request() const;
+    void setRequest(const QGeoRouteRequest &request);
+    QGeoRouteRequest request() const;
 
-	void setBounds(const QGeoRectangle &bounds);
-	QGeoRectangle bounds() const;
+    void setBounds(const QGeoRectangle &bounds);
+    QGeoRectangle bounds() const;
 
-	void setFirstRouteSegment(const QGeoRouteSegment &routeSegment);
-	QGeoRouteSegment firstRouteSegment() const;
+    void setFirstRouteSegment(const QGeoRouteSegment &routeSegment);
+    QGeoRouteSegment firstRouteSegment() const;
 
-	void setTravelTime(int secs);
-	int travelTime() const;
+    void setTravelTime(int secs);
+    int travelTime() const;
 
-	void setDistance(qreal distance);
-	qreal distance() const;
+    void setDistance(qreal distance);
+    qreal distance() const;
 
-	void setTravelMode(QGeoRouteRequest::TravelMode mode);
-	QGeoRouteRequest::TravelMode travelMode() const;
+    void setTravelMode(QGeoRouteRequest::TravelMode mode);
+    QGeoRouteRequest::TravelMode travelMode() const;
 
-	void setPath(const QList<QGeoCoordinate> &path);
-	QList<QGeoCoordinate> path() const;
+    void setPath(const QList<QGeoCoordinate> &path);
+    QList<QGeoCoordinate> path() const;
 
 private:
-	QExplicitlySharedDataPointer<QGeoRoutePrivate> d_ptr;
+    QExplicitlySharedDataPointer<QGeoRoutePrivate> d_ptr;
 };
 
 QT_END_NAMESPACE

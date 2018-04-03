@@ -72,7 +72,7 @@ QSerialPortInfo::QSerialPortInfo()
     Constructs a copy of \a other.
 */
 QSerialPortInfo::QSerialPortInfo(const QSerialPortInfo &other)
-	: d_ptr(other.d_ptr ? new QSerialPortInfoPrivate(*other.d_ptr) : Q_NULLPTR)
+    : d_ptr(other.d_ptr ? new QSerialPortInfoPrivate(*other.d_ptr) : Q_NULLPTR)
 {
 }
 
@@ -81,14 +81,12 @@ QSerialPortInfo::QSerialPortInfo(const QSerialPortInfo &other)
 */
 QSerialPortInfo::QSerialPortInfo(const QSerialPort &port)
 {
-	foreach (const QSerialPortInfo &serialPortInfo, availablePorts())
-	{
-		if (port.portName() == serialPortInfo.portName())
-		{
-			*this = serialPortInfo;
-			break;
-		}
-	}
+    foreach (const QSerialPortInfo &serialPortInfo, availablePorts()) {
+        if (port.portName() == serialPortInfo.portName()) {
+            *this = serialPortInfo;
+            break;
+        }
+    }
 }
 
 /*!
@@ -100,18 +98,16 @@ QSerialPortInfo::QSerialPortInfo(const QSerialPort &port)
 */
 QSerialPortInfo::QSerialPortInfo(const QString &name)
 {
-	foreach (const QSerialPortInfo &serialPortInfo, availablePorts())
-	{
-		if (name == serialPortInfo.portName())
-		{
-			*this = serialPortInfo;
-			break;
-		}
-	}
+    foreach (const QSerialPortInfo &serialPortInfo, availablePorts()) {
+        if (name == serialPortInfo.portName()) {
+            *this = serialPortInfo;
+            break;
+        }
+    }
 }
 
 QSerialPortInfo::QSerialPortInfo(const QSerialPortInfoPrivate &dd)
-	: d_ptr(new QSerialPortInfoPrivate(dd))
+    : d_ptr(new QSerialPortInfoPrivate(dd))
 {
 }
 
@@ -130,16 +126,16 @@ QSerialPortInfo::~QSerialPortInfo()
 */
 void QSerialPortInfo::swap(QSerialPortInfo &other)
 {
-	d_ptr.swap(other.d_ptr);
+    d_ptr.swap(other.d_ptr);
 }
 
 /*!
     Sets the QSerialPortInfo object to be equal to \a other.
 */
-QSerialPortInfo &QSerialPortInfo::operator=(const QSerialPortInfo &other)
+QSerialPortInfo& QSerialPortInfo::operator=(const QSerialPortInfo &other)
 {
-	QSerialPortInfo(other).swap(*this);
-	return *this;
+    QSerialPortInfo(other).swap(*this);
+    return *this;
 }
 
 /*!
@@ -149,8 +145,8 @@ QSerialPortInfo &QSerialPortInfo::operator=(const QSerialPortInfo &other)
 */
 QString QSerialPortInfo::portName() const
 {
-	Q_D(const QSerialPortInfo);
-	return !d ? QString() : d->portName;
+    Q_D(const QSerialPortInfo);
+    return !d ? QString() : d->portName;
 }
 
 /*!
@@ -160,8 +156,8 @@ QString QSerialPortInfo::portName() const
 */
 QString QSerialPortInfo::systemLocation() const
 {
-	Q_D(const QSerialPortInfo);
-	return !d ? QString() : d->device;
+    Q_D(const QSerialPortInfo);
+    return !d ? QString() : d->device;
 }
 
 /*!
@@ -172,8 +168,8 @@ QString QSerialPortInfo::systemLocation() const
 */
 QString QSerialPortInfo::description() const
 {
-	Q_D(const QSerialPortInfo);
-	return !d ? QString() : d->description;
+    Q_D(const QSerialPortInfo);
+    return !d ? QString() : d->description;
 }
 
 /*!
@@ -184,8 +180,8 @@ QString QSerialPortInfo::description() const
 */
 QString QSerialPortInfo::manufacturer() const
 {
-	Q_D(const QSerialPortInfo);
-	return !d ? QString() : d->manufacturer;
+    Q_D(const QSerialPortInfo);
+    return !d ? QString() : d->manufacturer;
 }
 
 /*!
@@ -200,8 +196,8 @@ QString QSerialPortInfo::manufacturer() const
 */
 QString QSerialPortInfo::serialNumber() const
 {
-	Q_D(const QSerialPortInfo);
-	return !d ? QString() : d->serialNumber;
+    Q_D(const QSerialPortInfo);
+    return !d ? QString() : d->serialNumber;
 }
 
 /*!
@@ -212,8 +208,8 @@ QString QSerialPortInfo::serialNumber() const
 */
 quint16 QSerialPortInfo::vendorIdentifier() const
 {
-	Q_D(const QSerialPortInfo);
-	return !d ? 0 : d->vendorIdentifier;
+    Q_D(const QSerialPortInfo);
+    return !d ? 0 : d->vendorIdentifier;
 }
 
 /*!
@@ -224,8 +220,8 @@ quint16 QSerialPortInfo::vendorIdentifier() const
 */
 quint16 QSerialPortInfo::productIdentifier() const
 {
-	Q_D(const QSerialPortInfo);
-	return !d ? 0 : d->productIdentifier;
+    Q_D(const QSerialPortInfo);
+    return !d ? 0 : d->productIdentifier;
 }
 
 /*!
@@ -236,8 +232,8 @@ quint16 QSerialPortInfo::productIdentifier() const
 */
 bool QSerialPortInfo::hasVendorIdentifier() const
 {
-	Q_D(const QSerialPortInfo);
-	return !d ? false : d->hasVendorIdentifier;
+    Q_D(const QSerialPortInfo);
+    return !d ? false : d->hasVendorIdentifier;
 }
 
 /*!
@@ -248,8 +244,8 @@ bool QSerialPortInfo::hasVendorIdentifier() const
 */
 bool QSerialPortInfo::hasProductIdentifier() const
 {
-	Q_D(const QSerialPortInfo);
-	return !d ? false : d->hasProductIdentifier;
+    Q_D(const QSerialPortInfo);
+    return !d ? false : d->hasProductIdentifier;
 }
 
 /*!

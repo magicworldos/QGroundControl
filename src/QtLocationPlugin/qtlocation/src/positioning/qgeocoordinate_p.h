@@ -53,17 +53,17 @@ QT_BEGIN_NAMESPACE
 class QGeoCoordinatePrivate : public QSharedData
 {
 public:
-	QGeoCoordinatePrivate();
-	QGeoCoordinatePrivate(const QGeoCoordinatePrivate &other);
-	~QGeoCoordinatePrivate();
+    QGeoCoordinatePrivate();
+    QGeoCoordinatePrivate(const QGeoCoordinatePrivate &other);
+    ~QGeoCoordinatePrivate();
 
-	double lat;
-	double lng;
-	double alt;
+    double lat;
+    double lng;
+    double alt;
 
-	static void atDistanceAndAzimuth(const QGeoCoordinate &coord,
-					 qreal distance, qreal azimuth,
-					 double *lon, double *lat);
+    static void atDistanceAndAzimuth(const QGeoCoordinate &coord,
+                                     qreal distance, qreal azimuth,
+                                     double *lon, double *lat);
 };
 
 QT_END_NAMESPACE

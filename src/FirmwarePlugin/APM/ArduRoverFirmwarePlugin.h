@@ -19,48 +19,47 @@
 class APMRoverMode : public APMCustomMode
 {
 public:
-	enum Mode
-	{
-		MANUAL        = 0,
-		RESERVED_1    = 1, // RESERVED FOR FUTURE USE
-		LEARNING      = 2,
-		STEERING      = 3,
-		HOLD          = 4,
-		RESERVED_5    = 5, // RESERVED FOR FUTURE USE
-		RESERVED_6    = 6, // RESERVED FOR FUTURE USE
-		RESERVED_7    = 7, // RESERVED FOR FUTURE USE
-		RESERVED_8    = 8, // RESERVED FOR FUTURE USE
-		RESERVED_9    = 9, // RESERVED FOR FUTURE USE
-		AUTO          = 10,
-		RTL           = 11,
-		RESERVED_12   = 12, // RESERVED FOR FUTURE USE
-		RESERVED_13   = 13, // RESERVED FOR FUTURE USE
-		RESERVED_14   = 14, // RESERVED FOR FUTURE USE
-		GUIDED        = 15,
-		INITIALIZING  = 16,
-	};
-	static const int modeCount = 17;
+    enum Mode {
+        MANUAL        = 0,
+        RESERVED_1    = 1, // RESERVED FOR FUTURE USE
+        LEARNING      = 2,
+        STEERING      = 3,
+        HOLD          = 4,
+        RESERVED_5    = 5, // RESERVED FOR FUTURE USE
+        RESERVED_6    = 6, // RESERVED FOR FUTURE USE
+        RESERVED_7    = 7, // RESERVED FOR FUTURE USE
+        RESERVED_8    = 8, // RESERVED FOR FUTURE USE
+        RESERVED_9    = 9, // RESERVED FOR FUTURE USE
+        AUTO          = 10,
+        RTL           = 11,
+        RESERVED_12   = 12, // RESERVED FOR FUTURE USE
+        RESERVED_13   = 13, // RESERVED FOR FUTURE USE
+        RESERVED_14   = 14, // RESERVED FOR FUTURE USE
+        GUIDED        = 15,
+        INITIALIZING  = 16,
+    };
+    static const int modeCount = 17;
 
-	APMRoverMode(uint32_t mode, bool settable);
+    APMRoverMode(uint32_t mode, bool settable);
 };
 
 class ArduRoverFirmwarePlugin : public APMFirmwarePlugin
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	ArduRoverFirmwarePlugin(void);
+    ArduRoverFirmwarePlugin(void);
 
-	// Overrides from FirmwarePlugin
-	QString pauseFlightMode(void) const override { return QString("Hold"); }
-	void    guidedModeChangeAltitude(Vehicle *vehicle, double altitudeChange) final;
-	int     remapParamNameHigestMinorVersionNumber(int majorVersionNumber) const final;
-	const FirmwarePlugin::remapParamNameMajorVersionMap_t &paramNameRemapMajorVersionMap(void) const final { return _remapParamName; }
-	bool supportsNegativeThrust(void) final;
+    // Overrides from FirmwarePlugin
+    QString pauseFlightMode                         (void) const override { return QString("Hold"); }
+    void    guidedModeChangeAltitude                (Vehicle* vehicle, double altitudeChange) final;
+    int     remapParamNameHigestMinorVersionNumber  (int majorVersionNumber) const final;
+    const FirmwarePlugin::remapParamNameMajorVersionMap_t& paramNameRemapMajorVersionMap(void) const final { return _remapParamName; }
+    bool supportsNegativeThrust(void) final;
 
 private:
-	static bool _remapParamNameIntialized;
-	static FirmwarePlugin::remapParamNameMajorVersionMap_t  _remapParamName;
+    static bool _remapParamNameIntialized;
+    static FirmwarePlugin::remapParamNameMajorVersionMap_t  _remapParamName;
 };
 
 #endif

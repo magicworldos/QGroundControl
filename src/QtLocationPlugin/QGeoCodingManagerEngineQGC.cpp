@@ -61,39 +61,33 @@
 
 static QString addressToQuery(const QGeoAddress &address)
 {
-	return address.street()     + QStringLiteral(", ") +
-	       address.district()   + QStringLiteral(", ") +
-	       address.city()       + QStringLiteral(", ") +
-	       address.state()      + QStringLiteral(", ") +
-	       address.country();
+    return address.street()     + QStringLiteral(", ") +
+           address.district()   + QStringLiteral(", ") +
+           address.city()       + QStringLiteral(", ") +
+           address.state()      + QStringLiteral(", ") +
+           address.country();
 }
 
 static QString boundingBoxToLtrb(const QGeoRectangle &rect)
 {
-	return QString::number(rect.topLeft().longitude())      + QLatin1Char(',') +
-	       QString::number(rect.topLeft().latitude())       + QLatin1Char(',') +
-	       QString::number(rect.bottomRight().longitude())  + QLatin1Char(',') +
-	       QString::number(rect.bottomRight().latitude());
+    return QString::number(rect.topLeft().longitude())      + QLatin1Char(',') +
+           QString::number(rect.topLeft().latitude())       + QLatin1Char(',') +
+           QString::number(rect.bottomRight().longitude())  + QLatin1Char(',') +
+           QString::number(rect.bottomRight().latitude());
 }
 
 QGeoCodingManagerEngineQGC::QGeoCodingManagerEngineQGC(
-	const QVariantMap &parameters,
-	QGeoServiceProvider::Error *error,
-	QString *errorString)
-	: QGeoCodingManagerEngine(parameters), m_networkManager(new QNetworkAccessManager(this))
+    const QVariantMap &parameters,
+    QGeoServiceProvider::Error *error,
+    QString *errorString)
+    : QGeoCodingManagerEngine(parameters), m_networkManager(new QNetworkAccessManager(this))
 {
-	if (parameters.contains(QStringLiteral("useragent")))
-	{
-		m_userAgent = parameters.value(QStringLiteral("useragent")).toString().toLatin1();
-	}
-
-	else
-	{
-		m_userAgent = "Qt Location based application";
-	}
-
-	*error = QGeoServiceProvider::NoError;
-	errorString->clear();
+    if (parameters.contains(QStringLiteral("useragent")))
+        m_userAgent = parameters.value(QStringLiteral("useragent")).toString().toLatin1();
+    else
+        m_userAgent = "Qt Location based application";
+    *error = QGeoServiceProvider::NoError;
+    errorString->clear();
 }
 
 QGeoCodingManagerEngineQGC::~QGeoCodingManagerEngineQGC()
@@ -102,92 +96,83 @@ QGeoCodingManagerEngineQGC::~QGeoCodingManagerEngineQGC()
 
 QGeoCodeReply *QGeoCodingManagerEngineQGC::geocode(const QGeoAddress &address, const QGeoShape &bounds)
 {
-	return geocode(addressToQuery(address), -1, -1, bounds);
+    return geocode(addressToQuery(address), -1, -1, bounds);
 }
 
-QGeoCodeReply *QGeoCodingManagerEngineQGC::geocode(const QString &address, int limit, int offset,
-		const QGeoShape &bounds)
+QGeoCodeReply *QGeoCodingManagerEngineQGC::geocode(const QString &address, int limit, int offset, const QGeoShape &bounds)
 {
-	Q_UNUSED(limit);
-	Q_UNUSED(offset);
+    Q_UNUSED(limit);
+    Q_UNUSED(offset);
 
-	QNetworkRequest request;
-	request.setRawHeader("User-Agent", m_userAgent);
+    QNetworkRequest request;
+    request.setRawHeader("User-Agent", m_userAgent);
 
-	QUrl url(QStringLiteral("http://maps.googleapis.com/maps/api/geocode/json"));
-	QUrlQuery query;
-	query.addQueryItem(QStringLiteral("sensor"), QStringLiteral("false"));
-	query.addQueryItem(QStringLiteral("language"), locale().name().left(2));
-	query.addQueryItem(QStringLiteral("address"), address);
+    QUrl url(QStringLiteral("http://maps.googleapis.com/maps/api/geocode/json"));
+    QUrlQuery query;
+    query.addQueryItem(QStringLiteral("sensor"), QStringLiteral("false"));
+    query.addQueryItem(QStringLiteral("language"), locale().name().left(2));
+    query.addQueryItem(QStringLiteral("address"), address);
+    if (bounds.type() == QGeoShape::RectangleType) {
+        query.addQueryItem(QStringLiteral("bounds"), boundingBoxToLtrb(bounds));
+    }
 
-	if (bounds.type() == QGeoShape::RectangleType)
-	{
-		query.addQueryItem(QStringLiteral("bounds"), boundingBoxToLtrb(bounds));
-	}
+    url.setQuery(query);
+    request.setUrl(url);
+    //qDebug() << url;
 
-	url.setQuery(query);
-	request.setUrl(url);
-	//qDebug() << url;
+    QNetworkReply *reply = m_networkManager->get(request);
+    reply->setParent(0);
 
-	QNetworkReply *reply = m_networkManager->get(request);
-	reply->setParent(0);
+    QGeoCodeReplyQGC *geocodeReply = new QGeoCodeReplyQGC(reply);
 
-	QGeoCodeReplyQGC *geocodeReply = new QGeoCodeReplyQGC(reply);
+    connect(geocodeReply, SIGNAL(finished()), this, SLOT(replyFinished()));
+    connect(geocodeReply, SIGNAL(error(QGeoCodeReply::Error,QString)),
+            this, SLOT(replyError(QGeoCodeReply::Error,QString)));
 
-	connect(geocodeReply, SIGNAL(finished()), this, SLOT(replyFinished()));
-	connect(geocodeReply, SIGNAL(error(QGeoCodeReply::Error, QString)),
-		this, SLOT(replyError(QGeoCodeReply::Error, QString)));
-
-	return geocodeReply;
+    return geocodeReply;
 }
 
 QGeoCodeReply *QGeoCodingManagerEngineQGC::reverseGeocode(const QGeoCoordinate &coordinate, const QGeoShape &bounds)
 {
-	Q_UNUSED(bounds)
+    Q_UNUSED(bounds)
 
-	QNetworkRequest request;
-	request.setRawHeader("User-Agent", m_userAgent);
+    QNetworkRequest request;
+    request.setRawHeader("User-Agent", m_userAgent);
 
-	QUrl url(QStringLiteral("http://maps.googleapis.com/maps/api/geocode/json"));
-	QUrlQuery query;
-	query.addQueryItem(QStringLiteral("sensor"), QStringLiteral("false"));
-	query.addQueryItem(QStringLiteral("language"), locale().name().left(2));
-	query.addQueryItem(QStringLiteral("latlng"), QStringLiteral("%1,%2")
-			   .arg(coordinate.latitude())
-			   .arg(coordinate.longitude()));
+    QUrl url(QStringLiteral("http://maps.googleapis.com/maps/api/geocode/json"));
+    QUrlQuery query;
+    query.addQueryItem(QStringLiteral("sensor"), QStringLiteral("false"));
+    query.addQueryItem(QStringLiteral("language"), locale().name().left(2));
+    query.addQueryItem(QStringLiteral("latlng"), QStringLiteral("%1,%2")
+                       .arg(coordinate.latitude())
+                       .arg(coordinate.longitude()));
 
-	url.setQuery(query);
-	request.setUrl(url);
-	//qDebug() << url;
+    url.setQuery(query);
+    request.setUrl(url);
+    //qDebug() << url;
 
-	QNetworkReply *reply = m_networkManager->get(request);
-	reply->setParent(0);
+    QNetworkReply *reply = m_networkManager->get(request);
+    reply->setParent(0);
 
-	QGeoCodeReplyQGC *geocodeReply = new QGeoCodeReplyQGC(reply);
+    QGeoCodeReplyQGC *geocodeReply = new QGeoCodeReplyQGC(reply);
 
-	connect(geocodeReply, SIGNAL(finished()), this, SLOT(replyFinished()));
-	connect(geocodeReply, SIGNAL(error(QGeoCodeReply::Error, QString)),
-		this, SLOT(replyError(QGeoCodeReply::Error, QString)));
+    connect(geocodeReply, SIGNAL(finished()), this, SLOT(replyFinished()));
+    connect(geocodeReply, SIGNAL(error(QGeoCodeReply::Error,QString)),
+            this, SLOT(replyError(QGeoCodeReply::Error,QString)));
 
-	return geocodeReply;
+    return geocodeReply;
 }
 
 void QGeoCodingManagerEngineQGC::replyFinished()
 {
-	QGeoCodeReply *reply = qobject_cast<QGeoCodeReply *>(sender());
-
-	if (reply)
-	{
-		emit finished(reply);
-	}
+    QGeoCodeReply *reply = qobject_cast<QGeoCodeReply *>(sender());
+    if (reply)
+        emit finished(reply);
 }
 
 void QGeoCodingManagerEngineQGC::replyError(QGeoCodeReply::Error errorCode, const QString &errorString)
 {
-	QGeoCodeReply *reply = qobject_cast<QGeoCodeReply *>(sender());
-
-	if (reply)
-	{
-		emit error(reply, errorCode, errorString);
-	}
+    QGeoCodeReply *reply = qobject_cast<QGeoCodeReply *>(sender());
+    if (reply)
+        emit error(reply, errorCode, errorString);
 }

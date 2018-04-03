@@ -20,14 +20,14 @@
 
 class GenericAutoPilotPlugin : public AutoPilotPlugin
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	GenericAutoPilotPlugin(Vehicle *vehicle, QObject *parent = NULL);
-
-	// Overrides from AutoPilotPlugin
-	const QVariantList &vehicleComponents(void) final;
-	QString prerequisiteSetup(VehicleComponent *component) const final;
+    GenericAutoPilotPlugin(Vehicle* vehicle, QObject* parent = NULL);
+    
+    // Overrides from AutoPilotPlugin
+    const QVariantList& vehicleComponents(void) final;
+    QString prerequisiteSetup(VehicleComponent* component) const final;
 };
 
 #endif

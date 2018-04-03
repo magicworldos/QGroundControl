@@ -15,78 +15,56 @@ QwtIntervalData::QwtIntervalData()
 }
 
 QwtIntervalData::QwtIntervalData(
-	const QwtArray<QwtDoubleInterval> &intervals,
-	const QwtArray<double> &values):
-	d_intervals(intervals),
-	d_values(values)
+    const QwtArray<QwtDoubleInterval> &intervals,
+    const QwtArray<double> &values):
+    d_intervals(intervals),
+    d_values(values)
 {
 }
 
 void QwtIntervalData::setData(
-	const QwtArray<QwtDoubleInterval> &intervals,
-	const QwtArray<double> &values)
+    const QwtArray<QwtDoubleInterval> &intervals,
+    const QwtArray<double> &values)
 {
-	d_intervals = intervals;
-	d_values = values;
+    d_intervals = intervals;
+    d_values = values;
 }
 
 QwtDoubleRect QwtIntervalData::boundingRect() const
 {
-	double minX, maxX, minY, maxY;
-	minX = maxX = minY = maxY = 0.0;
+    double minX, maxX, minY, maxY;
+    minX = maxX = minY = maxY = 0.0;
 
-	bool isValid = false;
+    bool isValid = false;
 
-	const size_t sz = size();
+    const size_t sz = size();
+    for ( size_t i = 0; i < sz; i++ ) {
+        const QwtDoubleInterval intv = interval(i);
+        if ( !intv.isValid() )
+            continue;
 
-	for (size_t i = 0; i < sz; i++)
-	{
-		const QwtDoubleInterval intv = interval(i);
+        const double v = value(i);
 
-		if (!intv.isValid())
-		{
-			continue;
-		}
+        if ( !isValid ) {
+            minX = intv.minValue();
+            maxX = intv.maxValue();
+            minY = maxY = v;
 
-		const double v = value(i);
+            isValid = true;
+        } else {
+            if ( intv.minValue() < minX )
+                minX = intv.minValue();
+            if ( intv.maxValue() > maxX )
+                maxX = intv.maxValue();
 
-		if (!isValid)
-		{
-			minX = intv.minValue();
-			maxX = intv.maxValue();
-			minY = maxY = v;
+            if ( v < minY )
+                minY = v;
+            if ( v > maxY )
+                maxY = v;
+        }
+    }
+    if ( !isValid )
+        return QwtDoubleRect(1.0, 1.0, -2.0, -2.0); // invalid
 
-			isValid = true;
-		}
-
-		else
-		{
-			if (intv.minValue() < minX)
-			{
-				minX = intv.minValue();
-			}
-
-			if (intv.maxValue() > maxX)
-			{
-				maxX = intv.maxValue();
-			}
-
-			if (v < minY)
-			{
-				minY = v;
-			}
-
-			if (v > maxY)
-			{
-				maxY = v;
-			}
-		}
-	}
-
-	if (!isValid)
-	{
-		return QwtDoubleRect(1.0, 1.0, -2.0, -2.0);        // invalid
-	}
-
-	return QwtDoubleRect(minX, minY, maxX - minX, maxY - minY);
+    return QwtDoubleRect(minX, minY, maxX - minX, maxY - minY);
 }

@@ -23,61 +23,61 @@
 
 class MultiSignalSpy : public QObject
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	MultiSignalSpy(QObject *parent = NULL);
-	~MultiSignalSpy();
+    MultiSignalSpy(QObject* parent = NULL);
+    ~MultiSignalSpy();
 
-	bool init(QObject *signalEmitter, const char **rgSignals, size_t cSignals);
+    bool init(QObject* signalEmitter, const char** rgSignals, size_t cSignals);
 
-	/// @param mask bit mask specifying which signals to check. The lowest order bit represents
-	///     index 0 into the rgSignals array and so on up the bit mask.
-	/// @return true if signal count = 1 for the specified signals
-	bool checkSignalByMask(quint32 mask);
+    /// @param mask bit mask specifying which signals to check. The lowest order bit represents
+    ///     index 0 into the rgSignals array and so on up the bit mask.
+    /// @return true if signal count = 1 for the specified signals
+    bool checkSignalByMask(quint32 mask);
 
-	/// @return true if signal count = 1 for specified signals and signal count of 0
-	///     for all other signals
-	bool checkOnlySignalByMask(quint32 mask);
+    /// @return true if signal count = 1 for specified signals and signal count of 0
+    ///     for all other signals
+    bool checkOnlySignalByMask(quint32 mask);
 
-	/// @param mask bit mask specifying which signals to check. The lowest order bit represents
-	///     index 0 into the rgSignals array and so on up the bit mask.
-	/// @return true if signal count >= 1 for the specified signals
-	bool checkSignalsByMask(quint32 mask);
+    /// @param mask bit mask specifying which signals to check. The lowest order bit represents
+    ///     index 0 into the rgSignals array and so on up the bit mask.
+    /// @return true if signal count >= 1 for the specified signals
+    bool checkSignalsByMask(quint32 mask);
 
-	/// @return true if signal count >= 1 for specified signals and signal count of 0
-	///     for all other signals
-	bool checkOnlySignalsByMask(quint32 mask);
+    /// @return true if signal count >= 1 for specified signals and signal count of 0
+    ///     for all other signals
+    bool checkOnlySignalsByMask(quint32 mask);
 
-	bool checkNoSignalByMask(quint32 mask);
-	bool checkNoSignals(void);
+    bool checkNoSignalByMask(quint32 mask);
+    bool checkNoSignals(void);
 
-	void clearSignalByIndex(quint32 index);
-	void clearSignalsByMask(quint32 mask);
-	void clearAllSignals(void);
+    void clearSignalByIndex(quint32 index);
+    void clearSignalsByMask(quint32 mask);
+    void clearAllSignals(void);
 
-	bool waitForSignalByIndex(quint32 index, int msec);
+    bool waitForSignalByIndex(quint32 index, int msec);
+    
+    QSignalSpy* getSpyByIndex(quint32 index);
 
-	QSignalSpy *getSpyByIndex(quint32 index);
-
-	// Returns the value type for the first parameter of the signal
-	bool pullBoolFromSignalIndex(quint32 index);
-	int pullIntFromSignalIndex(quint32 index);
-	QGeoCoordinate pullQGeoCoordinateFromSignalIndex(quint32 index);
+    // Returns the value type for the first parameter of the signal
+    bool pullBoolFromSignalIndex(quint32 index);
+    int pullIntFromSignalIndex(quint32 index);
+    QGeoCoordinate pullQGeoCoordinateFromSignalIndex(quint32 index);
 
 private:
-	// QObject overrides
-	void timerEvent(QTimerEvent *event);
+    // QObject overrides
+    void timerEvent(QTimerEvent * event);
+    
+    void _printSignalState(quint32 mask);
+    bool _checkSignalByMaskWorker(quint32 mask, bool multipleSignalsAllowed);
+    bool _checkOnlySignalByMaskWorker(quint32 mask, bool multipleSignalsAllowed);
 
-	void _printSignalState(quint32 mask);
-	bool _checkSignalByMaskWorker(quint32 mask, bool multipleSignalsAllowed);
-	bool _checkOnlySignalByMaskWorker(quint32 mask, bool multipleSignalsAllowed);
-
-	QObject        *_signalEmitter;
-	const char    **_rgSignals;
-	QSignalSpy    **_rgSpys;
-	size_t          _cSignals;
-	bool            _timeout;
+    QObject*        _signalEmitter;
+    const char**    _rgSignals;
+    QSignalSpy**    _rgSpys;
+    size_t          _cSignals;
+    bool            _timeout;
 };
 
 #endif

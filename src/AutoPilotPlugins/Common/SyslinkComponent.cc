@@ -11,54 +11,54 @@
 #include "SyslinkComponent.h"
 #include "AutoPilotPlugin.h"
 
-SyslinkComponent::SyslinkComponent(Vehicle *vehicle, AutoPilotPlugin *autopilot, QObject *parent)
-	: VehicleComponent(vehicle, autopilot, parent)
-	, _name(tr("Syslink"))
+SyslinkComponent::SyslinkComponent(Vehicle* vehicle, AutoPilotPlugin* autopilot, QObject* parent)
+    : VehicleComponent(vehicle, autopilot, parent)
+    , _name(tr("Syslink"))
 {
 
 }
 
 QString SyslinkComponent::name(void) const
 {
-	return _name;
+    return _name;
 }
 
 QString SyslinkComponent::description(void) const
 {
-	return tr("The Syslink Component is used to setup the radio connection on Crazyflies.");
+    return tr("The Syslink Component is used to setup the radio connection on Crazyflies.");
 }
 
 QString SyslinkComponent::iconResource(void) const
 {
-	return "/qmlimages/wifi.svg";
+    return "/qmlimages/wifi.svg";
 }
 
 bool SyslinkComponent::requiresSetup(void) const
 {
-	return false;
+    return false;
 }
 
 bool SyslinkComponent::setupComplete(void) const
 {
-	return true;
+    return true;
 }
 
 QStringList SyslinkComponent::setupCompleteChangedTriggerList(void) const
 {
-	return QStringList();
+    return QStringList();
 }
 
 QUrl SyslinkComponent::setupSource(void) const
 {
-	return QUrl::fromUserInput("qrc:/qml/SyslinkComponent.qml");
+    return QUrl::fromUserInput("qrc:/qml/SyslinkComponent.qml");
 }
 
 QUrl SyslinkComponent::summaryQmlSource(void) const
 {
-	return QUrl();
+    return QUrl();
 }
 
 QString SyslinkComponent::prerequisiteSetup(void) const
 {
-	return QString();
+    return QString();
 }

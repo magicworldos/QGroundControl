@@ -59,13 +59,13 @@ QT_BEGIN_NAMESPACE
 class QGeoMappingManagerPrivate
 {
 public:
-	QGeoMappingManagerPrivate();
-	~QGeoMappingManagerPrivate();
+    QGeoMappingManagerPrivate();
+    ~QGeoMappingManagerPrivate();
 
-	QGeoMappingManagerEngine *engine;
+    QGeoMappingManagerEngine *engine;
 
 private:
-	Q_DISABLE_COPY(QGeoMappingManagerPrivate)
+    Q_DISABLE_COPY(QGeoMappingManagerPrivate)
 };
 
 QT_END_NAMESPACE

@@ -13,72 +13,67 @@
 #include "APMAirframeComponent.h"
 #include "ParameterManager.h"
 
-APMTuningComponent::APMTuningComponent(Vehicle *vehicle, AutoPilotPlugin *autopilot, QObject *parent)
-	: VehicleComponent(vehicle, autopilot, parent)
-	, _name(tr("Tuning"))
+APMTuningComponent::APMTuningComponent(Vehicle* vehicle, AutoPilotPlugin* autopilot, QObject* parent)
+    : VehicleComponent(vehicle, autopilot, parent)
+    , _name(tr("Tuning"))
 {
 }
 
 QString APMTuningComponent::name(void) const
 {
-	return _name;
+    return _name;
 }
 
 QString APMTuningComponent::description(void) const
 {
-	return tr("Tuning Setup is used to tune the flight characteristics of the Vehicle.");
+    return tr("Tuning Setup is used to tune the flight characteristics of the Vehicle.");
 }
 
 QString APMTuningComponent::iconResource(void) const
 {
-	return QStringLiteral("/qmlimages/TuningComponentIcon.png");
+    return QStringLiteral("/qmlimages/TuningComponentIcon.png");
 }
 
 bool APMTuningComponent::requiresSetup(void) const
 {
-	return false;
+    return false;
 }
 
 bool APMTuningComponent::setupComplete(void) const
 {
-	return true;
+    return true;
 }
 
 QStringList APMTuningComponent::setupCompleteChangedTriggerList(void) const
 {
-	return QStringList();
+    return QStringList();
 }
 
 QUrl APMTuningComponent::setupSource(void) const
 {
-	QString qmlFile;
+    QString qmlFile;
 
-	switch (_vehicle->vehicleType())
-	{
-	case MAV_TYPE_QUADROTOR:
-	case MAV_TYPE_COAXIAL:
-	case MAV_TYPE_HELICOPTER:
-	case MAV_TYPE_HEXAROTOR:
-	case MAV_TYPE_OCTOROTOR:
-	case MAV_TYPE_TRICOPTER:
+    switch (_vehicle->vehicleType()) {
+        case MAV_TYPE_QUADROTOR:
+        case MAV_TYPE_COAXIAL:
+        case MAV_TYPE_HELICOPTER:
+        case MAV_TYPE_HEXAROTOR:
+        case MAV_TYPE_OCTOROTOR:
+        case MAV_TYPE_TRICOPTER:
+            // Older firmwares do not have CH9_OPT, we don't support Tuning on older firmwares
+            if (_vehicle->parameterManager()->parameterExists(-1, QStringLiteral("CH9_OPT"))) {
+                qmlFile = QStringLiteral("qrc:/qml/APMTuningComponentCopter.qml");
+            }
+            break;
+        default:
+            // No tuning panel
+            break;
+    }
 
-		// Older firmwares do not have CH9_OPT, we don't support Tuning on older firmwares
-		if (_vehicle->parameterManager()->parameterExists(-1, QStringLiteral("CH9_OPT")))
-		{
-			qmlFile = QStringLiteral("qrc:/qml/APMTuningComponentCopter.qml");
-		}
-
-		break;
-
-	default:
-		// No tuning panel
-		break;
-	}
-
-	return QUrl::fromUserInput(qmlFile);
+    return QUrl::fromUserInput(qmlFile);
 }
 
 QUrl APMTuningComponent::summaryQmlSource(void) const
 {
-	return QUrl();
+    return QUrl();
 }

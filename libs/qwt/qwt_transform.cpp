@@ -30,18 +30,18 @@ QwtTransform::~QwtTransform()
 {
 }
 
-/*!
+/*! 
   \param value Value to be bounded
   \return value unmodified
  */
-double QwtTransform::bounded(double value) const
+double QwtTransform::bounded( double value ) const
 {
-	return value;
+    return value;
 }
 
 //! Constructor
 QwtNullTransform::QwtNullTransform():
-	QwtTransform()
+    QwtTransform()
 {
 }
 
@@ -50,33 +50,33 @@ QwtNullTransform::~QwtNullTransform()
 {
 }
 
-/*!
+/*! 
   \param value Value to be transformed
   \return value unmodified
  */
-double QwtNullTransform::transform(double value) const
+double QwtNullTransform::transform( double value ) const
 {
-	return value;
+    return value;
 }
 
-/*!
+/*! 
   \param value Value to be transformed
   \return value unmodified
  */
-double QwtNullTransform::invTransform(double value) const
+double QwtNullTransform::invTransform( double value ) const
 {
-	return value;
+    return value;
 }
 
 //! \return Clone of the transformation
 QwtTransform *QwtNullTransform::copy() const
 {
-	return new QwtNullTransform();
+    return new QwtNullTransform();
 }
 
 //! Constructor
 QwtLogTransform::QwtLogTransform():
-	QwtTransform()
+    QwtTransform()
 {
 }
 
@@ -85,46 +85,46 @@ QwtLogTransform::~QwtLogTransform()
 {
 }
 
-/*!
+/*! 
   \param value Value to be transformed
   \return log( value )
  */
-double QwtLogTransform::transform(double value) const
+double QwtLogTransform::transform( double value ) const
 {
-	return ::log(value);
+    return ::log( value );
 }
 
-/*!
+/*! 
   \param value Value to be transformed
   \return exp( value )
  */
-double QwtLogTransform::invTransform(double value) const
+double QwtLogTransform::invTransform( double value ) const
 {
-	return qExp(value);
+    return qExp( value );
 }
 
-/*!
+/*! 
   \param value Value to be bounded
   \return qBound( LogMin, value, LogMax )
  */
-double QwtLogTransform::bounded(double value) const
+double QwtLogTransform::bounded( double value ) const
 {
-	return qBound(LogMin, value, LogMax);
+    return qBound( LogMin, value, LogMax );
 }
 
 //! \return Clone of the transformation
 QwtTransform *QwtLogTransform::copy() const
 {
-	return new QwtLogTransform();
+    return new QwtLogTransform();
 }
 
 /*!
   Constructor
   \param exponent Exponent
 */
-QwtPowerTransform::QwtPowerTransform(double exponent):
-	QwtTransform(),
-	d_exponent(exponent)
+QwtPowerTransform::QwtPowerTransform( double exponent ):
+    QwtTransform(),
+    d_exponent( exponent )
 {
 }
 
@@ -133,43 +133,33 @@ QwtPowerTransform::~QwtPowerTransform()
 {
 }
 
-/*!
+/*! 
   \param value Value to be transformed
   \return Exponentiation preserving the sign
  */
-double QwtPowerTransform::transform(double value) const
+double QwtPowerTransform::transform( double value ) const
 {
-	if (value < 0.0)
-	{
-		return -qPow(-value, 1.0 / d_exponent);
-	}
-
-	else
-	{
-		return qPow(value, 1.0 / d_exponent);
-	}
-
+    if ( value < 0.0 )
+        return -qPow( -value, 1.0 / d_exponent );
+    else
+        return qPow( value, 1.0 / d_exponent );
+    
 }
 
-/*!
+/*! 
   \param value Value to be transformed
   \return Inverse exponentiation preserving the sign
  */
-double QwtPowerTransform::invTransform(double value) const
+double QwtPowerTransform::invTransform( double value ) const
 {
-	if (value < 0.0)
-	{
-		return -qPow(-value, d_exponent);
-	}
-
-	else
-	{
-		return qPow(value, d_exponent);
-	}
+    if ( value < 0.0 )
+        return -qPow( -value, d_exponent );
+    else
+        return qPow( value, d_exponent );
 }
 
 //! \return Clone of the transformation
 QwtTransform *QwtPowerTransform::copy() const
 {
-	return new QwtPowerTransform(d_exponent);
+    return new QwtPowerTransform( d_exponent );
 }

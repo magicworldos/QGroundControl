@@ -54,22 +54,22 @@ QT_BEGIN_NAMESPACE
 class QGeoShapePrivate : public QSharedData
 {
 public:
-	explicit QGeoShapePrivate(QGeoShape::ShapeType type);
-	virtual ~QGeoShapePrivate();
+    explicit QGeoShapePrivate(QGeoShape::ShapeType type);
+    virtual ~QGeoShapePrivate();
 
-	virtual bool isValid() const = 0;
-	virtual bool isEmpty() const = 0;
-	virtual bool contains(const QGeoCoordinate &coordinate) const = 0;
+    virtual bool isValid() const = 0;
+    virtual bool isEmpty() const = 0;
+    virtual bool contains(const QGeoCoordinate &coordinate) const = 0;
 
-	virtual QGeoCoordinate center() const = 0;
+    virtual QGeoCoordinate center() const = 0;
 
-	virtual void extendShape(const QGeoCoordinate &coordinate) = 0;
+    virtual void extendShape(const QGeoCoordinate &coordinate) = 0;
 
-	virtual QGeoShapePrivate *clone() const = 0;
+    virtual QGeoShapePrivate *clone() const = 0;
 
-	virtual bool operator==(const QGeoShapePrivate &other) const;
+    virtual bool operator==(const QGeoShapePrivate &other) const;
 
-	QGeoShape::ShapeType type;
+    QGeoShape::ShapeType type;
 };
 
 // don't use the copy constructor when detaching from a QSharedDataPointer, use virtual clone()
@@ -77,7 +77,7 @@ public:
 template <>
 Q_INLINE_TEMPLATE QGeoShapePrivate *QSharedDataPointer<QGeoShapePrivate>::clone()
 {
-	return d->clone();
+    return d->clone();
 }
 
 QT_END_NAMESPACE

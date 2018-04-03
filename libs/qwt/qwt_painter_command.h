@@ -26,148 +26,148 @@ class QPainterPath;
 
   \sa QwtGraphic::commands()
  */
-
+  
 class QWT_EXPORT QwtPainterCommand
 {
 public:
-	//! Type of the paint command
-	enum Type
-	{
-		//! Invalid command
-		Invalid = -1,
+    //! Type of the paint command
+    enum Type
+    {
+        //! Invalid command
+        Invalid = -1,
 
-		//! Draw a QPainterPath
-		Path,
+        //! Draw a QPainterPath
+        Path,
 
-		//! Draw a QPixmap
-		Pixmap,
+        //! Draw a QPixmap
+        Pixmap,
 
-		//! Draw a QImage
-		Image,
+        //! Draw a QImage
+        Image,
 
-		//! QPainter state change
-		State
-	};
+        //! QPainter state change
+        State
+    };
 
-	//! Attributes how to paint a QPixmap
-	struct PixmapData
-	{
-		QRectF rect;
-		QPixmap pixmap;
-		QRectF subRect;
-	};
+    //! Attributes how to paint a QPixmap 
+    struct PixmapData
+    {
+        QRectF rect;
+        QPixmap pixmap;
+        QRectF subRect;
+    };
 
-	//! Attributes how to paint a QImage
-	struct ImageData
-	{
-		QRectF rect;
-		QImage image;
-		QRectF subRect;
-		Qt::ImageConversionFlags flags;
-	};
+    //! Attributes how to paint a QImage 
+    struct ImageData
+    {
+        QRectF rect;
+        QImage image;
+        QRectF subRect;
+        Qt::ImageConversionFlags flags;
+    };
 
-	//! Attributes of a state change
-	struct StateData
-	{
-		QPaintEngine::DirtyFlags flags;
+    //! Attributes of a state change
+    struct StateData
+    {
+        QPaintEngine::DirtyFlags flags;
 
-		QPen pen;
-		QBrush brush;
-		QPointF brushOrigin;
-		QBrush backgroundBrush;
-		Qt::BGMode backgroundMode;
-		QFont font;
-		QMatrix matrix;
-		QTransform transform;
+        QPen pen;
+        QBrush brush;
+        QPointF brushOrigin;
+        QBrush backgroundBrush;
+        Qt::BGMode backgroundMode;
+        QFont font;
+        QMatrix matrix;
+        QTransform transform;
 
-		Qt::ClipOperation clipOperation;
-		QRegion clipRegion;
-		QPainterPath clipPath;
-		bool isClipEnabled;
+        Qt::ClipOperation clipOperation;
+        QRegion clipRegion;
+        QPainterPath clipPath;
+        bool isClipEnabled;
 
-		QPainter::RenderHints renderHints;
-		QPainter::CompositionMode compositionMode;
-		qreal opacity;
-	};
+        QPainter::RenderHints renderHints;
+        QPainter::CompositionMode compositionMode;
+        qreal opacity;
+    };
 
-	QwtPainterCommand();
-	QwtPainterCommand(const QwtPainterCommand &);
+    QwtPainterCommand();
+    QwtPainterCommand(const QwtPainterCommand &);
 
-	QwtPainterCommand(const QPainterPath &);
+    QwtPainterCommand( const QPainterPath & );
 
-	QwtPainterCommand(const QRectF &rect,
-			  const QPixmap &, const QRectF &subRect);
+    QwtPainterCommand( const QRectF &rect,
+            const QPixmap &, const QRectF& subRect );
 
-	QwtPainterCommand(const QRectF &rect,
-			  const QImage &, const QRectF &subRect,
-			  Qt::ImageConversionFlags);
+    QwtPainterCommand( const QRectF &rect,
+            const QImage &, const QRectF& subRect,
+            Qt::ImageConversionFlags );
 
-	QwtPainterCommand(const QPaintEngineState &);
+    QwtPainterCommand( const QPaintEngineState & );
 
-	~QwtPainterCommand();
+    ~QwtPainterCommand();
 
-	QwtPainterCommand &operator=(const QwtPainterCommand &);
+    QwtPainterCommand &operator=(const QwtPainterCommand & );
 
-	Type type() const;
+    Type type() const;
 
-	QPainterPath *path();
-	const QPainterPath *path() const;
+    QPainterPath *path();
+    const QPainterPath *path() const;
 
-	PixmapData *pixmapData();
-	const PixmapData *pixmapData() const;
+    PixmapData* pixmapData();
+    const PixmapData* pixmapData() const;
 
-	ImageData *imageData();
-	const ImageData *imageData() const;
+    ImageData* imageData();
+    const ImageData* imageData() const;
 
-	StateData *stateData();
-	const StateData *stateData() const;
+    StateData* stateData();
+    const StateData* stateData() const;
 
 private:
-	void copy(const QwtPainterCommand &);
-	void reset();
+    void copy( const QwtPainterCommand & );
+    void reset();
 
-	Type d_type;
+    Type d_type;
 
-	union
-	{
-		QPainterPath *d_path;
-		PixmapData *d_pixmapData;
-		ImageData *d_imageData;
-		StateData *d_stateData;
-	};
+    union
+    {
+        QPainterPath *d_path;
+        PixmapData *d_pixmapData;
+        ImageData *d_imageData;
+        StateData *d_stateData;
+    };
 };
 
 //! \return Type of the command
 inline QwtPainterCommand::Type QwtPainterCommand::type() const
 {
-	return d_type;
+    return d_type;
 }
 
 //! \return Painter path to be painted
 inline const QPainterPath *QwtPainterCommand::path() const
 {
-	return d_path;
+    return d_path;
 }
 
 //! \return Attributes how to paint a QPixmap
-inline const QwtPainterCommand::PixmapData *
+inline const QwtPainterCommand::PixmapData* 
 QwtPainterCommand::pixmapData() const
 {
-	return d_pixmapData;
+    return d_pixmapData;
 }
 
 //! \return Attributes how to paint a QImage
-inline const QwtPainterCommand::ImageData *
+inline const QwtPainterCommand::ImageData * 
 QwtPainterCommand::imageData() const
 {
-	return d_imageData;
+    return d_imageData;
 }
 
 //! \return Attributes of a state change
-inline const QwtPainterCommand::StateData *
+inline const QwtPainterCommand::StateData * 
 QwtPainterCommand::stateData() const
 {
-	return d_stateData;
+    return d_stateData;
 }
 
 #endif

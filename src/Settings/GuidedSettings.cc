@@ -15,59 +15,53 @@
 #include <QtQml>
 #include <QStandardPaths>
 
-const char *GuidedSettings::guidedSettingsGroupName =       "Guided";
-const char *GuidedSettings::fixedWingMinimumAltitudeName =  "FixedWingMinimumAltitude";
-const char *GuidedSettings::fixedWingMaximumAltitudeName =  "FixedWingMaximumAltitude";
-const char *GuidedSettings::vehicleMinimumAltitudeName =    "VehicleMinimumAltitude";
-const char *GuidedSettings::vehicleMaximumAltitudeName =    "VehicleMaximumAltitude";
+const char* GuidedSettings::guidedSettingsGroupName =       "Guided";
+const char* GuidedSettings::fixedWingMinimumAltitudeName =  "FixedWingMinimumAltitude";
+const char* GuidedSettings::fixedWingMaximumAltitudeName =  "FixedWingMaximumAltitude";
+const char* GuidedSettings::vehicleMinimumAltitudeName =    "VehicleMinimumAltitude";
+const char* GuidedSettings::vehicleMaximumAltitudeName =    "VehicleMaximumAltitude";
 
-GuidedSettings::GuidedSettings(QObject *parent)
-	: SettingsGroup(guidedSettingsGroupName, QString() /* root settings group */, parent)
-	, _fixedWingMinimumAltitudeFact(NULL)
-	, _fixedWingMaximumAltitudeFact(NULL)
-	, _vehicleMinimumAltitudeFact(NULL)
-	, _vehicleMaximumAltitudeFact(NULL)
+GuidedSettings::GuidedSettings(QObject* parent)
+    : SettingsGroup(guidedSettingsGroupName, QString() /* root settings group */, parent)
+    , _fixedWingMinimumAltitudeFact (NULL)
+    , _fixedWingMaximumAltitudeFact (NULL)
+    , _vehicleMinimumAltitudeFact   (NULL)
+    , _vehicleMaximumAltitudeFact   (NULL)
 {
-	QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
-	qmlRegisterUncreatableType<GuidedSettings>("QGroundControl.SettingsManager", 1, 0, "GuidedSettings", "Reference only");
+    QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
+    qmlRegisterUncreatableType<GuidedSettings>("QGroundControl.SettingsManager", 1, 0, "GuidedSettings", "Reference only");
 }
 
-Fact *GuidedSettings::fixedWingMinimumAltitude(void)
+Fact* GuidedSettings::fixedWingMinimumAltitude(void)
 {
-	if (!_fixedWingMinimumAltitudeFact)
-	{
-		_fixedWingMinimumAltitudeFact = _createSettingsFact(fixedWingMinimumAltitudeName);
-	}
+    if (!_fixedWingMinimumAltitudeFact) {
+        _fixedWingMinimumAltitudeFact = _createSettingsFact(fixedWingMinimumAltitudeName);
+    }
 
-	return _fixedWingMinimumAltitudeFact;
+    return _fixedWingMinimumAltitudeFact;
 }
 
-Fact *GuidedSettings::fixedWingMaximumAltitude(void)
+Fact* GuidedSettings::fixedWingMaximumAltitude(void)
 {
-	if (!_fixedWingMaximumAltitudeFact)
-	{
-		_fixedWingMaximumAltitudeFact = _createSettingsFact(fixedWingMaximumAltitudeName);
-	}
+    if (!_fixedWingMaximumAltitudeFact) {
+        _fixedWingMaximumAltitudeFact = _createSettingsFact(fixedWingMaximumAltitudeName);
+    }
 
-	return _fixedWingMaximumAltitudeFact;
+    return _fixedWingMaximumAltitudeFact;
 }
 
-Fact *GuidedSettings::vehicleMinimumAltitude(void)
+Fact* GuidedSettings::vehicleMinimumAltitude(void)
 {
-	if (!_vehicleMinimumAltitudeFact)
-	{
-		_vehicleMinimumAltitudeFact = _createSettingsFact(vehicleMinimumAltitudeName);
-	}
-
-	return _vehicleMinimumAltitudeFact;
+    if (!_vehicleMinimumAltitudeFact) {
+        _vehicleMinimumAltitudeFact = _createSettingsFact(vehicleMinimumAltitudeName);
+    }
+    return _vehicleMinimumAltitudeFact;
 }
 
-Fact *GuidedSettings::vehicleMaximumAltitude(void)
+Fact* GuidedSettings::vehicleMaximumAltitude(void)
 {
-	if (!_vehicleMaximumAltitudeFact)
-	{
-		_vehicleMaximumAltitudeFact = _createSettingsFact(vehicleMaximumAltitudeName);
-	}
-
-	return _vehicleMaximumAltitudeFact;
+    if (!_vehicleMaximumAltitudeFact) {
+        _vehicleMaximumAltitudeFact = _createSettingsFact(vehicleMaximumAltitudeName);
+    }
+    return _vehicleMaximumAltitudeFact;
 }

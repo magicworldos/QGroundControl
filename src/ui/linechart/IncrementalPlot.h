@@ -32,21 +32,21 @@ class QwtPlotCurve;
 class CurveData
 {
 public:
-	CurveData();
+    CurveData();
 
-	void append(double *x, double *y, int count);
+    void append(double *x, double *y, int count);
 
-	/** @brief The number of datasets held in the data structure */
-	int count() const;
-	/** @brief The reserved size of the data structure in units */
-	int size() const;
-	const double *x() const;
-	const double *y() const;
+    /** @brief The number of datasets held in the data structure */
+    int count() const;
+    /** @brief The reserved size of the data structure in units */
+    int size() const;
+    const double *x() const;
+    const double *y() const;
 
 private:
-	int d_count;
-	QVector<double> d_x;
-	QVector<double> d_y;
+    int d_count;
+    QVector<double> d_x;
+    QVector<double> d_y;
 };
 
 /**
@@ -58,63 +58,63 @@ private:
  */
 class IncrementalPlot : public ChartPlot
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	/** @brief Create a new, empty incremental plot */
-	IncrementalPlot(QWidget *parent = NULL);
-	virtual ~IncrementalPlot();
+    /** @brief Create a new, empty incremental plot */
+    IncrementalPlot(QWidget *parent = NULL);
+    virtual ~IncrementalPlot();
 
-	/** @brief Get the state of the grid */
-	bool gridEnabled() const;
+    /** @brief Get the state of the grid */
+    bool gridEnabled() const;
 
-	/** @brief Read out data from a curve */
-	int data(const QString &key, double *r_x, double *r_y, int maxSize);
+    /** @brief Read out data from a curve */
+    int data(const QString &key, double* r_x, double* r_y, int maxSize);
 
 public slots:
-	/** @brief Append one data point */
-	void appendData(const QString &key, double x, double y);
+    /** @brief Append one data point */
+    void appendData(const QString &key, double x, double y);
 
-	/** @brief Append multiple data points */
-	void appendData(const QString &key, double *x, double *y, int size);
+    /** @brief Append multiple data points */
+    void appendData(const QString &key, double* x, double* y, int size);
 
-	/** @brief Reset the plot scaling to the default value */
-	void resetScaling();
+    /** @brief Reset the plot scaling to the default value */
+    void resetScaling();
 
-	/** @brief Update the plot scale based on current data/symmetric mode */
-	void updateScale();
+    /** @brief Update the plot scale based on current data/symmetric mode */
+    void updateScale();
 
-	/** @brief Remove all data from the plot and repaint */
-	void removeData();
+    /** @brief Remove all data from the plot and repaint */
+    void removeData();
 
-	/** @brief Show the plot legend */
-	void showLegend(bool show);
+    /** @brief Show the plot legend */
+    void showLegend(bool show);
 
-	/** @brief Show the plot grid */
-	void showGrid(bool show);
+    /** @brief Show the plot grid */
+    void showGrid(bool show);
 
-	/** @brief Set new plot style */
-	void setStyleText(const QString &style);
+    /** @brief Set new plot style */
+    void setStyleText(const QString &style);
 
-	/** @brief Set symmetric axis scaling mode */
-	void setSymmetric(bool symmetric);
+    /** @brief Set symmetric axis scaling mode */
+    void setSymmetric(bool symmetric);
 
 protected slots:
-	/** @brief Handle the click on a legend item */
-	void handleLegendClick(QwtPlotItem *item, bool on);
+    /** @brief Handle the click on a legend item */
+    void handleLegendClick(QwtPlotItem* item, bool on);
 
 protected:
-	bool symmetric;        ///< Enable symmetric plotting
-	QwtLegend *legend;     ///< Plot legend
-	double xmin;           ///< Minimum x value seen
-	double xmax;           ///< Maximum x value seen
-	double ymin;           ///< Minimum y value seen
-	double ymax;           ///< Maximum y value seen
-	QString styleText;     ///< Curve style set by setStyleText
+    bool symmetric;        ///< Enable symmetric plotting
+    QwtLegend* legend;     ///< Plot legend
+    double xmin;           ///< Minimum x value seen
+    double xmax;           ///< Maximum x value seen
+    double ymin;           ///< Minimum y value seen
+    double ymax;           ///< Maximum y value seen
+    QString styleText;     ///< Curve style set by setStyleText
 
 private:
-	QMap<QString, CurveData * > d_data;     ///< Data points
-	/** Helper function to apply styleText style to the given curve */
-	void updateStyle(QwtPlotCurve *curve);
+    QMap<QString, CurveData* > d_data;      ///< Data points
+    /** Helper function to apply styleText style to the given curve */
+    void updateStyle(QwtPlotCurve *curve);
 };
 
 #endif /* INCREMENTALPLOT_H */

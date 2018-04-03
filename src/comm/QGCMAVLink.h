@@ -24,14 +24,13 @@
 extern mavlink_status_t m_mavlink_status[MAVLINK_COMM_NUM_BUFFERS];
 #include <mavlink.h>
 
-class QGCMAVLink
-{
+class QGCMAVLink {
 public:
-	static bool isFixedWing(MAV_TYPE mavType);
-	static bool isRover(MAV_TYPE mavType);
-	static bool isSub(MAV_TYPE mavType);
-	static bool isMultiRotor(MAV_TYPE mavType);
-	static bool isVTOL(MAV_TYPE mavType);
+    static bool isFixedWing(MAV_TYPE mavType);
+    static bool isRover(MAV_TYPE mavType);
+    static bool isSub(MAV_TYPE mavType);
+    static bool isMultiRotor(MAV_TYPE mavType);
+    static bool isVTOL(MAV_TYPE mavType);
 };
 
 #endif // QGCMAVLINK_H

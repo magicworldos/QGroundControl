@@ -15,18 +15,18 @@
 /// Unit test for SimpleMissionItem
 class MissionSettingsTest : public VisualMissionItemTest
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	MissionSettingsTest(void);
+    MissionSettingsTest(void);
 
-	void init(void) override;
-	void cleanup(void) override;
+    void init(void) override;
+    void cleanup(void) override;
 
 private slots:
-	void _testCameraSectionDirty(void);
-	void _testSpeedSectionDirty(void);
+    void _testCameraSectionDirty(void);
+    void _testSpeedSectionDirty(void);
 
 private:
-	MissionSettingsItem *_settingsItem;
+    MissionSettingsItem* _settingsItem;
 };

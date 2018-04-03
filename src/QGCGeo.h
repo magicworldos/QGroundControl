@@ -29,7 +29,7 @@
  * @param[out] y East component of coordinate in local plane.
  * @param[out] z Down component of coordinate in local plane.
  */
-void convertGeoToNed(QGeoCoordinate coord, QGeoCoordinate origin, double *x, double *y, double *z);
+void convertGeoToNed(QGeoCoordinate coord, QGeoCoordinate origin, double* x, double* y, double* z);
 
 /**
  * @brief Transform a local (East, North, and Down) coordinate into a geodetic coordinate.
@@ -58,7 +58,7 @@ void convertNedToGeo(double x, double y, double z, QGeoCoordinate origin, QGeoCo
 //
 // Returns:
 //   The UTM zone used for calculating the values of x and y.
-int convertGeoToUTM(const QGeoCoordinate &coord, double &easting, double &northing);
+int convertGeoToUTM(const QGeoCoordinate& coord, double& easting, double& northing);
 
 // UTMXYToLatLon
 //
@@ -79,6 +79,6 @@ int convertGeoToUTM(const QGeoCoordinate &coord, double &easting, double &northi
 //
 // Returns:
 // The function does not return a value.
-void convertUTMToGeo(double easting, double northing, int zone, bool southhemi, QGeoCoordinate &coord);
+void convertUTMToGeo(double easting, double northing, int zone, bool southhemi, QGeoCoordinate& coord);
 
 #endif // QGCGEO_H

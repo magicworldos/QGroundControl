@@ -28,16 +28,16 @@ QString
 ScreenToolsController::iOSDevice() const
 {
 #if defined(__ios__)
-	struct utsname systemInfo;
-	uname(&systemInfo);
-	return QString(systemInfo.machine);
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    return QString(systemInfo.machine);
 #else
-	return QString();
+    return QString();
 #endif
 }
 
 QString
 ScreenToolsController::fixedFontFamily() const
 {
-	return QFontDatabase::systemFont(QFontDatabase::FixedFont).family();
+    return QFontDatabase::systemFont(QFontDatabase::FixedFont).family();
 }

@@ -18,7 +18,7 @@ class QwtPlot;
 
 /*!
   \brief An alternative canvas for a QwtPlot derived from QGLWidget
-
+  
   QwtPlotGLCanvas implements the very basics to act as canvas
   inside of a QwtPlot widget. It might be extended to a full
   featured alternative to QwtPlotCanvas in a future version of Qwt.
@@ -30,107 +30,107 @@ class QwtPlot;
   \sa QwtPlot::setCanvas(), QwtPlotCanvas
 
   \note You might want to use the QPaintEngine::OpenGL paint engine
-        ( see QGL::setPreferredPaintEngine() ). On a Linux test system
+        ( see QGL::setPreferredPaintEngine() ). On a Linux test system 
         QPaintEngine::OpenGL2 shows very basic problems ( wrong
         geometries of rectangles ) but also more advanced stuff
         like antialiasing doesn't work.
 
   \note Another way to introduce OpenGL rendering to Qwt
         is to use QGLPixelBuffer or QGLFramebufferObject. Both
-        type of buffers can be converted into a QImage and
+        type of buffers can be converted into a QImage and 
         used in combination with a regular QwtPlotCanvas.
 */
 class QWT_EXPORT QwtPlotGLCanvas: public QGLWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	Q_ENUMS(Shape Shadow)
+    Q_ENUMS( Shape Shadow )
 
-	Q_PROPERTY(Shadow frameShadow READ frameShadow WRITE setFrameShadow)
-	Q_PROPERTY(Shape frameShape READ frameShape WRITE setFrameShape)
-	Q_PROPERTY(int lineWidth READ lineWidth WRITE setLineWidth)
-	Q_PROPERTY(int midLineWidth READ midLineWidth WRITE setMidLineWidth)
-	Q_PROPERTY(int frameWidth READ frameWidth)
-	Q_PROPERTY(QRect frameRect READ frameRect DESIGNABLE false)
+    Q_PROPERTY( Shadow frameShadow READ frameShadow WRITE setFrameShadow )
+    Q_PROPERTY( Shape frameShape READ frameShape WRITE setFrameShape )
+    Q_PROPERTY( int lineWidth READ lineWidth WRITE setLineWidth )
+    Q_PROPERTY( int midLineWidth READ midLineWidth WRITE setMidLineWidth )
+    Q_PROPERTY( int frameWidth READ frameWidth )
+    Q_PROPERTY( QRect frameRect READ frameRect DESIGNABLE false )
 
 public:
-	/*!
-	    \brief Frame shadow
+    /*!
+        \brief Frame shadow
 
-	     Unfortunately it is not possible to use QFrame::Shadow
-	     as a property of a widget that is not derived from QFrame.
-	     The following enum is made for the designer only. It is safe
-	     to use QFrame::Shadow instead.
-	 */
-	enum Shadow
-	{
-		//! QFrame::Plain
-		Plain = QFrame::Plain,
+         Unfortunately it is not possible to use QFrame::Shadow
+         as a property of a widget that is not derived from QFrame.
+         The following enum is made for the designer only. It is safe
+         to use QFrame::Shadow instead.
+     */
+    enum Shadow
+    {
+        //! QFrame::Plain
+        Plain = QFrame::Plain,
 
-		//! QFrame::Raised
-		Raised = QFrame::Raised,
+        //! QFrame::Raised
+        Raised = QFrame::Raised,
 
-		//! QFrame::Sunken
-		Sunken = QFrame::Sunken
-	};
+        //! QFrame::Sunken
+        Sunken = QFrame::Sunken
+    };
 
-	/*!
-	    \brief Frame shape
+    /*!
+        \brief Frame shape
 
-	    Unfortunately it is not possible to use QFrame::Shape
-	    as a property of a widget that is not derived from QFrame.
-	    The following enum is made for the designer only. It is safe
-	    to use QFrame::Shadow instead.
+        Unfortunately it is not possible to use QFrame::Shape
+        as a property of a widget that is not derived from QFrame.
+        The following enum is made for the designer only. It is safe
+        to use QFrame::Shadow instead.
 
-	    \note QFrame::StyledPanel and QFrame::WinPanel are unsuported
-	          and will be displayed as QFrame::Panel.
-	 */
-	enum Shape
-	{
-		NoFrame = QFrame::NoFrame,
+        \note QFrame::StyledPanel and QFrame::WinPanel are unsuported 
+              and will be displayed as QFrame::Panel.
+     */
+    enum Shape
+    {
+        NoFrame = QFrame::NoFrame,
 
-		Box = QFrame::Box,
-		Panel = QFrame::Panel
-	};
+        Box = QFrame::Box,
+        Panel = QFrame::Panel
+    };
 
-	explicit QwtPlotGLCanvas(QwtPlot * = NULL);
-	virtual ~QwtPlotGLCanvas();
+    explicit QwtPlotGLCanvas( QwtPlot * = NULL );
+    virtual ~QwtPlotGLCanvas();
 
-	void setFrameStyle(int style);
-	int frameStyle() const;
+    void setFrameStyle( int style );
+    int frameStyle() const;
 
-	void setFrameShadow(Shadow);
-	Shadow frameShadow() const;
+    void setFrameShadow( Shadow );
+    Shadow frameShadow() const;
 
-	void setFrameShape(Shape);
-	Shape frameShape() const;
+    void setFrameShape( Shape );
+    Shape frameShape() const;
 
-	void setLineWidth(int);
-	int lineWidth() const;
+    void setLineWidth( int );
+    int lineWidth() const;
 
-	void setMidLineWidth(int);
-	int midLineWidth() const;
+    void setMidLineWidth( int );
+    int midLineWidth() const;
 
-	int frameWidth() const;
-	QRect frameRect() const;
+    int frameWidth() const;
+    QRect frameRect() const;
 
-	Q_INVOKABLE QPainterPath borderPath(const QRect &) const;
+    Q_INVOKABLE QPainterPath borderPath( const QRect & ) const;
 
-	virtual bool event(QEvent *);
+    virtual bool event( QEvent * );
 
 public Q_SLOTS:
-	void replot();
+    void replot();
 
 protected:
-	virtual void paintEvent(QPaintEvent *);
+    virtual void paintEvent( QPaintEvent * );
 
-	virtual void drawBackground(QPainter *);
-	virtual void drawBorder(QPainter *);
-	virtual void drawItems(QPainter *);
+    virtual void drawBackground( QPainter * );
+    virtual void drawBorder( QPainter * );
+    virtual void drawItems( QPainter * );
 
 private:
-	class PrivateData;
-	PrivateData *d_data;
+    class PrivateData;
+    PrivateData *d_data;
 };
 
 #endif

@@ -21,21 +21,21 @@ class QGCApplication;
 
 class AudioOutput : public QGCTool
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	AudioOutput(QGCApplication *app, QGCToolbox *toolbox);
+    AudioOutput(QGCApplication* app, QGCToolbox* toolbox);
 
-	static bool     getMillisecondString(const QString &string, QString &match, int &number);
-	static QString  fixTextMessageForAudio(const QString &string);
+    static bool     getMillisecondString    (const QString& string, QString& match, int& number);
+    static QString  fixTextMessageForAudio  (const QString& string);
 
 public slots:
-	bool            say(const QString &text);
+    bool            say                     (const QString& text);
 
 private slots:
-	void            _stateChanged(QTextToSpeech::State state);
+    void            _stateChanged           (QTextToSpeech::State state);
 
 protected:
-	QTextToSpeech  *_tts;
-	QStringList     _texts;
+    QTextToSpeech*  _tts;
+    QStringList     _texts;
 };
 

@@ -28,29 +28,29 @@ class Fact;
 /// @endcode
 class FactValidator : public QValidator
 {
-	Q_OBJECT
-
-	Q_PROPERTY(Fact *fact READ fact WRITE setFact)
-
+    Q_OBJECT
+    
+    Q_PROPERTY(Fact* fact READ fact WRITE setFact)
+    
 public:
-	FactValidator(QObject *parent = NULL);
-
-	// Property system methods
-
-	/// Read accessor for fact property
-	Fact *fact(void) { return _fact; }
-
-	/// Write accessor for fact property
-	void setFact(Fact *fact) { _fact = fact; }
-
-	/// Override from QValidator
-	virtual void fixup(QString &input) const;
-
-	/// Override from QValidator
-	virtual State validate(QString &input, int &pos) const;
-
+    FactValidator(QObject* parent = NULL);
+    
+    // Property system methods
+    
+    /// Read accessor for fact property
+    Fact* fact(void) { return _fact; }
+    
+    /// Write accessor for fact property
+    void setFact(Fact* fact) { _fact = fact; }
+    
+    /// Override from QValidator
+    virtual void fixup(QString& input) const;
+    
+    /// Override from QValidator
+    virtual State validate(QString& input, int& pos) const;
+    
 private:
-	Fact *_fact;    ///< Fact that the validator is working on
+    Fact* _fact;    ///< Fact that the validator is working on
 };
 
 #endif

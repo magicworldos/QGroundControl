@@ -12,36 +12,33 @@
 #include <QQmlEngine>
 #include <QtQml>
 
-const char *BrandImageSettings::brandImageSettingsGroupName =   "BrandImage";
-const char *BrandImageSettings::userBrandImageIndoorName =      "UserBrandImageIndoor";
-const char *BrandImageSettings::userBrandImageOutdoorName =     "UserBrandImageOutdoor";
+const char* BrandImageSettings::brandImageSettingsGroupName =   "BrandImage";
+const char* BrandImageSettings::userBrandImageIndoorName =      "UserBrandImageIndoor";
+const char* BrandImageSettings::userBrandImageOutdoorName =     "UserBrandImageOutdoor";
 
-BrandImageSettings::BrandImageSettings(QObject *parent)
-	: SettingsGroup(brandImageSettingsGroupName, QString() /* root settings group */, parent)
-	, _userBrandImageIndoorFact(NULL)
-	, _userBrandImageOutdoorFact(NULL)
+BrandImageSettings::BrandImageSettings(QObject* parent)
+    : SettingsGroup(brandImageSettingsGroupName, QString() /* root settings group */, parent)
+    , _userBrandImageIndoorFact(NULL)
+    , _userBrandImageOutdoorFact(NULL)
 {
-	QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
-	qmlRegisterUncreatableType<BrandImageSettings>("QGroundControl.SettingsManager", 1, 0, "BrandImageSettings",
-			"Reference only");
+    QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
+    qmlRegisterUncreatableType<BrandImageSettings>("QGroundControl.SettingsManager", 1, 0, "BrandImageSettings", "Reference only");
 }
 
-Fact *BrandImageSettings::userBrandImageIndoor(void)
+Fact* BrandImageSettings::userBrandImageIndoor(void)
 {
-	if (!_userBrandImageIndoorFact)
-	{
-		_userBrandImageIndoorFact = _createSettingsFact(userBrandImageIndoorName);
-	}
+    if (!_userBrandImageIndoorFact) {
+        _userBrandImageIndoorFact = _createSettingsFact(userBrandImageIndoorName);
+    }
 
-	return _userBrandImageIndoorFact;
+    return _userBrandImageIndoorFact;
 }
 
-Fact *BrandImageSettings::userBrandImageOutdoor(void)
+Fact* BrandImageSettings::userBrandImageOutdoor(void)
 {
-	if (!_userBrandImageOutdoorFact)
-	{
-		_userBrandImageOutdoorFact = _createSettingsFact(userBrandImageOutdoorName);
-	}
+    if (!_userBrandImageOutdoorFact) {
+        _userBrandImageOutdoorFact = _createSettingsFact(userBrandImageOutdoorName);
+    }
 
-	return _userBrandImageOutdoorFact;
+    return _userBrandImageOutdoorFact;
 }

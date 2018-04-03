@@ -3,10 +3,10 @@
   * \sa MatrixBase::cwiseProduct
   */
 template<typename OtherDerived>
-EIGEN_STRONG_INLINE const EIGEN_CWISE_PRODUCT_RETURN_TYPE(Derived, OtherDerived)
+EIGEN_STRONG_INLINE const EIGEN_CWISE_PRODUCT_RETURN_TYPE(Derived,OtherDerived)
 operator*(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
 {
-	return EIGEN_CWISE_PRODUCT_RETURN_TYPE(Derived, OtherDerived)(derived(), other.derived());
+  return EIGEN_CWISE_PRODUCT_RETURN_TYPE(Derived,OtherDerived)(derived(), other.derived());
 }
 
 /** \returns an expression of the coefficient wise quotient of \c *this and \a other
@@ -17,8 +17,7 @@ template<typename OtherDerived>
 EIGEN_STRONG_INLINE const CwiseBinaryOp<internal::scalar_quotient_op<Scalar>, const Derived, const OtherDerived>
 operator/(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
 {
-	return CwiseBinaryOp<internal::scalar_quotient_op<Scalar>, const Derived, const OtherDerived>(derived(),
-			other.derived());
+  return CwiseBinaryOp<internal::scalar_quotient_op<Scalar>, const Derived, const OtherDerived>(derived(), other.derived());
 }
 
 /** \returns an expression of the coefficient-wise min of \c *this and \a other
@@ -28,22 +27,22 @@ operator/(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
   *
   * \sa max()
   */
-EIGEN_MAKE_CWISE_BINARY_OP(min, internal::scalar_min_op)
+EIGEN_MAKE_CWISE_BINARY_OP(min,internal::scalar_min_op)
 
 /** \returns an expression of the coefficient-wise min of \c *this and scalar \a other
   *
   * \sa max()
   */
 EIGEN_STRONG_INLINE const CwiseBinaryOp<internal::scalar_min_op<Scalar>, const Derived,
-		    const CwiseNullaryOp<internal::scalar_constant_op<Scalar>, PlainObject> >
+                                        const CwiseNullaryOp<internal::scalar_constant_op<Scalar>, PlainObject> >
 #ifdef EIGEN_PARSED_BY_DOXYGEN
-		    min
+min
 #else
-		    (min)
+(min)
 #endif
-		    (const Scalar &other) const
+(const Scalar &other) const
 {
-	return (min)(Derived::PlainObject::Constant(rows(), cols(), other));
+  return (min)(Derived::PlainObject::Constant(rows(), cols(), other));
 }
 
 /** \returns an expression of the coefficient-wise max of \c *this and \a other
@@ -53,14 +52,14 @@ EIGEN_STRONG_INLINE const CwiseBinaryOp<internal::scalar_min_op<Scalar>, const D
   *
   * \sa min()
   */
-EIGEN_MAKE_CWISE_BINARY_OP(max, internal::scalar_max_op)
+EIGEN_MAKE_CWISE_BINARY_OP(max,internal::scalar_max_op)
 
 /** \returns an expression of the coefficient-wise max of \c *this and scalar \a other
   *
   * \sa min()
   */
 EIGEN_STRONG_INLINE const CwiseBinaryOp<internal::scalar_max_op<Scalar>, const Derived,
-const CwiseNullaryOp<internal::scalar_constant_op<Scalar>, PlainObject> >
+                                        const CwiseNullaryOp<internal::scalar_constant_op<Scalar>, PlainObject> >
 #ifdef EIGEN_PARSED_BY_DOXYGEN
 max
 #else
@@ -68,44 +67,44 @@ max
 #endif
 (const Scalar &other) const
 {
-	return (max)(Derived::PlainObject::Constant(rows(), cols(), other));
+  return (max)(Derived::PlainObject::Constant(rows(), cols(), other));
 }
 
 
 #define EIGEN_MAKE_CWISE_COMP_OP(OP, COMPARATOR) \
-	template<typename OtherDerived> \
-	EIGEN_STRONG_INLINE const CwiseBinaryOp<internal::scalar_cmp_op<Scalar, internal::cmp_ ## COMPARATOR>, const Derived, const OtherDerived> \
-	OP(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const \
-	{ \
-		return CwiseBinaryOp<internal::scalar_cmp_op<Scalar, internal::cmp_ ## COMPARATOR>, const Derived, const OtherDerived>(derived(), other.derived()); \
-	}\
-	typedef CwiseBinaryOp<internal::scalar_cmp_op<Scalar, internal::cmp_ ## COMPARATOR>, const Derived, const CwiseNullaryOp<internal::scalar_constant_op<Scalar>, PlainObject> > Cmp ## COMPARATOR ## ReturnType; \
-	typedef CwiseBinaryOp<internal::scalar_cmp_op<Scalar, internal::cmp_ ## COMPARATOR>, const CwiseNullaryOp<internal::scalar_constant_op<Scalar>, PlainObject>, const Derived > RCmp ## COMPARATOR ## ReturnType; \
-	EIGEN_STRONG_INLINE const Cmp ## COMPARATOR ## ReturnType \
-	OP(const Scalar& s) const { \
-		return this->OP(Derived::PlainObject::Constant(rows(), cols(), s)); \
-	} \
-	friend EIGEN_STRONG_INLINE const RCmp ## COMPARATOR ## ReturnType \
-	OP(const Scalar& s, const Derived& d) { \
-		return Derived::PlainObject::Constant(d.rows(), d.cols(), s).OP(d); \
-	}
+template<typename OtherDerived> \
+EIGEN_STRONG_INLINE const CwiseBinaryOp<internal::scalar_cmp_op<Scalar, internal::cmp_ ## COMPARATOR>, const Derived, const OtherDerived> \
+OP(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const \
+{ \
+  return CwiseBinaryOp<internal::scalar_cmp_op<Scalar, internal::cmp_ ## COMPARATOR>, const Derived, const OtherDerived>(derived(), other.derived()); \
+}\
+typedef CwiseBinaryOp<internal::scalar_cmp_op<Scalar, internal::cmp_ ## COMPARATOR>, const Derived, const CwiseNullaryOp<internal::scalar_constant_op<Scalar>, PlainObject> > Cmp ## COMPARATOR ## ReturnType; \
+typedef CwiseBinaryOp<internal::scalar_cmp_op<Scalar, internal::cmp_ ## COMPARATOR>, const CwiseNullaryOp<internal::scalar_constant_op<Scalar>, PlainObject>, const Derived > RCmp ## COMPARATOR ## ReturnType; \
+EIGEN_STRONG_INLINE const Cmp ## COMPARATOR ## ReturnType \
+OP(const Scalar& s) const { \
+  return this->OP(Derived::PlainObject::Constant(rows(), cols(), s)); \
+} \
+friend EIGEN_STRONG_INLINE const RCmp ## COMPARATOR ## ReturnType \
+OP(const Scalar& s, const Derived& d) { \
+  return Derived::PlainObject::Constant(d.rows(), d.cols(), s).OP(d); \
+}
 
 #define EIGEN_MAKE_CWISE_COMP_R_OP(OP, R_OP, RCOMPARATOR) \
-	template<typename OtherDerived> \
-	EIGEN_STRONG_INLINE const CwiseBinaryOp<internal::scalar_cmp_op<Scalar, internal::cmp_##RCOMPARATOR>, const OtherDerived, const Derived> \
-	OP(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const \
-	{ \
-		return CwiseBinaryOp<internal::scalar_cmp_op<Scalar, internal::cmp_##RCOMPARATOR>, const OtherDerived, const Derived>(other.derived(), derived()); \
-	} \
-	\
-	inline const RCmp ## RCOMPARATOR ## ReturnType \
-	OP(const Scalar& s) const { \
-		return Derived::PlainObject::Constant(rows(), cols(), s).R_OP(*this); \
-	} \
-	friend inline const Cmp ## RCOMPARATOR ## ReturnType \
-	OP(const Scalar& s, const Derived& d) { \
-		return d.R_OP(Derived::PlainObject::Constant(d.rows(), d.cols(), s)); \
-	}
+template<typename OtherDerived> \
+EIGEN_STRONG_INLINE const CwiseBinaryOp<internal::scalar_cmp_op<Scalar, internal::cmp_##RCOMPARATOR>, const OtherDerived, const Derived> \
+OP(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const \
+{ \
+  return CwiseBinaryOp<internal::scalar_cmp_op<Scalar, internal::cmp_##RCOMPARATOR>, const OtherDerived, const Derived>(other.derived(), derived()); \
+} \
+\
+inline const RCmp ## RCOMPARATOR ## ReturnType \
+OP(const Scalar& s) const { \
+  return Derived::PlainObject::Constant(rows(), cols(), s).R_OP(*this); \
+} \
+friend inline const Cmp ## RCOMPARATOR ## ReturnType \
+OP(const Scalar& s, const Derived& d) { \
+  return d.R_OP(Derived::PlainObject::Constant(d.rows(), d.cols(), s)); \
+}
 
 
 /** \returns an expression of the coefficient-wise \< operator of *this and \a other
@@ -185,15 +184,15 @@ EIGEN_MAKE_CWISE_COMP_OP(operator!=, NEQ)
   * \sa operator+=(), operator-()
   */
 inline const CwiseUnaryOp<internal::scalar_add_op<Scalar>, const Derived>
-operator+(const Scalar &scalar) const
+operator+(const Scalar& scalar) const
 {
-	return CwiseUnaryOp<internal::scalar_add_op<Scalar>, const Derived>(derived(), internal::scalar_add_op<Scalar>(scalar));
+  return CwiseUnaryOp<internal::scalar_add_op<Scalar>, const Derived>(derived(), internal::scalar_add_op<Scalar>(scalar));
 }
 
 friend inline const CwiseUnaryOp<internal::scalar_add_op<Scalar>, const Derived>
-operator+(const Scalar &scalar, const EIGEN_CURRENT_STORAGE_BASE_CLASS<Derived> &other)
+operator+(const Scalar& scalar,const EIGEN_CURRENT_STORAGE_BASE_CLASS<Derived>& other)
 {
-	return other + scalar;
+  return other + scalar;
 }
 
 /** \returns an expression of \c *this with each coeff decremented by the constant \a scalar
@@ -204,16 +203,15 @@ operator+(const Scalar &scalar, const EIGEN_CURRENT_STORAGE_BASE_CLASS<Derived> 
   * \sa operator+(), operator-=()
   */
 inline const CwiseUnaryOp<internal::scalar_add_op<Scalar>, const Derived>
-operator-(const Scalar &scalar) const
+operator-(const Scalar& scalar) const
 {
-	return *this + (-scalar);
+  return *this + (-scalar);
 }
 
-friend inline const
-CwiseUnaryOp<internal::scalar_add_op<Scalar>, const CwiseUnaryOp<internal::scalar_opposite_op<Scalar>, const Derived> >
-operator-(const Scalar &scalar, const EIGEN_CURRENT_STORAGE_BASE_CLASS<Derived> &other)
+friend inline const CwiseUnaryOp<internal::scalar_add_op<Scalar>, const CwiseUnaryOp<internal::scalar_opposite_op<Scalar>, const Derived> >
+operator-(const Scalar& scalar,const EIGEN_CURRENT_STORAGE_BASE_CLASS<Derived>& other)
 {
-	return (-other) + scalar;
+  return (-other) + scalar;
 }
 
 /** \returns an expression of the coefficient-wise && operator of *this and \a other
@@ -229,10 +227,9 @@ template<typename OtherDerived>
 inline const CwiseBinaryOp<internal::scalar_boolean_and_op, const Derived, const OtherDerived>
 operator&&(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
 {
-	EIGEN_STATIC_ASSERT((internal::is_same<bool, Scalar>::value
-			     && internal::is_same<bool, typename OtherDerived::Scalar>::value),
-			    THIS_METHOD_IS_ONLY_FOR_EXPRESSIONS_OF_BOOL);
-	return CwiseBinaryOp<internal::scalar_boolean_and_op, const Derived, const OtherDerived>(derived(), other.derived());
+  EIGEN_STATIC_ASSERT((internal::is_same<bool,Scalar>::value && internal::is_same<bool,typename OtherDerived::Scalar>::value),
+                      THIS_METHOD_IS_ONLY_FOR_EXPRESSIONS_OF_BOOL);
+  return CwiseBinaryOp<internal::scalar_boolean_and_op, const Derived, const OtherDerived>(derived(),other.derived());
 }
 
 /** \returns an expression of the coefficient-wise || operator of *this and \a other
@@ -248,10 +245,9 @@ template<typename OtherDerived>
 inline const CwiseBinaryOp<internal::scalar_boolean_or_op, const Derived, const OtherDerived>
 operator||(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
 {
-	EIGEN_STATIC_ASSERT((internal::is_same<bool, Scalar>::value
-			     && internal::is_same<bool, typename OtherDerived::Scalar>::value),
-			    THIS_METHOD_IS_ONLY_FOR_EXPRESSIONS_OF_BOOL);
-	return CwiseBinaryOp<internal::scalar_boolean_or_op, const Derived, const OtherDerived>(derived(), other.derived());
+  EIGEN_STATIC_ASSERT((internal::is_same<bool,Scalar>::value && internal::is_same<bool,typename OtherDerived::Scalar>::value),
+                      THIS_METHOD_IS_ONLY_FOR_EXPRESSIONS_OF_BOOL);
+  return CwiseBinaryOp<internal::scalar_boolean_or_op, const Derived, const OtherDerived>(derived(),other.derived());
 }
 
 

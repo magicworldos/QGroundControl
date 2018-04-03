@@ -9,9 +9,9 @@
 class PX4LogParser
 {
 public:
-	PX4LogParser();
-	~PX4LogParser();
-	bool getTagsFromLog(QByteArray &log, QList<GeoTagWorker::cameraFeedbackPacket> &cameraFeedback);
+    PX4LogParser();
+    ~PX4LogParser();
+    bool getTagsFromLog(QByteArray& log, QList<GeoTagWorker::cameraFeedbackPacket>& cameraFeedback);
 
 private:
 

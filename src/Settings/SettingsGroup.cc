@@ -11,19 +11,19 @@
 #include "QGCCorePlugin.h"
 #include "QGCApplication.h"
 
-SettingsGroup::SettingsGroup(const QString &name, const QString &settingsGroup, QObject *parent)
-	: QObject(parent)
-	, _name(name)
-	, _settingsGroup(settingsGroup)
-	, _visible(qgcApp()->toolbox()->corePlugin()->overrideSettingsGroupVisibility(name))
+SettingsGroup::SettingsGroup(const QString& name, const QString& settingsGroup, QObject* parent)
+    : QObject(parent)
+    , _name(name)
+    , _settingsGroup(settingsGroup)
+    , _visible(qgcApp()->toolbox()->corePlugin()->overrideSettingsGroupVisibility(name))
 {
-	QString jsonNameFormat(":/json/%1.SettingsGroup.json");
+    QString jsonNameFormat(":/json/%1.SettingsGroup.json");
 
-	_nameToMetaDataMap = FactMetaData::createMapFromJsonFile(jsonNameFormat.arg(name), this);
+    _nameToMetaDataMap = FactMetaData::createMapFromJsonFile(jsonNameFormat.arg(name), this);
 }
 
-SettingsFact *SettingsGroup::_createSettingsFact(const QString &name)
+SettingsFact* SettingsGroup::_createSettingsFact(const QString& name)
 {
-	return new SettingsFact(_settingsGroup, _nameToMetaDataMap[name], this);
+    return new SettingsFact(_settingsGroup, _nameToMetaDataMap[name], this);
 }
 

@@ -46,51 +46,49 @@ class QGeoPositionInfoPrivate;
 class Q_POSITIONING_EXPORT QGeoPositionInfo
 {
 public:
-	enum Attribute
-	{
-		Direction,
-		GroundSpeed,
-		VerticalSpeed,
-		MagneticVariation,
-		HorizontalAccuracy,
-		VerticalAccuracy
-	};
+    enum Attribute {
+        Direction,
+        GroundSpeed,
+        VerticalSpeed,
+        MagneticVariation,
+        HorizontalAccuracy,
+        VerticalAccuracy
+    };
 
-	QGeoPositionInfo();
-	QGeoPositionInfo(const QGeoCoordinate &coordinate, const QDateTime &updateTime);
-	QGeoPositionInfo(const QGeoPositionInfo &other);
-	~QGeoPositionInfo();
+    QGeoPositionInfo();
+    QGeoPositionInfo(const QGeoCoordinate &coordinate, const QDateTime &updateTime);
+    QGeoPositionInfo(const QGeoPositionInfo &other);
+    ~QGeoPositionInfo();
 
-	QGeoPositionInfo &operator=(const QGeoPositionInfo &other);
+    QGeoPositionInfo &operator=(const QGeoPositionInfo &other);
 
-	bool operator==(const QGeoPositionInfo &other) const;
-	inline bool operator!=(const QGeoPositionInfo &other) const
-	{
-		return !operator==(other);
-	}
+    bool operator==(const QGeoPositionInfo &other) const;
+    inline bool operator!=(const QGeoPositionInfo &other) const {
+        return !operator==(other);
+    }
 
-	bool isValid() const;
+    bool isValid() const;
 
-	void setTimestamp(const QDateTime &timestamp);
-	QDateTime timestamp() const;
+    void setTimestamp(const QDateTime &timestamp);
+    QDateTime timestamp() const;
 
-	void setCoordinate(const QGeoCoordinate &coordinate);
-	QGeoCoordinate coordinate() const;
+    void setCoordinate(const QGeoCoordinate &coordinate);
+    QGeoCoordinate coordinate() const;
 
-	void setAttribute(Attribute attribute, qreal value);
-	qreal attribute(Attribute attribute) const;
-	void removeAttribute(Attribute attribute);
-	bool hasAttribute(Attribute attribute) const;
+    void setAttribute(Attribute attribute, qreal value);
+    qreal attribute(Attribute attribute) const;
+    void removeAttribute(Attribute attribute);
+    bool hasAttribute(Attribute attribute) const;
 
 private:
 #ifndef QT_NO_DEBUG_STREAM
-	friend Q_POSITIONING_EXPORT QDebug operator<<(QDebug dbg, const QGeoPositionInfo &info);
+    friend Q_POSITIONING_EXPORT QDebug operator<<(QDebug dbg, const QGeoPositionInfo &info);
 #endif
 #ifndef QT_NO_DATASTREAM
-	friend Q_POSITIONING_EXPORT QDataStream &operator<<(QDataStream &stream, const QGeoPositionInfo &info);
-	friend Q_POSITIONING_EXPORT QDataStream &operator>>(QDataStream &stream, QGeoPositionInfo &info);
+    friend Q_POSITIONING_EXPORT QDataStream &operator<<(QDataStream &stream, const QGeoPositionInfo &info);
+    friend Q_POSITIONING_EXPORT QDataStream &operator>>(QDataStream &stream, QGeoPositionInfo &info);
 #endif
-	QGeoPositionInfoPrivate *d;
+    QGeoPositionInfoPrivate *d;
 };
 
 #ifndef QT_NO_DEBUG_STREAM

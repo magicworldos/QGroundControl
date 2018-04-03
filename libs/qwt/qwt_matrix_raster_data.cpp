@@ -14,38 +14,38 @@
 class QwtMatrixRasterData::PrivateData
 {
 public:
-	PrivateData():
-		resampleMode(QwtMatrixRasterData::NearestNeighbour),
-		numColumns(0)
-	{
-	}
+    PrivateData():
+        resampleMode(QwtMatrixRasterData::NearestNeighbour),
+        numColumns(0)
+    {
+    }
 
-	inline double value(int row, int col) const
-	{
-		return values.data()[ row * numColumns + col ];
-	}
+    inline double value(int row, int col) const
+    {
+        return values.data()[ row * numColumns + col ];
+    }
 
-	QwtMatrixRasterData::ResampleMode resampleMode;
+    QwtMatrixRasterData::ResampleMode resampleMode;
 
-	QVector<double> values;
-	int numColumns;
-	int numRows;
+    QVector<double> values;
+    int numColumns;
+    int numRows;
 
-	double dx;
-	double dy;
+    double dx;
+    double dy;
 };
 
 //! Constructor
 QwtMatrixRasterData::QwtMatrixRasterData()
 {
-	d_data = new PrivateData();
-	update();
+    d_data = new PrivateData();
+    update();
 }
 
 //! Destructor
 QwtMatrixRasterData::~QwtMatrixRasterData()
 {
-	delete d_data;
+    delete d_data;
 }
 
 /*!
@@ -54,9 +54,9 @@ QwtMatrixRasterData::~QwtMatrixRasterData()
    \param mode Resampling mode
    \sa resampleMode(), value()
 */
-void QwtMatrixRasterData::setResampleMode(ResampleMode mode)
+void QwtMatrixRasterData::setResampleMode( ResampleMode mode )
 {
-	d_data->resampleMode = mode;
+    d_data->resampleMode = mode;
 }
 
 /*!
@@ -65,7 +65,7 @@ void QwtMatrixRasterData::setResampleMode(ResampleMode mode)
 */
 QwtMatrixRasterData::ResampleMode QwtMatrixRasterData::resampleMode() const
 {
-	return d_data->resampleMode;
+    return d_data->resampleMode;
 }
 
 /*!
@@ -81,14 +81,14 @@ QwtMatrixRasterData::ResampleMode QwtMatrixRasterData::resampleMode() const
 
    \param axis X, Y or Z axis
    \param interval Interval
-
+   
    \sa QwtRasterData::interval(), setValueMatrix()
 */
-void QwtMatrixRasterData::setInterval(
-	Qt::Axis axis, const QwtInterval &interval)
+void QwtMatrixRasterData::setInterval( 
+    Qt::Axis axis, const QwtInterval &interval )
 {
-	QwtRasterData::setInterval(axis, interval);
-	update();
+    QwtRasterData::setInterval( axis, interval );
+    update();
 }
 
 /*!
@@ -96,7 +96,7 @@ void QwtMatrixRasterData::setInterval(
 
    The positions of the values are calculated by dividing
    the bounding rectangle of the X/Y intervals into equidistant
-   rectangles ( pixels ). Each value corresponds to the center of
+   rectangles ( pixels ). Each value corresponds to the center of 
    a pixel.
 
    \param values Vector of values
@@ -104,12 +104,12 @@ void QwtMatrixRasterData::setInterval(
 
    \sa valueMatrix(), numColumns(), numRows(), setInterval()()
 */
-void QwtMatrixRasterData::setValueMatrix(
-	const QVector<double> &values, int numColumns)
+void QwtMatrixRasterData::setValueMatrix( 
+    const QVector<double> &values, int numColumns )
 {
-	d_data->values = values;
-	d_data->numColumns = qMax(numColumns, 0);
-	update();
+    d_data->values = values;
+    d_data->numColumns = qMax( numColumns, 0 );
+    update();
 }
 
 /*!
@@ -118,7 +118,7 @@ void QwtMatrixRasterData::setValueMatrix(
 */
 const QVector<double> QwtMatrixRasterData::valueMatrix() const
 {
-	return d_data->values;
+    return d_data->values;
 }
 
 /*!
@@ -130,14 +130,14 @@ const QVector<double> QwtMatrixRasterData::valueMatrix() const
 
   \sa value(), setValueMatrix()
 */
-void QwtMatrixRasterData::setValue(int row, int col, double value)
+void QwtMatrixRasterData::setValue( int row, int col, double value )
 {
-	if (row >= 0 && row < d_data->numRows &&
-			col >= 0 && col < d_data->numColumns)
-	{
-		const int index = row * d_data->numColumns + col;
-		d_data->values.data()[ index ] = value;
-	}
+    if ( row >= 0 && row < d_data->numRows &&
+        col >= 0 && col < d_data->numColumns )
+    {
+        const int index = row * d_data->numColumns + col;
+        d_data->values.data()[ index ] = value;
+    }
 }
 
 /*!
@@ -146,7 +146,7 @@ void QwtMatrixRasterData::setValue(int row, int col, double value)
 */
 int QwtMatrixRasterData::numColumns() const
 {
-	return d_data->numColumns;
+    return d_data->numColumns;
 }
 
 /*!
@@ -155,48 +155,46 @@ int QwtMatrixRasterData::numColumns() const
 */
 int QwtMatrixRasterData::numRows() const
 {
-	return d_data->numRows;
+    return d_data->numRows;
 }
 
 /*!
    \brief Calculate the pixel hint
 
-   pixelHint() returns the geometry of a pixel, that can be used
+   pixelHint() returns the geometry of a pixel, that can be used 
    to calculate the resolution and alignment of the plot item, that is
-   representing the data.
+   representing the data. 
 
    - NearestNeighbour\n
-     pixelHint() returns the surrounding pixel of the top left value
+     pixelHint() returns the surrounding pixel of the top left value 
      in the matrix.
 
    - BilinearInterpolation\n
      Returns an empty rectangle recommending
-     to render in target device ( f.e. screen ) resolution.
+     to render in target device ( f.e. screen ) resolution. 
 
    \param area Requested area, ignored
    \return Calculated hint
 
    \sa ResampleMode, setMatrix(), setInterval()
 */
-QRectF QwtMatrixRasterData::pixelHint(const QRectF &area) const
+QRectF QwtMatrixRasterData::pixelHint( const QRectF &area ) const
 {
-	Q_UNUSED(area)
+    Q_UNUSED( area )
 
-	QRectF rect;
+    QRectF rect;
+    if ( d_data->resampleMode == NearestNeighbour )
+    {
+        const QwtInterval intervalX = interval( Qt::XAxis );
+        const QwtInterval intervalY = interval( Qt::YAxis );
+        if ( intervalX.isValid() && intervalY.isValid() )
+        {
+            rect = QRectF( intervalX.minValue(), intervalY.minValue(),
+                d_data->dx, d_data->dy );
+        }
+    }
 
-	if (d_data->resampleMode == NearestNeighbour)
-	{
-		const QwtInterval intervalX = interval(Qt::XAxis);
-		const QwtInterval intervalY = interval(Qt::YAxis);
-
-		if (intervalX.isValid() && intervalY.isValid())
-		{
-			rect = QRectF(intervalX.minValue(), intervalY.minValue(),
-				      d_data->dx, d_data->dy);
-		}
-	}
-
-	return rect;
+    return rect;
 }
 
 /*!
@@ -207,117 +205,94 @@ QRectF QwtMatrixRasterData::pixelHint(const QRectF &area) const
 
    \sa ResampleMode
 */
-double QwtMatrixRasterData::value(double x, double y) const
+double QwtMatrixRasterData::value( double x, double y ) const
 {
-	const QwtInterval xInterval = interval(Qt::XAxis);
-	const QwtInterval yInterval = interval(Qt::YAxis);
+    const QwtInterval xInterval = interval( Qt::XAxis );
+    const QwtInterval yInterval = interval( Qt::YAxis );
 
-	if (!(xInterval.contains(x) && yInterval.contains(y)))
-	{
-		return qQNaN();
-	}
+    if ( !( xInterval.contains(x) && yInterval.contains(y) ) )
+        return qQNaN();
 
-	double value;
+    double value;
 
-	switch (d_data->resampleMode)
-	{
-	case BilinearInterpolation:
-		{
-			int col1 = qRound((x - xInterval.minValue()) / d_data->dx) - 1;
-			int row1 = qRound((y - yInterval.minValue()) / d_data->dy) - 1;
-			int col2 = col1 + 1;
-			int row2 = row1 + 1;
+    switch( d_data->resampleMode )
+    {
+        case BilinearInterpolation:
+        {
+            int col1 = qRound( (x - xInterval.minValue() ) / d_data->dx ) - 1;
+            int row1 = qRound( (y - yInterval.minValue() ) / d_data->dy ) - 1;
+            int col2 = col1 + 1;
+            int row2 = row1 + 1;
 
-			if (col1 < 0)
-			{
-				col1 = col2;
-			}
+            if ( col1 < 0 )
+                col1 = col2;
+            else if ( col2 >= static_cast<int>( d_data->numColumns ) )
+                col2 = col1;
 
-			else if (col2 >= static_cast<int>(d_data->numColumns))
-			{
-				col2 = col1;
-			}
+            if ( row1 < 0 )
+                row1 = row2;
+            else if ( row2 >= static_cast<int>( d_data->numRows ) )
+                row2 = row1;
 
-			if (row1 < 0)
-			{
-				row1 = row2;
-			}
+            const double v11 = d_data->value( row1, col1 );
+            const double v21 = d_data->value( row1, col2 );
+            const double v12 = d_data->value( row2, col1 );
+            const double v22 = d_data->value( row2, col2 );
 
-			else if (row2 >= static_cast<int>(d_data->numRows))
-			{
-				row2 = row1;
-			}
+            const double x2 = xInterval.minValue() + 
+                ( col2 + 0.5 ) * d_data->dx;
+            const double y2 = yInterval.minValue() + 
+                ( row2 + 0.5 ) * d_data->dy;
+                
+            const double rx = ( x2 - x ) / d_data->dx;
+            const double ry = ( y2 - y ) / d_data->dy;
 
-			const double v11 = d_data->value(row1, col1);
-			const double v21 = d_data->value(row1, col2);
-			const double v12 = d_data->value(row2, col1);
-			const double v22 = d_data->value(row2, col2);
+            const double vr1 = rx * v11 + ( 1.0 - rx ) * v21;
+            const double vr2 = rx * v12 + ( 1.0 - rx ) * v22;
 
-			const double x2 = xInterval.minValue() +
-					  (col2 + 0.5) * d_data->dx;
-			const double y2 = yInterval.minValue() +
-					  (row2 + 0.5) * d_data->dy;
+            value = ry * vr1 + ( 1.0 - ry ) * vr2;
 
-			const double rx = (x2 - x) / d_data->dx;
-			const double ry = (y2 - y) / d_data->dy;
+            break;
+        }
+        case NearestNeighbour:
+        default:
+        {
+            int row = int( (y - yInterval.minValue() ) / d_data->dy );
+            int col = int( (x - xInterval.minValue() ) / d_data->dx );
 
-			const double vr1 = rx * v11 + (1.0 - rx) * v21;
-			const double vr2 = rx * v12 + (1.0 - rx) * v22;
+            // In case of intervals, where the maximum is included
+            // we get out of bound for row/col, when the value for the
+            // maximum is requested. Instead we return the value
+            // from the last row/col
 
-			value = ry * vr1 + (1.0 - ry) * vr2;
+            if ( row >= d_data->numRows )
+                row = d_data->numRows - 1;
 
-			break;
-		}
+            if ( col >= d_data->numColumns )
+                col = d_data->numColumns - 1;
 
-	case NearestNeighbour:
-	default:
-		{
-			int row = int((y - yInterval.minValue()) / d_data->dy);
-			int col = int((x - xInterval.minValue()) / d_data->dx);
+            value = d_data->value( row, col );
+        }
+    }
 
-			// In case of intervals, where the maximum is included
-			// we get out of bound for row/col, when the value for the
-			// maximum is requested. Instead we return the value
-			// from the last row/col
-
-			if (row >= d_data->numRows)
-			{
-				row = d_data->numRows - 1;
-			}
-
-			if (col >= d_data->numColumns)
-			{
-				col = d_data->numColumns - 1;
-			}
-
-			value = d_data->value(row, col);
-		}
-	}
-
-	return value;
+    return value;
 }
 
 void QwtMatrixRasterData::update()
 {
-	d_data->numRows = 0;
-	d_data->dx = 0.0;
-	d_data->dy = 0.0;
+    d_data->numRows = 0;
+    d_data->dx = 0.0;
+    d_data->dy = 0.0;
 
-	if (d_data->numColumns > 0)
-	{
-		d_data->numRows = d_data->values.size() / d_data->numColumns;
+    if ( d_data->numColumns > 0 )
+    {
+        d_data->numRows = d_data->values.size() / d_data->numColumns;
 
-		const QwtInterval xInterval = interval(Qt::XAxis);
-		const QwtInterval yInterval = interval(Qt::YAxis);
-
-		if (xInterval.isValid())
-		{
-			d_data->dx = xInterval.width() / d_data->numColumns;
-		}
-
-		if (yInterval.isValid())
-		{
-			d_data->dy = yInterval.width() / d_data->numRows;
-		}
-	}
+        const QwtInterval xInterval = interval( Qt::XAxis );
+        const QwtInterval yInterval = interval( Qt::YAxis );
+        if ( xInterval.isValid() )
+            d_data->dx = xInterval.width() / d_data->numColumns;
+        if ( yInterval.isValid() )
+            d_data->dy = yInterval.width() / d_data->numRows;
+    }
 }

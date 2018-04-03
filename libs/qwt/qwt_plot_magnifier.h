@@ -28,27 +28,27 @@ class QwtPlot;
 */
 class QWT_EXPORT QwtPlotMagnifier: public QwtMagnifier
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit QwtPlotMagnifier(QWidget *);
-	virtual ~QwtPlotMagnifier();
+    explicit QwtPlotMagnifier( QWidget * );
+    virtual ~QwtPlotMagnifier();
 
-	void setAxisEnabled(int axis, bool on);
-	bool isAxisEnabled(int axis) const;
+    void setAxisEnabled( int axis, bool on );
+    bool isAxisEnabled( int axis ) const;
 
-	QWidget *canvas();
-	const QWidget *canvas() const;
+    QWidget *canvas();
+    const QWidget *canvas() const;
 
-	QwtPlot *plot();
-	const QwtPlot *plot() const;
+    QwtPlot *plot();
+    const QwtPlot *plot() const;
 
 protected:
-	virtual void rescale(double factor);
+    virtual void rescale( double factor );
 
 private:
-	class PrivateData;
-	PrivateData *d_data;
+    class PrivateData;
+    PrivateData *d_data;
 };
 
 #endif

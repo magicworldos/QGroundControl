@@ -30,54 +30,52 @@ class QwtPlotItem;
 class QWT_EXPORT QwtPlotPrintFilter
 {
 public:
-	//! Print options
-	enum Options
-	{
-		PrintMargin = 1,
-		PrintTitle = 2,
-		PrintLegend = 4,
-		PrintGrid = 8,
-		PrintBackground = 16,
-		PrintFrameWithScales = 32,
+    //! Print options
+    enum Options {
+        PrintMargin = 1,
+        PrintTitle = 2,
+        PrintLegend = 4,
+        PrintGrid = 8,
+        PrintBackground = 16,
+        PrintFrameWithScales = 32,
 
-		PrintAll = ~PrintFrameWithScales
-	};
+        PrintAll = ~PrintFrameWithScales
+    };
 
-	//! Print items
-	enum Item
-	{
-		Title,
-		Legend,
-		Curve,
-		CurveSymbol,
-		Marker,
-		MarkerSymbol,
-		MajorGrid,
-		MinorGrid,
-		CanvasBackground,
-		AxisScale,
-		AxisTitle,
-		WidgetBackground
-	};
+    //! Print items
+    enum Item {
+        Title,
+        Legend,
+        Curve,
+        CurveSymbol,
+        Marker,
+        MarkerSymbol,
+        MajorGrid,
+        MinorGrid,
+        CanvasBackground,
+        AxisScale,
+        AxisTitle,
+        WidgetBackground
+    };
 
-	explicit QwtPlotPrintFilter();
-	virtual ~QwtPlotPrintFilter();
+    explicit QwtPlotPrintFilter();
+    virtual ~QwtPlotPrintFilter();
 
-	virtual QColor color(const QColor &, Item item) const;
-	virtual QFont font(const QFont &, Item item) const;
+    virtual QColor color(const QColor &, Item item) const;
+    virtual QFont font(const QFont &, Item item) const;
 
-	void setOptions(int options);
-	int options() const;
+    void setOptions(int options);
+    int options() const;
 
-	virtual void apply(QwtPlot *) const;
-	virtual void reset(QwtPlot *) const;
+    virtual void apply(QwtPlot *) const;
+    virtual void reset(QwtPlot *) const;
 
-	virtual void apply(QwtPlotItem *) const;
-	virtual void reset(QwtPlotItem *) const;
+    virtual void apply(QwtPlotItem *) const;
+    virtual void reset(QwtPlotItem *) const;
 
 private:
-	class PrivateData;
-	PrivateData *d_data;
+    class PrivateData;
+    PrivateData *d_data;
 };
 
 #endif

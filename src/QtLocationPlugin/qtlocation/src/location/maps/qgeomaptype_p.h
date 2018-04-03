@@ -59,42 +59,41 @@ class QGeoMapTypePrivate;
 class Q_LOCATION_EXPORT QGeoMapType
 {
 public:
-	enum MapStyle
-	{
-		NoMap = 0,
-		StreetMap,
-		SatelliteMapDay,
-		SatelliteMapNight,
-		TerrainMap,
-		HybridMap,
-		TransitMap,
-		GrayStreetMap,
-		PedestrianMap,
-		CarNavigationMap,
-		CycleMap,
-		CustomMap = 100
-	};
+    enum MapStyle {
+        NoMap = 0,
+        StreetMap,
+        SatelliteMapDay,
+        SatelliteMapNight,
+        TerrainMap,
+        HybridMap,
+        TransitMap,
+        GrayStreetMap,
+        PedestrianMap,
+        CarNavigationMap,
+        CycleMap,
+        CustomMap = 100
+    };
 
-	QGeoMapType();
-	QGeoMapType(const QGeoMapType &other);
-	QGeoMapType(MapStyle style, const QString &name, const QString &description, bool mobile,
-		    bool night, int mapId);
-	~QGeoMapType();
+    QGeoMapType();
+    QGeoMapType(const QGeoMapType &other);
+    QGeoMapType(MapStyle style, const QString &name, const QString &description, bool mobile,
+                bool night, int mapId);
+    ~QGeoMapType();
 
-	QGeoMapType &operator = (const QGeoMapType &other);
+    QGeoMapType &operator = (const QGeoMapType &other);
 
-	bool operator == (const QGeoMapType &other) const;
-	bool operator != (const QGeoMapType &other) const;
+    bool operator == (const QGeoMapType &other) const;
+    bool operator != (const QGeoMapType &other) const;
 
-	MapStyle style() const;
-	QString name() const;
-	QString description() const;
-	bool mobile() const;
-	bool night() const;
-	int mapId() const;
+    MapStyle style() const;
+    QString name() const;
+    QString description() const;
+    bool mobile() const;
+    bool night() const;
+    int mapId() const;
 
 private:
-	QSharedDataPointer<QGeoMapTypePrivate> d_ptr;
+    QSharedDataPointer<QGeoMapTypePrivate> d_ptr;
 };
 
 QT_END_NAMESPACE

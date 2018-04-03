@@ -28,23 +28,21 @@ class APMAirframe;
 class APMAirframeComponentAirframes
 {
 public:
-	typedef struct
-	{
-		QString name;
-		QString imageResource;
-		int type;
-		QList<APMAirframe *> rgAirframeInfo;
-	} AirframeType_t;
-	typedef QMap<QString, AirframeType_t *> AirframeTypeMap;
+    typedef struct {
+        QString name;
+        QString imageResource;
+        int type;
+        QList<APMAirframe*> rgAirframeInfo;
+    } AirframeType_t;
+    typedef QMap<QString, AirframeType_t*> AirframeTypeMap;
 
-	static AirframeTypeMap &get();
-	static void clear();
-	static void insert(const QString &group, int groupId, const QString &image, const QString &name = QString(),
-			   const QString &file = QString());
-
+    static AirframeTypeMap& get();
+    static void clear();
+    static void insert(const QString& group, int groupId, const QString& image,const QString& name = QString(), const QString& file = QString());
+    
 protected:
-	static AirframeTypeMap rgAirframeTypes;
-
+    static AirframeTypeMap rgAirframeTypes;
+    
 private:
 };
 

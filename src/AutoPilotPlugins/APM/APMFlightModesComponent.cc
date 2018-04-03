@@ -13,48 +13,48 @@
 #include "APMAirframeComponent.h"
 #include "APMRadioComponent.h"
 
-APMFlightModesComponent::APMFlightModesComponent(Vehicle *vehicle, AutoPilotPlugin *autopilot, QObject *parent) :
-	VehicleComponent(vehicle, autopilot, parent),
-	_name(tr("Flight Modes"))
+APMFlightModesComponent::APMFlightModesComponent(Vehicle* vehicle, AutoPilotPlugin* autopilot, QObject* parent) :
+    VehicleComponent(vehicle, autopilot, parent),
+    _name(tr("Flight Modes"))
 {
 }
 
 QString APMFlightModesComponent::name(void) const
 {
-	return _name;
+    return _name;
 }
 
 QString APMFlightModesComponent::description(void) const
 {
-	return tr("Flight Modes Setup is used to configure the transmitter switches associated with Flight Modes.");
+    return tr("Flight Modes Setup is used to configure the transmitter switches associated with Flight Modes.");
 }
 
 QString APMFlightModesComponent::iconResource(void) const
 {
-	return QStringLiteral("/qmlimages/FlightModesComponentIcon.png");
+    return QStringLiteral("/qmlimages/FlightModesComponentIcon.png");
 }
 
 bool APMFlightModesComponent::requiresSetup(void) const
 {
-	return true;
+    return true;
 }
 
 bool APMFlightModesComponent::setupComplete(void) const
 {
-	return true;
+    return true;
 }
 
 QStringList APMFlightModesComponent::setupCompleteChangedTriggerList(void) const
 {
-	return QStringList();
+    return QStringList();
 }
 
 QUrl APMFlightModesComponent::setupSource(void) const
 {
-	return QUrl::fromUserInput(QStringLiteral("qrc:/qml/APMFlightModesComponent.qml"));
+    return QUrl::fromUserInput(QStringLiteral("qrc:/qml/APMFlightModesComponent.qml"));
 }
 
 QUrl APMFlightModesComponent::summaryQmlSource(void) const
 {
-	return QUrl::fromUserInput(QStringLiteral("qrc:/qml/APMFlightModesComponentSummary.qml"));
+    return QUrl::fromUserInput(QStringLiteral("qrc:/qml/APMFlightModesComponentSummary.qml"));
 }

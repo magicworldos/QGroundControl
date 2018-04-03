@@ -12,18 +12,18 @@
 
 //! Constructor
 QwtRect::QwtRect():
-	QRect()
+    QRect()
 {
 }
 
 //! Copy constructor
 QwtRect::QwtRect(const QRect &r):
-	QRect(r)
+    QRect(r)
 {
 }
 
 //! Sutherland-Hodgman polygon clipping
 QwtPolygon QwtRect::clip(const QwtPolygon &pa) const
 {
-	return QwtClipper::clipPolygon(*this, pa);
+    return QwtClipper::clipPolygon(*this, pa);
 }

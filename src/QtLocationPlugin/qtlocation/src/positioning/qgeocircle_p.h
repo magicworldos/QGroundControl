@@ -53,25 +53,25 @@ QT_BEGIN_NAMESPACE
 class QGeoCirclePrivate : public QGeoShapePrivate
 {
 public:
-	QGeoCirclePrivate();
-	QGeoCirclePrivate(const QGeoCoordinate &center, qreal radius);
-	QGeoCirclePrivate(const QGeoCirclePrivate &other);
-	~QGeoCirclePrivate();
+    QGeoCirclePrivate();
+    QGeoCirclePrivate(const QGeoCoordinate &center, qreal radius);
+    QGeoCirclePrivate(const QGeoCirclePrivate &other);
+    ~QGeoCirclePrivate();
 
-	bool isValid() const Q_DECL_OVERRIDE;
-	bool isEmpty() const Q_DECL_OVERRIDE;
-	bool contains(const QGeoCoordinate &coordinate) const Q_DECL_OVERRIDE;
+    bool isValid() const Q_DECL_OVERRIDE;
+    bool isEmpty() const Q_DECL_OVERRIDE;
+    bool contains(const QGeoCoordinate &coordinate) const Q_DECL_OVERRIDE;
 
-	QGeoCoordinate center() const Q_DECL_OVERRIDE;
+    QGeoCoordinate center() const Q_DECL_OVERRIDE;
 
-	void extendShape(const QGeoCoordinate &coordinate) Q_DECL_OVERRIDE;
+    void extendShape(const QGeoCoordinate &coordinate) Q_DECL_OVERRIDE;
 
-	QGeoShapePrivate *clone() const Q_DECL_OVERRIDE;
+    QGeoShapePrivate *clone() const Q_DECL_OVERRIDE;
 
-	bool operator==(const QGeoShapePrivate &other) const Q_DECL_OVERRIDE;
+    bool operator==(const QGeoShapePrivate &other) const Q_DECL_OVERRIDE;
 
-	QGeoCoordinate m_center;
-	qreal radius;
+    QGeoCoordinate m_center;
+    qreal radius;
 };
 
 QT_END_NAMESPACE

@@ -22,26 +22,26 @@
 
 class TCPLoopBackServer : public QThread
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	TCPLoopBackServer(QHostAddress hostAddress, quint16 port);
-
+    TCPLoopBackServer(QHostAddress hostAddress, quint16 port);
+    
 signals:
-	void newConnection(void);
-
+    void newConnection(void);
+    
 protected:
-	virtual void run(void);
-
+    virtual void run(void);
+    
 private slots:
-	void _newConnection(void);
-	void _readBytes(void);
-
+    void _newConnection(void);
+    void _readBytes(void);
+    
 private:
-	QHostAddress    _hostAddress;
-	quint16         _port;
-	QTcpServer     *_tcpServer;
-	QTcpSocket     *_tcpSocket;
+    QHostAddress    _hostAddress;
+    quint16         _port;
+    QTcpServer*     _tcpServer;
+    QTcpSocket*     _tcpSocket;
 };
 
 #endif

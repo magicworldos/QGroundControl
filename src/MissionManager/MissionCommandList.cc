@@ -23,107 +23,89 @@
 #include <QDebug>
 #include <QFile>
 
-const char *MissionCommandList::_versionJsonKey =       "version";
-const char *MissionCommandList::_mavCmdInfoJsonKey =    "mavCmdInfo";
+const char* MissionCommandList::_versionJsonKey =       "version";
+const char* MissionCommandList::_mavCmdInfoJsonKey =    "mavCmdInfo";
 
-MissionCommandList::MissionCommandList(const QString &jsonFilename, bool baseCommandList, QObject *parent)
-	: QObject(parent)
+MissionCommandList::MissionCommandList(const QString& jsonFilename, bool baseCommandList, QObject* parent)
+    : QObject(parent)
 {
-	_loadMavCmdInfoJson(jsonFilename, baseCommandList);
+    _loadMavCmdInfoJson(jsonFilename, baseCommandList);
 }
 
-void MissionCommandList::_loadMavCmdInfoJson(const QString &jsonFilename, bool baseCommandList)
+void MissionCommandList::_loadMavCmdInfoJson(const QString& jsonFilename, bool baseCommandList)
 {
-	if (jsonFilename.isEmpty())
-	{
-		return;
-	}
+    if (jsonFilename.isEmpty()) {
+        return;
+    }
 
-	qCDebug(MissionCommandsLog) << "Loading" << jsonFilename;
+    qCDebug(MissionCommandsLog) << "Loading" << jsonFilename;
 
-	QFile jsonFile(jsonFilename);
+    QFile jsonFile(jsonFilename);
+    if (!jsonFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "Unable to open file" << jsonFilename << jsonFile.errorString();
+        return;
+    }
 
-	if (!jsonFile.open(QIODevice::ReadOnly | QIODevice::Text))
-	{
-		qWarning() << "Unable to open file" << jsonFilename << jsonFile.errorString();
-		return;
-	}
+    QByteArray bytes = jsonFile.readAll();
+    jsonFile.close();
+    QJsonParseError jsonParseError;
+    QJsonDocument doc = QJsonDocument::fromJson(bytes, &jsonParseError);
+    if (jsonParseError.error != QJsonParseError::NoError) {
+        qWarning() << jsonFilename << "Unable to open json document" << jsonParseError.errorString();
+        return;
+    }
 
-	QByteArray bytes = jsonFile.readAll();
-	jsonFile.close();
-	QJsonParseError jsonParseError;
-	QJsonDocument doc = QJsonDocument::fromJson(bytes, &jsonParseError);
+    QJsonObject json = doc.object();
 
-	if (jsonParseError.error != QJsonParseError::NoError)
-	{
-		qWarning() << jsonFilename << "Unable to open json document" << jsonParseError.errorString();
-		return;
-	}
+    int version = json.value(_versionJsonKey).toInt();
+    if (version != 1) {
+        qWarning() << jsonFilename << "Invalid version" << version;
+        return;
+    }
 
-	QJsonObject json = doc.object();
+    QJsonValue jsonValue = json.value(_mavCmdInfoJsonKey);
+    if (!jsonValue.isArray()) {
+        qWarning() << jsonFilename << "mavCmdInfo not array";
+        return;
+    }
 
-	int version = json.value(_versionJsonKey).toInt();
+    // Iterate over MissionCommandUIInfo objects
+    QJsonArray jsonArray = jsonValue.toArray();
+    foreach(QJsonValue info, jsonArray) {
+        if (!info.isObject()) {
+            qWarning() << jsonFilename << "mavCmdArray should contain objects";
+            return;
+        }
 
-	if (version != 1)
-	{
-		qWarning() << jsonFilename << "Invalid version" << version;
-		return;
-	}
+        MissionCommandUIInfo* uiInfo = new MissionCommandUIInfo(this);
 
-	QJsonValue jsonValue = json.value(_mavCmdInfoJsonKey);
+        QString errorString;
+        if (!uiInfo->loadJsonInfo(info.toObject(), baseCommandList, errorString)) {
+            uiInfo->deleteLater();
+            qWarning() << jsonFilename << errorString;
+            return;
+        }
 
-	if (!jsonValue.isArray())
-	{
-		qWarning() << jsonFilename << "mavCmdInfo not array";
-		return;
-	}
+        // Update list of known categories
+        QString newCategory = uiInfo->category();
+        if (!newCategory.isEmpty() && !_categories.contains(newCategory)) {
+            _categories.append(newCategory);
+        }
 
-	// Iterate over MissionCommandUIInfo objects
-	QJsonArray jsonArray = jsonValue.toArray();
+        _infoMap[uiInfo->command()] = uiInfo;
+    }
 
-	foreach (QJsonValue info, jsonArray)
-	{
-		if (!info.isObject())
-		{
-			qWarning() << jsonFilename << "mavCmdArray should contain objects";
-			return;
-		}
-
-		MissionCommandUIInfo *uiInfo = new MissionCommandUIInfo(this);
-
-		QString errorString;
-
-		if (!uiInfo->loadJsonInfo(info.toObject(), baseCommandList, errorString))
-		{
-			uiInfo->deleteLater();
-			qWarning() << jsonFilename << errorString;
-			return;
-		}
-
-		// Update list of known categories
-		QString newCategory = uiInfo->category();
-
-		if (!newCategory.isEmpty() && !_categories.contains(newCategory))
-		{
-			_categories.append(newCategory);
-		}
-
-		_infoMap[uiInfo->command()] = uiInfo;
-	}
-
-	// Build id list
-	foreach (MAV_CMD id, _infoMap.keys())
-	{
-		_ids << id;
-	}
+    // Build id list
+    foreach (MAV_CMD id, _infoMap.keys()) {
+        _ids << id;
+    }
 }
 
-MissionCommandUIInfo *MissionCommandList::getUIInfo(MAV_CMD command) const
+MissionCommandUIInfo* MissionCommandList::getUIInfo(MAV_CMD command) const
 {
-	if (!_infoMap.contains(command))
-	{
-		return NULL;
-	}
+    if (!_infoMap.contains(command)) {
+        return NULL;
+    }
 
-	return _infoMap[command];
+    return _infoMap[command];
 }

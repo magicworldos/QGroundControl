@@ -31,84 +31,83 @@ FactSystemTestBase::FactSystemTestBase(void)
 
 void FactSystemTestBase::_init(MAV_AUTOPILOT autopilot)
 {
-	UnitTest::init();
+    UnitTest::init();
 
-	_connectMockLink(autopilot);
+    _connectMockLink(autopilot);
 
-	_plugin = qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->autopilotPlugin();
-	Q_ASSERT(_plugin);
+    _plugin = qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->autopilotPlugin();
+    Q_ASSERT(_plugin);
 }
 
 void FactSystemTestBase::_cleanup(void)
 {
-	UnitTest::cleanup();
+    UnitTest::cleanup();
 }
 
 /// Basic test of parameter values in Fact System
 void FactSystemTestBase::_parameter_default_component_id_test(void)
 {
-	QVERIFY(_vehicle->parameterManager()->parameterExists(FactSystem::defaultComponentId, "RC_MAP_THROTTLE"));
-	Fact *fact = _vehicle->parameterManager()->getParameter(FactSystem::defaultComponentId, "RC_MAP_THROTTLE");
-	QVERIFY(fact != NULL);
-	QVariant factValue = fact->rawValue();
-	QCOMPARE(factValue.isValid(), true);
+    QVERIFY(_vehicle->parameterManager()->parameterExists(FactSystem::defaultComponentId, "RC_MAP_THROTTLE"));
+    Fact* fact = _vehicle->parameterManager()->getParameter(FactSystem::defaultComponentId, "RC_MAP_THROTTLE");
+    QVERIFY(fact != NULL);
+    QVariant factValue = fact->rawValue();
+    QCOMPARE(factValue.isValid(), true);
 
-	QCOMPARE(factValue.toInt(), 3);
+    QCOMPARE(factValue.toInt(), 3);
 }
 
 void FactSystemTestBase::_parameter_specific_component_id_test(void)
 {
-	QVERIFY(_vehicle->parameterManager()->parameterExists(MAV_COMP_ID_AUTOPILOT1, "RC_MAP_THROTTLE"));
-	Fact *fact = _vehicle->parameterManager()->getParameter(MAV_COMP_ID_AUTOPILOT1, "RC_MAP_THROTTLE");
-	QVERIFY(fact != NULL);
-	QVariant factValue = fact->rawValue();
-	QCOMPARE(factValue.isValid(), true);
-	QCOMPARE(factValue.toInt(), 3);
+    QVERIFY(_vehicle->parameterManager()->parameterExists(MAV_COMP_ID_AUTOPILOT1, "RC_MAP_THROTTLE"));
+    Fact* fact = _vehicle->parameterManager()->getParameter(MAV_COMP_ID_AUTOPILOT1, "RC_MAP_THROTTLE");
+    QVERIFY(fact != NULL);
+    QVariant factValue = fact->rawValue();
+    QCOMPARE(factValue.isValid(), true);
+    QCOMPARE(factValue.toInt(), 3);
 }
 
 /// Test that QML can reference a Fact
 void FactSystemTestBase::_qml_test(void)
 {
-	QGCQuickWidget *widget = new QGCQuickWidget;
+    QGCQuickWidget* widget = new QGCQuickWidget;
 
-	widget->setAutoPilot(_plugin);
+    widget->setAutoPilot(_plugin);
 
-	widget->setSource(QUrl::fromUserInput("qrc:unittest/FactSystemTest.qml"));
+    widget->setSource(QUrl::fromUserInput("qrc:unittest/FactSystemTest.qml"));
 
-	QQuickItem *rootObject = widget->rootObject();
-	QObject *control = rootObject->findChild<QObject *>("testControl");
-	QVERIFY(control != NULL);
-	QVariant qmlValue = control->property("text").toInt();
+    QQuickItem* rootObject = widget->rootObject();
+    QObject* control = rootObject->findChild<QObject*>("testControl");
+    QVERIFY(control != NULL);
+    QVariant qmlValue = control->property("text").toInt();
 
-	QCOMPARE(qmlValue.toInt(), 3);
+    QCOMPARE(qmlValue.toInt(), 3);
 
-	delete widget;
+    delete widget;
 }
 
 /// Test QML getting an updated Fact value
 void FactSystemTestBase::_qmlUpdate_test(void)
 {
-	QGCQuickWidget *widget = new QGCQuickWidget;
+    QGCQuickWidget* widget = new QGCQuickWidget;
 
-	widget->setAutoPilot(_plugin);
+    widget->setAutoPilot(_plugin);
 
-	widget->setSource(QUrl::fromUserInput("qrc:unittest/FactSystemTest.qml"));
+    widget->setSource(QUrl::fromUserInput("qrc:unittest/FactSystemTest.qml"));
 
-	// Change the value
+    // Change the value
 
-	QVariant paramValue = 12;
-	qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->parameterManager()->getParameter(
-		FactSystem::defaultComponentId, "RC_MAP_THROTTLE")->setRawValue(paramValue);
+    QVariant paramValue = 12;
+    qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->parameterManager()->getParameter(FactSystem::defaultComponentId, "RC_MAP_THROTTLE")->setRawValue(paramValue);
 
-	QTest::qWait(500); // Let the signals flow through
+    QTest::qWait(500); // Let the signals flow through
 
-	// Make sure the qml has the right value
+    // Make sure the qml has the right value
 
-	QQuickItem *rootObject = widget->rootObject();
-	QObject *control = rootObject->findChild<QObject *>("testControl");
-	QVERIFY(control != NULL);
-	QCOMPARE(control->property("text").toInt(), 12);
+    QQuickItem* rootObject = widget->rootObject();
+    QObject* control = rootObject->findChild<QObject*>("testControl");
+    QVERIFY(control != NULL);
+    QCOMPARE(control->property("text").toInt(), 12);
 
-	delete widget;
+    delete widget;
 }
 

@@ -22,15 +22,15 @@
 
   A double is interpreted as the number of milliseconds since
   1970-01-01T00:00:00 Universal Coordinated Time - also known
-  as "The Epoch".
+  as "The Epoch". 
 
-  While the range of the Julian day in Qt4 is limited to [0, MAX_INT],
-  Qt5 stores it as qint64 offering a huge range of valid dates.
-  As the significance of a double is below this ( assuming a
-  fraction of 52 bits ) the translation is not
-  bijective with rounding errors for dates very far from Epoch.
-  For a resolution of 1 ms those start to happen for dates above the
-  year 144683.
+  While the range of the Julian day in Qt4 is limited to [0, MAX_INT], 
+  Qt5 stores it as qint64 offering a huge range of valid dates. 
+  As the significance of a double is below this ( assuming a 
+  fraction of 52 bits ) the translation is not 
+  bijective with rounding errors for dates very far from Epoch. 
+  For a resolution of 1 ms those start to happen for dates above the 
+  year 144683. 
 
   An axis for a date/time interval is expected to be aligned
   and divided in time/date units like seconds, minutes, ...
@@ -42,87 +42,87 @@
 class QWT_EXPORT QwtDate
 {
 public:
-	/*!
-	   How to identify the first week of year differs between
-	   countries.
-	 */
-	enum Week0Type
-	{
-		/*!
-		   According to ISO 8601 the first week of a year is defined
-		   as "the week with the year's first Thursday in it".
+    /*! 
+       How to identify the first week of year differs between
+       countries. 
+     */
+    enum Week0Type
+    {
+        /*!
+           According to ISO 8601 the first week of a year is defined
+           as "the week with the year's first Thursday in it".
 
-		   FirstThursday corresponds to the numbering that is
-		   implemented in QDate::weekNumber().
-		*/
-		FirstThursday,
+           FirstThursday corresponds to the numbering that is
+           implemented in QDate::weekNumber().
+        */
+        FirstThursday,
 
-		/*!
-		    "The week with January 1.1 in it."
+        /*!
+            "The week with January 1.1 in it."
+           
+            In the U.S. this definition is more common than
+            FirstThursday.
+        */
+        FirstDay
+    };
 
-		    In the U.S. this definition is more common than
-		    FirstThursday.
-		*/
-		FirstDay
-	};
+    /*! 
+      Classification of an time interval
 
-	/*!
-	  Classification of an time interval
+      Time intervals needs to be classified to decide how to
+      align and divide it.
+     */
+    enum IntervalType
+    {
+        //! The interval is related to milliseconds
+        Millisecond,
 
-	  Time intervals needs to be classified to decide how to
-	  align and divide it.
-	 */
-	enum IntervalType
-	{
-		//! The interval is related to milliseconds
-		Millisecond,
+        //! The interval is related to seconds
+        Second,
 
-		//! The interval is related to seconds
-		Second,
+        //! The interval is related to minutes
+        Minute,
 
-		//! The interval is related to minutes
-		Minute,
+        //! The interval is related to hours
+        Hour,
 
-		//! The interval is related to hours
-		Hour,
+        //! The interval is related to days
+        Day,
 
-		//! The interval is related to days
-		Day,
+        //! The interval is related to weeks
+        Week,
 
-		//! The interval is related to weeks
-		Week,
+        //! The interval is related to months
+        Month,
 
-		//! The interval is related to months
-		Month,
+        //! The interval is related to years
+        Year
+    };
 
-		//! The interval is related to years
-		Year
-	};
+    enum
+    {
+        //! The Julian day of "The Epoch"
+        JulianDayForEpoch = 2440588
+    };
 
-	enum
-	{
-		//! The Julian day of "The Epoch"
-		JulianDayForEpoch = 2440588
-	};
+    static QDate minDate();
+    static QDate maxDate();
 
-	static QDate minDate();
-	static QDate maxDate();
+    static QDateTime toDateTime( double value, 
+        Qt::TimeSpec = Qt::UTC );
 
-	static QDateTime toDateTime(double value,
-				    Qt::TimeSpec = Qt::UTC);
+    static double toDouble( const QDateTime & );
 
-	static double toDouble(const QDateTime &);
+    static QDateTime ceil( const QDateTime &, IntervalType );
+    static QDateTime floor( const QDateTime &, IntervalType );
 
-	static QDateTime ceil(const QDateTime &, IntervalType);
-	static QDateTime floor(const QDateTime &, IntervalType);
+    static QDate dateOfWeek0( int year, Week0Type );
+    static int weekNumber( const QDate &, Week0Type );
 
-	static QDate dateOfWeek0(int year, Week0Type);
-	static int weekNumber(const QDate &, Week0Type);
+    static int utcOffset( const QDateTime & );
 
-	static int utcOffset(const QDateTime &);
-
-	static QString toString(const QDateTime &,
-				const QString &format, Week0Type);
+    static QString toString( const QDateTime &, 
+        const QString & format, Week0Type );
 };
 
 #endif

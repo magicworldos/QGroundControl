@@ -29,7 +29,7 @@ class QwtPlotSeriesItem;
 
     On certain environments it might be important to calculate a proper
     clip region before painting. F.e. for Qt Embedded only the clipped part
-    of the backing store will be copied to a ( maybe unaccelerated )
+    of the backing store will be copied to a ( maybe unaccelerated ) 
     frame buffer.
 
     \warning Incremental painting will only help when no replot is triggered
@@ -39,62 +39,62 @@ class QwtPlotSeriesItem;
 class QWT_EXPORT QwtPlotDirectPainter: public QObject
 {
 public:
-	/*!
-	  \brief Paint attributes
-	  \sa setAttribute(), testAttribute(), drawSeries()
-	*/
-	enum Attribute
-	{
-		/*!
-		  Initializing a QPainter is an expensive operation.
-		  When AtomicPainter is set each call of drawSeries() opens/closes
-		  a temporary QPainter. Otherwise QwtPlotDirectPainter tries to
-		  use the same QPainter as long as possible.
-		 */
-		AtomicPainter = 0x01,
+    /*!
+      \brief Paint attributes
+      \sa setAttribute(), testAttribute(), drawSeries()
+    */
+    enum Attribute
+    {
+        /*!
+          Initializing a QPainter is an expensive operation.
+          When AtomicPainter is set each call of drawSeries() opens/closes
+          a temporary QPainter. Otherwise QwtPlotDirectPainter tries to
+          use the same QPainter as long as possible.
+         */
+        AtomicPainter = 0x01,
 
-		/*!
-		  When FullRepaint is set the plot canvas is explicitly repainted
-		  after the samples have been rendered.
-		 */
-		FullRepaint = 0x02,
+        /*!
+          When FullRepaint is set the plot canvas is explicitly repainted
+          after the samples have been rendered.
+         */
+        FullRepaint = 0x02,
 
-		/*!
-		  When QwtPlotCanvas::BackingStore is enabled the painter
-		  has to paint to the backing store and the widget. In certain
-		  situations/environments it might be faster to paint to
-		  the backing store only and then copy the backing store to the canvas.
-		  This flag can also be useful for settings, where Qt fills the
-		  the clip region with the widget background.
-		 */
-		CopyBackingStore = 0x04
-	};
+        /*!
+          When QwtPlotCanvas::BackingStore is enabled the painter
+          has to paint to the backing store and the widget. In certain 
+          situations/environments it might be faster to paint to 
+          the backing store only and then copy the backing store to the canvas.
+          This flag can also be useful for settings, where Qt fills the
+          the clip region with the widget background.
+         */
+        CopyBackingStore = 0x04
+    };
 
-	//! Paint attributes
-	typedef QFlags<Attribute> Attributes;
+    //! Paint attributes
+    typedef QFlags<Attribute> Attributes;
 
-	QwtPlotDirectPainter(QObject *parent = NULL);
-	virtual ~QwtPlotDirectPainter();
+    QwtPlotDirectPainter( QObject *parent = NULL );
+    virtual ~QwtPlotDirectPainter();
 
-	void setAttribute(Attribute, bool on);
-	bool testAttribute(Attribute) const;
+    void setAttribute( Attribute, bool on );
+    bool testAttribute( Attribute ) const;
 
-	void setClipping(bool);
-	bool hasClipping() const;
+    void setClipping( bool );
+    bool hasClipping() const;
 
-	void setClipRegion(const QRegion &);
-	QRegion clipRegion() const;
+    void setClipRegion( const QRegion & );
+    QRegion clipRegion() const;
 
-	void drawSeries(QwtPlotSeriesItem *, int from, int to);
-	void reset();
+    void drawSeries( QwtPlotSeriesItem *, int from, int to );
+    void reset();
 
-	virtual bool eventFilter(QObject *, QEvent *);
+    virtual bool eventFilter( QObject *, QEvent * );
 
 private:
-	class PrivateData;
-	PrivateData *d_data;
+    class PrivateData;
+    PrivateData *d_data;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QwtPlotDirectPainter::Attributes)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QwtPlotDirectPainter::Attributes )
 
 #endif

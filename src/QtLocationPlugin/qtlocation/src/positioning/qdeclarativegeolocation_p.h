@@ -43,38 +43,38 @@ QT_BEGIN_NAMESPACE
 
 class Q_POSITIONING_EXPORT QDeclarativeGeoLocation : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	Q_PROPERTY(QGeoLocation location READ location WRITE setLocation)
-	Q_PROPERTY(QDeclarativeGeoAddress *address READ address WRITE setAddress NOTIFY addressChanged)
-	Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate NOTIFY coordinateChanged)
-	Q_PROPERTY(QGeoRectangle boundingBox READ boundingBox WRITE setBoundingBox NOTIFY boundingBoxChanged)
+    Q_PROPERTY(QGeoLocation location READ location WRITE setLocation)
+    Q_PROPERTY(QDeclarativeGeoAddress *address READ address WRITE setAddress NOTIFY addressChanged)
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate NOTIFY coordinateChanged)
+    Q_PROPERTY(QGeoRectangle boundingBox READ boundingBox WRITE setBoundingBox NOTIFY boundingBoxChanged)
 
 public:
-	explicit QDeclarativeGeoLocation(QObject *parent = 0);
-	explicit QDeclarativeGeoLocation(const QGeoLocation &src, QObject *parent = 0);
-	~QDeclarativeGeoLocation();
+    explicit QDeclarativeGeoLocation(QObject *parent = 0);
+    explicit QDeclarativeGeoLocation(const QGeoLocation &src, QObject *parent = 0);
+    ~QDeclarativeGeoLocation();
 
-	QGeoLocation location() const;
-	void setLocation(const QGeoLocation &src);
+    QGeoLocation location() const;
+    void setLocation(const QGeoLocation &src);
 
-	QDeclarativeGeoAddress *address() const;
-	void setAddress(QDeclarativeGeoAddress *address);
-	QGeoCoordinate coordinate() const;
-	void setCoordinate(const QGeoCoordinate coordinate);
+    QDeclarativeGeoAddress *address() const;
+    void setAddress(QDeclarativeGeoAddress *address);
+    QGeoCoordinate coordinate() const;
+    void setCoordinate(const QGeoCoordinate coordinate);
 
-	QGeoRectangle boundingBox() const;
-	void setBoundingBox(const QGeoRectangle &boundingBox);
+    QGeoRectangle boundingBox() const;
+    void setBoundingBox(const QGeoRectangle &boundingBox);
 
 Q_SIGNALS:
-	void addressChanged();
-	void coordinateChanged();
-	void boundingBoxChanged();
+    void addressChanged();
+    void coordinateChanged();
+    void boundingBoxChanged();
 
 private:
-	QDeclarativeGeoAddress *m_address;
-	QGeoRectangle m_boundingBox;
-	QGeoCoordinate m_coordinate;
+    QDeclarativeGeoAddress *m_address;
+    QGeoRectangle m_boundingBox;
+    QGeoCoordinate m_coordinate;
 };
 
 QT_END_NAMESPACE

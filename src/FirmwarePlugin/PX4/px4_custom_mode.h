@@ -42,8 +42,7 @@
 
 #include <stdint.h>
 
-enum PX4_CUSTOM_MAIN_MODE
-{
+enum PX4_CUSTOM_MAIN_MODE {
 	PX4_CUSTOM_MAIN_MODE_MANUAL = 1,
 	PX4_CUSTOM_MAIN_MODE_ALTCTL,
 	PX4_CUSTOM_MAIN_MODE_POSCTL,
@@ -55,8 +54,7 @@ enum PX4_CUSTOM_MAIN_MODE
 	PX4_CUSTOM_MAIN_MODE_SIMPLE /* unused, but reserved for future use */
 };
 
-enum PX4_CUSTOM_SUB_MODE_AUTO
-{
+enum PX4_CUSTOM_SUB_MODE_AUTO {
 	PX4_CUSTOM_SUB_MODE_AUTO_READY = 1,
 	PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF,
 	PX4_CUSTOM_SUB_MODE_AUTO_LOITER,
@@ -67,20 +65,17 @@ enum PX4_CUSTOM_SUB_MODE_AUTO
 	PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET
 };
 
-union px4_custom_mode
-{
-	struct
-	{
+union px4_custom_mode {
+	struct {
 		uint16_t reserved;
 		uint8_t main_mode;
 		uint8_t sub_mode;
 	};
-	struct
-	{
-		uint16_t reserved_hl;
-		uint16_t custom_mode_hl;
-	};
-	uint32_t data;
+    struct {
+        uint16_t reserved_hl;
+        uint16_t custom_mode_hl;
+    };
+    uint32_t data;
 	float data_float;
 };
 

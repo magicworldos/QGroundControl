@@ -15,51 +15,50 @@
 #include "QGCQmlWidgetHolder.h"
 #include "ParameterManager.h"
 
-AirframeComponent::AirframeComponent(Vehicle *vehicle, AutoPilotPlugin *autopilot, QObject *parent) :
-	VehicleComponent(vehicle, autopilot, parent),
-	_name(tr("Airframe"))
+AirframeComponent::AirframeComponent(Vehicle* vehicle, AutoPilotPlugin* autopilot, QObject* parent) :
+    VehicleComponent(vehicle, autopilot, parent),
+    _name(tr("Airframe"))
 {
 
 }
 
 QString AirframeComponent::name(void) const
 {
-	return _name;
+    return _name;
 }
 
 QString AirframeComponent::description(void) const
 {
-	return tr("Airframe Setup is used to select the airframe which matches your vehicle. "
-		  "This will in turn set up the various tuning values for flight parameters.");
+    return tr("Airframe Setup is used to select the airframe which matches your vehicle. "
+              "This will in turn set up the various tuning values for flight parameters.");
 }
 
 QString AirframeComponent::iconResource(void) const
 {
-	return "/qmlimages/AirframeComponentIcon.png";
+    return "/qmlimages/AirframeComponentIcon.png";
 }
 
 bool AirframeComponent::requiresSetup(void) const
 {
-	return true;
+    return true;
 }
 
 bool AirframeComponent::setupComplete(void) const
 {
-	return _vehicle->parameterManager()->getParameter(FactSystem::defaultComponentId,
-			QStringLiteral("SYS_AUTOSTART"))->rawValue().toInt() != 0;
+    return _vehicle->parameterManager()->getParameter(FactSystem::defaultComponentId, QStringLiteral("SYS_AUTOSTART"))->rawValue().toInt() != 0;
 }
 
 QStringList AirframeComponent::setupCompleteChangedTriggerList(void) const
 {
-	return QStringList(QStringLiteral("SYS_AUTOSTART"));
+    return QStringList(QStringLiteral("SYS_AUTOSTART"));
 }
 
 QUrl AirframeComponent::setupSource(void) const
 {
-	return QUrl::fromUserInput("qrc:/qml/AirframeComponent.qml");
+    return QUrl::fromUserInput("qrc:/qml/AirframeComponent.qml");
 }
 
 QUrl AirframeComponent::summaryQmlSource(void) const
 {
-	return QUrl::fromUserInput("qrc:/qml/AirframeComponentSummary.qml");
+    return QUrl::fromUserInput("qrc:/qml/AirframeComponentSummary.qml");
 }

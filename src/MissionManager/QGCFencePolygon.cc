@@ -10,77 +10,72 @@
 #include "QGCFencePolygon.h"
 #include "JsonHelper.h"
 
-const char *QGCFencePolygon::_jsonInclusionKey = "inclusion";
+const char* QGCFencePolygon::_jsonInclusionKey = "inclusion";
 
-QGCFencePolygon::QGCFencePolygon(bool inclusion, QObject *parent)
-	: QGCMapPolygon(parent)
-	, _inclusion(inclusion)
+QGCFencePolygon::QGCFencePolygon(bool inclusion, QObject* parent)
+    : QGCMapPolygon (parent)
+    , _inclusion    (inclusion)
 {
-	_init();
+    _init();
 }
 
-QGCFencePolygon::QGCFencePolygon(const QGCFencePolygon &other, QObject *parent)
-	: QGCMapPolygon(other, parent)
-	, _inclusion(other._inclusion)
+QGCFencePolygon::QGCFencePolygon(const QGCFencePolygon& other, QObject* parent)
+    : QGCMapPolygon (other, parent)
+    , _inclusion    (other._inclusion)
 {
-	_init();
+    _init();
 }
 
 void QGCFencePolygon::_init(void)
 {
-	connect(this, &QGCFencePolygon::inclusionChanged, this, &QGCFencePolygon::_setDirty);
+    connect(this, &QGCFencePolygon::inclusionChanged, this, &QGCFencePolygon::_setDirty);
 }
 
-const QGCFencePolygon &QGCFencePolygon::operator=(const QGCFencePolygon &other)
+const QGCFencePolygon& QGCFencePolygon::operator=(const QGCFencePolygon& other)
 {
-	QGCMapPolygon::operator=(other);
+    QGCMapPolygon::operator=(other);
 
-	setInclusion(other._inclusion);
+    setInclusion(other._inclusion);
 
-	return *this;
+    return *this;
 }
 
 void QGCFencePolygon::_setDirty(void)
 {
-	setDirty(true);
+    setDirty(true);
 }
 
-void QGCFencePolygon::saveToJson(QJsonObject &json)
+void QGCFencePolygon::saveToJson(QJsonObject& json)
 {
-	QGCMapPolygon::saveToJson(json);
+    QGCMapPolygon::saveToJson(json);
 
-	json[_jsonInclusionKey] = _inclusion;
+    json[_jsonInclusionKey] = _inclusion;
 }
 
-bool QGCFencePolygon::loadFromJson(const QJsonObject &json, bool required, QString &errorString)
+bool QGCFencePolygon::loadFromJson(const QJsonObject& json, bool required, QString& errorString)
 {
-	if (!QGCMapPolygon::loadFromJson(json, required, errorString))
-	{
-		return false;
-	}
+    if (!QGCMapPolygon::loadFromJson(json, required, errorString)) {
+        return false;
+    }
 
-	errorString.clear();
+    errorString.clear();
 
-	QList<JsonHelper::KeyValidateInfo> keyInfoList =
-	{
-		{ _jsonInclusionKey, QJsonValue::Bool, true },
-	};
+    QList<JsonHelper::KeyValidateInfo> keyInfoList = {
+        { _jsonInclusionKey, QJsonValue::Bool, true },
+    };
+    if (!JsonHelper::validateKeys(json, keyInfoList, errorString)) {
+        return false;
+    }
 
-	if (!JsonHelper::validateKeys(json, keyInfoList, errorString))
-	{
-		return false;
-	}
+    setInclusion(json[_jsonInclusionKey].toBool());
 
-	setInclusion(json[_jsonInclusionKey].toBool());
-
-	return true;
+    return true;
 }
 
 void QGCFencePolygon::setInclusion(bool inclusion)
 {
-	if (inclusion != _inclusion)
-	{
-		_inclusion = inclusion;
-		emit inclusionChanged(inclusion);
-	}
+    if (inclusion != _inclusion) {
+        _inclusion = inclusion;
+        emit inclusionChanged(inclusion);
+    }
 }

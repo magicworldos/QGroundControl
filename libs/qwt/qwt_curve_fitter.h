@@ -22,22 +22,22 @@ class QwtSpline;
 class QWT_EXPORT QwtCurveFitter
 {
 public:
-	virtual ~QwtCurveFitter();
+    virtual ~QwtCurveFitter();
 
-	/*!
-	    Find a curve which has the best fit to a series of data points
+    /*!
+        Find a curve which has the best fit to a series of data points
 
-	    \param polygon Series of data points
-	    \return Curve points
-	 */
-	virtual QPolygonF fitCurve(const QPolygonF &polygon) const = 0;
+        \param polygon Series of data points
+        \return Curve points
+     */
+    virtual QPolygonF fitCurve( const QPolygonF &polygon ) const = 0;
 
 protected:
-	QwtCurveFitter();
+    QwtCurveFitter();
 
 private:
-	QwtCurveFitter(const QwtCurveFitter &);
-	QwtCurveFitter &operator=(const QwtCurveFitter &);
+    QwtCurveFitter( const QwtCurveFitter & );
+    QwtCurveFitter &operator=( const QwtCurveFitter & );
 };
 
 /*!
@@ -46,48 +46,48 @@ private:
 class QWT_EXPORT QwtSplineCurveFitter: public QwtCurveFitter
 {
 public:
-	/*!
-	  Spline type
-	  The default setting is Auto
-	  \sa setFitMode(), FitMode()
-	 */
-	enum FitMode
-	{
-		/*!
-		  Use the default spline algorithm for polygons with
-		  increasing x values ( p[i-1] < p[i] ), otherwise use
-		  a parametric spline algorithm.
-		 */
-		Auto,
+    /*!
+      Spline type
+      The default setting is Auto
+      \sa setFitMode(), FitMode()
+     */
+    enum FitMode
+    {
+        /*!
+          Use the default spline algorithm for polygons with
+          increasing x values ( p[i-1] < p[i] ), otherwise use
+          a parametric spline algorithm.
+         */
+        Auto,
 
-		//! Use a default spline algorithm
-		Spline,
+        //! Use a default spline algorithm
+        Spline,
 
-		//! Use a parametric spline algorithm
-		ParametricSpline
-	};
+        //! Use a parametric spline algorithm
+        ParametricSpline
+    };
 
-	QwtSplineCurveFitter();
-	virtual ~QwtSplineCurveFitter();
+    QwtSplineCurveFitter();
+    virtual ~QwtSplineCurveFitter();
 
-	void setFitMode(FitMode);
-	FitMode fitMode() const;
+    void setFitMode( FitMode );
+    FitMode fitMode() const;
 
-	void setSpline(const QwtSpline &);
-	const QwtSpline &spline() const;
-	QwtSpline &spline();
+    void setSpline( const QwtSpline& );
+    const QwtSpline &spline() const;
+    QwtSpline &spline();
 
-	void setSplineSize(int size);
-	int splineSize() const;
+    void setSplineSize( int size );
+    int splineSize() const;
 
-	virtual QPolygonF fitCurve(const QPolygonF &) const;
+    virtual QPolygonF fitCurve( const QPolygonF & ) const;
 
 private:
-	QPolygonF fitSpline(const QPolygonF &) const;
-	QPolygonF fitParametric(const QPolygonF &) const;
+    QPolygonF fitSpline( const QPolygonF & ) const;
+    QPolygonF fitParametric( const QPolygonF & ) const;
 
-	class PrivateData;
-	PrivateData *d_data;
+    class PrivateData;
+    PrivateData *d_data;
 };
 
 /*!
@@ -116,24 +116,24 @@ private:
 class QWT_EXPORT QwtWeedingCurveFitter: public QwtCurveFitter
 {
 public:
-	QwtWeedingCurveFitter(double tolerance = 1.0);
-	virtual ~QwtWeedingCurveFitter();
+    QwtWeedingCurveFitter( double tolerance = 1.0 );
+    virtual ~QwtWeedingCurveFitter();
 
-	void setTolerance(double);
-	double tolerance() const;
+    void setTolerance( double );
+    double tolerance() const;
 
-	void setChunkSize(uint);
-	uint chunkSize() const;
+    void setChunkSize( uint );
+    uint chunkSize() const;
 
-	virtual QPolygonF fitCurve(const QPolygonF &) const;
+    virtual QPolygonF fitCurve( const QPolygonF & ) const;
 
 private:
-	virtual QPolygonF simplify(const QPolygonF &) const;
+    virtual QPolygonF simplify( const QPolygonF & ) const;
 
-	class Line;
+    class Line;
 
-	class PrivateData;
-	PrivateData *d_data;
+    class PrivateData;
+    PrivateData *d_data;
 };
 
 #endif

@@ -60,110 +60,110 @@ class QTimer;
 class QNmeaReader;
 struct QPendingGeoPositionInfo
 {
-	QGeoPositionInfo info;
-	bool hasFix;
+    QGeoPositionInfo info;
+    bool hasFix;
 };
 
 
 class QNmeaPositionInfoSourcePrivate : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	QNmeaPositionInfoSourcePrivate(QNmeaPositionInfoSource *parent, QNmeaPositionInfoSource::UpdateMode updateMode);
-	~QNmeaPositionInfoSourcePrivate();
+    QNmeaPositionInfoSourcePrivate(QNmeaPositionInfoSource *parent, QNmeaPositionInfoSource::UpdateMode updateMode);
+    ~QNmeaPositionInfoSourcePrivate();
 
-	void startUpdates();
-	void stopUpdates();
-	void requestUpdate(int msec);
+    void startUpdates();
+    void stopUpdates();
+    void requestUpdate(int msec);
 
-	bool parsePosInfoFromNmeaData(const char *data,
-				      int size,
-				      QGeoPositionInfo *posInfo,
-				      bool *hasFix);
+    bool parsePosInfoFromNmeaData(const char *data,
+                                  int size,
+                                  QGeoPositionInfo *posInfo,
+                                  bool *hasFix);
 
-	void notifyNewUpdate(QGeoPositionInfo *update, bool fixStatus);
+    void notifyNewUpdate(QGeoPositionInfo *update, bool fixStatus);
 
-	QNmeaPositionInfoSource::UpdateMode m_updateMode;
-	QPointer<QIODevice> m_device;
-	QGeoPositionInfo m_lastUpdate;
-	bool m_invokedStart;
-	QGeoPositionInfoSource::Error m_positionError;
-	double m_userEquivalentRangeError;
+    QNmeaPositionInfoSource::UpdateMode m_updateMode;
+    QPointer<QIODevice> m_device;
+    QGeoPositionInfo m_lastUpdate;
+    bool m_invokedStart;
+    QGeoPositionInfoSource::Error m_positionError;
+    double m_userEquivalentRangeError;
 
 public Q_SLOTS:
-	void readyRead();
+    void readyRead();
 
 protected:
-	void timerEvent(QTimerEvent *event);
+    void timerEvent(QTimerEvent *event);
 
 private Q_SLOTS:
-	void emitPendingUpdate();
-	void sourceDataClosed();
-	void updateRequestTimeout();
+    void emitPendingUpdate();
+    void sourceDataClosed();
+    void updateRequestTimeout();
 
 private:
-	bool openSourceDevice();
-	bool initialize();
-	void prepareSourceDevice();
-	void emitUpdated(const QGeoPositionInfo &update);
+    bool openSourceDevice();
+    bool initialize();
+    void prepareSourceDevice();
+    void emitUpdated(const QGeoPositionInfo &update);
 
-	QNmeaPositionInfoSource *m_source;
-	QNmeaReader *m_nmeaReader;
-	QBasicTimer *m_updateTimer;
-	QGeoPositionInfo m_pendingUpdate;
-	QDate m_currentDate;
-	QTimer *m_requestTimer;
-	qreal m_horizontalAccuracy;
-	qreal m_verticalAccuracy;
-	bool m_noUpdateLastInterval;
-	bool m_updateTimeoutSent;
-	bool m_connectedReadyRead;
+    QNmeaPositionInfoSource *m_source;
+    QNmeaReader *m_nmeaReader;
+    QBasicTimer *m_updateTimer;
+    QGeoPositionInfo m_pendingUpdate;
+    QDate m_currentDate;
+    QTimer *m_requestTimer;
+    qreal m_horizontalAccuracy;
+    qreal m_verticalAccuracy;
+    bool m_noUpdateLastInterval;
+    bool m_updateTimeoutSent;
+    bool m_connectedReadyRead;
 };
 
 
 class QNmeaReader
 {
 public:
-	explicit QNmeaReader(QNmeaPositionInfoSourcePrivate *sourcePrivate)
-		: m_proxy(sourcePrivate) {}
-	virtual ~QNmeaReader() {}
+    explicit QNmeaReader(QNmeaPositionInfoSourcePrivate *sourcePrivate)
+            : m_proxy(sourcePrivate) {}
+    virtual ~QNmeaReader() {}
 
-	virtual void readAvailableData() = 0;
+    virtual void readAvailableData() = 0;
 
 protected:
-	QNmeaPositionInfoSourcePrivate *m_proxy;
+    QNmeaPositionInfoSourcePrivate *m_proxy;
 };
 
 
 class QNmeaRealTimeReader : public QNmeaReader
 {
 public:
-	explicit QNmeaRealTimeReader(QNmeaPositionInfoSourcePrivate *sourcePrivate);
-	virtual void readAvailableData();
+    explicit QNmeaRealTimeReader(QNmeaPositionInfoSourcePrivate *sourcePrivate);
+    virtual void readAvailableData();
 };
 
 
 class QNmeaSimulatedReader : public QObject, public QNmeaReader
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	explicit QNmeaSimulatedReader(QNmeaPositionInfoSourcePrivate *sourcePrivate);
-	~QNmeaSimulatedReader();
-	virtual void readAvailableData();
+    explicit QNmeaSimulatedReader(QNmeaPositionInfoSourcePrivate *sourcePrivate);
+    ~QNmeaSimulatedReader();
+    virtual void readAvailableData();
 
 protected:
-	virtual void timerEvent(QTimerEvent *event);
+    virtual void timerEvent(QTimerEvent *event);
 
 private Q_SLOTS:
-	void simulatePendingUpdate();
+    void simulatePendingUpdate();
 
 private:
-	bool setFirstDateTime();
-	void processNextSentence();
+    bool setFirstDateTime();
+    void processNextSentence();
 
-	QQueue<QPendingGeoPositionInfo> m_pendingUpdates;
-	int m_currTimerId;
-	bool m_hasValidDateTime;
+    QQueue<QPendingGeoPositionInfo> m_pendingUpdates;
+    int m_currTimerId;
+    bool m_hasValidDateTime;
 };
 
 QT_END_NAMESPACE

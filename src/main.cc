@@ -28,19 +28,19 @@
 #include "AppMessages.h"
 
 #ifndef __mobile__
-#include "QGCSerialPortInfo.h"
-#include "RunGuard.h"
+    #include "QGCSerialPortInfo.h"
+    #include "RunGuard.h"
 #endif
 
 #ifdef UNITTEST_BUILD
-#include "UnitTest.h"
+    #include "UnitTest.h"
 #endif
 
 #ifdef QT_DEBUG
-#include "CmdLineOptParser.h"
-#ifdef Q_OS_WIN
-#include <crtdbg.h>
-#endif
+    #include "CmdLineOptParser.h"
+    #ifdef Q_OS_WIN
+        #include <crtdbg.h>
+    #endif
 #endif
 
 #ifdef QGC_ENABLE_BLUETOOTH
@@ -56,19 +56,19 @@
 #endif
 
 #ifndef __mobile__
-Q_DECLARE_METATYPE(QGCSerialPortInfo)
+    Q_DECLARE_METATYPE(QGCSerialPortInfo)
 #endif
 
 #ifdef Q_OS_WIN
 /// @brief CRT Report Hook installed using _CrtSetReportHook. We install this hook when
 /// we don't want asserts to pop a dialog on windows.
-int WindowsCrtReportHook(int reportType, char *message, int *returnValue)
+int WindowsCrtReportHook(int reportType, char* message, int* returnValue)
 {
-	Q_UNUSED(reportType);
+    Q_UNUSED(reportType);
 
-	std::cerr << message << std::endl;  // Output message to stderr
-	*returnValue = 0;                   // Don't break into debugger
-	return true;                        // We handled this fully ourselves
+    std::cerr << message << std::endl;  // Output message to stderr
+    *returnValue = 0;                   // Don't break into debugger
+    return true;                        // We handled this fully ourselves
 }
 
 #endif
@@ -77,20 +77,18 @@ int WindowsCrtReportHook(int reportType, char *message, int *returnValue)
 #include <jni.h>
 #include "qserialport.h"
 
-jint JNI_OnLoad(JavaVM *vm, void *reserved)
+jint JNI_OnLoad(JavaVM* vm, void* reserved)
 {
-	Q_UNUSED(reserved);
+    Q_UNUSED(reserved);
 
-	JNIEnv *env;
+    JNIEnv* env;
+    if (vm->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_6) != JNI_OK) {
+        return -1;
+    }
 
-	if (vm->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_6) != JNI_OK)
-	{
-		return -1;
-	}
+    QSerialPort::setNativeMethods();
 
-	QSerialPort::setNativeMethods();
-
-	return JNI_VERSION_1_6;
+    return JNI_VERSION_1_6;
 }
 #endif
 
@@ -105,132 +103,111 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
 int main(int argc, char *argv[])
 {
 #ifndef __mobile__
-	RunGuard guard("QGroundControlRunGuardKey");
-
-	if (!guard.tryToRun())
-	{
-		return 0;
-	}
-
+    RunGuard guard("QGroundControlRunGuardKey");
+    if (!guard.tryToRun()) {
+        return 0;
+    }
 #endif
 
 #ifdef Q_OS_UNIX
-
-	//Force writing to the console on UNIX/BSD devices
-	if (!qEnvironmentVariableIsSet("QT_LOGGING_TO_CONSOLE"))
-	{
-		qputenv("QT_LOGGING_TO_CONSOLE", "1");
-	}
-
+    //Force writing to the console on UNIX/BSD devices
+    if (!qEnvironmentVariableIsSet("QT_LOGGING_TO_CONSOLE"))
+        qputenv("QT_LOGGING_TO_CONSOLE", "1");
 #endif
 
-	// install the message handler
-	AppMessages::installHandler();
+    // install the message handler
+    AppMessages::installHandler();
 
 #ifdef Q_OS_MAC
 #ifndef __ios__
-	// Prevent Apple's app nap from screwing us over
-	// tip: the domain can be cross-checked on the command line with <defaults domains>
-	QProcess::execute("defaults write org.qgroundcontrol.qgroundcontrol NSAppSleepDisabled -bool YES");
+    // Prevent Apple's app nap from screwing us over
+    // tip: the domain can be cross-checked on the command line with <defaults domains>
+    QProcess::execute("defaults write org.qgroundcontrol.qgroundcontrol NSAppSleepDisabled -bool YES");
 #endif
 #endif
 
 #ifdef Q_OS_WIN
-	// Set our own OpenGL buglist
-	qputenv("QT_OPENGL_BUGLIST", ":/opengl/resources/opengl/buglist.json");
+    // Set our own OpenGL buglist
+    qputenv("QT_OPENGL_BUGLIST", ":/opengl/resources/opengl/buglist.json");
 
-	// Allow for command line override of renderer
-	for (int i = 0; i < argc; i++)
-	{
-		const QString arg(argv[i]);
-
-		if (arg == QStringLiteral("-angle"))
-		{
-			QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
-			break;
-		}
-
-		else if (arg == QStringLiteral("-swrast"))
-		{
-			QCoreApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
-			break;
-		}
-	}
-
+    // Allow for command line override of renderer
+    for (int i = 0; i < argc; i++) {
+        const QString arg(argv[i]);
+        if (arg == QStringLiteral("-angle")) {
+            QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
+            break;
+        } else if (arg == QStringLiteral("-swrast")) {
+            QCoreApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
+            break;
+        }
+    }
 #endif
 
-	// The following calls to qRegisterMetaType are done to silence debug output which warns
-	// that we use these types in signals, and without calling qRegisterMetaType we can't queue
-	// these signals. In general we don't queue these signals, but we do what the warning says
-	// anyway to silence the debug output.
+    // The following calls to qRegisterMetaType are done to silence debug output which warns
+    // that we use these types in signals, and without calling qRegisterMetaType we can't queue
+    // these signals. In general we don't queue these signals, but we do what the warning says
+    // anyway to silence the debug output.
 #ifndef NO_SERIAL_LINK
-	qRegisterMetaType<QSerialPort::SerialPortError>();
+    qRegisterMetaType<QSerialPort::SerialPortError>();
 #endif
 #ifdef QGC_ENABLE_BLUETOOTH
-	qRegisterMetaType<QBluetoothSocket::SocketError>();
-	qRegisterMetaType<QBluetoothServiceInfo>();
+    qRegisterMetaType<QBluetoothSocket::SocketError>();
+    qRegisterMetaType<QBluetoothServiceInfo>();
 #endif
-	qRegisterMetaType<QAbstractSocket::SocketError>();
+    qRegisterMetaType<QAbstractSocket::SocketError>();
 #ifndef __mobile__
-	qRegisterMetaType<QGCSerialPortInfo>();
+    qRegisterMetaType<QGCSerialPortInfo>();
 #endif
 
-	// We statically link our own QtLocation plugin
+    // We statically link our own QtLocation plugin
 
 #ifdef Q_OS_WIN
-	// In Windows, the compiler doesn't see the use of the class created by Q_IMPORT_PLUGIN
+    // In Windows, the compiler doesn't see the use of the class created by Q_IMPORT_PLUGIN
 #pragma warning( disable : 4930 4101 )
 #endif
 
-	Q_IMPORT_PLUGIN(QGeoServiceProviderFactoryQGC)
+    Q_IMPORT_PLUGIN(QGeoServiceProviderFactoryQGC)
 
-	bool runUnitTests = false;          // Run unit tests
+    bool runUnitTests = false;          // Run unit tests
 
 #ifdef QT_DEBUG
-	// We parse a small set of command line options here prior to QGCApplication in order to handle the ones
-	// which need to be handled before a QApplication object is started.
+    // We parse a small set of command line options here prior to QGCApplication in order to handle the ones
+    // which need to be handled before a QApplication object is started.
 
-	bool stressUnitTests = false;       // Stress test unit tests
-	bool quietWindowsAsserts = false;   // Don't let asserts pop dialog boxes
+    bool stressUnitTests = false;       // Stress test unit tests
+    bool quietWindowsAsserts = false;   // Don't let asserts pop dialog boxes
 
-	QString unitTestOptions;
-	CmdLineOpt_t rgCmdLineOptions[] =
-	{
-		{ "--unittest",             &runUnitTests,          &unitTestOptions },
-		{ "--unittest-stress",      &stressUnitTests,       &unitTestOptions },
-		{ "--no-windows-assert-ui", &quietWindowsAsserts,   NULL },
-		// Add additional command line option flags here
-	};
+    QString unitTestOptions;
+    CmdLineOpt_t rgCmdLineOptions[] = {
+        { "--unittest",             &runUnitTests,          &unitTestOptions },
+        { "--unittest-stress",      &stressUnitTests,       &unitTestOptions },
+        { "--no-windows-assert-ui", &quietWindowsAsserts,   NULL },
+        // Add additional command line option flags here
+    };
 
-	ParseCmdLineOptions(argc, argv, rgCmdLineOptions, sizeof(rgCmdLineOptions) / sizeof(rgCmdLineOptions[0]), false);
+    ParseCmdLineOptions(argc, argv, rgCmdLineOptions, sizeof(rgCmdLineOptions)/sizeof(rgCmdLineOptions[0]), false);
+    if (stressUnitTests) {
+        runUnitTests = true;
+    }
 
-	if (stressUnitTests)
-	{
-		runUnitTests = true;
-	}
-
-	if (quietWindowsAsserts)
-	{
+    if (quietWindowsAsserts) {
 #ifdef Q_OS_WIN
-		_CrtSetReportHook(WindowsCrtReportHook);
+        _CrtSetReportHook(WindowsCrtReportHook);
 #endif
-	}
+    }
 
 #ifdef Q_OS_WIN
-
-	if (runUnitTests)
-	{
-		// Don't pop up Windows Error Reporting dialog when app crashes. This prevents TeamCity from
-		// hanging.
-		DWORD dwMode = SetErrorMode(SEM_NOGPFAULTERRORBOX);
-		SetErrorMode(dwMode | SEM_NOGPFAULTERRORBOX);
-	}
-
+    if (runUnitTests) {
+        // Don't pop up Windows Error Reporting dialog when app crashes. This prevents TeamCity from
+        // hanging.
+        DWORD dwMode = SetErrorMode(SEM_NOGPFAULTERRORBOX);
+        SetErrorMode(dwMode | SEM_NOGPFAULTERRORBOX);
+    }
 #endif
 #endif // QT_DEBUG
 
-	QGCApplication *app = new QGCApplication(argc, argv, runUnitTests);
-	Q_CHECK_PTR(app);
+    QGCApplication* app = new QGCApplication(argc, argv, runUnitTests);
+    Q_CHECK_PTR(app);
 
 	QString qmpPath = QCoreApplication::applicationDirPath();
 	qmpPath.append("/");
@@ -239,70 +216,57 @@ int main(int argc, char *argv[])
 	translator.load(qmpPath);
 	//translator.load("translation_CN.qm");
 	app->installTranslator(&translator);
-
+	
 #ifdef Q_OS_LINUX
-	QApplication::setWindowIcon(QIcon(":/res/resources/icons/qgroundcontrol.ico"));
+    QApplication::setWindowIcon(QIcon(":/res/resources/icons/qgroundcontrol.ico"));
 #endif /* Q_OS_LINUX */
 
-	// There appears to be a threading issue in qRegisterMetaType which can cause it to throw a qWarning
-	// about duplicate type converters. This is caused by a race condition in the Qt code. Still working
-	// with them on tracking down the bug. For now we register the type which is giving us problems here
-	// while we only have the main thread. That should prevent it from hitting the race condition later
-	// on in the code.
-	qRegisterMetaType<QList<QPair<QByteArray, QByteArray> > >();
+    // There appears to be a threading issue in qRegisterMetaType which can cause it to throw a qWarning
+    // about duplicate type converters. This is caused by a race condition in the Qt code. Still working
+    // with them on tracking down the bug. For now we register the type which is giving us problems here
+    // while we only have the main thread. That should prevent it from hitting the race condition later
+    // on in the code.
+    qRegisterMetaType<QList<QPair<QByteArray,QByteArray> > >();
 
-	app->_initCommon();
-	//-- Initialize Cache System
-	getQGCMapEngine()->init();
+    app->_initCommon();
+    //-- Initialize Cache System
+    getQGCMapEngine()->init();
 
-	int exitCode = 0;
+    int exitCode = 0;
 
 #ifdef UNITTEST_BUILD
+    if (runUnitTests) {
+        for (int i=0; i < (stressUnitTests ? 20 : 1); i++) {
+            if (!app->_initForUnitTests()) {
+                return -1;
+            }
 
-	if (runUnitTests)
-	{
-		for (int i = 0; i < (stressUnitTests ? 20 : 1); i++)
-		{
-			if (!app->_initForUnitTests())
-			{
-				return -1;
-			}
-
-			// Run the test
-			int failures = UnitTest::run(unitTestOptions);
-
-			if (failures == 0)
-			{
-				qDebug() << "ALL TESTS PASSED";
-				exitCode = 0;
-			}
-
-			else
-			{
-				qDebug() << failures << " TESTS FAILED!";
-				exitCode = -failures;
-				break;
-			}
-		}
-	}
-
-	else
+            // Run the test
+            int failures = UnitTest::run(unitTestOptions);
+            if (failures == 0) {
+                qDebug() << "ALL TESTS PASSED";
+                exitCode = 0;
+            } else {
+                qDebug() << failures << " TESTS FAILED!";
+                exitCode = -failures;
+                break;
+            }
+        }
+    } else
 #endif
-	{
-		if (!app->_initForNormalAppBoot())
-		{
-			return -1;
-		}
+    {
+        if (!app->_initForNormalAppBoot()) {
+            return -1;
+        }
+        exitCode = app->exec();
+    }
 
-		exitCode = app->exec();
-	}
+    app->_shutdown();
+    delete app;
+    //-- Shutdown Cache System
+    destroyMapEngine();
 
-	app->_shutdown();
-	delete app;
-	//-- Shutdown Cache System
-	destroyMapEngine();
+    qDebug() << "After app delete";
 
-	qDebug() << "After app delete";
-
-	return exitCode;
+    return exitCode;
 }

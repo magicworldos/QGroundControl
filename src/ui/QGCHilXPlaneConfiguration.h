@@ -6,30 +6,29 @@
 #include "QGCHilLink.h"
 
 class QGCHilConfiguration;
-namespace Ui
-{
+namespace Ui {
 class QGCHilXPlaneConfiguration;
 }
 
 class QGCHilXPlaneConfiguration : public QWidget
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	explicit QGCHilXPlaneConfiguration(QGCHilLink *link, QGCHilConfiguration *parent = 0);
-	~QGCHilXPlaneConfiguration();
+    explicit QGCHilXPlaneConfiguration(QGCHilLink* link, QGCHilConfiguration *parent = 0);
+    ~QGCHilXPlaneConfiguration();
 
 public slots:
-	/** @brief Start / stop simulation */
-	void toggleSimulation(bool connect);
-	/** @brief Set X-Plane version */
-	void setVersion(int version);
+    /** @brief Start / stop simulation */
+    void toggleSimulation(bool connect);
+    /** @brief Set X-Plane version */
+    void setVersion(int version);
 
 protected:
-	QGCHilLink *link;
-
+    QGCHilLink* link;
+    
 private:
-	Ui::QGCHilXPlaneConfiguration *ui;
+    Ui::QGCHilXPlaneConfiguration *ui;
 };
 
 #endif // QGCHILXPLANECONFIGURATION_H

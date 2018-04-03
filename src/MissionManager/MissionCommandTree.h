@@ -45,55 +45,54 @@ class MissionCommandTreeTest;
 ///
 class MissionCommandTree : public QGCTool
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	MissionCommandTree(QGCApplication *app, QGCToolbox *toolbox, bool unitTest = false);
+    MissionCommandTree(QGCApplication* app, QGCToolbox* toolbox, bool unitTest = false);
 
-	/// Returns the friendly name for the specified command
-	QString friendlyName(MAV_CMD command);
+    /// Returns the friendly name for the specified command
+    QString friendlyName(MAV_CMD command);
 
-	/// Returns the raw name for the specified command
-	QString rawName(MAV_CMD command);
+    /// Returns the raw name for the specified command
+    QString rawName(MAV_CMD command);
 
-	const QList<MAV_CMD> &allCommandIds(void) const;
+    const QList<MAV_CMD>& allCommandIds(void) const;
 
-	Q_INVOKABLE QStringList categoriesForVehicle(Vehicle *vehicle) { return _availableCategoriesForVehicle(vehicle); }
+    Q_INVOKABLE QStringList categoriesForVehicle(Vehicle* vehicle) { return _availableCategoriesForVehicle(vehicle); }
 
-	const MissionCommandUIInfo *getUIInfo(Vehicle *vehicle, MAV_CMD command);
+    const MissionCommandUIInfo* getUIInfo(Vehicle* vehicle, MAV_CMD command);
 
-	Q_INVOKABLE QVariantList getCommandsForCategory(Vehicle *vehicle, const QString &category);
+   Q_INVOKABLE QVariantList getCommandsForCategory(Vehicle* vehicle, const QString& category);
 
-	// Overrides from QGCTool
-	virtual void setToolbox(QGCToolbox *toolbox);
-
-private:
-	void _collapseHierarchy(Vehicle *vehicle, const MissionCommandList *cmdList,
-				QMap<MAV_CMD, MissionCommandUIInfo *> &collapsedTree);
-	MAV_TYPE _baseVehicleType(MAV_TYPE mavType) const;
-	MAV_AUTOPILOT _baseFirmwareType(MAV_AUTOPILOT firmwareType) const;
-	void _buildAvailableCommands(Vehicle *vehicle);
-	QStringList _availableCategoriesForVehicle(Vehicle *vehicle);
-	void _baseVehicleInfo(Vehicle *vehicle, MAV_AUTOPILOT &baseFirmwareType, MAV_TYPE &baseVehicleType) const;
+    // Overrides from QGCTool
+    virtual void setToolbox(QGCToolbox* toolbox);
 
 private:
-	QString             _allCommandsCategory;   ///< Category which contains all available commands
-	QList<int>          _allCommandIds;         ///< List of all known command ids (not vehicle specific)
-	SettingsManager    *_settingsManager;
-	bool                _unitTest;              ///< true: running in unit test mode
+    void _collapseHierarchy(Vehicle* vehicle, const MissionCommandList* cmdList, QMap<MAV_CMD, MissionCommandUIInfo*>& collapsedTree);
+    MAV_TYPE _baseVehicleType(MAV_TYPE mavType) const;
+    MAV_AUTOPILOT _baseFirmwareType(MAV_AUTOPILOT firmwareType) const;
+    void _buildAvailableCommands(Vehicle* vehicle);
+    QStringList _availableCategoriesForVehicle(Vehicle* vehicle);
+    void _baseVehicleInfo(Vehicle* vehicle, MAV_AUTOPILOT& baseFirmwareType, MAV_TYPE& baseVehicleType) const;
 
-	/// Full hierarchy
-	QMap<MAV_AUTOPILOT, QMap<MAV_TYPE, MissionCommandList *>>                    _staticCommandTree;
+private:
+    QString             _allCommandsCategory;   ///< Category which contains all available commands
+    QList<int>          _allCommandIds;         ///< List of all known command ids (not vehicle specific)
+    SettingsManager*    _settingsManager;
+    bool                _unitTest;              ///< true: running in unit test mode
 
-	/// Collapsed hierarchy for specific vehicle type
-	QMap<MAV_AUTOPILOT, QMap<MAV_TYPE, QMap<MAV_CMD, MissionCommandUIInfo *>>>   _availableCommands;
+    /// Full hierarchy
+    QMap<MAV_AUTOPILOT, QMap<MAV_TYPE, MissionCommandList*>>                    _staticCommandTree;
 
-	/// Collapsed hierarchy for specific vehicle type
-	QMap<MAV_AUTOPILOT, QMap<MAV_TYPE, QStringList>>                            _availableCategories;
+    /// Collapsed hierarchy for specific vehicle type
+    QMap<MAV_AUTOPILOT, QMap<MAV_TYPE, QMap<MAV_CMD, MissionCommandUIInfo*>>>   _availableCommands;
+
+    /// Collapsed hierarchy for specific vehicle type
+    QMap<MAV_AUTOPILOT, QMap<MAV_TYPE, QStringList>>                            _availableCategories;
 
 
 #ifdef UNITTEST_BUILD
-	friend class MissionCommandTreeTest;
+    friend class MissionCommandTreeTest;
 #endif
 };
 

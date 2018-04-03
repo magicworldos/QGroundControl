@@ -5,17 +5,17 @@
 #include "ui_QGCUnconnectedInfoWidget.h"
 
 QGCUnconnectedInfoWidget::QGCUnconnectedInfoWidget(QWidget *parent) :
-	QWidget(parent),
-	ui(new Ui::QGCUnconnectedInfoWidget)
+    QWidget(parent),
+    ui(new Ui::QGCUnconnectedInfoWidget)
 {
-	ui->setupUi(this);
-	//connect(ui->simulationButton, SIGNAL(clicked()), this, SLOT(simulate()));
-	//connect(ui->connectButton, SIGNAL(clicked()), this, SLOT(addLink()));
+    ui->setupUi(this);
+    //connect(ui->simulationButton, SIGNAL(clicked()), this, SLOT(simulate()));
+    //connect(ui->connectButton, SIGNAL(clicked()), this, SLOT(addLink()));
 }
 
 QGCUnconnectedInfoWidget::~QGCUnconnectedInfoWidget()
 {
-	delete ui;
+    delete ui;
 }
 
 /**
@@ -30,6 +30,6 @@ void QGCUnconnectedInfoWidget::simulate()
  */
 void QGCUnconnectedInfoWidget::addLink()
 {
-	// TODO This doesn't make sense. If you want to connect, use the connect on the toolbar
-	//MainWindow::instance()->addLink();
+    // TODO This doesn't make sense. If you want to connect, use the connect on the toolbar
+    //MainWindow::instance()->addLink();
 }

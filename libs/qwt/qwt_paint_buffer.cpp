@@ -19,9 +19,9 @@ bool QwtPaintBuffer::d_enabled = true;
 
 //! Default constructor
 QwtPaintBuffer::QwtPaintBuffer():
-	d_device(0),
-	d_painter(0),
-	d_devicePainter(0)
+    d_device(0),
+    d_painter(0),
+    d_devicePainter(0)
 {
 }
 
@@ -36,12 +36,12 @@ QwtPaintBuffer::QwtPaintBuffer():
 */
 
 QwtPaintBuffer::QwtPaintBuffer(QPaintDevice *device,
-			       const QRect &rect, QPainter *painter):
-	d_device(0),
-	d_painter(0),
-	d_devicePainter(0)
+                               const QRect &rect, QPainter *painter):
+    d_device(0),
+    d_painter(0),
+    d_devicePainter(0)
 {
-	open(device, rect, painter);
+    open(device, rect, painter);
 }
 
 /*!
@@ -50,7 +50,7 @@ QwtPaintBuffer::QwtPaintBuffer(QPaintDevice *device,
 */
 QwtPaintBuffer::~QwtPaintBuffer()
 {
-	close();
+    close();
 }
 
 /*!
@@ -61,7 +61,7 @@ QwtPaintBuffer::~QwtPaintBuffer()
 
 QPainter *QwtPaintBuffer::painter()
 {
-	return d_painter;
+    return d_painter;
 }
 
 /*!
@@ -69,7 +69,7 @@ QPainter *QwtPaintBuffer::painter()
 */
 const QPaintDevice *QwtPaintBuffer::device()
 {
-	return d_device;
+    return d_device;
 }
 
 /*!
@@ -79,7 +79,7 @@ const QPaintDevice *QwtPaintBuffer::device()
 */
 void QwtPaintBuffer::setEnabled(bool enable)
 {
-	d_enabled = enable;
+    d_enabled = enable;
 }
 
 /*!
@@ -87,7 +87,7 @@ void QwtPaintBuffer::setEnabled(bool enable)
 */
 bool QwtPaintBuffer::isEnabled()
 {
-	return d_enabled;
+    return d_enabled;
 }
 
 /*!
@@ -99,69 +99,45 @@ bool QwtPaintBuffer::isEnabled()
 */
 
 void QwtPaintBuffer::open(QPaintDevice *device,
-			  const QRect &rect, QPainter *painter)
+                          const QRect &rect, QPainter *painter)
 {
-	close();
+    close();
 
-	if (device == 0 || !rect.isValid())
-	{
-		return;
-	}
+    if ( device == 0 || !rect.isValid() )
+        return;
 
-	d_device = device;
-	d_devicePainter = painter;
-	d_rect = rect;
+    d_device = device;
+    d_devicePainter = painter;
+    d_rect = rect;
 
-	if (isEnabled())
-	{
+    if ( isEnabled() ) {
 #ifdef Q_WS_X11
-
-		if (d_pixBuffer.x11Screen() != d_device->x11Screen())
-		{
-			d_pixBuffer.x11SetScreen(d_device->x11Screen());
-		}
-
+        if ( d_pixBuffer.x11Screen() != d_device->x11Screen() )
+            d_pixBuffer.x11SetScreen(d_device->x11Screen());
 #endif
-		d_pixBuffer.resize(d_rect.size());
+        d_pixBuffer.resize(d_rect.size());
 
-		d_painter = new QPainter();
+        d_painter = new QPainter();
+        if ( d_device->devType() == QInternal::Widget ) {
+            QWidget *w = (QWidget *)d_device;
+            d_pixBuffer.fill(w, d_rect.topLeft());
+            d_painter->begin(&d_pixBuffer, w);
+            d_painter->translate(-d_rect.x(), -d_rect.y());
+        } else {
+            d_painter->begin(&d_pixBuffer);
+        }
+    } else {
+        if ( d_devicePainter )
+            d_painter = d_devicePainter;
+        else
+            d_painter = new QPainter(d_device);
 
-		if (d_device->devType() == QInternal::Widget)
-		{
-			QWidget *w = (QWidget *)d_device;
-			d_pixBuffer.fill(w, d_rect.topLeft());
-			d_painter->begin(&d_pixBuffer, w);
-			d_painter->translate(-d_rect.x(), -d_rect.y());
-		}
-
-		else
-		{
-			d_painter->begin(&d_pixBuffer);
-		}
-	}
-
-	else
-	{
-		if (d_devicePainter)
-		{
-			d_painter = d_devicePainter;
-		}
-
-		else
-		{
-			d_painter = new QPainter(d_device);
-		}
-
-		if (d_device->devType() == QInternal::Widget)
-		{
-			QWidget *w = (QWidget *)d_device;
-
-			if (w->testWFlags(Qt::WNoAutoErase))
-			{
-				d_painter->eraseRect(d_rect);
-			}
-		}
-	}
+        if ( d_device->devType() == QInternal::Widget ) {
+            QWidget *w = (QWidget *)d_device;
+            if ( w->testWFlags( Qt::WNoAutoErase ) )
+                d_painter->eraseRect(d_rect);
+        }
+    }
 }
 
 /*!
@@ -169,40 +145,25 @@ void QwtPaintBuffer::open(QPaintDevice *device,
 */
 void QwtPaintBuffer::flush()
 {
-	if (d_enabled && d_device != 0 && d_rect.isValid())
-	{
-		// We need a painter to find out if
-		// there is a painter redirection for d_device.
+    if ( d_enabled && d_device != 0 && d_rect.isValid()) {
+        // We need a painter to find out if
+        // there is a painter redirection for d_device.
 
-		QPainter *p;
+        QPainter *p;
+        if ( d_devicePainter == 0 )
+            p = new QPainter(d_device);
+        else
+            p = d_devicePainter;
 
-		if (d_devicePainter == 0)
-		{
-			p = new QPainter(d_device);
-		}
+        QPaintDevice *device = p->device();
+        if ( device->isExtDev() )
+            d_devicePainter->drawPixmap(d_rect.topLeft(), d_pixBuffer);
+        else
+            bitBlt(device, d_rect.topLeft(), &d_pixBuffer );
 
-		else
-		{
-			p = d_devicePainter;
-		}
-
-		QPaintDevice *device = p->device();
-
-		if (device->isExtDev())
-		{
-			d_devicePainter->drawPixmap(d_rect.topLeft(), d_pixBuffer);
-		}
-
-		else
-		{
-			bitBlt(device, d_rect.topLeft(), &d_pixBuffer);
-		}
-
-		if (d_devicePainter == 0)
-		{
-			delete p;
-		}
-	}
+        if ( d_devicePainter == 0 )
+            delete p;
+    }
 }
 
 /*!
@@ -210,29 +171,22 @@ void QwtPaintBuffer::flush()
 */
 void QwtPaintBuffer::close()
 {
-	flush();
+    flush();
 
-	if (d_painter)
-	{
-		if (d_painter->isActive())
-		{
-			d_painter->end();
-		}
+    if ( d_painter ) {
+        if ( d_painter->isActive() )
+            d_painter->end();
 
-		if (d_painter != d_devicePainter)
-		{
-			delete d_painter;
-		}
-	}
+        if ( d_painter != d_devicePainter )
+            delete d_painter;
+    }
 
-	if (!d_pixBuffer.isNull())
-	{
-		d_pixBuffer = QPixmap();
-	}
+    if ( !d_pixBuffer.isNull() )
+        d_pixBuffer = QPixmap();
 
-	d_device = 0;
-	d_painter = 0;
-	d_devicePainter = 0;
+    d_device = 0;
+    d_painter = 0;
+    d_devicePainter = 0;
 }
 
 #endif // QT_VERSION < 0x040000

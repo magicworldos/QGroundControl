@@ -14,8 +14,10 @@
 #include <QGeoCoordinate>
 
 #include "QGCLoggingCategory.h"
+#include "PlanManager.h"
 
 class Vehicle;
+class PlanManager;
 
 Q_DECLARE_LOGGING_CATEGORY(RallyPointManagerLog)
 
@@ -23,55 +25,58 @@ Q_DECLARE_LOGGING_CATEGORY(RallyPointManagerLog)
 /// for communicating with the vehicle to set/get rally points.
 class RallyPointManager : public QObject
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	RallyPointManager(Vehicle *vehicle);
-	~RallyPointManager();
+    RallyPointManager(Vehicle* vehicle);
+    ~RallyPointManager();
+    
+    /// Returns true if GeoFence is supported by this vehicle
+    virtual bool supported(void) const;
 
-	/// Returns true if GeoFence is supported by this vehicle
-	virtual bool supported(void) const;
+    /// Returns true if the manager is currently communicating with the vehicle
+    virtual bool inProgress(void) const { return false; }
 
-	/// Returns true if the manager is currently communicating with the vehicle
-	virtual bool inProgress(void) const { return false; }
+    /// Load the current settings from the vehicle
+    ///     Signals loadComplete when done
+    virtual void loadFromVehicle(void);
 
-	/// Load the current settings from the vehicle
-	///     Signals loadComplete when done
-	virtual void loadFromVehicle(void);
+    /// Send the current settings to the vehicle
+    ///     Signals sendComplete when done
+    virtual void sendToVehicle(const QList<QGeoCoordinate>& rgPoints);
 
-	/// Send the current settings to the vehicle
-	///     Signals sendComplete when done
-	virtual void sendToVehicle(const QList<QGeoCoordinate> &rgPoints);
+    /// Remove all rally points from the vehicle
+    ///     Signals removeAllCompleted when done
+    virtual void removeAll(void);
 
-	/// Remove all rally points from the vehicle
-	///     Signals removeAllCompleted when done
-	virtual void removeAll(void);
+    QList<QGeoCoordinate> points(void) const { return _rgPoints; }
 
-	QList<QGeoCoordinate> points(void) const { return _rgPoints; }
+    virtual QString editorQml(void) const { return QStringLiteral("qrc:/FirmwarePlugin/RallyPointEditor.qml"); }
 
-	virtual QString editorQml(void) const { return QStringLiteral("qrc:/FirmwarePlugin/RallyPointEditor.qml"); }
-
-	/// Error codes returned in error signal
-	typedef enum
-	{
-		InternalError,
-		TooFewPoints,           ///< Too few points for valid geofence
-		TooManyPoints,          ///< Too many points for valid geofence
-		InvalidCircleRadius,
-	} ErrorCode_t;
-
+    /// Error codes returned in error signal
+    typedef enum {
+        InternalError,
+        TooFewPoints,           ///< Too few points for valid geofence
+        TooManyPoints,          ///< Too many points for valid geofence
+        InvalidCircleRadius,
+    } ErrorCode_t;
+    
 signals:
-	void loadComplete(const QList<QGeoCoordinate> rgPoints);
-	void inProgressChanged(bool inProgress);
-	void error(int errorCode, const QString &errorMsg);
-	void removeAllComplete(bool error);
-	void sendComplete(bool error);
+    void loadComplete       (const QList<QGeoCoordinate> rgPoints);
+    void inProgressChanged  (bool inProgress);
+    void error              (int errorCode, const QString& errorMsg);
+    void removeAllComplete  (bool error);
+    void sendComplete       (bool error);
+
+private slots:
+    void _planManagerLoadComplete   (bool removeAllRequested);
 
 protected:
-	void _sendError(ErrorCode_t errorCode, const QString &errorMsg);
+    void _sendError(ErrorCode_t errorCode, const QString& errorMsg);
 
-	Vehicle                *_vehicle;
-	QList<QGeoCoordinate>   _rgPoints;
+    Vehicle*                _vehicle;
+    PlanManager             _planManager;
+    QList<QGeoCoordinate>   _rgPoints;
 };
 
 #endif

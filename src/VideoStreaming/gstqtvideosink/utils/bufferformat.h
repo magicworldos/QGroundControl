@@ -28,40 +28,38 @@
 class BufferFormat
 {
 public:
-	static BufferFormat fromCaps(GstCaps *caps);
-	static GstCaps *newCaps(GstVideoFormat format, const QSize &size,
-				const Fraction &framerate, const Fraction &pixelAspectRatio);
+    static BufferFormat fromCaps(GstCaps *caps);
+    static GstCaps *newCaps(GstVideoFormat format, const QSize & size,
+            const Fraction & framerate, const Fraction & pixelAspectRatio);
 
-	inline BufferFormat() : d(new Data) {}
+    inline BufferFormat() : d(new Data) {}
 
-	inline GstVideoInfo videoInfo() const           { return d->videoInfo; }
-	inline GstVideoFormat videoFormat() const {  return GST_VIDEO_INFO_FORMAT(&(d->videoInfo)); }
-	inline GstVideoColorMatrix colorMatrix() const { return d->videoInfo.colorimetry.matrix; }
-	QSize frameSize() const
-	{
-		return QSize(GST_VIDEO_INFO_WIDTH(&(d->videoInfo)),
-			     GST_VIDEO_INFO_HEIGHT(&(d->videoInfo)));
-	}
-	Fraction pixelAspectRatio() const
-	{
-		return Fraction(GST_VIDEO_INFO_PAR_N(&(d->videoInfo)),
-				GST_VIDEO_INFO_PAR_D(&(d->videoInfo)));
-	}
+    inline GstVideoInfo videoInfo() const           { return d->videoInfo; }
+    inline GstVideoFormat videoFormat() const {  return GST_VIDEO_INFO_FORMAT(&(d->videoInfo)); }
+    inline GstVideoColorMatrix colorMatrix() const { return d->videoInfo.colorimetry.matrix; }
+    QSize frameSize() const {
+        return QSize(GST_VIDEO_INFO_WIDTH(&(d->videoInfo)),
+                     GST_VIDEO_INFO_HEIGHT(&(d->videoInfo)));
+    }
+    Fraction pixelAspectRatio() const {
+        return Fraction(GST_VIDEO_INFO_PAR_N(&(d->videoInfo)),
+                        GST_VIDEO_INFO_PAR_D(&(d->videoInfo)));
+    }
 
-	int bytesPerLine(int component = 0) const;
+    int bytesPerLine(int component = 0) const;
 
 private:
-	friend bool operator==(BufferFormat a, BufferFormat b);
-	friend bool operator!=(BufferFormat a, BufferFormat b);
+    friend bool operator==(BufferFormat a, BufferFormat b);
+    friend bool operator!=(BufferFormat a, BufferFormat b);
 
-	struct Data : public QSharedData
-	{
-		Data()
-		{ gst_video_info_init(&videoInfo); }
+    struct Data : public QSharedData
+    {
+        Data()
+        { gst_video_info_init(&videoInfo); }
 
-		GstVideoInfo videoInfo;
-	};
-	QSharedDataPointer<Data> d;
+        GstVideoInfo videoInfo;
+    };
+    QSharedDataPointer<Data> d;
 };
 
 Q_DECLARE_METATYPE(GstVideoInfo)

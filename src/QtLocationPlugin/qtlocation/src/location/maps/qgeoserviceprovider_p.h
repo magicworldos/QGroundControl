@@ -66,54 +66,54 @@ class QGeoServiceProviderFactory;
 class QGeoServiceProviderPrivate
 {
 public:
-	QGeoServiceProviderPrivate();
-	~QGeoServiceProviderPrivate();
+    QGeoServiceProviderPrivate();
+    ~QGeoServiceProviderPrivate();
 
-	void loadMeta();
-	void loadPlugin(const QVariantMap &parameters);
-	void unload();
-	void filterParameterMap();
+    void loadMeta();
+    void loadPlugin(const QVariantMap &parameters);
+    void unload();
+    void filterParameterMap();
 
-	/* helper templates for generating the feature and manager accessors */
-	template <class Manager, class Engine>
-	Manager *manager(QGeoServiceProvider::Error *error,
-			 QString *errorString, Manager **manager);
-	template <class Flags>
-	Flags features(const char *enumName);
+    /* helper templates for generating the feature and manager accessors */
+    template <class Manager, class Engine>
+    Manager *manager(QGeoServiceProvider::Error *error,
+                     QString *errorString, Manager **manager);
+    template <class Flags>
+    Flags features(const char *enumName);
 
-	QGeoServiceProviderFactory *factory;
-	QJsonObject metaData;
+    QGeoServiceProviderFactory *factory;
+    QJsonObject metaData;
 
-	QVariantMap parameterMap;
-	QVariantMap cleanedParameterMap;
+    QVariantMap parameterMap;
+    QVariantMap cleanedParameterMap;
 
-	bool experimental;
+    bool experimental;
 
-	QGeoCodingManager *geocodingManager;
-	QGeoRoutingManager *routingManager;
-	QGeoMappingManager *mappingManager;
-	QPlaceManager *placeManager;
+    QGeoCodingManager *geocodingManager;
+    QGeoRoutingManager *routingManager;
+    QGeoMappingManager *mappingManager;
+    QPlaceManager *placeManager;
 
-	QGeoServiceProvider::Error geocodeError;
-	QGeoServiceProvider::Error routingError;
-	QGeoServiceProvider::Error mappingError;
-	QGeoServiceProvider::Error placeError;
+    QGeoServiceProvider::Error geocodeError;
+    QGeoServiceProvider::Error routingError;
+    QGeoServiceProvider::Error mappingError;
+    QGeoServiceProvider::Error placeError;
 
-	QString geocodeErrorString;
-	QString routingErrorString;
-	QString mappingErrorString;
-	QString placeErrorString;
+    QString geocodeErrorString;
+    QString routingErrorString;
+    QString mappingErrorString;
+    QString placeErrorString;
 
-	QGeoServiceProvider::Error error;
-	QString errorString;
+    QGeoServiceProvider::Error error;
+    QString errorString;
 
-	QString providerName;
+    QString providerName;
 
-	QLocale locale;
-	bool localeSet;
+    QLocale locale;
+    bool localeSet;
 
-	static QHash<QString, QJsonObject> plugins(bool reload = false);
-	static void loadPluginMetadata(QHash<QString, QJsonObject> &list);
+    static QHash<QString, QJsonObject> plugins(bool reload = false);
+    static void loadPluginMetadata(QHash<QString, QJsonObject> &list);
 };
 
 QT_END_NAMESPACE

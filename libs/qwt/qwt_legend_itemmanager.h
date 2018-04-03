@@ -20,16 +20,14 @@ class QWidget;
 class QWT_EXPORT QwtLegendItemManager
 {
 public:
-	QwtLegendItemManager()
-	{
-	}
+    QwtLegendItemManager() {
+    }
 
-	virtual ~QwtLegendItemManager()
-	{
-	}
+    virtual ~QwtLegendItemManager() {
+    }
 
-	virtual void updateLegend(QwtLegend *) const = 0;
-	virtual QWidget *legendItem() const = 0;
+    virtual void updateLegend(QwtLegend *) const = 0;
+    virtual QWidget *legendItem() const = 0;
 };
 
 #endif

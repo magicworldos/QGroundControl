@@ -34,25 +34,25 @@ typedef QList<QwtPlotItem *>::ConstIterator QwtPlotItemIterator;
 class QWT_EXPORT QwtPlotDict
 {
 public:
-	explicit QwtPlotDict();
-	virtual ~QwtPlotDict();
+    explicit QwtPlotDict();
+    virtual ~QwtPlotDict();
 
-	void setAutoDelete(bool);
-	bool autoDelete() const;
+    void setAutoDelete( bool );
+    bool autoDelete() const;
 
-	const QwtPlotItemList &itemList() const;
-	QwtPlotItemList itemList(int rtti) const;
+    const QwtPlotItemList& itemList() const;
+    QwtPlotItemList itemList( int rtti ) const;
 
-	void detachItems(int rtti = QwtPlotItem::Rtti_PlotItem,
-			 bool autoDelete = true);
+    void detachItems( int rtti = QwtPlotItem::Rtti_PlotItem,
+        bool autoDelete = true );
 
 protected:
-	void insertItem(QwtPlotItem *);
-	void removeItem(QwtPlotItem *);
+    void insertItem( QwtPlotItem * );
+    void removeItem( QwtPlotItem * );
 
 private:
-	class PrivateData;
-	PrivateData *d_data;
+    class PrivateData;
+    PrivateData *d_data;
 };
 
 #endif

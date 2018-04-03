@@ -22,36 +22,36 @@ class QGCMAVLinkLogPlayer;
  */
 class QGCMAVLinkLogPlayer : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit QGCMAVLinkLogPlayer(QWidget *parent = 0);
-	~QGCMAVLinkLogPlayer();
+    explicit QGCMAVLinkLogPlayer(QWidget *parent = 0);
+    ~QGCMAVLinkLogPlayer();
 
 private slots:
-	void _selectLogFileForPlayback(void);
-	void _playPauseToggle(void);
-	void _pause(void);
-	void _setPlayheadFromSlider(int value);
+    void _selectLogFileForPlayback(void);
+    void _playPauseToggle(void);
+    void _pause(void);
+    void _setPlayheadFromSlider(int value);
 #if 0
-	void _setAccelerationFromSlider(int value);
+    void _setAccelerationFromSlider(int value);
 #endif
-	void _logFileStats(bool logTimestamped, int logDurationSeconds, int binaryBaudRate);
-	void _playbackStarted(void);
-	void _playbackPaused(void);
-	void _playbackPercentCompleteChanged(int percentComplete);
-	void _playbackError(void);
-	void _replayLinkDisconnected(void);
+    void _logFileStats(bool logTimestamped, int logDurationSeconds, int binaryBaudRate);
+    void _playbackStarted(void);
+    void _playbackPaused(void);
+    void _playbackPercentCompleteChanged(int percentComplete);
+    void _playbackError(void);
+    void _replayLinkDisconnected(void);
 
 private:
-	void _finishPlayback(void);
-	QString _secondsToHMS(int seconds);
-	void _enablePlaybackControls(bool enabled);
+    void _finishPlayback(void);
+    QString _secondsToHMS(int seconds);
+    void _enablePlaybackControls(bool enabled);
 
-	LogReplayLink  *_replayLink;
-	int             _logDurationSeconds;
-
-	Ui::QGCMAVLinkLogPlayer *_ui;
+    LogReplayLink*  _replayLink;
+    int             _logDurationSeconds;
+    
+    Ui::QGCMAVLinkLogPlayer* _ui;
 };
 
 #endif

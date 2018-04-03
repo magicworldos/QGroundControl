@@ -18,194 +18,181 @@
 class QwtPlotLayout::LayoutData
 {
 public:
-	void init(const QwtPlot *, const QRectF &rect);
+    void init( const QwtPlot *, const QRectF &rect );
 
-	struct t_legendData
-	{
-		int frameWidth;
-		int hScrollExtent;
-		int vScrollExtent;
-		QSize hint;
-	} legend;
+    struct t_legendData
+    {
+        int frameWidth;
+        int hScrollExtent;
+        int vScrollExtent;
+        QSize hint;
+    } legend;
 
-	struct t_titleData
-	{
-		QwtText text;
-		int frameWidth;
-	} title;
+    struct t_titleData
+    {
+        QwtText text;
+        int frameWidth;
+    } title;
 
-	struct t_footerData
-	{
-		QwtText text;
-		int frameWidth;
-	} footer;
+    struct t_footerData
+    {
+        QwtText text;
+        int frameWidth;
+    } footer;
 
-	struct t_scaleData
-	{
-		bool isEnabled;
-		const QwtScaleWidget *scaleWidget;
-		QFont scaleFont;
-		int start;
-		int end;
-		int baseLineOffset;
-		double tickOffset;
-		int dimWithoutTitle;
-	} scale[QwtPlot::axisCnt];
+    struct t_scaleData
+    {
+        bool isEnabled;
+        const QwtScaleWidget *scaleWidget;
+        QFont scaleFont;
+        int start;
+        int end;
+        int baseLineOffset;
+        double tickOffset;
+        int dimWithoutTitle;
+    } scale[QwtPlot::axisCnt];
 
-	struct t_canvasData
-	{
-		int contentsMargins[ QwtPlot::axisCnt ];
+    struct t_canvasData
+    {
+        int contentsMargins[ QwtPlot::axisCnt ];
 
-	} canvas;
+    } canvas;
 };
 
 /*
   Extract all layout relevant data from the plot components
 */
-void QwtPlotLayout::LayoutData::init(const QwtPlot *plot, const QRectF &rect)
+void QwtPlotLayout::LayoutData::init( const QwtPlot *plot, const QRectF &rect )
 {
-	// legend
+    // legend
 
-	if (plot->legend())
-	{
-		legend.frameWidth = plot->legend()->frameWidth();
-		legend.hScrollExtent =
-			plot->legend()->scrollExtent(Qt::Horizontal);
-		legend.vScrollExtent =
-			plot->legend()->scrollExtent(Qt::Vertical);
+    if ( plot->legend() )
+    {
+        legend.frameWidth = plot->legend()->frameWidth();
+        legend.hScrollExtent =
+            plot->legend()->scrollExtent( Qt::Horizontal );
+        legend.vScrollExtent =
+            plot->legend()->scrollExtent( Qt::Vertical );
 
-		const QSize hint = plot->legend()->sizeHint();
+        const QSize hint = plot->legend()->sizeHint();
 
-		int w = qMin(hint.width(), qFloor(rect.width()));
-		int h = plot->legend()->heightForWidth(w);
+        int w = qMin( hint.width(), qFloor( rect.width() ) );
+        int h = plot->legend()->heightForWidth( w );
+        if ( h <= 0 )
+            h = hint.height();
 
-		if (h <= 0)
-		{
-			h = hint.height();
-		}
+        if ( h > rect.height() )
+            w += legend.hScrollExtent;
 
-		if (h > rect.height())
-		{
-			w += legend.hScrollExtent;
-		}
+        legend.hint = QSize( w, h );
+    }
 
-		legend.hint = QSize(w, h);
-	}
+    // title
 
-	// title
+    title.frameWidth = 0;
+    title.text = QwtText();
 
-	title.frameWidth = 0;
-	title.text = QwtText();
+    if ( plot->titleLabel() )
+    {
+        const QwtTextLabel *label = plot->titleLabel();
+        title.text = label->text();
+        if ( !( title.text.testPaintAttribute( QwtText::PaintUsingTextFont ) ) )
+            title.text.setFont( label->font() );
 
-	if (plot->titleLabel())
-	{
-		const QwtTextLabel *label = plot->titleLabel();
-		title.text = label->text();
+        title.frameWidth = plot->titleLabel()->frameWidth();
+    }
 
-		if (!(title.text.testPaintAttribute(QwtText::PaintUsingTextFont)))
-		{
-			title.text.setFont(label->font());
-		}
+    // footer
 
-		title.frameWidth = plot->titleLabel()->frameWidth();
-	}
+    footer.frameWidth = 0;
+    footer.text = QwtText();
 
-	// footer
+    if ( plot->footerLabel() )
+    {
+        const QwtTextLabel *label = plot->footerLabel();
+        footer.text = label->text();
+        if ( !( footer.text.testPaintAttribute( QwtText::PaintUsingTextFont ) ) )
+            footer.text.setFont( label->font() );
 
-	footer.frameWidth = 0;
-	footer.text = QwtText();
+        footer.frameWidth = plot->footerLabel()->frameWidth();
+    }
 
-	if (plot->footerLabel())
-	{
-		const QwtTextLabel *label = plot->footerLabel();
-		footer.text = label->text();
+    // scales
 
-		if (!(footer.text.testPaintAttribute(QwtText::PaintUsingTextFont)))
-		{
-			footer.text.setFont(label->font());
-		}
+    for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ )
+    {
+        if ( plot->axisEnabled( axis ) )
+        {
+            const QwtScaleWidget *scaleWidget = plot->axisWidget( axis );
 
-		footer.frameWidth = plot->footerLabel()->frameWidth();
-	}
+            scale[axis].isEnabled = true;
 
-	// scales
+            scale[axis].scaleWidget = scaleWidget;
 
-	for (int axis = 0; axis < QwtPlot::axisCnt; axis++)
-	{
-		if (plot->axisEnabled(axis))
-		{
-			const QwtScaleWidget *scaleWidget = plot->axisWidget(axis);
+            scale[axis].scaleFont = scaleWidget->font();
 
-			scale[axis].isEnabled = true;
+            scale[axis].start = scaleWidget->startBorderDist();
+            scale[axis].end = scaleWidget->endBorderDist();
 
-			scale[axis].scaleWidget = scaleWidget;
+            scale[axis].baseLineOffset = scaleWidget->margin();
+            scale[axis].tickOffset = scaleWidget->margin();
+            if ( scaleWidget->scaleDraw()->hasComponent(
+                QwtAbstractScaleDraw::Ticks ) )
+            {
+                scale[axis].tickOffset +=
+                    scaleWidget->scaleDraw()->maxTickLength();
+            }
 
-			scale[axis].scaleFont = scaleWidget->font();
+            scale[axis].dimWithoutTitle = scaleWidget->dimForLength(
+                QWIDGETSIZE_MAX, scale[axis].scaleFont );
 
-			scale[axis].start = scaleWidget->startBorderDist();
-			scale[axis].end = scaleWidget->endBorderDist();
+            if ( !scaleWidget->title().isEmpty() )
+            {
+                scale[axis].dimWithoutTitle -=
+                    scaleWidget->titleHeightForWidth( QWIDGETSIZE_MAX );
+            }
+        }
+        else
+        {
+            scale[axis].isEnabled = false;
+            scale[axis].start = 0;
+            scale[axis].end = 0;
+            scale[axis].baseLineOffset = 0;
+            scale[axis].tickOffset = 0.0;
+            scale[axis].dimWithoutTitle = 0;
+        }
+    }
 
-			scale[axis].baseLineOffset = scaleWidget->margin();
-			scale[axis].tickOffset = scaleWidget->margin();
+    // canvas
 
-			if (scaleWidget->scaleDraw()->hasComponent(
-						QwtAbstractScaleDraw::Ticks))
-			{
-				scale[axis].tickOffset +=
-					scaleWidget->scaleDraw()->maxTickLength();
-			}
-
-			scale[axis].dimWithoutTitle = scaleWidget->dimForLength(
-							      QWIDGETSIZE_MAX, scale[axis].scaleFont);
-
-			if (!scaleWidget->title().isEmpty())
-			{
-				scale[axis].dimWithoutTitle -=
-					scaleWidget->titleHeightForWidth(QWIDGETSIZE_MAX);
-			}
-		}
-
-		else
-		{
-			scale[axis].isEnabled = false;
-			scale[axis].start = 0;
-			scale[axis].end = 0;
-			scale[axis].baseLineOffset = 0;
-			scale[axis].tickOffset = 0.0;
-			scale[axis].dimWithoutTitle = 0;
-		}
-	}
-
-	// canvas
-
-	plot->canvas()->getContentsMargins(
-		&canvas.contentsMargins[ QwtPlot::yLeft ],
-		&canvas.contentsMargins[ QwtPlot::xTop ],
-		&canvas.contentsMargins[ QwtPlot::yRight ],
-		&canvas.contentsMargins[ QwtPlot::xBottom ]);
+    plot->canvas()->getContentsMargins( 
+        &canvas.contentsMargins[ QwtPlot::yLeft ], 
+        &canvas.contentsMargins[ QwtPlot::xTop ],
+        &canvas.contentsMargins[ QwtPlot::yRight ],
+        &canvas.contentsMargins[ QwtPlot::xBottom ] );
 }
 
 class QwtPlotLayout::PrivateData
 {
 public:
-	PrivateData():
-		spacing(5)
-	{
-	}
+    PrivateData():
+        spacing( 5 )
+    {
+    }
 
-	QRectF titleRect;
-	QRectF footerRect;
-	QRectF legendRect;
-	QRectF scaleRect[QwtPlot::axisCnt];
-	QRectF canvasRect;
+    QRectF titleRect;
+    QRectF footerRect;
+    QRectF legendRect;
+    QRectF scaleRect[QwtPlot::axisCnt];
+    QRectF canvasRect;
 
-	QwtPlotLayout::LayoutData layoutData;
+    QwtPlotLayout::LayoutData layoutData;
 
-	QwtPlot::LegendPosition legendPos;
-	double legendRatio;
-	unsigned int spacing;
-	unsigned int canvasMargin[QwtPlot::axisCnt];
-	bool alignCanvasToScales[QwtPlot::axisCnt];
+    QwtPlot::LegendPosition legendPos;
+    double legendRatio;
+    unsigned int spacing;
+    unsigned int canvasMargin[QwtPlot::axisCnt];
+    bool alignCanvasToScales[QwtPlot::axisCnt];
 };
 
 /*!
@@ -214,19 +201,19 @@ public:
 
 QwtPlotLayout::QwtPlotLayout()
 {
-	d_data = new PrivateData;
+    d_data = new PrivateData;
 
-	setLegendPosition(QwtPlot::BottomLegend);
-	setCanvasMargin(4);
-	setAlignCanvasToScales(false);
+    setLegendPosition( QwtPlot::BottomLegend );
+    setCanvasMargin( 4 );
+    setAlignCanvasToScales( false );
 
-	invalidate();
+    invalidate();
 }
 
 //! Destructor
 QwtPlotLayout::~QwtPlotLayout()
 {
-	delete d_data;
+    delete d_data;
 }
 
 /*!
@@ -242,25 +229,18 @@ QwtPlotLayout::~QwtPlotLayout()
   \warning The margin will have no effect when alignCanvasToScale() is true
 */
 
-void QwtPlotLayout::setCanvasMargin(int margin, int axis)
+void QwtPlotLayout::setCanvasMargin( int margin, int axis )
 {
-	if (margin < -1)
-	{
-		margin = -1;
-	}
+    if ( margin < -1 )
+        margin = -1;
 
-	if (axis == -1)
-	{
-		for (axis = 0; axis < QwtPlot::axisCnt; axis++)
-		{
-			d_data->canvasMargin[axis] = margin;
-		}
-	}
-
-	else if (axis >= 0 && axis < QwtPlot::axisCnt)
-	{
-		d_data->canvasMargin[axis] = margin;
-	}
+    if ( axis == -1 )
+    {
+        for ( axis = 0; axis < QwtPlot::axisCnt; axis++ )
+            d_data->canvasMargin[axis] = margin;
+    }
+    else if ( axis >= 0 && axis < QwtPlot::axisCnt )
+        d_data->canvasMargin[axis] = margin;
 }
 
 /*!
@@ -268,14 +248,12 @@ void QwtPlotLayout::setCanvasMargin(int margin, int axis)
     \return Margin around the scale tick borders
     \sa setCanvasMargin()
 */
-int QwtPlotLayout::canvasMargin(int axisId) const
+int QwtPlotLayout::canvasMargin( int axisId ) const
 {
-	if (axisId < 0 || axisId >= QwtPlot::axisCnt)
-	{
-		return 0;
-	}
+    if ( axisId < 0 || axisId >= QwtPlot::axisCnt )
+        return 0;
 
-	return d_data->canvasMargin[axisId];
+    return d_data->canvasMargin[axisId];
 }
 
 /*!
@@ -284,12 +262,10 @@ int QwtPlotLayout::canvasMargin(int axisId) const
   \param on True/False
   \sa setAlignCanvasToScale(), alignCanvasToScale()
 */
-void QwtPlotLayout::setAlignCanvasToScales(bool on)
+void QwtPlotLayout::setAlignCanvasToScales( bool on )
 {
-	for (int axis = 0; axis < QwtPlot::axisCnt; axis++)
-	{
-		d_data->alignCanvasToScales[axis] = on;
-	}
+    for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ )
+        d_data->alignCanvasToScales[axis] = on;
 }
 
 /*!
@@ -309,12 +285,10 @@ void QwtPlotLayout::setAlignCanvasToScales(bool on)
   \sa setCanvasMargin(), alignCanvasToScale(), setAlignCanvasToScales()
   \warning In case of on == true canvasMargin() will have no effect
 */
-void QwtPlotLayout::setAlignCanvasToScale(int axisId, bool on)
+void QwtPlotLayout::setAlignCanvasToScale( int axisId, bool on )
 {
-	if (axisId >= 0 && axisId < QwtPlot::axisCnt)
-	{
-		d_data->alignCanvasToScales[axisId] = on;
-	}
+    if ( axisId >= 0 && axisId < QwtPlot::axisCnt )
+        d_data->alignCanvasToScales[axisId] = on;
 }
 
 /*!
@@ -326,14 +300,12 @@ void QwtPlotLayout::setAlignCanvasToScale(int axisId, bool on)
   \return align-canvas-to-axis-scales setting
   \sa setAlignCanvasToScale(), setAlignCanvasToScale(), setCanvasMargin()
 */
-bool QwtPlotLayout::alignCanvasToScale(int axisId) const
+bool QwtPlotLayout::alignCanvasToScale( int axisId ) const
 {
-	if (axisId < 0 || axisId >= QwtPlot::axisCnt)
-	{
-		return false;
-	}
+    if ( axisId < 0 || axisId >= QwtPlot::axisCnt )
+        return false;
 
-	return d_data->alignCanvasToScales[ axisId ];
+    return d_data->alignCanvasToScales[ axisId ];
 }
 
 /*!
@@ -343,9 +315,9 @@ bool QwtPlotLayout::alignCanvasToScale(int axisId) const
   \param spacing New spacing
   \sa setCanvasMargin(), spacing()
 */
-void QwtPlotLayout::setSpacing(int spacing)
+void QwtPlotLayout::setSpacing( int spacing )
 {
-	d_data->spacing = qMax(0, spacing);
+    d_data->spacing = qMax( 0, spacing );
 }
 
 /*!
@@ -354,7 +326,7 @@ void QwtPlotLayout::setSpacing(int spacing)
 */
 int QwtPlotLayout::spacing() const
 {
-	return d_data->spacing;
+    return d_data->spacing;
 }
 
 /*!
@@ -370,40 +342,30 @@ int QwtPlotLayout::spacing() const
   \sa QwtPlot::setLegendPosition()
 */
 
-void QwtPlotLayout::setLegendPosition(QwtPlot::LegendPosition pos, double ratio)
+void QwtPlotLayout::setLegendPosition( QwtPlot::LegendPosition pos, double ratio )
 {
-	if (ratio > 1.0)
-	{
-		ratio = 1.0;
-	}
+    if ( ratio > 1.0 )
+        ratio = 1.0;
 
-	switch (pos)
-	{
-	case QwtPlot::TopLegend:
-	case QwtPlot::BottomLegend:
-		if (ratio <= 0.0)
-		{
-			ratio = 0.33;
-		}
-
-		d_data->legendRatio = ratio;
-		d_data->legendPos = pos;
-		break;
-
-	case QwtPlot::LeftLegend:
-	case QwtPlot::RightLegend:
-		if (ratio <= 0.0)
-		{
-			ratio = 0.5;
-		}
-
-		d_data->legendRatio = ratio;
-		d_data->legendPos = pos;
-		break;
-
-	default:
-		break;
-	}
+    switch ( pos )
+    {
+        case QwtPlot::TopLegend:
+        case QwtPlot::BottomLegend:
+            if ( ratio <= 0.0 )
+                ratio = 0.33;
+            d_data->legendRatio = ratio;
+            d_data->legendPos = pos;
+            break;
+        case QwtPlot::LeftLegend:
+        case QwtPlot::RightLegend:
+            if ( ratio <= 0.0 )
+                ratio = 0.5;
+            d_data->legendRatio = ratio;
+            d_data->legendPos = pos;
+            break;
+        default:
+            break;
+    }
 }
 
 /*!
@@ -414,9 +376,9 @@ void QwtPlotLayout::setLegendPosition(QwtPlot::LegendPosition pos, double ratio)
 
   \sa QwtPlot::setLegendPosition()
 */
-void QwtPlotLayout::setLegendPosition(QwtPlot::LegendPosition pos)
+void QwtPlotLayout::setLegendPosition( QwtPlot::LegendPosition pos )
 {
-	setLegendPosition(pos, 0.0);
+    setLegendPosition( pos, 0.0 );
 }
 
 /*!
@@ -426,7 +388,7 @@ void QwtPlotLayout::setLegendPosition(QwtPlot::LegendPosition pos)
 */
 QwtPlot::LegendPosition QwtPlotLayout::legendPosition() const
 {
-	return d_data->legendPos;
+    return d_data->legendPos;
 }
 
 /*!
@@ -438,9 +400,9 @@ QwtPlot::LegendPosition QwtPlotLayout::legendPosition() const
                it will be reset to the default ratio.
                The default vertical/horizontal ratio is 0.33/0.5.
 */
-void QwtPlotLayout::setLegendRatio(double ratio)
+void QwtPlotLayout::setLegendRatio( double ratio )
 {
-	setLegendPosition(legendPosition(), ratio);
+    setLegendPosition( legendPosition(), ratio );
 }
 
 /*!
@@ -449,7 +411,7 @@ void QwtPlotLayout::setLegendRatio(double ratio)
 */
 double QwtPlotLayout::legendRatio() const
 {
-	return d_data->legendRatio;
+    return d_data->legendRatio;
 }
 
 /*!
@@ -460,9 +422,9 @@ double QwtPlotLayout::legendRatio() const
 
   \sa titleRect(), activate()
  */
-void QwtPlotLayout::setTitleRect(const QRectF &rect)
+void QwtPlotLayout::setTitleRect( const QRectF &rect )
 {
-	d_data->titleRect = rect;
+    d_data->titleRect = rect;
 }
 
 /*!
@@ -471,7 +433,7 @@ void QwtPlotLayout::setTitleRect(const QRectF &rect)
 */
 QRectF QwtPlotLayout::titleRect() const
 {
-	return d_data->titleRect;
+    return d_data->titleRect;
 }
 
 /*!
@@ -482,9 +444,9 @@ QRectF QwtPlotLayout::titleRect() const
 
   \sa footerRect(), activate()
  */
-void QwtPlotLayout::setFooterRect(const QRectF &rect)
+void QwtPlotLayout::setFooterRect( const QRectF &rect )
 {
-	d_data->footerRect = rect;
+    d_data->footerRect = rect;
 }
 
 /*!
@@ -493,7 +455,7 @@ void QwtPlotLayout::setFooterRect(const QRectF &rect)
 */
 QRectF QwtPlotLayout::footerRect() const
 {
-	return d_data->footerRect;
+    return d_data->footerRect;
 }
 
 /*!
@@ -506,9 +468,9 @@ QRectF QwtPlotLayout::footerRect() const
 
   \sa legendRect(), activate()
  */
-void QwtPlotLayout::setLegendRect(const QRectF &rect)
+void QwtPlotLayout::setLegendRect( const QRectF &rect )
 {
-	d_data->legendRect = rect;
+    d_data->legendRect = rect;
 }
 
 /*!
@@ -517,7 +479,7 @@ void QwtPlotLayout::setLegendRect(const QRectF &rect)
 */
 QRectF QwtPlotLayout::legendRect() const
 {
-	return d_data->legendRect;
+    return d_data->legendRect;
 }
 
 /*!
@@ -531,12 +493,10 @@ QRectF QwtPlotLayout::legendRect() const
 
   \sa scaleRect(), activate()
  */
-void QwtPlotLayout::setScaleRect(int axis, const QRectF &rect)
+void QwtPlotLayout::setScaleRect( int axis, const QRectF &rect )
 {
-	if (axis >= 0 && axis < QwtPlot::axisCnt)
-	{
-		d_data->scaleRect[axis] = rect;
-	}
+    if ( axis >= 0 && axis < QwtPlot::axisCnt )
+        d_data->scaleRect[axis] = rect;
 }
 
 /*!
@@ -544,15 +504,14 @@ void QwtPlotLayout::setScaleRect(int axis, const QRectF &rect)
   \return Geometry for the scale
   \sa activate(), invalidate()
 */
-QRectF QwtPlotLayout::scaleRect(int axis) const
+QRectF QwtPlotLayout::scaleRect( int axis ) const
 {
-	if (axis < 0 || axis >= QwtPlot::axisCnt)
-	{
-		static QRectF dummyRect;
-		return dummyRect;
-	}
-
-	return d_data->scaleRect[axis];
+    if ( axis < 0 || axis >= QwtPlot::axisCnt )
+    {
+        static QRectF dummyRect;
+        return dummyRect;
+    }
+    return d_data->scaleRect[axis];
 }
 
 /*!
@@ -563,9 +522,9 @@ QRectF QwtPlotLayout::scaleRect(int axis) const
 
   \sa canvasRect(), activate()
  */
-void QwtPlotLayout::setCanvasRect(const QRectF &rect)
+void QwtPlotLayout::setCanvasRect( const QRectF &rect )
 {
-	d_data->canvasRect = rect;
+    d_data->canvasRect = rect;
 }
 
 /*!
@@ -574,7 +533,7 @@ void QwtPlotLayout::setCanvasRect(const QRectF &rect)
 */
 QRectF QwtPlotLayout::canvasRect() const
 {
-	return d_data->canvasRect;
+    return d_data->canvasRect;
 }
 
 /*!
@@ -583,13 +542,11 @@ QRectF QwtPlotLayout::canvasRect() const
 */
 void QwtPlotLayout::invalidate()
 {
-	d_data->titleRect = d_data->footerRect
-			    = d_data->legendRect = d_data->canvasRect = QRect();
+    d_data->titleRect = d_data->footerRect
+        = d_data->legendRect = d_data->canvasRect = QRect();
 
-	for (int axis = 0; axis < QwtPlot::axisCnt; axis++)
-	{
-		d_data->scaleRect[axis] = QRect();
-	}
+    for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ )
+        d_data->scaleRect[axis] = QRect();
 }
 
 /*!
@@ -599,225 +556,189 @@ void QwtPlotLayout::invalidate()
   \sa QwtPlot::minimumSizeHint()
 */
 
-QSize QwtPlotLayout::minimumSizeHint(const QwtPlot *plot) const
+QSize QwtPlotLayout::minimumSizeHint( const QwtPlot *plot ) const
 {
-	class ScaleData
-	{
-	public:
-		ScaleData()
-		{
-			w = h = minLeft = minRight = tickOffset = 0;
-		}
+    class ScaleData
+    {
+    public:
+        ScaleData()
+        {
+            w = h = minLeft = minRight = tickOffset = 0;
+        }
 
-		int w;
-		int h;
-		int minLeft;
-		int minRight;
-		int tickOffset;
-	} scaleData[QwtPlot::axisCnt];
+        int w;
+        int h;
+        int minLeft;
+        int minRight;
+        int tickOffset;
+    } scaleData[QwtPlot::axisCnt];
 
-	int canvasBorder[QwtPlot::axisCnt];
+    int canvasBorder[QwtPlot::axisCnt];
 
-	int fw;
-	plot->canvas()->getContentsMargins(&fw, NULL, NULL, NULL);
+    int fw;
+    plot->canvas()->getContentsMargins( &fw, NULL, NULL, NULL );
 
-	int axis;
+    int axis;
+    for ( axis = 0; axis < QwtPlot::axisCnt; axis++ )
+    {
+        if ( plot->axisEnabled( axis ) )
+        {
+            const QwtScaleWidget *scl = plot->axisWidget( axis );
+            ScaleData &sd = scaleData[axis];
 
-	for (axis = 0; axis < QwtPlot::axisCnt; axis++)
-	{
-		if (plot->axisEnabled(axis))
-		{
-			const QwtScaleWidget *scl = plot->axisWidget(axis);
-			ScaleData &sd = scaleData[axis];
+            const QSize hint = scl->minimumSizeHint();
+            sd.w = hint.width();
+            sd.h = hint.height();
+            scl->getBorderDistHint( sd.minLeft, sd.minRight );
+            sd.tickOffset = scl->margin();
+            if ( scl->scaleDraw()->hasComponent( QwtAbstractScaleDraw::Ticks ) )
+                sd.tickOffset += qCeil( scl->scaleDraw()->maxTickLength() );
+        }
 
-			const QSize hint = scl->minimumSizeHint();
-			sd.w = hint.width();
-			sd.h = hint.height();
-			scl->getBorderDistHint(sd.minLeft, sd.minRight);
-			sd.tickOffset = scl->margin();
-
-			if (scl->scaleDraw()->hasComponent(QwtAbstractScaleDraw::Ticks))
-			{
-				sd.tickOffset += qCeil(scl->scaleDraw()->maxTickLength());
-			}
-		}
-
-		canvasBorder[axis] = fw + d_data->canvasMargin[axis] + 1;
-	}
+        canvasBorder[axis] = fw + d_data->canvasMargin[axis] + 1;
+    }
 
 
-	for (axis = 0; axis < QwtPlot::axisCnt; axis++)
-	{
-		ScaleData &sd = scaleData[axis];
+    for ( axis = 0; axis < QwtPlot::axisCnt; axis++ )
+    {
+        ScaleData &sd = scaleData[axis];
+        if ( sd.w && ( axis == QwtPlot::xBottom || axis == QwtPlot::xTop ) )
+        {
+            if ( ( sd.minLeft > canvasBorder[QwtPlot::yLeft] )
+                && scaleData[QwtPlot::yLeft].w )
+            {
+                int shiftLeft = sd.minLeft - canvasBorder[QwtPlot::yLeft];
+                if ( shiftLeft > scaleData[QwtPlot::yLeft].w )
+                    shiftLeft = scaleData[QwtPlot::yLeft].w;
 
-		if (sd.w && (axis == QwtPlot::xBottom || axis == QwtPlot::xTop))
-		{
-			if ((sd.minLeft > canvasBorder[QwtPlot::yLeft])
-					&& scaleData[QwtPlot::yLeft].w)
-			{
-				int shiftLeft = sd.minLeft - canvasBorder[QwtPlot::yLeft];
+                sd.w -= shiftLeft;
+            }
+            if ( ( sd.minRight > canvasBorder[QwtPlot::yRight] )
+                && scaleData[QwtPlot::yRight].w )
+            {
+                int shiftRight = sd.minRight - canvasBorder[QwtPlot::yRight];
+                if ( shiftRight > scaleData[QwtPlot::yRight].w )
+                    shiftRight = scaleData[QwtPlot::yRight].w;
 
-				if (shiftLeft > scaleData[QwtPlot::yLeft].w)
-				{
-					shiftLeft = scaleData[QwtPlot::yLeft].w;
-				}
+                sd.w -= shiftRight;
+            }
+        }
 
-				sd.w -= shiftLeft;
-			}
+        if ( sd.h && ( axis == QwtPlot::yLeft || axis == QwtPlot::yRight ) )
+        {
+            if ( ( sd.minLeft > canvasBorder[QwtPlot::xBottom] ) &&
+                scaleData[QwtPlot::xBottom].h )
+            {
+                int shiftBottom = sd.minLeft - canvasBorder[QwtPlot::xBottom];
+                if ( shiftBottom > scaleData[QwtPlot::xBottom].tickOffset )
+                    shiftBottom = scaleData[QwtPlot::xBottom].tickOffset;
 
-			if ((sd.minRight > canvasBorder[QwtPlot::yRight])
-					&& scaleData[QwtPlot::yRight].w)
-			{
-				int shiftRight = sd.minRight - canvasBorder[QwtPlot::yRight];
+                sd.h -= shiftBottom;
+            }
+            if ( ( sd.minLeft > canvasBorder[QwtPlot::xTop] ) &&
+                scaleData[QwtPlot::xTop].h )
+            {
+                int shiftTop = sd.minRight - canvasBorder[QwtPlot::xTop];
+                if ( shiftTop > scaleData[QwtPlot::xTop].tickOffset )
+                    shiftTop = scaleData[QwtPlot::xTop].tickOffset;
 
-				if (shiftRight > scaleData[QwtPlot::yRight].w)
-				{
-					shiftRight = scaleData[QwtPlot::yRight].w;
-				}
+                sd.h -= shiftTop;
+            }
+        }
+    }
 
-				sd.w -= shiftRight;
-			}
-		}
+    const QWidget *canvas = plot->canvas();
 
-		if (sd.h && (axis == QwtPlot::yLeft || axis == QwtPlot::yRight))
-		{
-			if ((sd.minLeft > canvasBorder[QwtPlot::xBottom]) &&
-					scaleData[QwtPlot::xBottom].h)
-			{
-				int shiftBottom = sd.minLeft - canvasBorder[QwtPlot::xBottom];
+    int left, top, right, bottom;
+    canvas->getContentsMargins( &left, &top, &right, &bottom );
 
-				if (shiftBottom > scaleData[QwtPlot::xBottom].tickOffset)
-				{
-					shiftBottom = scaleData[QwtPlot::xBottom].tickOffset;
-				}
+    const QSize minCanvasSize = canvas->minimumSize();
 
-				sd.h -= shiftBottom;
-			}
+    int w = scaleData[QwtPlot::yLeft].w + scaleData[QwtPlot::yRight].w;
+    int cw = qMax( scaleData[QwtPlot::xBottom].w, scaleData[QwtPlot::xTop].w )
+        + left + 1 + right + 1;
+    w += qMax( cw, minCanvasSize.width() );
 
-			if ((sd.minLeft > canvasBorder[QwtPlot::xTop]) &&
-					scaleData[QwtPlot::xTop].h)
-			{
-				int shiftTop = sd.minRight - canvasBorder[QwtPlot::xTop];
+    int h = scaleData[QwtPlot::xBottom].h + scaleData[QwtPlot::xTop].h;
+    int ch = qMax( scaleData[QwtPlot::yLeft].h, scaleData[QwtPlot::yRight].h )
+        + top + 1 + bottom + 1;
+    h += qMax( ch, minCanvasSize.height() );
 
-				if (shiftTop > scaleData[QwtPlot::xTop].tickOffset)
-				{
-					shiftTop = scaleData[QwtPlot::xTop].tickOffset;
-				}
+    const QwtTextLabel *labels[2];
+    labels[0] = plot->titleLabel();
+    labels[1] = plot->footerLabel();
 
-				sd.h -= shiftTop;
-			}
-		}
-	}
+    for ( int i = 0; i < 2; i++ )
+    {
+        const QwtTextLabel *label   = labels[i];
+        if ( label && !label->text().isEmpty() )
+        {
+            // If only QwtPlot::yLeft or QwtPlot::yRight is showing,
+            // we center on the plot canvas.
+            const bool centerOnCanvas = !( plot->axisEnabled( QwtPlot::yLeft )
+                && plot->axisEnabled( QwtPlot::yRight ) );
 
-	const QWidget *canvas = plot->canvas();
+            int labelW = w;
+            if ( centerOnCanvas )
+            {
+                labelW -= scaleData[QwtPlot::yLeft].w
+                    + scaleData[QwtPlot::yRight].w;
+            }
 
-	int left, top, right, bottom;
-	canvas->getContentsMargins(&left, &top, &right, &bottom);
+            int labelH = label->heightForWidth( labelW );
+            if ( labelH > labelW ) // Compensate for a long title
+            {
+                w = labelW = labelH;
+                if ( centerOnCanvas )
+                {
+                    w += scaleData[QwtPlot::yLeft].w
+                        + scaleData[QwtPlot::yRight].w;
+                }
 
-	const QSize minCanvasSize = canvas->minimumSize();
+                labelH = label->heightForWidth( labelW );
+            }
+            h += labelH + d_data->spacing;
+        }
+    }
 
-	int w = scaleData[QwtPlot::yLeft].w + scaleData[QwtPlot::yRight].w;
-	int cw = qMax(scaleData[QwtPlot::xBottom].w, scaleData[QwtPlot::xTop].w)
-		 + left + 1 + right + 1;
-	w += qMax(cw, minCanvasSize.width());
+    // Compute the legend contribution
 
-	int h = scaleData[QwtPlot::xBottom].h + scaleData[QwtPlot::xTop].h;
-	int ch = qMax(scaleData[QwtPlot::yLeft].h, scaleData[QwtPlot::yRight].h)
-		 + top + 1 + bottom + 1;
-	h += qMax(ch, minCanvasSize.height());
+    const QwtAbstractLegend *legend = plot->legend();
+    if ( legend && !legend->isEmpty() )
+    {
+        if ( d_data->legendPos == QwtPlot::LeftLegend
+            || d_data->legendPos == QwtPlot::RightLegend )
+        {
+            int legendW = legend->sizeHint().width();
+            int legendH = legend->heightForWidth( legendW );
 
-	const QwtTextLabel *labels[2];
-	labels[0] = plot->titleLabel();
-	labels[1] = plot->footerLabel();
+            if ( legend->frameWidth() > 0 )
+                w += d_data->spacing;
 
-	for (int i = 0; i < 2; i++)
-	{
-		const QwtTextLabel *label   = labels[i];
+            if ( legendH > h )
+                legendW += legend->scrollExtent( Qt::Horizontal );
 
-		if (label && !label->text().isEmpty())
-		{
-			// If only QwtPlot::yLeft or QwtPlot::yRight is showing,
-			// we center on the plot canvas.
-			const bool centerOnCanvas = !(plot->axisEnabled(QwtPlot::yLeft)
-						      && plot->axisEnabled(QwtPlot::yRight));
+            if ( d_data->legendRatio < 1.0 )
+                legendW = qMin( legendW, int( w / ( 1.0 - d_data->legendRatio ) ) );
 
-			int labelW = w;
+            w += legendW + d_data->spacing;
+        }
+        else // QwtPlot::Top, QwtPlot::Bottom
+        {
+            int legendW = qMin( legend->sizeHint().width(), w );
+            int legendH = legend->heightForWidth( legendW );
 
-			if (centerOnCanvas)
-			{
-				labelW -= scaleData[QwtPlot::yLeft].w
-					  + scaleData[QwtPlot::yRight].w;
-			}
+            if ( legend->frameWidth() > 0 )
+                h += d_data->spacing;
 
-			int labelH = label->heightForWidth(labelW);
+            if ( d_data->legendRatio < 1.0 )
+                legendH = qMin( legendH, int( h / ( 1.0 - d_data->legendRatio ) ) );
 
-			if (labelH > labelW)   // Compensate for a long title
-			{
-				w = labelW = labelH;
+            h += legendH + d_data->spacing;
+        }
+    }
 
-				if (centerOnCanvas)
-				{
-					w += scaleData[QwtPlot::yLeft].w
-					     + scaleData[QwtPlot::yRight].w;
-				}
-
-				labelH = label->heightForWidth(labelW);
-			}
-
-			h += labelH + d_data->spacing;
-		}
-	}
-
-	// Compute the legend contribution
-
-	const QwtAbstractLegend *legend = plot->legend();
-
-	if (legend && !legend->isEmpty())
-	{
-		if (d_data->legendPos == QwtPlot::LeftLegend
-				|| d_data->legendPos == QwtPlot::RightLegend)
-		{
-			int legendW = legend->sizeHint().width();
-			int legendH = legend->heightForWidth(legendW);
-
-			if (legend->frameWidth() > 0)
-			{
-				w += d_data->spacing;
-			}
-
-			if (legendH > h)
-			{
-				legendW += legend->scrollExtent(Qt::Horizontal);
-			}
-
-			if (d_data->legendRatio < 1.0)
-			{
-				legendW = qMin(legendW, int(w / (1.0 - d_data->legendRatio)));
-			}
-
-			w += legendW + d_data->spacing;
-		}
-
-		else // QwtPlot::Top, QwtPlot::Bottom
-		{
-			int legendW = qMin(legend->sizeHint().width(), w);
-			int legendH = legend->heightForWidth(legendW);
-
-			if (legend->frameWidth() > 0)
-			{
-				h += d_data->spacing;
-			}
-
-			if (d_data->legendRatio < 1.0)
-			{
-				legendH = qMin(legendH, int(h / (1.0 - d_data->legendRatio)));
-			}
-
-			h += legendH + d_data->spacing;
-		}
-	}
-
-	return QSize(w, h);
+    return QSize( w, h );
 }
 
 /*!
@@ -830,63 +751,57 @@ QSize QwtPlotLayout::minimumSizeHint(const QwtPlot *plot) const
   \sa Options
 */
 
-QRectF QwtPlotLayout::layoutLegend(Options options,
-				   const QRectF &rect) const
+QRectF QwtPlotLayout::layoutLegend( Options options,
+    const QRectF &rect ) const
 {
-	const QSize hint(d_data->layoutData.legend.hint);
+    const QSize hint( d_data->layoutData.legend.hint );
 
-	int dim;
+    int dim;
+    if ( d_data->legendPos == QwtPlot::LeftLegend
+        || d_data->legendPos == QwtPlot::RightLegend )
+    {
+        // We don't allow vertical legends to take more than
+        // half of the available space.
 
-	if (d_data->legendPos == QwtPlot::LeftLegend
-			|| d_data->legendPos == QwtPlot::RightLegend)
-	{
-		// We don't allow vertical legends to take more than
-		// half of the available space.
+        dim = qMin( hint.width(), int( rect.width() * d_data->legendRatio ) );
 
-		dim = qMin(hint.width(), int(rect.width() * d_data->legendRatio));
+        if ( !( options & IgnoreScrollbars ) )
+        {
+            if ( hint.height() > rect.height() )
+            {
+                // The legend will need additional
+                // space for the vertical scrollbar.
 
-		if (!(options & IgnoreScrollbars))
-		{
-			if (hint.height() > rect.height())
-			{
-				// The legend will need additional
-				// space for the vertical scrollbar.
+                dim += d_data->layoutData.legend.hScrollExtent;
+            }
+        }
+    }
+    else
+    {
+        dim = qMin( hint.height(), int( rect.height() * d_data->legendRatio ) );
+        dim = qMax( dim, d_data->layoutData.legend.vScrollExtent );
+    }
 
-				dim += d_data->layoutData.legend.hScrollExtent;
-			}
-		}
-	}
+    QRectF legendRect = rect;
+    switch ( d_data->legendPos )
+    {
+        case QwtPlot::LeftLegend:
+            legendRect.setWidth( dim );
+            break;
+        case QwtPlot::RightLegend:
+            legendRect.setX( rect.right() - dim );
+            legendRect.setWidth( dim );
+            break;
+        case QwtPlot::TopLegend:
+            legendRect.setHeight( dim );
+            break;
+        case QwtPlot::BottomLegend:
+            legendRect.setY( rect.bottom() - dim );
+            legendRect.setHeight( dim );
+            break;
+    }
 
-	else
-	{
-		dim = qMin(hint.height(), int(rect.height() * d_data->legendRatio));
-		dim = qMax(dim, d_data->layoutData.legend.vScrollExtent);
-	}
-
-	QRectF legendRect = rect;
-
-	switch (d_data->legendPos)
-	{
-	case QwtPlot::LeftLegend:
-		legendRect.setWidth(dim);
-		break;
-
-	case QwtPlot::RightLegend:
-		legendRect.setX(rect.right() - dim);
-		legendRect.setWidth(dim);
-		break;
-
-	case QwtPlot::TopLegend:
-		legendRect.setHeight(dim);
-		break;
-
-	case QwtPlot::BottomLegend:
-		legendRect.setY(rect.bottom() - dim);
-		legendRect.setHeight(dim);
-		break;
-	}
-
-	return legendRect;
+    return legendRect;
 }
 
 /*!
@@ -897,31 +812,30 @@ QRectF QwtPlotLayout::layoutLegend(Options options,
 
   \return Geometry for the aligned legend
 */
-QRectF QwtPlotLayout::alignLegend(const QRectF &canvasRect,
-				  const QRectF &legendRect) const
+QRectF QwtPlotLayout::alignLegend( const QRectF &canvasRect,
+    const QRectF &legendRect ) const
 {
-	QRectF alignedRect = legendRect;
+    QRectF alignedRect = legendRect;
 
-	if (d_data->legendPos == QwtPlot::BottomLegend
-			|| d_data->legendPos == QwtPlot::TopLegend)
-	{
-		if (d_data->layoutData.legend.hint.width() < canvasRect.width())
-		{
-			alignedRect.setX(canvasRect.x());
-			alignedRect.setWidth(canvasRect.width());
-		}
-	}
+    if ( d_data->legendPos == QwtPlot::BottomLegend
+        || d_data->legendPos == QwtPlot::TopLegend )
+    {
+        if ( d_data->layoutData.legend.hint.width() < canvasRect.width() )
+        {
+            alignedRect.setX( canvasRect.x() );
+            alignedRect.setWidth( canvasRect.width() );
+        }
+    }
+    else
+    {
+        if ( d_data->layoutData.legend.hint.height() < canvasRect.height() )
+        {
+            alignedRect.setY( canvasRect.y() );
+            alignedRect.setHeight( canvasRect.height() );
+        }
+    }
 
-	else
-	{
-		if (d_data->layoutData.legend.hint.height() < canvasRect.height())
-		{
-			alignedRect.setY(canvasRect.y());
-			alignedRect.setHeight(canvasRect.height());
-		}
-	}
-
-	return alignedRect;
+    return alignedRect;
 }
 
 /*!
@@ -936,178 +850,149 @@ QRectF QwtPlotLayout::alignLegend(const QRectF &canvasRect,
 
   \sa Options
 */
-void QwtPlotLayout::expandLineBreaks(Options options, const QRectF &rect,
-				     int &dimTitle, int &dimFooter, int dimAxis[QwtPlot::axisCnt]) const
+void QwtPlotLayout::expandLineBreaks( Options options, const QRectF &rect,
+    int &dimTitle, int &dimFooter, int dimAxis[QwtPlot::axisCnt] ) const
 {
-	dimTitle = dimFooter = 0;
+    dimTitle = dimFooter = 0;
+    for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ )
+        dimAxis[axis] = 0;
 
-	for (int axis = 0; axis < QwtPlot::axisCnt; axis++)
-	{
-		dimAxis[axis] = 0;
-	}
+    int backboneOffset[QwtPlot::axisCnt];
+    for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ )
+    {
+        backboneOffset[axis] = 0;
+        if ( !( options & IgnoreFrames ) )
+            backboneOffset[axis] += d_data->layoutData.canvas.contentsMargins[ axis ];
 
-	int backboneOffset[QwtPlot::axisCnt];
+        if ( !d_data->alignCanvasToScales[axis] )
+            backboneOffset[axis] += d_data->canvasMargin[axis];
+    }
 
-	for (int axis = 0; axis < QwtPlot::axisCnt; axis++)
-	{
-		backboneOffset[axis] = 0;
+    bool done = false;
+    while ( !done )
+    {
+        done = true;
 
-		if (!(options & IgnoreFrames))
-		{
-			backboneOffset[axis] += d_data->layoutData.canvas.contentsMargins[ axis ];
-		}
+        // the size for the 4 axis depend on each other. Expanding
+        // the height of a horizontal axis will shrink the height
+        // for the vertical axis, shrinking the height of a vertical
+        // axis will result in a line break what will expand the
+        // width and results in shrinking the width of a horizontal
+        // axis what might result in a line break of a horizontal
+        // axis ... . So we loop as long until no size changes.
 
-		if (!d_data->alignCanvasToScales[axis])
-		{
-			backboneOffset[axis] += d_data->canvasMargin[axis];
-		}
-	}
+        if ( !( ( options & IgnoreTitle ) ||
+            d_data->layoutData.title.text.isEmpty() ) )
+        {
+            double w = rect.width();
 
-	bool done = false;
+            if ( d_data->layoutData.scale[QwtPlot::yLeft].isEnabled
+                != d_data->layoutData.scale[QwtPlot::yRight].isEnabled )
+            {
+                // center to the canvas
+                w -= dimAxis[QwtPlot::yLeft] + dimAxis[QwtPlot::yRight];
+            }
 
-	while (!done)
-	{
-		done = true;
+            int d = qCeil( d_data->layoutData.title.text.heightForWidth( w ) );
+            if ( !( options & IgnoreFrames ) )
+                d += 2 * d_data->layoutData.title.frameWidth;
 
-		// the size for the 4 axis depend on each other. Expanding
-		// the height of a horizontal axis will shrink the height
-		// for the vertical axis, shrinking the height of a vertical
-		// axis will result in a line break what will expand the
-		// width and results in shrinking the width of a horizontal
-		// axis what might result in a line break of a horizontal
-		// axis ... . So we loop as long until no size changes.
+            if ( d > dimTitle )
+            {
+                dimTitle = d;
+                done = false;
+            }
+        }
 
-		if (!((options & IgnoreTitle) ||
-				d_data->layoutData.title.text.isEmpty()))
-		{
-			double w = rect.width();
+        if ( !( ( options & IgnoreFooter ) ||
+            d_data->layoutData.footer.text.isEmpty() ) )
+        {
+            double w = rect.width();
 
-			if (d_data->layoutData.scale[QwtPlot::yLeft].isEnabled
-					!= d_data->layoutData.scale[QwtPlot::yRight].isEnabled)
-			{
-				// center to the canvas
-				w -= dimAxis[QwtPlot::yLeft] + dimAxis[QwtPlot::yRight];
-			}
+            if ( d_data->layoutData.scale[QwtPlot::yLeft].isEnabled
+                != d_data->layoutData.scale[QwtPlot::yRight].isEnabled )
+            {
+                // center to the canvas
+                w -= dimAxis[QwtPlot::yLeft] + dimAxis[QwtPlot::yRight];
+            }
 
-			int d = qCeil(d_data->layoutData.title.text.heightForWidth(w));
+            int d = qCeil( d_data->layoutData.footer.text.heightForWidth( w ) );
+            if ( !( options & IgnoreFrames ) )
+                d += 2 * d_data->layoutData.footer.frameWidth;
 
-			if (!(options & IgnoreFrames))
-			{
-				d += 2 * d_data->layoutData.title.frameWidth;
-			}
+            if ( d > dimFooter )
+            {
+                dimFooter = d;
+                done = false;
+            }
+        }
 
-			if (d > dimTitle)
-			{
-				dimTitle = d;
-				done = false;
-			}
-		}
+        for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ )
+        {
+            const struct LayoutData::t_scaleData &scaleData =
+                d_data->layoutData.scale[axis];
 
-		if (!((options & IgnoreFooter) ||
-				d_data->layoutData.footer.text.isEmpty()))
-		{
-			double w = rect.width();
+            if ( scaleData.isEnabled )
+            {
+                double length;
+                if ( axis == QwtPlot::xTop || axis == QwtPlot::xBottom )
+                {
+                    length = rect.width() - dimAxis[QwtPlot::yLeft]
+                        - dimAxis[QwtPlot::yRight];
+                    length -= scaleData.start + scaleData.end;
 
-			if (d_data->layoutData.scale[QwtPlot::yLeft].isEnabled
-					!= d_data->layoutData.scale[QwtPlot::yRight].isEnabled)
-			{
-				// center to the canvas
-				w -= dimAxis[QwtPlot::yLeft] + dimAxis[QwtPlot::yRight];
-			}
+                    if ( dimAxis[QwtPlot::yRight] > 0 )
+                        length -= 1;
 
-			int d = qCeil(d_data->layoutData.footer.text.heightForWidth(w));
+                    length += qMin( dimAxis[QwtPlot::yLeft],
+                        scaleData.start - backboneOffset[QwtPlot::yLeft] );
+                    length += qMin( dimAxis[QwtPlot::yRight],
+                        scaleData.end - backboneOffset[QwtPlot::yRight] );
+                }
+                else // QwtPlot::yLeft, QwtPlot::yRight
+                {
+                    length = rect.height() - dimAxis[QwtPlot::xTop]
+                        - dimAxis[QwtPlot::xBottom];
+                    length -= scaleData.start + scaleData.end;
+                    length -= 1;
 
-			if (!(options & IgnoreFrames))
-			{
-				d += 2 * d_data->layoutData.footer.frameWidth;
-			}
+                    if ( dimAxis[QwtPlot::xBottom] <= 0 )
+                        length -= 1;
+                    if ( dimAxis[QwtPlot::xTop] <= 0 )
+                        length -= 1;
 
-			if (d > dimFooter)
-			{
-				dimFooter = d;
-				done = false;
-			}
-		}
+                    if ( dimAxis[QwtPlot::xBottom] > 0 )
+                    {
+                        length += qMin(
+                            d_data->layoutData.scale[QwtPlot::xBottom].tickOffset,
+                            double( scaleData.start - backboneOffset[QwtPlot::xBottom] ) );
+                    }
+                    if ( dimAxis[QwtPlot::xTop] > 0 )
+                    {
+                        length += qMin(
+                            d_data->layoutData.scale[QwtPlot::xTop].tickOffset,
+                            double( scaleData.end - backboneOffset[QwtPlot::xTop] ) );
+                    }
 
-		for (int axis = 0; axis < QwtPlot::axisCnt; axis++)
-		{
-			const struct LayoutData::t_scaleData &scaleData =
-					d_data->layoutData.scale[axis];
+                    if ( dimTitle > 0 )
+                        length -= dimTitle + d_data->spacing;
+                }
 
-			if (scaleData.isEnabled)
-			{
-				double length;
-
-				if (axis == QwtPlot::xTop || axis == QwtPlot::xBottom)
-				{
-					length = rect.width() - dimAxis[QwtPlot::yLeft]
-						 - dimAxis[QwtPlot::yRight];
-					length -= scaleData.start + scaleData.end;
-
-					if (dimAxis[QwtPlot::yRight] > 0)
-					{
-						length -= 1;
-					}
-
-					length += qMin(dimAxis[QwtPlot::yLeft],
-						       scaleData.start - backboneOffset[QwtPlot::yLeft]);
-					length += qMin(dimAxis[QwtPlot::yRight],
-						       scaleData.end - backboneOffset[QwtPlot::yRight]);
-				}
-
-				else // QwtPlot::yLeft, QwtPlot::yRight
-				{
-					length = rect.height() - dimAxis[QwtPlot::xTop]
-						 - dimAxis[QwtPlot::xBottom];
-					length -= scaleData.start + scaleData.end;
-					length -= 1;
-
-					if (dimAxis[QwtPlot::xBottom] <= 0)
-					{
-						length -= 1;
-					}
-
-					if (dimAxis[QwtPlot::xTop] <= 0)
-					{
-						length -= 1;
-					}
-
-					if (dimAxis[QwtPlot::xBottom] > 0)
-					{
-						length += qMin(
-								  d_data->layoutData.scale[QwtPlot::xBottom].tickOffset,
-								  double(scaleData.start - backboneOffset[QwtPlot::xBottom]));
-					}
-
-					if (dimAxis[QwtPlot::xTop] > 0)
-					{
-						length += qMin(
-								  d_data->layoutData.scale[QwtPlot::xTop].tickOffset,
-								  double(scaleData.end - backboneOffset[QwtPlot::xTop]));
-					}
-
-					if (dimTitle > 0)
-					{
-						length -= dimTitle + d_data->spacing;
-					}
-				}
-
-				int d = scaleData.dimWithoutTitle;
-
-				if (!scaleData.scaleWidget->title().isEmpty())
-				{
-					d += scaleData.scaleWidget->titleHeightForWidth(qFloor(length));
-				}
+                int d = scaleData.dimWithoutTitle;
+                if ( !scaleData.scaleWidget->title().isEmpty() )
+                {
+                    d += scaleData.scaleWidget->titleHeightForWidth( qFloor( length ) );
+                }
 
 
-				if (d > dimAxis[axis])
-				{
-					dimAxis[axis] = d;
-					done = false;
-				}
-			}
-		}
-	}
+                if ( d > dimAxis[axis] )
+                {
+                    dimAxis[axis] = d;
+                    done = false;
+                }
+            }
+        }
+    }
 }
 
 /*!
@@ -1121,311 +1006,257 @@ void QwtPlotLayout::expandLineBreaks(Options options, const QRectF &rect,
   \sa Options
 */
 
-void QwtPlotLayout::alignScales(Options options,
-				QRectF &canvasRect, QRectF scaleRect[QwtPlot::axisCnt]) const
+void QwtPlotLayout::alignScales( Options options,
+    QRectF &canvasRect, QRectF scaleRect[QwtPlot::axisCnt] ) const
 {
-	int backboneOffset[QwtPlot::axisCnt];
+    int backboneOffset[QwtPlot::axisCnt];
+    for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ )
+    {
+        backboneOffset[axis] = 0;
 
-	for (int axis = 0; axis < QwtPlot::axisCnt; axis++)
-	{
-		backboneOffset[axis] = 0;
+        if ( !d_data->alignCanvasToScales[axis] )
+        {
+            backboneOffset[axis] += d_data->canvasMargin[axis];
+        }
 
-		if (!d_data->alignCanvasToScales[axis])
-		{
-			backboneOffset[axis] += d_data->canvasMargin[axis];
-		}
+        if ( !( options & IgnoreFrames ) )
+        {
+            backboneOffset[axis] += 
+                d_data->layoutData.canvas.contentsMargins[axis];
+        }
+    }
 
-		if (!(options & IgnoreFrames))
-		{
-			backboneOffset[axis] +=
-				d_data->layoutData.canvas.contentsMargins[axis];
-		}
-	}
+    for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ )
+    {
+        if ( !scaleRect[axis].isValid() )
+            continue;
 
-	for (int axis = 0; axis < QwtPlot::axisCnt; axis++)
-	{
-		if (!scaleRect[axis].isValid())
-		{
-			continue;
-		}
+        const int startDist = d_data->layoutData.scale[axis].start;
+        const int endDist = d_data->layoutData.scale[axis].end;
 
-		const int startDist = d_data->layoutData.scale[axis].start;
-		const int endDist = d_data->layoutData.scale[axis].end;
+        QRectF &axisRect = scaleRect[axis];
 
-		QRectF &axisRect = scaleRect[axis];
+        if ( axis == QwtPlot::xTop || axis == QwtPlot::xBottom )
+        {
+            const QRectF &leftScaleRect = scaleRect[QwtPlot::yLeft];
+            const int leftOffset =
+                backboneOffset[QwtPlot::yLeft] - startDist;
 
-		if (axis == QwtPlot::xTop || axis == QwtPlot::xBottom)
-		{
-			const QRectF &leftScaleRect = scaleRect[QwtPlot::yLeft];
-			const int leftOffset =
-				backboneOffset[QwtPlot::yLeft] - startDist;
+            if ( leftScaleRect.isValid() )
+            {
+                const double dx = leftOffset + leftScaleRect.width();
+                if ( d_data->alignCanvasToScales[QwtPlot::yLeft] && dx < 0.0 )
+                {
+                    /*
+                      The axis needs more space than the width
+                      of the left scale.
+                     */
+                    const double cLeft = canvasRect.left(); // qreal -> double
+                    canvasRect.setLeft( qMax( cLeft, axisRect.left() - dx ) );
+                }
+                else
+                {
+                    const double minLeft = leftScaleRect.left();
+                    const double left = axisRect.left() + leftOffset;
+                    axisRect.setLeft( qMax( left, minLeft ) );
+                }
+            }
+            else
+            {
+                if ( d_data->alignCanvasToScales[QwtPlot::yLeft] && leftOffset < 0 )
+                {
+                    canvasRect.setLeft( qMax( canvasRect.left(),
+                        axisRect.left() - leftOffset ) );
+                }
+                else
+                {
+                    if ( leftOffset > 0 )
+                        axisRect.setLeft( axisRect.left() + leftOffset );
+                }
+            }
 
-			if (leftScaleRect.isValid())
-			{
-				const double dx = leftOffset + leftScaleRect.width();
+            const QRectF &rightScaleRect = scaleRect[QwtPlot::yRight];
+            const int rightOffset =
+                backboneOffset[QwtPlot::yRight] - endDist + 1;
 
-				if (d_data->alignCanvasToScales[QwtPlot::yLeft] && dx < 0.0)
-				{
-					/*
-					  The axis needs more space than the width
-					  of the left scale.
-					 */
-					const double cLeft = canvasRect.left(); // qreal -> double
-					canvasRect.setLeft(qMax(cLeft, axisRect.left() - dx));
-				}
+            if ( rightScaleRect.isValid() )
+            {
+                const double dx = rightOffset + rightScaleRect.width();
+                if ( d_data->alignCanvasToScales[QwtPlot::yRight] && dx < 0 )
+                {
+                    /*
+                      The axis needs more space than the width
+                      of the right scale.
+                     */
+                    const double cRight = canvasRect.right(); // qreal -> double
+                    canvasRect.setRight( qMin( cRight, axisRect.right() + dx ) );
+                }   
 
-				else
-				{
-					const double minLeft = leftScaleRect.left();
-					const double left = axisRect.left() + leftOffset;
-					axisRect.setLeft(qMax(left, minLeft));
-				}
-			}
+                const double maxRight = rightScaleRect.right();
+                const double right = axisRect.right() - rightOffset;
+                axisRect.setRight( qMin( right, maxRight ) );
+            }
+            else
+            {
+                if ( d_data->alignCanvasToScales[QwtPlot::yRight] && rightOffset < 0 )
+                {
+                    canvasRect.setRight( qMin( canvasRect.right(),
+                        axisRect.right() + rightOffset ) );
+                }
+                else
+                {
+                    if ( rightOffset > 0 )
+                        axisRect.setRight( axisRect.right() - rightOffset );
+                }
+            }
+        }
+        else // QwtPlot::yLeft, QwtPlot::yRight
+        {
+            const QRectF &bottomScaleRect = scaleRect[QwtPlot::xBottom];
+            const int bottomOffset =
+                backboneOffset[QwtPlot::xBottom] - endDist + 1;
 
-			else
-			{
-				if (d_data->alignCanvasToScales[QwtPlot::yLeft] && leftOffset < 0)
-				{
-					canvasRect.setLeft(qMax(canvasRect.left(),
-								axisRect.left() - leftOffset));
-				}
+            if ( bottomScaleRect.isValid() )
+            {
+                const double dy = bottomOffset + bottomScaleRect.height();
+                if ( d_data->alignCanvasToScales[QwtPlot::xBottom] && dy < 0 )
+                {
+                    /*
+                      The axis needs more space than the height
+                      of the bottom scale.
+                     */
+                    const double cBottom = canvasRect.bottom(); // qreal -> double
+                    canvasRect.setBottom( qMin( cBottom, axisRect.bottom() + dy ) );
+                }
+                else
+                {
+                    const double maxBottom = bottomScaleRect.top() +
+                        d_data->layoutData.scale[QwtPlot::xBottom].tickOffset;
+                    const double bottom = axisRect.bottom() - bottomOffset;
+                    axisRect.setBottom( qMin( bottom, maxBottom ) );
+                }
+            }
+            else
+            {
+                if ( d_data->alignCanvasToScales[QwtPlot::xBottom] && bottomOffset < 0 )
+                {
+                    canvasRect.setBottom( qMin( canvasRect.bottom(),
+                        axisRect.bottom() + bottomOffset ) );
+                }
+                else
+                {
+                    if ( bottomOffset > 0 )
+                        axisRect.setBottom( axisRect.bottom() - bottomOffset );
+                }
+            }
 
-				else
-				{
-					if (leftOffset > 0)
-					{
-						axisRect.setLeft(axisRect.left() + leftOffset);
-					}
-				}
-			}
+            const QRectF &topScaleRect = scaleRect[QwtPlot::xTop];
+            const int topOffset = backboneOffset[QwtPlot::xTop] - startDist;
 
-			const QRectF &rightScaleRect = scaleRect[QwtPlot::yRight];
-			const int rightOffset =
-				backboneOffset[QwtPlot::yRight] - endDist + 1;
+            if ( topScaleRect.isValid() )
+            {
+                const double dy = topOffset + topScaleRect.height();
+                if ( d_data->alignCanvasToScales[QwtPlot::xTop] && dy < 0 )
+                {
+                    /*
+                      The axis needs more space than the height
+                      of the top scale.
+                     */
+                    const double cTop = canvasRect.top(); // qreal -> double
+                    canvasRect.setTop( qMax( cTop, axisRect.top() - dy ) );
+                }
+                else
+                {
+                    const double minTop = topScaleRect.bottom() -
+                        d_data->layoutData.scale[QwtPlot::xTop].tickOffset;
+                    const double top = axisRect.top() + topOffset;
+                    axisRect.setTop( qMax( top, minTop ) );
+                }
+            }
+            else
+            {
+                if ( d_data->alignCanvasToScales[QwtPlot::xTop] && topOffset < 0 )
+                {
+                    canvasRect.setTop( qMax( canvasRect.top(),
+                        axisRect.top() - topOffset ) );
+                }
+                else
+                {
+                    if ( topOffset > 0 )
+                        axisRect.setTop( axisRect.top() + topOffset );
+                }
+            }
+        }
+    }
 
-			if (rightScaleRect.isValid())
-			{
-				const double dx = rightOffset + rightScaleRect.width();
-
-				if (d_data->alignCanvasToScales[QwtPlot::yRight] && dx < 0)
-				{
-					/*
-					  The axis needs more space than the width
-					  of the right scale.
-					 */
-					const double cRight = canvasRect.right(); // qreal -> double
-					canvasRect.setRight(qMin(cRight, axisRect.right() + dx));
-				}
-
-				const double maxRight = rightScaleRect.right();
-				const double right = axisRect.right() - rightOffset;
-				axisRect.setRight(qMin(right, maxRight));
-			}
-
-			else
-			{
-				if (d_data->alignCanvasToScales[QwtPlot::yRight] && rightOffset < 0)
-				{
-					canvasRect.setRight(qMin(canvasRect.right(),
-								 axisRect.right() + rightOffset));
-				}
-
-				else
-				{
-					if (rightOffset > 0)
-					{
-						axisRect.setRight(axisRect.right() - rightOffset);
-					}
-				}
-			}
-		}
-
-		else // QwtPlot::yLeft, QwtPlot::yRight
-		{
-			const QRectF &bottomScaleRect = scaleRect[QwtPlot::xBottom];
-			const int bottomOffset =
-				backboneOffset[QwtPlot::xBottom] - endDist + 1;
-
-			if (bottomScaleRect.isValid())
-			{
-				const double dy = bottomOffset + bottomScaleRect.height();
-
-				if (d_data->alignCanvasToScales[QwtPlot::xBottom] && dy < 0)
-				{
-					/*
-					  The axis needs more space than the height
-					  of the bottom scale.
-					 */
-					const double cBottom = canvasRect.bottom(); // qreal -> double
-					canvasRect.setBottom(qMin(cBottom, axisRect.bottom() + dy));
-				}
-
-				else
-				{
-					const double maxBottom = bottomScaleRect.top() +
-								 d_data->layoutData.scale[QwtPlot::xBottom].tickOffset;
-					const double bottom = axisRect.bottom() - bottomOffset;
-					axisRect.setBottom(qMin(bottom, maxBottom));
-				}
-			}
-
-			else
-			{
-				if (d_data->alignCanvasToScales[QwtPlot::xBottom] && bottomOffset < 0)
-				{
-					canvasRect.setBottom(qMin(canvasRect.bottom(),
-								  axisRect.bottom() + bottomOffset));
-				}
-
-				else
-				{
-					if (bottomOffset > 0)
-					{
-						axisRect.setBottom(axisRect.bottom() - bottomOffset);
-					}
-				}
-			}
-
-			const QRectF &topScaleRect = scaleRect[QwtPlot::xTop];
-			const int topOffset = backboneOffset[QwtPlot::xTop] - startDist;
-
-			if (topScaleRect.isValid())
-			{
-				const double dy = topOffset + topScaleRect.height();
-
-				if (d_data->alignCanvasToScales[QwtPlot::xTop] && dy < 0)
-				{
-					/*
-					  The axis needs more space than the height
-					  of the top scale.
-					 */
-					const double cTop = canvasRect.top(); // qreal -> double
-					canvasRect.setTop(qMax(cTop, axisRect.top() - dy));
-				}
-
-				else
-				{
-					const double minTop = topScaleRect.bottom() -
-							      d_data->layoutData.scale[QwtPlot::xTop].tickOffset;
-					const double top = axisRect.top() + topOffset;
-					axisRect.setTop(qMax(top, minTop));
-				}
-			}
-
-			else
-			{
-				if (d_data->alignCanvasToScales[QwtPlot::xTop] && topOffset < 0)
-				{
-					canvasRect.setTop(qMax(canvasRect.top(),
-							       axisRect.top() - topOffset));
-				}
-
-				else
-				{
-					if (topOffset > 0)
-					{
-						axisRect.setTop(axisRect.top() + topOffset);
-					}
-				}
-			}
-		}
-	}
-
-	/*
-	  The canvas has been aligned to the scale with largest
-	  border distances. Now we have to realign the other scale.
-	 */
+    /*
+      The canvas has been aligned to the scale with largest
+      border distances. Now we have to realign the other scale.
+     */
 
 
-	for (int axis = 0; axis < QwtPlot::axisCnt; axis++)
-	{
-		QRectF &sRect = scaleRect[axis];
+    for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ )
+    {
+        QRectF &sRect = scaleRect[axis];
 
-		if (!sRect.isValid())
-		{
-			continue;
-		}
+        if ( !sRect.isValid() )
+            continue;
 
-		if (axis == QwtPlot::xBottom || axis == QwtPlot::xTop)
-		{
-			if (d_data->alignCanvasToScales[QwtPlot::yLeft])
-			{
-				double y = canvasRect.left() - d_data->layoutData.scale[axis].start;
+        if ( axis == QwtPlot::xBottom || axis == QwtPlot::xTop )
+        {
+            if ( d_data->alignCanvasToScales[QwtPlot::yLeft] )
+            {
+                double y = canvasRect.left() - d_data->layoutData.scale[axis].start;
+                if ( !( options & IgnoreFrames ) )
+                    y += d_data->layoutData.canvas.contentsMargins[ QwtPlot::yLeft ];
 
-				if (!(options & IgnoreFrames))
-				{
-					y += d_data->layoutData.canvas.contentsMargins[ QwtPlot::yLeft ];
-				}
+                sRect.setLeft( y );
+            }
+            if ( d_data->alignCanvasToScales[QwtPlot::yRight] )
+            {
+                double y = canvasRect.right() - 1 + d_data->layoutData.scale[axis].end;
+                if ( !( options & IgnoreFrames ) )
+                    y -= d_data->layoutData.canvas.contentsMargins[ QwtPlot::yRight ];
 
-				sRect.setLeft(y);
-			}
+                sRect.setRight( y );
+            }
 
-			if (d_data->alignCanvasToScales[QwtPlot::yRight])
-			{
-				double y = canvasRect.right() - 1 + d_data->layoutData.scale[axis].end;
+            if ( d_data->alignCanvasToScales[ axis ] )
+            {
+                if ( axis == QwtPlot::xTop )
+                    sRect.setBottom( canvasRect.top() );
+                else
+                    sRect.setTop( canvasRect.bottom() );
+            }
+        }
+        else
+        {
+            if ( d_data->alignCanvasToScales[QwtPlot::xTop] )
+            {
+                double x = canvasRect.top() - d_data->layoutData.scale[axis].start;
+                if ( !( options & IgnoreFrames ) )
+                    x += d_data->layoutData.canvas.contentsMargins[ QwtPlot::xTop ];
 
-				if (!(options & IgnoreFrames))
-				{
-					y -= d_data->layoutData.canvas.contentsMargins[ QwtPlot::yRight ];
-				}
+                sRect.setTop( x );
+            }
+            if ( d_data->alignCanvasToScales[QwtPlot::xBottom] )
+            {
+                double x = canvasRect.bottom() - 1 + d_data->layoutData.scale[axis].end;
+                if ( !( options & IgnoreFrames ) )
+                    x -= d_data->layoutData.canvas.contentsMargins[ QwtPlot::xBottom ];
 
-				sRect.setRight(y);
-			}
+                sRect.setBottom( x );
+            }
 
-			if (d_data->alignCanvasToScales[ axis ])
-			{
-				if (axis == QwtPlot::xTop)
-				{
-					sRect.setBottom(canvasRect.top());
-				}
-
-				else
-				{
-					sRect.setTop(canvasRect.bottom());
-				}
-			}
-		}
-
-		else
-		{
-			if (d_data->alignCanvasToScales[QwtPlot::xTop])
-			{
-				double x = canvasRect.top() - d_data->layoutData.scale[axis].start;
-
-				if (!(options & IgnoreFrames))
-				{
-					x += d_data->layoutData.canvas.contentsMargins[ QwtPlot::xTop ];
-				}
-
-				sRect.setTop(x);
-			}
-
-			if (d_data->alignCanvasToScales[QwtPlot::xBottom])
-			{
-				double x = canvasRect.bottom() - 1 + d_data->layoutData.scale[axis].end;
-
-				if (!(options & IgnoreFrames))
-				{
-					x -= d_data->layoutData.canvas.contentsMargins[ QwtPlot::xBottom ];
-				}
-
-				sRect.setBottom(x);
-			}
-
-			if (d_data->alignCanvasToScales[ axis ])
-			{
-				if (axis == QwtPlot::yLeft)
-				{
-					sRect.setRight(canvasRect.left());
-				}
-
-				else
-				{
-					sRect.setLeft(canvasRect.right());
-				}
-			}
-		}
-	}
+            if ( d_data->alignCanvasToScales[ axis ] )
+            {
+                if ( axis == QwtPlot::yLeft )
+                    sRect.setRight( canvasRect.left() );
+                else
+                    sRect.setLeft( canvasRect.right() );
+            }
+        }
+    }
 }
 
 /*!
@@ -1438,184 +1269,176 @@ void QwtPlotLayout::alignScales(Options options,
   \sa invalidate(), titleRect(), footerRect()
       legendRect(), scaleRect(), canvasRect()
 */
-void QwtPlotLayout::activate(const QwtPlot *plot,
-			     const QRectF &plotRect, Options options)
+void QwtPlotLayout::activate( const QwtPlot *plot,
+    const QRectF &plotRect, Options options )
 {
-	invalidate();
+    invalidate();
 
-	QRectF rect(plotRect);    // undistributed rest of the plot rect
+    QRectF rect( plotRect );  // undistributed rest of the plot rect
 
-	// We extract all layout relevant parameters from the widgets,
-	// and save them to d_data->layoutData.
+    // We extract all layout relevant parameters from the widgets,
+    // and save them to d_data->layoutData.
 
-	d_data->layoutData.init(plot, rect);
+    d_data->layoutData.init( plot, rect );
 
-	if (!(options & IgnoreLegend)
-			&& plot->legend() && !plot->legend()->isEmpty())
-	{
-		d_data->legendRect = layoutLegend(options, rect);
+    if ( !( options & IgnoreLegend )
+        && plot->legend() && !plot->legend()->isEmpty() )
+    {
+        d_data->legendRect = layoutLegend( options, rect );
 
-		// subtract d_data->legendRect from rect
+        // subtract d_data->legendRect from rect
 
-		const QRegion region(rect.toRect());
-		rect = region.subtracted(d_data->legendRect.toRect()).boundingRect();
+        const QRegion region( rect.toRect() );
+        rect = region.subtracted( d_data->legendRect.toRect() ).boundingRect();
 
-		switch (d_data->legendPos)
-		{
-		case QwtPlot::LeftLegend:
-			rect.setLeft(rect.left() + d_data->spacing);
-			break;
+        switch ( d_data->legendPos )
+        {
+            case QwtPlot::LeftLegend:
+                rect.setLeft( rect.left() + d_data->spacing );
+                break;
+            case QwtPlot::RightLegend:
+                rect.setRight( rect.right() - d_data->spacing );
+                break;
+            case QwtPlot::TopLegend:
+                rect.setTop( rect.top() + d_data->spacing );
+                break;
+            case QwtPlot::BottomLegend:
+                rect.setBottom( rect.bottom() - d_data->spacing );
+                break;
+        }
+    }
 
-		case QwtPlot::RightLegend:
-			rect.setRight(rect.right() - d_data->spacing);
-			break;
+    /*
+     +---+-----------+---+
+     |       Title       |
+     +---+-----------+---+
+     |   |   Axis    |   |
+     +---+-----------+---+
+     | A |           | A |
+     | x |  Canvas   | x |
+     | i |           | i |
+     | s |           | s |
+     +---+-----------+---+
+     |   |   Axis    |   |
+     +---+-----------+---+
+     |      Footer       |
+     +---+-----------+---+
+    */
 
-		case QwtPlot::TopLegend:
-			rect.setTop(rect.top() + d_data->spacing);
-			break;
+    // title, footer and axes include text labels. The height of each
+    // label depends on its line breaks, that depend on the width
+    // for the label. A line break in a horizontal text will reduce
+    // the available width for vertical texts and vice versa.
+    // expandLineBreaks finds the height/width for title, footer and axes
+    // including all line breaks.
 
-		case QwtPlot::BottomLegend:
-			rect.setBottom(rect.bottom() - d_data->spacing);
-			break;
-		}
-	}
+    int dimTitle, dimFooter, dimAxes[QwtPlot::axisCnt];
+    expandLineBreaks( options, rect, dimTitle, dimFooter, dimAxes );
 
-	/*
-	 +---+-----------+---+
-	 |       Title       |
-	 +---+-----------+---+
-	 |   |   Axis    |   |
-	 +---+-----------+---+
-	 | A |           | A |
-	 | x |  Canvas   | x |
-	 | i |           | i |
-	 | s |           | s |
-	 +---+-----------+---+
-	 |   |   Axis    |   |
-	 +---+-----------+---+
-	 |      Footer       |
-	 +---+-----------+---+
-	*/
+    if ( dimTitle > 0 )
+    {
+        d_data->titleRect.setRect(
+            rect.left(), rect.top(), rect.width(), dimTitle );
 
-	// title, footer and axes include text labels. The height of each
-	// label depends on its line breaks, that depend on the width
-	// for the label. A line break in a horizontal text will reduce
-	// the available width for vertical texts and vice versa.
-	// expandLineBreaks finds the height/width for title, footer and axes
-	// including all line breaks.
+        rect.setTop( d_data->titleRect.bottom() + d_data->spacing );
 
-	int dimTitle, dimFooter, dimAxes[QwtPlot::axisCnt];
-	expandLineBreaks(options, rect, dimTitle, dimFooter, dimAxes);
+        if ( d_data->layoutData.scale[QwtPlot::yLeft].isEnabled !=
+            d_data->layoutData.scale[QwtPlot::yRight].isEnabled )
+        {
+            // if only one of the y axes is missing we align
+            // the title centered to the canvas
 
-	if (dimTitle > 0)
-	{
-		d_data->titleRect.setRect(
-			rect.left(), rect.top(), rect.width(), dimTitle);
+            d_data->titleRect.setX( rect.left() + dimAxes[QwtPlot::yLeft] );
+            d_data->titleRect.setWidth( rect.width()
+                - dimAxes[QwtPlot::yLeft] - dimAxes[QwtPlot::yRight] );
+        }
+    }
 
-		rect.setTop(d_data->titleRect.bottom() + d_data->spacing);
+    if ( dimFooter > 0 )
+    {
+        d_data->footerRect.setRect(
+            rect.left(), rect.bottom() - dimFooter, rect.width(), dimFooter );
 
-		if (d_data->layoutData.scale[QwtPlot::yLeft].isEnabled !=
-				d_data->layoutData.scale[QwtPlot::yRight].isEnabled)
-		{
-			// if only one of the y axes is missing we align
-			// the title centered to the canvas
+        rect.setBottom( d_data->footerRect.top() - d_data->spacing );
 
-			d_data->titleRect.setX(rect.left() + dimAxes[QwtPlot::yLeft]);
-			d_data->titleRect.setWidth(rect.width()
-						   - dimAxes[QwtPlot::yLeft] - dimAxes[QwtPlot::yRight]);
-		}
-	}
+        if ( d_data->layoutData.scale[QwtPlot::yLeft].isEnabled !=
+            d_data->layoutData.scale[QwtPlot::yRight].isEnabled )
+        {
+            // if only one of the y axes is missing we align
+            // the footer centered to the canvas
 
-	if (dimFooter > 0)
-	{
-		d_data->footerRect.setRect(
-			rect.left(), rect.bottom() - dimFooter, rect.width(), dimFooter);
+            d_data->footerRect.setX( rect.left() + dimAxes[QwtPlot::yLeft] );
+            d_data->footerRect.setWidth( rect.width()
+                - dimAxes[QwtPlot::yLeft] - dimAxes[QwtPlot::yRight] );
+        }
+    }
 
-		rect.setBottom(d_data->footerRect.top() - d_data->spacing);
+    d_data->canvasRect.setRect(
+        rect.x() + dimAxes[QwtPlot::yLeft],
+        rect.y() + dimAxes[QwtPlot::xTop],
+        rect.width() - dimAxes[QwtPlot::yRight] - dimAxes[QwtPlot::yLeft],
+        rect.height() - dimAxes[QwtPlot::xBottom] - dimAxes[QwtPlot::xTop] );
 
-		if (d_data->layoutData.scale[QwtPlot::yLeft].isEnabled !=
-				d_data->layoutData.scale[QwtPlot::yRight].isEnabled)
-		{
-			// if only one of the y axes is missing we align
-			// the footer centered to the canvas
+    for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ )
+    {
+        // set the rects for the axes
 
-			d_data->footerRect.setX(rect.left() + dimAxes[QwtPlot::yLeft]);
-			d_data->footerRect.setWidth(rect.width()
-						    - dimAxes[QwtPlot::yLeft] - dimAxes[QwtPlot::yRight]);
-		}
-	}
+        if ( dimAxes[axis] )
+        {
+            int dim = dimAxes[axis];
+            QRectF &scaleRect = d_data->scaleRect[axis];
 
-	d_data->canvasRect.setRect(
-		rect.x() + dimAxes[QwtPlot::yLeft],
-		rect.y() + dimAxes[QwtPlot::xTop],
-		rect.width() - dimAxes[QwtPlot::yRight] - dimAxes[QwtPlot::yLeft],
-		rect.height() - dimAxes[QwtPlot::xBottom] - dimAxes[QwtPlot::xTop]);
+            scaleRect = d_data->canvasRect;
+            switch ( axis )
+            {
+                case QwtPlot::yLeft:
+                    scaleRect.setX( d_data->canvasRect.left() - dim );
+                    scaleRect.setWidth( dim );
+                    break;
+                case QwtPlot::yRight:
+                    scaleRect.setX( d_data->canvasRect.right() );
+                    scaleRect.setWidth( dim );
+                    break;
+                case QwtPlot::xBottom:
+                    scaleRect.setY( d_data->canvasRect.bottom() );
+                    scaleRect.setHeight( dim );
+                    break;
+                case QwtPlot::xTop:
+                    scaleRect.setY( d_data->canvasRect.top() - dim );
+                    scaleRect.setHeight( dim );
+                    break;
+            }
+            scaleRect = scaleRect.normalized();
+        }
+    }
 
-	for (int axis = 0; axis < QwtPlot::axisCnt; axis++)
-	{
-		// set the rects for the axes
+    // +---+-----------+---+
+    // |  <-   Axis   ->   |
+    // +-^-+-----------+-^-+
+    // | | |           | | |
+    // |   |           |   |
+    // | A |           | A |
+    // | x |  Canvas   | x |
+    // | i |           | i |
+    // | s |           | s |
+    // |   |           |   |
+    // | | |           | | |
+    // +-V-+-----------+-V-+
+    // |   <-  Axis   ->   |
+    // +---+-----------+---+
 
-		if (dimAxes[axis])
-		{
-			int dim = dimAxes[axis];
-			QRectF &scaleRect = d_data->scaleRect[axis];
+    // The ticks of the axes - not the labels above - should
+    // be aligned to the canvas. So we try to use the empty
+    // corners to extend the axes, so that the label texts
+    // left/right of the min/max ticks are moved into them.
 
-			scaleRect = d_data->canvasRect;
+    alignScales( options, d_data->canvasRect, d_data->scaleRect );
 
-			switch (axis)
-			{
-			case QwtPlot::yLeft:
-				scaleRect.setX(d_data->canvasRect.left() - dim);
-				scaleRect.setWidth(dim);
-				break;
+    if ( !d_data->legendRect.isEmpty() )
+    {
+        // We prefer to align the legend to the canvas - not to
+        // the complete plot - if possible.
 
-			case QwtPlot::yRight:
-				scaleRect.setX(d_data->canvasRect.right());
-				scaleRect.setWidth(dim);
-				break;
-
-			case QwtPlot::xBottom:
-				scaleRect.setY(d_data->canvasRect.bottom());
-				scaleRect.setHeight(dim);
-				break;
-
-			case QwtPlot::xTop:
-				scaleRect.setY(d_data->canvasRect.top() - dim);
-				scaleRect.setHeight(dim);
-				break;
-			}
-
-			scaleRect = scaleRect.normalized();
-		}
-	}
-
-	// +---+-----------+---+
-	// |  <-   Axis   ->   |
-	// +-^-+-----------+-^-+
-	// | | |           | | |
-	// |   |           |   |
-	// | A |           | A |
-	// | x |  Canvas   | x |
-	// | i |           | i |
-	// | s |           | s |
-	// |   |           |   |
-	// | | |           | | |
-	// +-V-+-----------+-V-+
-	// |   <-  Axis   ->   |
-	// +---+-----------+---+
-
-	// The ticks of the axes - not the labels above - should
-	// be aligned to the canvas. So we try to use the empty
-	// corners to extend the axes, so that the label texts
-	// left/right of the min/max ticks are moved into them.
-
-	alignScales(options, d_data->canvasRect, d_data->scaleRect);
-
-	if (!d_data->legendRect.isEmpty())
-	{
-		// We prefer to align the legend to the canvas - not to
-		// the complete plot - if possible.
-
-		d_data->legendRect = alignLegend(d_data->canvasRect, d_data->legendRect);
-	}
+        d_data->legendRect = alignLegend( d_data->canvasRect, d_data->legendRect );
+    }
 }

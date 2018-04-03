@@ -17,43 +17,41 @@
 #include "QGCToolbox.h"
 #include "SimulatedPosition.h"
 
-class QGCPositionManager : public QGCTool
-{
-	Q_OBJECT
+class QGCPositionManager : public QGCTool {
+    Q_OBJECT
 
 public:
 
-	QGCPositionManager(QGCApplication *app, QGCToolbox *toolbox);
-	~QGCPositionManager();
+    QGCPositionManager(QGCApplication* app, QGCToolbox* toolbox);
+    ~QGCPositionManager();
 
-	enum QGCPositionSource
-	{
-		Simulated,
-		InternalGPS,
-		Log,
-		NmeaGPS
-	};
+    enum QGCPositionSource {
+        Simulated,
+        InternalGPS,
+        Log,
+        NmeaGPS
+    };
 
-	void setPositionSource(QGCPositionSource source);
+    void setPositionSource(QGCPositionSource source);
 
-	int updateInterval() const;
+    int updateInterval() const;
 
-	void setToolbox(QGCToolbox *toolbox);
+    void setToolbox(QGCToolbox* toolbox);
 
-	void setNmeaSourceDevice(QIODevice *device);
+    void setNmeaSourceDevice(QIODevice* device);
 
 private slots:
-	void _positionUpdated(const QGeoPositionInfo &update);
-	void _error(QGeoPositionInfoSource::Error positioningError);
+    void _positionUpdated(const QGeoPositionInfo &update);
+    void _error(QGeoPositionInfoSource::Error positioningError);
 
 signals:
-	void lastPositionUpdated(bool valid, QVariant lastPosition);
-	void positionInfoUpdated(QGeoPositionInfo update);
+    void lastPositionUpdated(bool valid, QVariant lastPosition);
+    void positionInfoUpdated(QGeoPositionInfo update);
 
 private:
-	int _updateInterval;
-	QGeoPositionInfoSource *_currentSource;
-	QGeoPositionInfoSource *_defaultSource;
-	QNmeaPositionInfoSource *_nmeaSource;
-	QGeoPositionInfoSource *_simulatedSource;
+    int _updateInterval;
+    QGeoPositionInfoSource * _currentSource;
+    QGeoPositionInfoSource * _defaultSource;
+    QNmeaPositionInfoSource * _nmeaSource;
+    QGeoPositionInfoSource * _simulatedSource;
 };

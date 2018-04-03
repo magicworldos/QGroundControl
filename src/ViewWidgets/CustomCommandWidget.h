@@ -18,10 +18,10 @@
 
 class CustomCommandWidget : public QGCQmlWidgetHolder
 {
-	Q_OBJECT
-
+    Q_OBJECT
+	
 public:
-	CustomCommandWidget(const QString &title, QAction *action, QWidget *parent = 0);
+    CustomCommandWidget(const QString& title, QAction* action, QWidget *parent = 0);
 };
 
 #endif

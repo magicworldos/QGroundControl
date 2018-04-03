@@ -49,39 +49,39 @@ class QGeoCodingManagerEnginePrivate;
 
 class Q_LOCATION_EXPORT QGeoCodingManagerEngine : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	QGeoCodingManagerEngine(const QVariantMap &parameters, QObject *parent = 0);
-	virtual ~QGeoCodingManagerEngine();
+    QGeoCodingManagerEngine(const QVariantMap &parameters, QObject *parent = 0);
+    virtual ~QGeoCodingManagerEngine();
 
-	QString managerName() const;
-	int managerVersion() const;
+    QString managerName() const;
+    int managerVersion() const;
 
-	virtual QGeoCodeReply *geocode(const QGeoAddress &address, const QGeoShape &bounds);
-	virtual QGeoCodeReply *geocode(const QString &address,
-				       int limit,
-				       int offset,
-				       const QGeoShape &bounds);
-	virtual QGeoCodeReply *reverseGeocode(const QGeoCoordinate &coordinate,
-					      const QGeoShape &bounds);
+    virtual QGeoCodeReply *geocode(const QGeoAddress &address, const QGeoShape &bounds);
+    virtual QGeoCodeReply *geocode(const QString &address,
+                                   int limit,
+                                   int offset,
+                                   const QGeoShape &bounds);
+    virtual QGeoCodeReply *reverseGeocode(const QGeoCoordinate &coordinate,
+                                          const QGeoShape &bounds);
 
 
-	void setLocale(const QLocale &locale);
-	QLocale locale() const;
+    void setLocale(const QLocale &locale);
+    QLocale locale() const;
 
 Q_SIGNALS:
-	void finished(QGeoCodeReply *reply);
-	void error(QGeoCodeReply *reply, QGeoCodeReply::Error error, QString errorString = QString());
+    void finished(QGeoCodeReply *reply);
+    void error(QGeoCodeReply *reply, QGeoCodeReply::Error error, QString errorString = QString());
 
 private:
-	void setManagerName(const QString &managerName);
-	void setManagerVersion(int managerVersion);
+    void setManagerName(const QString &managerName);
+    void setManagerVersion(int managerVersion);
 
-	QGeoCodingManagerEnginePrivate *d_ptr;
-	Q_DISABLE_COPY(QGeoCodingManagerEngine)
+    QGeoCodingManagerEnginePrivate *d_ptr;
+    Q_DISABLE_COPY(QGeoCodingManagerEngine)
 
-	friend class QGeoServiceProvider;
-	friend class QGeoServiceProviderPrivate;
+    friend class QGeoServiceProvider;
+    friend class QGeoServiceProviderPrivate;
 };
 
 QT_END_NAMESPACE

@@ -23,8 +23,8 @@
 
 InputConfigurationWidget::InputConfigurationWidget(QWidget *parent) : QWidget(parent)
 {
-	/* Add UI components */
-	ui.setupUi(this);
+    /* Add UI components */
+    ui.setupUi(this);
 }
 
 InputConfigurationWidget::~InputConfigurationWidget()

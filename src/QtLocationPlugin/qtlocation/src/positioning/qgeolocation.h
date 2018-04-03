@@ -48,30 +48,29 @@ class QGeoLocationPrivate;
 class Q_POSITIONING_EXPORT QGeoLocation
 {
 public:
-	QGeoLocation();
-	QGeoLocation(const QGeoLocation &other);
+    QGeoLocation();
+    QGeoLocation(const QGeoLocation &other);
 
-	~QGeoLocation();
+    ~QGeoLocation();
 
-	QGeoLocation &operator=(const QGeoLocation &other);
+    QGeoLocation &operator=(const QGeoLocation &other);
 
-	bool operator==(const QGeoLocation &other) const;
-	bool operator!=(const QGeoLocation &other) const
-	{
-		return !(other == *this);
-	}
+    bool operator==(const QGeoLocation &other) const;
+    bool operator!=(const QGeoLocation &other) const {
+        return !(other == *this);
+    }
 
-	QGeoAddress address() const;
-	void setAddress(const QGeoAddress &address);
-	QGeoCoordinate coordinate() const;
-	void setCoordinate(const QGeoCoordinate &position);
-	QGeoRectangle boundingBox() const;
-	void setBoundingBox(const QGeoRectangle &box);
+    QGeoAddress address() const;
+    void setAddress(const QGeoAddress &address);
+    QGeoCoordinate coordinate() const;
+    void setCoordinate(const QGeoCoordinate &position);
+    QGeoRectangle boundingBox() const;
+    void setBoundingBox(const QGeoRectangle &box);
 
-	bool isEmpty() const;
+    bool isEmpty() const;
 
 private:
-	QSharedDataPointer<QGeoLocationPrivate> d;
+    QSharedDataPointer<QGeoLocationPrivate> d;
 };
 
 Q_DECLARE_TYPEINFO(QGeoLocation, Q_MOVABLE_TYPE);

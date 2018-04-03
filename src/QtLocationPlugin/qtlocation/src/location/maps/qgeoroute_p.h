@@ -62,26 +62,26 @@ class QGeoCoordinate;
 class QGeoRoutePrivate : public QSharedData
 {
 public:
-	QGeoRoutePrivate();
-	QGeoRoutePrivate(const QGeoRoutePrivate &other);
-	~QGeoRoutePrivate();
+    QGeoRoutePrivate();
+    QGeoRoutePrivate(const QGeoRoutePrivate &other);
+    ~QGeoRoutePrivate();
 
-	bool operator == (const QGeoRoutePrivate &other) const;
+    bool operator == (const QGeoRoutePrivate &other) const;
 
-	QString id;
-	QGeoRouteRequest request;
+    QString id;
+    QGeoRouteRequest request;
 
-	QGeoRectangle bounds;
+    QGeoRectangle bounds;
 //    QList<QGeoRouteSegment> routeSegments;
 
-	int travelTime;
-	qreal distance;
+    int travelTime;
+    qreal distance;
 
-	QGeoRouteRequest::TravelMode travelMode;
+    QGeoRouteRequest::TravelMode travelMode;
 
-	QList<QGeoCoordinate> path;
+    QList<QGeoCoordinate> path;
 
-	QGeoRouteSegment firstSegment;
+    QGeoRouteSegment firstSegment;
 };
 
 QT_END_NAMESPACE

@@ -16,29 +16,29 @@
 /// Unit test for the MissionItem Object
 class MissionCommandTreeTest : public UnitTest
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	MissionCommandTreeTest(void);
-
+    MissionCommandTreeTest(void);
+    
 private slots:
-	void init(void);
-	void cleanup(void);
+    void init(void);
+    void cleanup(void);
 
-	void testJsonLoad(void);
-	void testOverride(void);
-	void testAllTrees(void);
+    void testJsonLoad(void);
+    void testOverride(void);
+    void testAllTrees(void);
 
 private:
-	QString _rawName(int id);
-	QString _friendlyName(int id);
-	QString _paramLabel(int index);
-	void _checkFullInfoMap(const MissionCommandUIInfo *uiInfo);
-	void _checkBaseValues(const MissionCommandUIInfo *uiInfo, int command);
-	void _checkOverrideValues(const MissionCommandUIInfo *uiInfo, int command);
-	void _checkOverrideParamValues(const MissionCommandUIInfo *uiInfo, int command, int paramIndex);
+    QString _rawName(int id);
+    QString _friendlyName(int id);
+    QString _paramLabel(int index);
+    void _checkFullInfoMap(const MissionCommandUIInfo* uiInfo);
+    void _checkBaseValues(const MissionCommandUIInfo* uiInfo, int command);
+    void _checkOverrideValues(const MissionCommandUIInfo* uiInfo, int command);
+    void _checkOverrideParamValues(const MissionCommandUIInfo* uiInfo, int command, int paramIndex);
 
-	MissionCommandTree *_commandTree;
+    MissionCommandTree* _commandTree;
 };
 
 #endif

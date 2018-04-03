@@ -49,41 +49,41 @@ class QGeoRoutingManagerPrivate;
 
 class Q_LOCATION_EXPORT QGeoRoutingManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	~QGeoRoutingManager();
+    ~QGeoRoutingManager();
 
-	QString managerName() const;
-	int managerVersion() const;
+    QString managerName() const;
+    int managerVersion() const;
 
-	QGeoRouteReply *calculateRoute(const QGeoRouteRequest &request);
-	QGeoRouteReply *updateRoute(const QGeoRoute &route, const QGeoCoordinate &position);
+    QGeoRouteReply *calculateRoute(const QGeoRouteRequest &request);
+    QGeoRouteReply *updateRoute(const QGeoRoute &route, const QGeoCoordinate &position);
 
-	QGeoRouteRequest::TravelModes supportedTravelModes() const;
-	QGeoRouteRequest::FeatureTypes supportedFeatureTypes() const;
-	QGeoRouteRequest::FeatureWeights supportedFeatureWeights() const;
-	QGeoRouteRequest::RouteOptimizations supportedRouteOptimizations() const;
-	QGeoRouteRequest::SegmentDetails supportedSegmentDetails() const;
-	QGeoRouteRequest::ManeuverDetails supportedManeuverDetails() const;
+    QGeoRouteRequest::TravelModes supportedTravelModes() const;
+    QGeoRouteRequest::FeatureTypes supportedFeatureTypes() const;
+    QGeoRouteRequest::FeatureWeights supportedFeatureWeights() const;
+    QGeoRouteRequest::RouteOptimizations supportedRouteOptimizations() const;
+    QGeoRouteRequest::SegmentDetails supportedSegmentDetails() const;
+    QGeoRouteRequest::ManeuverDetails supportedManeuverDetails() const;
 
-	void setLocale(const QLocale &locale);
-	QLocale locale() const;
-	void setMeasurementSystem(QLocale::MeasurementSystem system);
-	QLocale::MeasurementSystem measurementSystem() const;
+    void setLocale(const QLocale &locale);
+    QLocale locale() const;
+    void setMeasurementSystem(QLocale::MeasurementSystem system);
+    QLocale::MeasurementSystem measurementSystem() const;
 
 Q_SIGNALS:
-	void finished(QGeoRouteReply *reply);
-	void error(QGeoRouteReply *reply, QGeoRouteReply::Error error, QString errorString = QString());
+    void finished(QGeoRouteReply *reply);
+    void error(QGeoRouteReply *reply, QGeoRouteReply::Error error, QString errorString = QString());
 
 private:
-	QGeoRoutingManager(QGeoRoutingManagerEngine *engine, QObject *parent = 0);
+    QGeoRoutingManager(QGeoRoutingManagerEngine *engine, QObject *parent = 0);
 
-	QGeoRoutingManagerPrivate *d_ptr;
-	Q_DISABLE_COPY(QGeoRoutingManager)
+    QGeoRoutingManagerPrivate *d_ptr;
+    Q_DISABLE_COPY(QGeoRoutingManager)
 
-	friend class QGeoServiceProvider;
-	friend class QGeoServiceProviderPrivate;
+    friend class QGeoServiceProvider;
+    friend class QGeoServiceProviderPrivate;
 };
 
 QT_END_NAMESPACE

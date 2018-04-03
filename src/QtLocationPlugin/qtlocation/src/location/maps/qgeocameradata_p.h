@@ -63,32 +63,32 @@ class QGeoCameraDataPrivate;
 class Q_LOCATION_EXPORT QGeoCameraData
 {
 public:
-	QGeoCameraData();
-	QGeoCameraData(const QGeoCameraData &other);
-	~QGeoCameraData();
+    QGeoCameraData();
+    QGeoCameraData(const QGeoCameraData &other);
+    ~QGeoCameraData();
 
-	QGeoCameraData &operator = (const QGeoCameraData &other);
+    QGeoCameraData &operator = (const QGeoCameraData &other);
 
-	bool operator == (const QGeoCameraData &other) const;
-	bool operator != (const QGeoCameraData &other) const;
+    bool operator == (const QGeoCameraData &other) const;
+    bool operator != (const QGeoCameraData &other) const;
 
-	void setCenter(const QGeoCoordinate &coordinate);
-	QGeoCoordinate center() const;
+    void setCenter(const QGeoCoordinate &coordinate);
+    QGeoCoordinate center() const;
 
-	void setBearing(double bearing);
-	double bearing() const;
+    void setBearing(double bearing);
+    double bearing() const;
 
-	void setTilt(double tilt);
-	double tilt() const;
+    void setTilt(double tilt);
+    double tilt() const;
 
-	void setRoll(double roll);
-	double roll() const;
+    void setRoll(double roll);
+    double roll() const;
 
-	void setZoomLevel(double zoomLevel);
-	double zoomLevel() const;
+    void setZoomLevel(double zoomLevel);
+    double zoomLevel() const;
 
 private:
-	QSharedDataPointer<QGeoCameraDataPrivate> d;
+    QSharedDataPointer<QGeoCameraDataPrivate> d;
 };
 
 QT_END_NAMESPACE

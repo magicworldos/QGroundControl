@@ -58,104 +58,99 @@ class QGeoServiceProviderPrivate;
 
 class Q_LOCATION_EXPORT QGeoServiceProvider : public QObject
 {
-	Q_OBJECT
-	Q_ENUMS(Error)
+    Q_OBJECT
+    Q_ENUMS(Error)
 public:
-	enum Error
-	{
-		NoError,
-		NotSupportedError,
-		UnknownParameterError,
-		MissingRequiredParameterError,
-		ConnectionError
-	};
+    enum Error {
+        NoError,
+        NotSupportedError,
+        UnknownParameterError,
+        MissingRequiredParameterError,
+        ConnectionError
+    };
 
-	enum RoutingFeature
-	{
-		NoRoutingFeatures               = 0,
-		OnlineRoutingFeature            = (1 << 0),
-		OfflineRoutingFeature           = (1 << 1),
-		LocalizedRoutingFeature         = (1 << 2),
-		RouteUpdatesFeature             = (1 << 3),
-		AlternativeRoutesFeature        = (1 << 4),
-		ExcludeAreasRoutingFeature      = (1 << 5),
-		AnyRoutingFeatures              = ~(0)
-	};
+    enum RoutingFeature {
+        NoRoutingFeatures               = 0,
+        OnlineRoutingFeature            = (1<<0),
+        OfflineRoutingFeature           = (1<<1),
+        LocalizedRoutingFeature         = (1<<2),
+        RouteUpdatesFeature             = (1<<3),
+        AlternativeRoutesFeature        = (1<<4),
+        ExcludeAreasRoutingFeature      = (1<<5),
+        AnyRoutingFeatures              = ~(0)
+    };
 
-	enum GeocodingFeature
-	{
-		NoGeocodingFeatures             = 0,
-		OnlineGeocodingFeature          = (1 << 0),
-		OfflineGeocodingFeature         = (1 << 1),
-		ReverseGeocodingFeature         = (1 << 2),
-		LocalizedGeocodingFeature       = (1 << 3),
-		AnyGeocodingFeatures            = ~(0)
-	};
+    enum GeocodingFeature {
+        NoGeocodingFeatures             = 0,
+        OnlineGeocodingFeature          = (1<<0),
+        OfflineGeocodingFeature         = (1<<1),
+        ReverseGeocodingFeature         = (1<<2),
+        LocalizedGeocodingFeature       = (1<<3),
+        AnyGeocodingFeatures            = ~(0)
+    };
 
-	enum MappingFeature
-	{
-		NoMappingFeatures               = 0,
-		OnlineMappingFeature            = (1 << 0),
-		OfflineMappingFeature           = (1 << 1),
-		LocalizedMappingFeature         = (1 << 2),
-		AnyMappingFeatures              = ~(0)
-	};
+    enum MappingFeature {
+        NoMappingFeatures               = 0,
+        OnlineMappingFeature            = (1<<0),
+        OfflineMappingFeature           = (1<<1),
+        LocalizedMappingFeature         = (1<<2),
+        AnyMappingFeatures              = ~(0)
+    };
 
-	enum PlacesFeature
-	{
-		NoPlacesFeatures                = 0,
-		OnlinePlacesFeature             = (1 << 0),
-		OfflinePlacesFeature            = (1 << 1),
-		SavePlaceFeature                = (1 << 2),
-		RemovePlaceFeature              = (1 << 3),
-		SaveCategoryFeature             = (1 << 4),
-		RemoveCategoryFeature           = (1 << 5),
-		PlaceRecommendationsFeature     = (1 << 6),
-		SearchSuggestionsFeature        = (1 << 7),
-		LocalizedPlacesFeature          = (1 << 8),
-		NotificationsFeature            = (1 << 9),
-		PlaceMatchingFeature            = (1 << 10),
-		AnyPlacesFeatures               = ~(0)
-	};
+    enum PlacesFeature {
+        NoPlacesFeatures                = 0,
+        OnlinePlacesFeature             = (1<<0),
+        OfflinePlacesFeature            = (1<<1),
+        SavePlaceFeature                = (1<<2),
+        RemovePlaceFeature              = (1<<3),
+        SaveCategoryFeature             = (1<<4),
+        RemoveCategoryFeature           = (1<<5),
+        PlaceRecommendationsFeature     = (1<<6),
+        SearchSuggestionsFeature        = (1<<7),
+        LocalizedPlacesFeature          = (1<<8),
+        NotificationsFeature            = (1<<9),
+        PlaceMatchingFeature            = (1<<10),
+        AnyPlacesFeatures               = ~(0)
+    };
 
-	Q_DECLARE_FLAGS(RoutingFeatures, RoutingFeature)
-	Q_FLAGS(RoutingFeatures)
+    Q_DECLARE_FLAGS(RoutingFeatures, RoutingFeature)
+    Q_FLAGS(RoutingFeatures)
 
-	Q_DECLARE_FLAGS(GeocodingFeatures, GeocodingFeature)
-	Q_FLAGS(GeocodingFeatures)
+    Q_DECLARE_FLAGS(GeocodingFeatures, GeocodingFeature)
+    Q_FLAGS(GeocodingFeatures)
 
-	Q_DECLARE_FLAGS(MappingFeatures, MappingFeature)
-	Q_FLAGS(MappingFeatures)
+    Q_DECLARE_FLAGS(MappingFeatures, MappingFeature)
+    Q_FLAGS(MappingFeatures)
 
-	Q_DECLARE_FLAGS(PlacesFeatures, PlacesFeature)
-	Q_FLAGS(PlacesFeatures)
+    Q_DECLARE_FLAGS(PlacesFeatures, PlacesFeature)
+    Q_FLAGS(PlacesFeatures)
 
-	static QStringList availableServiceProviders();
-	QGeoServiceProvider(const QString &providerName,
-			    const QVariantMap &parameters = QVariantMap(),
-			    bool allowExperimental = false);
+    static QStringList availableServiceProviders();
+    QGeoServiceProvider(const QString &providerName,
+                        const QVariantMap &parameters = QVariantMap(),
+                        bool allowExperimental = false);
 
-	~QGeoServiceProvider();
+    ~QGeoServiceProvider();
 
-	RoutingFeatures routingFeatures() const;
-	GeocodingFeatures geocodingFeatures() const;
-	MappingFeatures mappingFeatures() const;
-	PlacesFeatures placesFeatures() const;
+    RoutingFeatures routingFeatures() const;
+    GeocodingFeatures geocodingFeatures() const;
+    MappingFeatures mappingFeatures() const;
+    PlacesFeatures placesFeatures() const;
 
-	QGeoCodingManager *geocodingManager() const;
-	QGeoMappingManager *mappingManager() const;
-	QGeoRoutingManager *routingManager() const;
-	QPlaceManager *placeManager() const;
+    QGeoCodingManager *geocodingManager() const;
+    QGeoMappingManager *mappingManager() const;
+    QGeoRoutingManager *routingManager() const;
+    QPlaceManager *placeManager() const;
 
-	Error error() const;
-	QString errorString() const;
+    Error error() const;
+    QString errorString() const;
 
-	void setParameters(const QVariantMap &parameters);
-	void setLocale(const QLocale &locale);
-	void setAllowExperimental(bool allow);
+    void setParameters(const QVariantMap &parameters);
+    void setLocale(const QLocale &locale);
+    void setAllowExperimental(bool allow);
 
 private:
-	QGeoServiceProviderPrivate *d_ptr;
+    QGeoServiceProviderPrivate *d_ptr;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(QGeoServiceProvider::RoutingFeatures)

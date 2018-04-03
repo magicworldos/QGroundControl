@@ -45,51 +45,50 @@ class QGeoAddressPrivate;
 class Q_POSITIONING_EXPORT QGeoAddress
 {
 public:
-	QGeoAddress();
-	QGeoAddress(const QGeoAddress &other);
-	~QGeoAddress();
+    QGeoAddress();
+    QGeoAddress(const QGeoAddress &other);
+    ~QGeoAddress();
 
-	QGeoAddress &operator=(const QGeoAddress &other);
-	bool operator==(const QGeoAddress &other) const;
-	bool operator!=(const QGeoAddress &other) const
-	{
-		return !(other == *this);
-	}
+    QGeoAddress &operator=(const QGeoAddress &other);
+    bool operator==(const QGeoAddress &other) const;
+    bool operator!=(const QGeoAddress &other) const {
+        return !(other == *this);
+    }
 
-	QString text() const;
-	void setText(const QString &text);
+    QString text() const;
+    void setText(const QString &text);
 
-	QString country() const;
-	void setCountry(const QString &country);
+    QString country() const;
+    void setCountry(const QString &country);
 
-	QString countryCode() const;
-	void setCountryCode(const QString &countryCode);
+    QString countryCode() const;
+    void setCountryCode(const QString &countryCode);
 
-	QString state() const;
-	void setState(const QString &state);
+    QString state() const;
+    void setState(const QString &state);
 
-	QString county() const;
-	void setCounty(const QString &county);
+    QString county() const;
+    void setCounty(const QString &county);
 
-	QString city() const;
-	void setCity(const QString &city);
+    QString city() const;
+    void setCity(const QString &city);
 
-	QString district() const;
-	void setDistrict(const QString &district);
+    QString district() const;
+    void setDistrict(const QString &district);
 
-	QString postalCode() const;
-	void setPostalCode(const QString &postalCode);
+    QString postalCode() const;
+    void setPostalCode(const QString &postalCode);
 
-	QString street() const;
-	void setStreet(const QString &street);
+    QString street() const;
+    void setStreet(const QString &street);
 
-	bool isEmpty() const;
-	void clear();
+    bool isEmpty() const;
+    void clear();
 
-	bool isTextGenerated() const;
+    bool isTextGenerated() const;
 
 private:
-	QSharedDataPointer<QGeoAddressPrivate> d;
+    QSharedDataPointer<QGeoAddressPrivate> d;
 };
 
 Q_DECLARE_TYPEINFO(QGeoAddress, Q_MOVABLE_TYPE);

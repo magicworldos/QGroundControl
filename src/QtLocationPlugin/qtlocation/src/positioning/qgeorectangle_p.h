@@ -53,25 +53,25 @@ QT_BEGIN_NAMESPACE
 class QGeoRectanglePrivate : public QGeoShapePrivate
 {
 public:
-	QGeoRectanglePrivate();
-	QGeoRectanglePrivate(const QGeoCoordinate &topLeft, const QGeoCoordinate &bottomRight);
-	QGeoRectanglePrivate(const QGeoRectanglePrivate &other);
-	~QGeoRectanglePrivate();
+    QGeoRectanglePrivate();
+    QGeoRectanglePrivate(const QGeoCoordinate &topLeft, const QGeoCoordinate &bottomRight);
+    QGeoRectanglePrivate(const QGeoRectanglePrivate &other);
+    ~QGeoRectanglePrivate();
 
-	bool isValid() const Q_DECL_OVERRIDE;
-	bool isEmpty() const Q_DECL_OVERRIDE;
-	bool contains(const QGeoCoordinate &coordinate) const Q_DECL_OVERRIDE;
+    bool isValid() const Q_DECL_OVERRIDE;
+    bool isEmpty() const Q_DECL_OVERRIDE;
+    bool contains(const QGeoCoordinate &coordinate) const Q_DECL_OVERRIDE;
 
-	QGeoCoordinate center() const Q_DECL_OVERRIDE;
+    QGeoCoordinate center() const Q_DECL_OVERRIDE;
 
-	void extendShape(const QGeoCoordinate &coordinate) Q_DECL_OVERRIDE;
+    void extendShape(const QGeoCoordinate &coordinate) Q_DECL_OVERRIDE;
 
-	QGeoShapePrivate *clone() const Q_DECL_OVERRIDE;
+    QGeoShapePrivate *clone() const Q_DECL_OVERRIDE;
 
-	bool operator==(const QGeoShapePrivate &other) const Q_DECL_OVERRIDE;
+    bool operator==(const QGeoShapePrivate &other) const Q_DECL_OVERRIDE;
 
-	QGeoCoordinate topLeft;
-	QGeoCoordinate bottomRight;
+    QGeoCoordinate topLeft;
+    QGeoCoordinate bottomRight;
 };
 
 QT_END_NAMESPACE

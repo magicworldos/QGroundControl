@@ -59,37 +59,37 @@ class QGeoCameraCapabilitiesPrivate;
 class Q_LOCATION_EXPORT QGeoCameraCapabilities
 {
 public:
-	QGeoCameraCapabilities();
-	QGeoCameraCapabilities(const QGeoCameraCapabilities &other);
-	~QGeoCameraCapabilities();
+    QGeoCameraCapabilities();
+    QGeoCameraCapabilities(const QGeoCameraCapabilities &other);
+    ~QGeoCameraCapabilities();
 
-	QGeoCameraCapabilities &operator = (const QGeoCameraCapabilities &other);
+    QGeoCameraCapabilities &operator = (const QGeoCameraCapabilities &other);
 
-	void setMinimumZoomLevel(double minimumZoomLevel);
-	double minimumZoomLevel() const;
+    void setMinimumZoomLevel(double minimumZoomLevel);
+    double minimumZoomLevel() const;
 
-	void setMaximumZoomLevel(double maximumZoomLevel);
-	double maximumZoomLevel() const;
+    void setMaximumZoomLevel(double maximumZoomLevel);
+    double maximumZoomLevel() const;
 
-	void setSupportsBearing(bool supportsBearing);
-	bool supportsBearing() const;
+    void setSupportsBearing(bool supportsBearing);
+    bool supportsBearing() const;
 
-	void setSupportsRolling(bool supportsRolling);
-	bool supportsRolling() const;
+    void setSupportsRolling(bool supportsRolling);
+    bool supportsRolling() const;
 
-	void setSupportsTilting(bool supportsTilting);
-	bool supportsTilting() const;
+    void setSupportsTilting(bool supportsTilting);
+    bool supportsTilting() const;
 
-	void setMinimumTilt(double minimumTilt);
-	double minimumTilt() const;
+    void setMinimumTilt(double minimumTilt);
+    double minimumTilt() const;
 
-	void setMaximumTilt(double maximumTilt);
-	double maximumTilt() const;
+    void setMaximumTilt(double maximumTilt);
+    double maximumTilt() const;
 
-	bool isValid() const;
+    bool isValid() const;
 
 private:
-	QSharedDataPointer<QGeoCameraCapabilitiesPrivate> d;
+    QSharedDataPointer<QGeoCameraCapabilitiesPrivate> d;
 };
 
 QT_END_NAMESPACE

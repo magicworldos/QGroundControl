@@ -23,42 +23,42 @@ Q_DECLARE_LOGGING_CATEGORY(VehicleLog)
 /// Used to group Facts together into an object hierarachy.
 class FactGroup : public QObject
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	FactGroup(int updateRateMsecs, const QString &metaDataFile, QObject *parent = NULL);
-	FactGroup(int updateRateMsecs, QObject *parent = NULL);
+    FactGroup(int updateRateMsecs, const QString& metaDataFile, QObject* parent = NULL);
+    FactGroup(int updateRateMsecs, QObject* parent = NULL);
 
-	Q_PROPERTY(QStringList factNames        READ factNames      CONSTANT)
-	Q_PROPERTY(QStringList factGroupNames   READ factGroupNames CONSTANT)
+    Q_PROPERTY(QStringList factNames        READ factNames      CONSTANT)
+    Q_PROPERTY(QStringList factGroupNames   READ factGroupNames CONSTANT)
 
-	/// @return Fact for specified name, NULL if not found
-	Q_INVOKABLE Fact *getFact(const QString &name);
+    /// @return Fact for specified name, NULL if not found
+    Q_INVOKABLE Fact* getFact(const QString& name);
 
-	/// @return FactGroup for specified name, NULL if not found
-	Q_INVOKABLE FactGroup *getFactGroup(const QString &name);
+    /// @return FactGroup for specified name, NULL if not found
+    Q_INVOKABLE FactGroup* getFactGroup(const QString& name);
 
-	QStringList factNames(void) const { return _nameToFactMap.keys(); }
-	QStringList factGroupNames(void) const { return _nameToFactGroupMap.keys(); }
+    QStringList factNames(void) const { return _nameToFactMap.keys(); }
+    QStringList factGroupNames(void) const { return _nameToFactGroupMap.keys(); }
 
 protected:
-	void _addFact(Fact *fact, const QString &name);
-	void _addFactGroup(FactGroup *factGroup, const QString &name);
-	void _loadFromJsonArray(const QJsonArray jsonArray);
+    void _addFact(Fact* fact, const QString& name);
+    void _addFactGroup(FactGroup* factGroup, const QString& name);
+    void _loadFromJsonArray(const QJsonArray jsonArray);
 
-	int _updateRateMSecs;   ///< Update rate for Fact::valueChanged signals, 0: immediate update
+    int _updateRateMSecs;   ///< Update rate for Fact::valueChanged signals, 0: immediate update
 
 protected slots:
-	virtual void _updateAllValues(void);
+    virtual void _updateAllValues(void);
 
 private:
-	void _setupTimer();
-	QTimer _updateTimer;
+    void _setupTimer();
+    QTimer _updateTimer;
 
 protected:
-	QMap<QString, Fact *>            _nameToFactMap;
-	QMap<QString, FactGroup *>       _nameToFactGroupMap;
-	QMap<QString, FactMetaData *>    _nameToFactMetaDataMap;
+    QMap<QString, Fact*>            _nameToFactMap;
+    QMap<QString, FactGroup*>       _nameToFactGroupMap;
+    QMap<QString, FactMetaData*>    _nameToFactMetaDataMap;
 
 };
 

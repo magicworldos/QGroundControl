@@ -14,23 +14,23 @@ class QGCUASFileViewMulti;
 
 class QGCUASFileViewMulti : public QGCDockWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit QGCUASFileViewMulti(const QString &title, QAction *action, QWidget *parent = 0);
-	~QGCUASFileViewMulti();
+    explicit QGCUASFileViewMulti(const QString& title, QAction* action, QWidget *parent = 0);
+    ~QGCUASFileViewMulti();
 
 protected:
-	void changeEvent(QEvent *e);
-	QMap<UAS *, QGCUASFileView *> lists;
-
+    void changeEvent(QEvent *e);
+    QMap<UAS*, QGCUASFileView*> lists;
+    
 private slots:
-	void _vehicleAdded(Vehicle *vehicle);
-	void _vehicleRemoved(Vehicle *vehicle);
-	void _activeVehicleChanged(Vehicle *vehicle);
+    void _vehicleAdded(Vehicle* vehicle);
+    void _vehicleRemoved(Vehicle* vehicle);
+    void _activeVehicleChanged(Vehicle* vehicle);
 
 private:
-	Ui::QGCUASFileViewMulti *ui;
+    Ui::QGCUASFileViewMulti *ui;
 };
 
 #endif // QGCUASFILEVIEWMULTI_H

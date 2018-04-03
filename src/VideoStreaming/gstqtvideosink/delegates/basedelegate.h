@@ -36,122 +36,120 @@
 
 class BaseDelegate : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	enum EventType
-	{
-		BufferEventType = QEvent::User,
-		BufferFormatEventType,
-		DeactivateEventType
-	};
+    enum EventType {
+        BufferEventType = QEvent::User,
+        BufferFormatEventType,
+        DeactivateEventType
+    };
 
-	//-------------------------------------
+    //-------------------------------------
 
-	class BufferEvent : public QEvent
-	{
-	public:
-		inline BufferEvent(GstBuffer *buf)
-			: QEvent(static_cast<QEvent::Type>(BufferEventType)),
-			  buffer(gst_buffer_ref(buf))
-		{}
+    class BufferEvent : public QEvent
+    {
+    public:
+        inline BufferEvent(GstBuffer *buf)
+            : QEvent(static_cast<QEvent::Type>(BufferEventType)),
+              buffer(gst_buffer_ref(buf))
+        {}
 
-		virtual ~BufferEvent()
-		{
-			gst_buffer_unref(buffer);
-		}
+        virtual ~BufferEvent() {
+            gst_buffer_unref(buffer);
+        }
 
-		GstBuffer *buffer;
-	};
+        GstBuffer *buffer;
+    };
 
-	class BufferFormatEvent : public QEvent
-	{
-	public:
-		inline BufferFormatEvent(const BufferFormat &format)
-			: QEvent(static_cast<QEvent::Type>(BufferFormatEventType)),
-			  format(format)
-		{}
+    class BufferFormatEvent : public QEvent
+    {
+    public:
+        inline BufferFormatEvent(const BufferFormat &format)
+            : QEvent(static_cast<QEvent::Type>(BufferFormatEventType)),
+            format(format)
+        {}
 
-		BufferFormat format;
-	};
+        BufferFormat format;
+    };
 
-	class DeactivateEvent : public QEvent
-	{
-	public:
-		inline DeactivateEvent()
-			: QEvent(static_cast<QEvent::Type>(DeactivateEventType))
-		{
-		}
-	};
+    class DeactivateEvent : public QEvent
+    {
+    public:
+        inline DeactivateEvent()
+            : QEvent(static_cast<QEvent::Type>(DeactivateEventType))
+        {
+        }
+    };
 
-	//-------------------------------------
+    //-------------------------------------
 
-	explicit BaseDelegate(GstElement *sink, QObject *parent = 0);
-	virtual ~BaseDelegate();
+    explicit BaseDelegate(GstElement *sink, QObject *parent = 0);
+    virtual ~BaseDelegate();
 
-	bool isActive() const;
-	void setActive(bool playing);
+    bool isActive() const;
+    void setActive(bool playing);
 
-	// GstColorBalance interface
+    // GstColorBalance interface
 
-	int brightness() const;
-	void setBrightness(int brightness);
+    int brightness() const;
+    void setBrightness(int brightness);
 
-	int contrast() const;
-	void setContrast(int contrast);
+    int contrast() const;
+    void setContrast(int contrast);
 
-	int hue() const;
-	void setHue(int hue);
+    int hue() const;
+    void setHue(int hue);
 
-	int saturation() const;
-	void setSaturation(int saturation);
+    int saturation() const;
+    void setSaturation(int saturation);
 
-	// pixel-aspect-ratio property
-	Fraction pixelAspectRatio() const;
-	void setPixelAspectRatio(const Fraction &f);
+    // pixel-aspect-ratio property
+    Fraction pixelAspectRatio() const;
+    void setPixelAspectRatio(const Fraction & f);
 
-	// force-aspect-ratio property
-	bool forceAspectRatio() const;
-	void setForceAspectRatio(bool force);
+    // force-aspect-ratio property
+    bool forceAspectRatio() const;
+    void setForceAspectRatio(bool force);
 
 protected:
-	// internal event handling
-	virtual bool event(QEvent *event);
+    // internal event handling
+    virtual bool event(QEvent *event);
 
-	// tells the surface to repaint itself
-	virtual void update();
+    // tells the surface to repaint itself
+    virtual void update();
 
 protected:
-	// colorbalance interface properties
-	mutable QReadWriteLock m_colorsLock;
-	bool m_colorsDirty;
-	int m_brightness;
-	int m_contrast;
-	int m_hue;
-	int m_saturation;
+    // colorbalance interface properties
+    mutable QReadWriteLock m_colorsLock;
+    bool m_colorsDirty;
+    int m_brightness;
+    int m_contrast;
+    int m_hue;
+    int m_saturation;
 
-	// pixel-aspect-ratio property
-	mutable QReadWriteLock m_pixelAspectRatioLock;
-	Fraction m_pixelAspectRatio;
+    // pixel-aspect-ratio property
+    mutable QReadWriteLock m_pixelAspectRatioLock;
+    Fraction m_pixelAspectRatio;
 
-	// force-aspect-ratio property
-	mutable QReadWriteLock m_forceAspectRatioLock;
-	bool m_forceAspectRatioDirty;
-	bool m_forceAspectRatio;
+    // force-aspect-ratio property
+    mutable QReadWriteLock m_forceAspectRatioLock;
+    bool m_forceAspectRatioDirty;
+    bool m_forceAspectRatio;
 
-	// format caching
-	bool m_formatDirty;
-	BufferFormat m_bufferFormat;
-	PaintAreas m_areas;
+    // format caching
+    bool m_formatDirty;
+    BufferFormat m_bufferFormat;
+    PaintAreas m_areas;
 
-	// whether the sink is active (PAUSED or PLAYING)
-	mutable QReadWriteLock m_isActiveLock;
-	bool m_isActive;
+    // whether the sink is active (PAUSED or PLAYING)
+    mutable QReadWriteLock m_isActiveLock;
+    bool m_isActive;
 
-	// the buffer to be drawn next
-	GstBuffer *m_buffer;
+    // the buffer to be drawn next
+    GstBuffer *m_buffer;
 
-	// the video sink element
-	GstElement *const m_sink;
+    // the video sink element
+    GstElement * const m_sink;
 };
 
 #endif // BASEDELEGATE_H

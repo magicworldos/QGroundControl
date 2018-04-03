@@ -30,72 +30,70 @@
 #ifndef GST_QT_VIDEO_SINK_NO_OPENGL
 
 #define GST_TYPE_QT_GL_VIDEO_SINK_BASE \
-	(GstQtGLVideoSinkBase::get_type())
+  (GstQtGLVideoSinkBase::get_type())
 #define GST_QT_GL_VIDEO_SINK_BASE(obj) \
-	(G_TYPE_CHECK_INSTANCE_CAST ((obj), GST_TYPE_QT_GL_VIDEO_SINK_BASE, GstQtGLVideoSinkBase))
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GST_TYPE_QT_GL_VIDEO_SINK_BASE, GstQtGLVideoSinkBase))
 
 struct GstQtGLVideoSinkBase
 {
 public:
-	GstQtVideoSinkBase parent;
+    GstQtVideoSinkBase parent;
 
-	static GType get_type();
+    static GType get_type();
 
 private:
-	enum
-	{
-		PROP_0,
-		PROP_CONTRAST,
-		PROP_BRIGHTNESS,
-		PROP_HUE,
-		PROP_SATURATION
-	};
+    enum {
+        PROP_0,
+        PROP_CONTRAST,
+        PROP_BRIGHTNESS,
+        PROP_HUE,
+        PROP_SATURATION
+    };
 
-	//index for s_colorbalance_labels
-	enum
-	{
-		LABEL_CONTRAST = 0,
-		LABEL_BRIGHTNESS,
-		LABEL_HUE,
-		LABEL_SATURATION,
-		LABEL_LAST
-	};
+    //index for s_colorbalance_labels
+    enum {
+        LABEL_CONTRAST = 0,
+        LABEL_BRIGHTNESS,
+        LABEL_HUE,
+        LABEL_SATURATION,
+        LABEL_LAST
+    };
 
-	static void init_interfaces(GType type);
+    static void init_interfaces(GType type);
 
-	static void base_init(gpointer g_class);
-	static void class_init(gpointer g_class, gpointer class_data);
+    static void base_init(gpointer g_class);
+    static void class_init(gpointer g_class, gpointer class_data);
 
-	static void init(GTypeInstance *instance, gpointer g_class);
-	static void finalize(GObject *object);
+    static void init(GTypeInstance *instance, gpointer g_class);
+    static void finalize(GObject *object);
 
-	static void colorbalance_init(GstColorBalanceInterface *balance_interface, gpointer data);
-	static const GList *colorbalance_list_channels(GstColorBalance *balance);
-	static void colorbalance_set_value(GstColorBalance *balance,
-					   GstColorBalanceChannel *channel,
-					   gint value);
-	static gint colorbalance_get_value(GstColorBalance *balance,
-					   GstColorBalanceChannel *channel);
-	static GstColorBalanceType colorbalance_get_balance_type(GstColorBalance *balance);
+    static void colorbalance_init(GstColorBalanceInterface *balance_interface, gpointer data);
+    static const GList *colorbalance_list_channels(GstColorBalance *balance);
+    static void colorbalance_set_value(GstColorBalance *balance,
+                                       GstColorBalanceChannel *channel,
+                                       gint value);
+    static gint colorbalance_get_value(GstColorBalance *balance,
+                                       GstColorBalanceChannel *channel);
+    static GstColorBalanceType colorbalance_get_balance_type(GstColorBalance *balance);
 
-	static void set_property(GObject *object, guint prop_id,
-				 const GValue *value, GParamSpec *pspec);
-	static void get_property(GObject *object, guint prop_id,
-				 GValue *value, GParamSpec *pspec);
+    static void set_property(GObject *object, guint prop_id,
+                             const GValue *value, GParamSpec *pspec);
+    static void get_property(GObject *object, guint prop_id,
+                             GValue *value, GParamSpec *pspec);
 
-	static gboolean start(GstBaseSink *sink);
-	static gboolean set_caps(GstBaseSink *sink, GstCaps *caps);
+    static gboolean start(GstBaseSink *sink);
+    static gboolean set_caps(GstBaseSink *sink, GstCaps *caps);
 
 
-	GList *m_channels_list;
-	static const char *const s_colorbalance_labels[];
-	static GstQtVideoSinkBaseClass *s_parent_class;
+    GList *m_channels_list;
+    static const char * const s_colorbalance_labels[];
+    static GstQtVideoSinkBaseClass *s_parent_class;
 };
 
 
 struct GstQtGLVideoSinkBaseClass
 {
-	GstQtVideoSinkBaseClass parent_class;
+    GstQtVideoSinkBaseClass parent_class;
 };
 
 #endif // GST_QT_VIDEO_SINK_NO_OPENGL

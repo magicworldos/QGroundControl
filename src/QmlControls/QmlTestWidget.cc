@@ -16,27 +16,27 @@
 #include <QColorDialog>
 
 QmlTestWidget::QmlTestWidget(void)
-	: QGCQmlWidgetHolder(QString(), NULL, NULL)
+    : QGCQmlWidgetHolder(QString(), NULL, NULL)
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-	resize(900, 500);
-	setVisible(true);
+    setAttribute(Qt::WA_DeleteOnClose);
+    resize(900, 500);
+    setVisible(true);
 
-	setContextPropertyObject("controller", this);
+    setContextPropertyObject("controller", this);
 
-	setSource(QUrl::fromUserInput("qrc:qml/QmlTest.qml"));
+    setSource(QUrl::fromUserInput("qrc:qml/QmlTest.qml"));
 }
 
-void QmlTestWidget::showColorDialog(QQuickItem *item)
+void QmlTestWidget::showColorDialog(QQuickItem* item)
 {
-	Q_UNUSED(item)
-	QColorDialog colorDialog(this);
-	connect(&colorDialog, &QColorDialog::colorSelected, this, &QmlTestWidget::_colorSelected);
-	colorDialog.open();
+    Q_UNUSED(item)
+    QColorDialog colorDialog(this);
+    connect(&colorDialog, &QColorDialog::colorSelected, this, &QmlTestWidget::_colorSelected);
+    colorDialog.open();
 }
 
-void QmlTestWidget::_colorSelected(const QColor &color)
+void QmlTestWidget::_colorSelected(const QColor & color)
 {
-	Q_UNUSED(color);
+    Q_UNUSED(color);
 }
 

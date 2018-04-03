@@ -15,38 +15,36 @@
 
 class LogDownloadTest : public UnitTest
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	LogDownloadTest(void);
-
+    LogDownloadTest(void);
+    
 private slots:
-	//void init(void);
-	//void cleanup(void) { _cleanup(); }
+    //void init(void);
+    //void cleanup(void) { _cleanup(); }
 
-	void downloadTest(void);
+    void downloadTest(void);
 
 private:
-	// LogDownloadController signals
+    // LogDownloadController signals
 
-	enum
-	{
-		requestingListChangedSignalIndex = 0,
-		downloadingLogsChangedSignalIndex,
-		modelChangedSignalIndex,
-		logDownloadControllerMaxSignalIndex
-	};
+    enum {
+        requestingListChangedSignalIndex = 0,
+        downloadingLogsChangedSignalIndex,
+        modelChangedSignalIndex,
+        logDownloadControllerMaxSignalIndex
+    };
 
-	enum
-	{
-		requestingListChangedSignalMask =   1 << requestingListChangedSignalIndex,
-		downloadingLogsChangedSignalMask =  1 << downloadingLogsChangedSignalIndex,
-		modelChangedSignalIndexMask =       1 << modelChangedSignalIndex,
-	};
+    enum {
+        requestingListChangedSignalMask =   1 << requestingListChangedSignalIndex,
+        downloadingLogsChangedSignalMask =  1 << downloadingLogsChangedSignalIndex,
+        modelChangedSignalIndexMask =       1 << modelChangedSignalIndex,
+    };
 
-	MultiSignalSpy     *_multiSpyLogDownloadController;
-	static const size_t _cLogDownloadControllerSignals = logDownloadControllerMaxSignalIndex;
-	const char         *_rgLogDownloadControllerSignals[_cLogDownloadControllerSignals];
+    MultiSignalSpy*     _multiSpyLogDownloadController;
+    static const size_t _cLogDownloadControllerSignals = logDownloadControllerMaxSignalIndex;
+    const char*         _rgLogDownloadControllerSignals[_cLogDownloadControllerSignals];
 
 };
 

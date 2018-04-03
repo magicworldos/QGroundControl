@@ -20,23 +20,22 @@
 ///
 ///     @author Don Gagne <don@thegagnes.com>
 
-class QGCTemporaryFile : public QFile
-{
-	Q_OBJECT
-
+class QGCTemporaryFile : public QFile {
+    Q_OBJECT
+    
 public:
 	/// @brief Creates a new temp file object. QGC temp files are always created in the
 	//			QStandardPaths::TempLocation directory.
 	//		@param template Template for file name following QTemporaryFile rules. Template should NOT include
 	//							directory path, only file name.
-	QGCTemporaryFile(const QString &fileTemplate, QObject *parent = NULL);
+    QGCTemporaryFile(const QString& fileTemplate, QObject* parent = NULL);
 
 	/// @brief Opens the file in ReadWrite mode.
 	///		@returns false - open failed
 	bool open(OpenMode openMode = ReadWrite);
-
+    
 private:
-	QString _template;
+    QString _template;
 };
 
 

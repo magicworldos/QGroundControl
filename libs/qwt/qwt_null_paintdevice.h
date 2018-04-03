@@ -17,11 +17,11 @@
 /*!
   \brief A null paint device doing nothing
 
-  Sometimes important layout/rendering geometries are not
-  available or changeable from the public Qt class interface.
+  Sometimes important layout/rendering geometries are not 
+  available or changeable from the public Qt class interface. 
   ( f.e hidden in the style implementation ).
 
-  QwtNullPaintDevice can be used to manipulate or filter out
+  QwtNullPaintDevice can be used to manipulate or filter out 
   this information by analyzing the stream of paint primitives.
 
   F.e. QwtNullPaintDevice is used by QwtPlotCanvas to identify
@@ -31,96 +31,96 @@
 class QWT_EXPORT QwtNullPaintDevice: public QPaintDevice
 {
 public:
-	/*!
-	  \brief Render mode
+    /*!
+      \brief Render mode
 
-	  \sa setMode(), mode()
-	 */
-	enum Mode
-	{
-		/*!
-		   All vector graphic primitives are painted by
-		   the corresponding draw methods
-		 */
-		NormalMode,
+      \sa setMode(), mode()
+     */
+    enum Mode
+    {
+        /*!
+           All vector graphic primitives are painted by
+           the corresponding draw methods
+         */
+        NormalMode, 
 
-		/*!
-		   Vector graphic primitives ( beside polygons ) are mapped to a QPainterPath
-		   and are painted by drawPath. In PathMode mode
-		   only a few draw methods are called:
+        /*!
+           Vector graphic primitives ( beside polygons ) are mapped to a QPainterPath
+           and are painted by drawPath. In PathMode mode
+           only a few draw methods are called:
 
-		   - drawPath()
-		   - drawPixmap()
-		   - drawImage()
-		   - drawPolygon()
-		 */
-		PolygonPathMode,
+           - drawPath()
+           - drawPixmap()
+           - drawImage()
+           - drawPolygon()
+         */
+        PolygonPathMode,
 
-		/*!
-		   Vector graphic primitives are mapped to a QPainterPath
-		   and are painted by drawPath. In PathMode mode
-		   only a few draw methods are called:
+        /*!
+           Vector graphic primitives are mapped to a QPainterPath
+           and are painted by drawPath. In PathMode mode
+           only a few draw methods are called:
 
-		   - drawPath()
-		   - drawPixmap()
-		   - drawImage()
-		 */
-		PathMode
-	};
+           - drawPath()
+           - drawPixmap()
+           - drawImage()
+         */
+        PathMode
+    };
 
-	QwtNullPaintDevice();
-	virtual ~QwtNullPaintDevice();
+    QwtNullPaintDevice();
+    virtual ~QwtNullPaintDevice();
 
-	void setMode(Mode);
-	Mode mode() const;
+    void setMode( Mode );
+    Mode mode() const;
 
-	virtual QPaintEngine *paintEngine() const;
+    virtual QPaintEngine *paintEngine() const;
 
-	virtual int metric(PaintDeviceMetric metric) const;
+    virtual int metric( PaintDeviceMetric metric ) const;
 
-	virtual void drawRects(const QRect *, int);
-	virtual void drawRects(const QRectF *, int);
+    virtual void drawRects(const QRect *, int );
+    virtual void drawRects(const QRectF *, int );
 
-	virtual void drawLines(const QLine *, int);
-	virtual void drawLines(const QLineF *, int);
+    virtual void drawLines(const QLine *, int );
+    virtual void drawLines(const QLineF *, int );
 
-	virtual void drawEllipse(const QRectF &);
-	virtual void drawEllipse(const QRect &);
+    virtual void drawEllipse(const QRectF &);
+    virtual void drawEllipse(const QRect &);
 
-	virtual void drawPath(const QPainterPath &);
+    virtual void drawPath(const QPainterPath &);
 
-	virtual void drawPoints(const QPointF *, int);
-	virtual void drawPoints(const QPoint *, int);
+    virtual void drawPoints(const QPointF *, int );
+    virtual void drawPoints(const QPoint *, int );
 
-	virtual void drawPolygon(
-		const QPointF *, int, QPaintEngine::PolygonDrawMode);
+    virtual void drawPolygon(
+        const QPointF *, int , QPaintEngine::PolygonDrawMode );
 
-	virtual void drawPolygon(
-		const QPoint *, int, QPaintEngine::PolygonDrawMode);
+    virtual void drawPolygon(
+        const QPoint *, int , QPaintEngine::PolygonDrawMode );
 
-	virtual void drawPixmap(const QRectF &,
-				const QPixmap &, const QRectF &);
+    virtual void drawPixmap(const QRectF &,
+        const QPixmap &, const QRectF &);
 
-	virtual void drawTextItem(const QPointF &, const QTextItem &);
+    virtual void drawTextItem(const QPointF &, const QTextItem &);
 
-	virtual void drawTiledPixmap(const QRectF &,
-				     const QPixmap &, const QPointF &s);
+    virtual void drawTiledPixmap(const QRectF &,
+        const QPixmap &, const QPointF &s);
 
-	virtual void drawImage(const QRectF &,
-			       const QImage &, const QRectF &, Qt::ImageConversionFlags);
+    virtual void drawImage(const QRectF &,
+        const QImage &, const QRectF &, Qt::ImageConversionFlags );
 
-	virtual void updateState(const QPaintEngineState &state);
+    virtual void updateState( const QPaintEngineState &state );
 
 protected:
-	//! \return Size needed to implement metric()
-	virtual QSize sizeMetrics() const = 0;
+    //! \return Size needed to implement metric()
+    virtual QSize sizeMetrics() const = 0;
 
 private:
-	class PaintEngine;
-	PaintEngine *d_engine;
+    class PaintEngine;
+    PaintEngine *d_engine;
 
-	class PrivateData;
-	PrivateData *d_data;
+    class PrivateData;
+    PrivateData *d_data;
 };
 
 #endif

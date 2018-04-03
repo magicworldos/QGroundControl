@@ -15,31 +15,29 @@
 class QwtPlotMagnifier::PrivateData
 {
 public:
-	PrivateData()
-	{
-		for (int axis = 0; axis < QwtPlot::axisCnt; axis++)
-		{
-			isAxisEnabled[axis] = true;
-		}
-	}
+    PrivateData()
+    {
+        for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ )
+            isAxisEnabled[axis] = true;
+    }
 
-	bool isAxisEnabled[QwtPlot::axisCnt];
+    bool isAxisEnabled[QwtPlot::axisCnt];
 };
 
 /*!
    Constructor
    \param canvas Plot canvas to be magnified
 */
-QwtPlotMagnifier::QwtPlotMagnifier(QWidget *canvas):
-	QwtMagnifier(canvas)
+QwtPlotMagnifier::QwtPlotMagnifier( QWidget *canvas ):
+    QwtMagnifier( canvas )
 {
-	d_data = new PrivateData();
+    d_data = new PrivateData();
 }
 
 //! Destructor
 QwtPlotMagnifier::~QwtPlotMagnifier()
 {
-	delete d_data;
+    delete d_data;
 }
 
 /*!
@@ -53,12 +51,10 @@ QwtPlotMagnifier::~QwtPlotMagnifier()
 
    \sa isAxisEnabled()
 */
-void QwtPlotMagnifier::setAxisEnabled(int axis, bool on)
+void QwtPlotMagnifier::setAxisEnabled( int axis, bool on )
 {
-	if (axis >= 0 && axis < QwtPlot::axisCnt)
-	{
-		d_data->isAxisEnabled[axis] = on;
-	}
+    if ( axis >= 0 && axis < QwtPlot::axisCnt )
+        d_data->isAxisEnabled[axis] = on;
 }
 
 /*!
@@ -69,98 +65,81 @@ void QwtPlotMagnifier::setAxisEnabled(int axis, bool on)
 
    \sa setAxisEnabled()
 */
-bool QwtPlotMagnifier::isAxisEnabled(int axis) const
+bool QwtPlotMagnifier::isAxisEnabled( int axis ) const
 {
-	if (axis >= 0 && axis < QwtPlot::axisCnt)
-	{
-		return d_data->isAxisEnabled[axis];
-	}
+    if ( axis >= 0 && axis < QwtPlot::axisCnt )
+        return d_data->isAxisEnabled[axis];
 
-	return true;
+    return true;
 }
 
 //! Return observed plot canvas
 QWidget *QwtPlotMagnifier::canvas()
 {
-	return parentWidget();
+    return parentWidget();
 }
 
 //! Return Observed plot canvas
 const QWidget *QwtPlotMagnifier::canvas() const
 {
-	return parentWidget();
+    return parentWidget();
 }
 
 //! Return plot widget, containing the observed plot canvas
 QwtPlot *QwtPlotMagnifier::plot()
 {
-	QWidget *w = canvas();
+    QWidget *w = canvas();
+    if ( w )
+        w = w->parentWidget();
 
-	if (w)
-	{
-		w = w->parentWidget();
-	}
-
-	return qobject_cast<QwtPlot *>(w);
+    return qobject_cast<QwtPlot *>( w );
 }
 
 //! Return plot widget, containing the observed plot canvas
 const QwtPlot *QwtPlotMagnifier::plot() const
 {
-	const QWidget *w = canvas();
+    const QWidget *w = canvas();
+    if ( w )
+        w = w->parentWidget();
 
-	if (w)
-	{
-		w = w->parentWidget();
-	}
-
-	return qobject_cast<const QwtPlot *>(w);
+    return qobject_cast<const QwtPlot *>( w );
 }
 
 /*!
    Zoom in/out the axes scales
    \param factor A value < 1.0 zooms in, a value > 1.0 zooms out.
 */
-void QwtPlotMagnifier::rescale(double factor)
+void QwtPlotMagnifier::rescale( double factor )
 {
-	QwtPlot *plt = plot();
+    QwtPlot* plt = plot();
+    if ( plt == NULL )
+        return;
 
-	if (plt == NULL)
-	{
-		return;
-	}
+    factor = qAbs( factor );
+    if ( factor == 1.0 || factor == 0.0 )
+        return;
 
-	factor = qAbs(factor);
+    bool doReplot = false;
 
-	if (factor == 1.0 || factor == 0.0)
-	{
-		return;
-	}
+    const bool autoReplot = plt->autoReplot();
+    plt->setAutoReplot( false );
 
-	bool doReplot = false;
+    for ( int axisId = 0; axisId < QwtPlot::axisCnt; axisId++ )
+    {
+        const QwtScaleDiv &scaleDiv = plt->axisScaleDiv( axisId );
+        if ( isAxisEnabled( axisId ) )
+        {
+            const double center =
+                scaleDiv.lowerBound() + scaleDiv.range() / 2;
+            const double width_2 = scaleDiv.range() / 2 * factor;
 
-	const bool autoReplot = plt->autoReplot();
-	plt->setAutoReplot(false);
+            plt->setAxisScale( axisId, center - width_2, center + width_2 );
+            doReplot = true;
+        }
+    }
 
-	for (int axisId = 0; axisId < QwtPlot::axisCnt; axisId++)
-	{
-		const QwtScaleDiv &scaleDiv = plt->axisScaleDiv(axisId);
+    plt->setAutoReplot( autoReplot );
 
-		if (isAxisEnabled(axisId))
-		{
-			const double center =
-				scaleDiv.lowerBound() + scaleDiv.range() / 2;
-			const double width_2 = scaleDiv.range() / 2 * factor;
-
-			plt->setAxisScale(axisId, center - width_2, center + width_2);
-			doReplot = true;
-		}
-	}
-
-	plt->setAutoReplot(autoReplot);
-
-	if (doReplot)
-	{
-		plt->replot();
-	}
+    if ( doReplot )
+        plt->replot();
 }

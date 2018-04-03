@@ -24,9 +24,9 @@
   A counter has a range from a minimum value to a maximum value
   and a step size. When the wrapping property is set
   the counter is circular.
-
-  The number of steps by which a button increments or decrements the value
-  can be specified using setIncSteps(). The number of buttons can be
+ 
+  The number of steps by which a button increments or decrements the value 
+  can be specified using setIncSteps(). The number of buttons can be 
   changed with setNumButtons().
 
   Example:
@@ -47,115 +47,115 @@ connect(counter, SIGNAL(valueChanged(double)), myClass, SLOT(newValue(double)));
 
 class QWT_EXPORT QwtCounter : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	Q_PROPERTY(double value READ value WRITE setValue)
-	Q_PROPERTY(double minimum READ minimum WRITE setMinimum)
-	Q_PROPERTY(double maximum READ maximum WRITE setMaximum)
-	Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep)
+    Q_PROPERTY( double value READ value WRITE setValue )
+    Q_PROPERTY( double minimum READ minimum WRITE setMinimum )
+    Q_PROPERTY( double maximum READ maximum WRITE setMaximum )
+    Q_PROPERTY( double singleStep READ singleStep WRITE setSingleStep )
 
-	Q_PROPERTY(int numButtons READ numButtons WRITE setNumButtons)
-	Q_PROPERTY(int stepButton1 READ stepButton1 WRITE setStepButton1)
-	Q_PROPERTY(int stepButton2 READ stepButton2 WRITE setStepButton2)
-	Q_PROPERTY(int stepButton3 READ stepButton3 WRITE setStepButton3)
+    Q_PROPERTY( int numButtons READ numButtons WRITE setNumButtons )
+    Q_PROPERTY( int stepButton1 READ stepButton1 WRITE setStepButton1 )
+    Q_PROPERTY( int stepButton2 READ stepButton2 WRITE setStepButton2 )
+    Q_PROPERTY( int stepButton3 READ stepButton3 WRITE setStepButton3 )
 
-	Q_PROPERTY(bool readOnly READ isReadOnly WRITE setReadOnly)
-	Q_PROPERTY(bool wrapping READ wrapping WRITE setWrapping)
+    Q_PROPERTY( bool readOnly READ isReadOnly WRITE setReadOnly )
+    Q_PROPERTY( bool wrapping READ wrapping WRITE setWrapping )
 
 public:
-	//! Button index
-	enum Button
-	{
-		//! Button intended for minor steps
-		Button1,
+    //! Button index
+    enum Button
+    {
+        //! Button intended for minor steps
+        Button1,
 
-		//! Button intended for medium steps
-		Button2,
+        //! Button intended for medium steps
+        Button2,
 
-		//! Button intended for large steps
-		Button3,
+        //! Button intended for large steps
+        Button3,
 
-		//! Number of buttons
-		ButtonCnt
-	};
+        //! Number of buttons
+        ButtonCnt
+    };
 
-	explicit QwtCounter(QWidget *parent = NULL);
-	virtual ~QwtCounter();
+    explicit QwtCounter( QWidget *parent = NULL );
+    virtual ~QwtCounter();
 
-	void setValid(bool);
-	bool isValid() const;
+    void setValid( bool );
+    bool isValid() const;
 
-	void setWrapping(bool);
-	bool wrapping() const;
+    void setWrapping( bool );
+    bool wrapping() const;
 
-	bool isReadOnly() const;
-	void setReadOnly(bool);
+    bool isReadOnly() const;
+    void setReadOnly( bool );
 
-	void setNumButtons(int n);
-	int numButtons() const;
+    void setNumButtons( int n );
+    int numButtons() const;
 
-	void setIncSteps(QwtCounter::Button btn, int nSteps);
-	int incSteps(QwtCounter::Button btn) const;
+    void setIncSteps( QwtCounter::Button btn, int nSteps );
+    int incSteps( QwtCounter::Button btn ) const;
 
-	virtual QSize sizeHint() const;
+    virtual QSize sizeHint() const;
 
-	double singleStep() const;
-	void setSingleStep(double s);
+    double singleStep() const;
+    void setSingleStep( double s );
 
-	void setRange(double min, double max);
+    void setRange( double min, double max );
+    
+    double minimum() const;
+    void setMinimum( double min );
 
-	double minimum() const;
-	void setMinimum(double min);
+    double maximum() const;
+    void setMaximum( double max );
 
-	double maximum() const;
-	void setMaximum(double max);
+    void setStepButton1( int nSteps );
+    int stepButton1() const;
 
-	void setStepButton1(int nSteps);
-	int stepButton1() const;
+    void setStepButton2( int nSteps );
+    int stepButton2() const;
 
-	void setStepButton2(int nSteps);
-	int stepButton2() const;
+    void setStepButton3( int nSteps );
+    int stepButton3() const;
 
-	void setStepButton3(int nSteps);
-	int stepButton3() const;
-
-	double value() const;
+    double value() const;
 
 public Q_SLOTS:
-	void setValue(double);
+    void setValue( double );
 
 
 Q_SIGNALS:
-	/*!
-	    This signal is emitted when a button has been released
-	    \param value The new value
-	*/
-	void buttonReleased(double value);
+    /*!
+        This signal is emitted when a button has been released
+        \param value The new value
+    */
+    void buttonReleased ( double value );
 
-	/*!
-	    This signal is emitted when the counter's value has changed
-	    \param value The new value
-	*/
-	void valueChanged(double value);
+    /*!
+        This signal is emitted when the counter's value has changed
+        \param value The new value
+    */
+    void valueChanged ( double value );
 
 protected:
-	virtual bool event(QEvent *);
-	virtual void wheelEvent(QWheelEvent *);
-	virtual void keyPressEvent(QKeyEvent *);
+    virtual bool event( QEvent * );
+    virtual void wheelEvent( QWheelEvent * );
+    virtual void keyPressEvent( QKeyEvent * );
 
 private Q_SLOTS:
-	void btnReleased();
-	void btnClicked();
-	void textChanged();
+    void btnReleased();
+    void btnClicked();
+    void textChanged();
 
 private:
-	void incrementValue(int numSteps);
-	void initCounter();
-	void updateButtons();
-	void showNumber(double);
+    void incrementValue( int numSteps );
+    void initCounter();
+    void updateButtons();
+    void showNumber( double );
 
-	class PrivateData;
-	PrivateData *d_data;
+    class PrivateData;
+    PrivateData *d_data;
 };
 
 #endif

@@ -20,19 +20,19 @@ class QGCUnconnectedInfoWidget;
  */
 class QGCUnconnectedInfoWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit QGCUnconnectedInfoWidget(QWidget *parent = 0);
-	~QGCUnconnectedInfoWidget();
+    explicit QGCUnconnectedInfoWidget(QWidget *parent = 0);
+    ~QGCUnconnectedInfoWidget();
 
-	Ui::QGCUnconnectedInfoWidget *ui;
+    Ui::QGCUnconnectedInfoWidget *ui;
 
 public slots:
-	/** @brief Start simulation */
-	void simulate();
-	/** @brief Add a link */
-	void addLink();
+    /** @brief Start simulation */
+    void simulate();
+    /** @brief Add a link */
+    void addLink();
 };
 
 #endif // QGCUNCONNECTEDINFOWIDGET_H

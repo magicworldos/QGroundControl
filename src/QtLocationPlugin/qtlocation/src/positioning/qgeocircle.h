@@ -43,40 +43,40 @@ class QGeoCirclePrivate;
 
 class Q_POSITIONING_EXPORT QGeoCircle : public QGeoShape
 {
-	Q_GADGET
-	Q_PROPERTY(QGeoCoordinate center READ center WRITE setCenter)
-	Q_PROPERTY(qreal radius READ radius WRITE setRadius)
+    Q_GADGET
+    Q_PROPERTY(QGeoCoordinate center READ center WRITE setCenter)
+    Q_PROPERTY(qreal radius READ radius WRITE setRadius)
 
 public:
-	QGeoCircle();
-	QGeoCircle(const QGeoCoordinate &center, qreal radius = -1.0);
-	QGeoCircle(const QGeoCircle &other);
-	QGeoCircle(const QGeoShape &other);
+    QGeoCircle();
+    QGeoCircle(const QGeoCoordinate &center, qreal radius = -1.0);
+    QGeoCircle(const QGeoCircle &other);
+    QGeoCircle(const QGeoShape &other);
 
-	~QGeoCircle();
+    ~QGeoCircle();
 
-	QGeoCircle &operator=(const QGeoCircle &other);
+    QGeoCircle &operator=(const QGeoCircle &other);
 
-	using QGeoShape::operator==;
-	bool operator==(const QGeoCircle &other) const;
+    using QGeoShape::operator==;
+    bool operator==(const QGeoCircle &other) const;
 
-	using QGeoShape::operator!=;
-	bool operator!=(const QGeoCircle &other) const;
+    using QGeoShape::operator!=;
+    bool operator!=(const QGeoCircle &other) const;
 
-	void setCenter(const QGeoCoordinate &center);
-	QGeoCoordinate center() const;
+    void setCenter(const QGeoCoordinate &center);
+    QGeoCoordinate center() const;
 
-	void setRadius(qreal radius);
-	qreal radius() const;
+    void setRadius(qreal radius);
+    qreal radius() const;
 
-	void translate(double degreesLatitude, double degreesLongitude);
-	QGeoCircle translated(double degreesLatitude, double degreesLongitude) const;
+    void translate(double degreesLatitude, double degreesLongitude);
+    QGeoCircle translated(double degreesLatitude, double degreesLongitude) const;
 
-	Q_INVOKABLE QString toString() const;
+    Q_INVOKABLE QString toString() const;
 
 private:
-	inline QGeoCirclePrivate *d_func();
-	inline const QGeoCirclePrivate *d_func() const;
+    inline QGeoCirclePrivate *d_func();
+    inline const QGeoCirclePrivate *d_func() const;
 };
 
 Q_DECLARE_TYPEINFO(QGeoCircle, Q_MOVABLE_TYPE);

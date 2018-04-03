@@ -42,8 +42,7 @@
  * and was manually copied here.
  */
 
-struct vehicle_gps_position_s
-{
+struct vehicle_gps_position_s {
 	uint64_t timestamp;
 	uint64_t time_utc_usec;
 	int32_t lat;

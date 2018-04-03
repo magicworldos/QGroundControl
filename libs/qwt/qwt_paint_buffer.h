@@ -29,38 +29,37 @@ class QPainter;
 class QWT_EXPORT QwtPaintBuffer
 {
 public:
-	explicit QwtPaintBuffer();
-	explicit QwtPaintBuffer(QPaintDevice *, const QRect &, QPainter *p = NULL);
+    explicit QwtPaintBuffer();
+    explicit QwtPaintBuffer(QPaintDevice *, const QRect &, QPainter *p = NULL);
 
-	virtual ~QwtPaintBuffer();
+    virtual ~QwtPaintBuffer();
 
-	void open(QPaintDevice *, const QRect &, QPainter *p = NULL);
-	void close();
+    void open(QPaintDevice *, const QRect &, QPainter *p = NULL);
+    void close();
 
-	QPainter *painter();
-	const QPaintDevice *device();
+    QPainter *painter();
+    const QPaintDevice *device();
 
-	static void setEnabled(bool enable);
-	static bool isEnabled();
+    static void setEnabled(bool enable);
+    static bool isEnabled();
 
-	//! Return Buffer used for double buffering
-	const QPixmap &buffer() const
-	{
-		return d_pixBuffer;
-	}
+    //! Return Buffer used for double buffering
+    const QPixmap &buffer() const {
+        return d_pixBuffer;
+    }
 
 protected:
-	void flush();
+    void flush();
 
 private:
-	QPixmap d_pixBuffer;
-	QRect d_rect;
+    QPixmap d_pixBuffer;
+    QRect d_rect;
 
-	QPaintDevice *d_device; // use QGuardedPtr
-	QPainter *d_painter; // use QGuardedPtr
-	QPainter *d_devicePainter; // use QGuardedPtr
+    QPaintDevice *d_device; // use QGuardedPtr
+    QPainter *d_painter; // use QGuardedPtr
+    QPainter *d_devicePainter; // use QGuardedPtr
 
-	static bool d_enabled;
+    static bool d_enabled;
 };
 
 #endif // QT_VERSION < 0x040000

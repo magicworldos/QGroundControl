@@ -63,8 +63,7 @@ extern "C" {
  *
  *  \sa SDL_DestroyWindow()
  */
-extern DECLSPEC SDL_Window *SDLCALL SDL_CreateShapedWindow(const char *title, unsigned int x, unsigned int y,
-		unsigned int w, unsigned int h, Uint32 flags);
+extern DECLSPEC SDL_Window * SDLCALL SDL_CreateShapedWindow(const char *title,unsigned int x,unsigned int y,unsigned int w,unsigned int h,Uint32 flags);
 
 /**
  * \brief Return whether the given window is a shaped window.
@@ -77,35 +76,32 @@ extern DECLSPEC SDL_Window *SDLCALL SDL_CreateShapedWindow(const char *title, un
 extern DECLSPEC SDL_bool SDLCALL SDL_IsShapedWindow(const SDL_Window *window);
 
 /** \brief An enum denoting the specific type of contents present in an SDL_WindowShapeParams union. */
-typedef enum
-{
-	/** \brief The default mode, a binarized alpha cutoff of 1. */
-	ShapeModeDefault,
-	/** \brief A binarized alpha cutoff with a given integer value. */
-	ShapeModeBinarizeAlpha,
-	/** \brief A binarized alpha cutoff with a given integer value, but with the opposite comparison. */
-	ShapeModeReverseBinarizeAlpha,
-	/** \brief A color key is applied. */
-	ShapeModeColorKey
+typedef enum {
+    /** \brief The default mode, a binarized alpha cutoff of 1. */
+    ShapeModeDefault,
+    /** \brief A binarized alpha cutoff with a given integer value. */
+    ShapeModeBinarizeAlpha,
+    /** \brief A binarized alpha cutoff with a given integer value, but with the opposite comparison. */
+    ShapeModeReverseBinarizeAlpha,
+    /** \brief A color key is applied. */
+    ShapeModeColorKey
 } WindowShapeMode;
 
 #define SDL_SHAPEMODEALPHA(mode) (mode == ShapeModeDefault || mode == ShapeModeBinarizeAlpha || mode == ShapeModeReverseBinarizeAlpha)
 
 /** \brief A union containing parameters for shaped windows. */
-typedef union
-{
-	/** \brief a cutoff alpha value for binarization of the window shape's alpha channel. */
-	Uint8 binarizationCutoff;
-	SDL_Color colorKey;
+typedef union {
+    /** \brief a cutoff alpha value for binarization of the window shape's alpha channel. */
+    Uint8 binarizationCutoff;
+    SDL_Color colorKey;
 } SDL_WindowShapeParams;
 
 /** \brief A struct that tags the SDL_WindowShapeParams union with an enum describing the type of its contents. */
-typedef struct SDL_WindowShapeMode
-{
-	/** \brief The mode of these window-shape parameters. */
-	WindowShapeMode mode;
-	/** \brief Window-shape parameters. */
-	SDL_WindowShapeParams parameters;
+typedef struct SDL_WindowShapeMode {
+    /** \brief The mode of these window-shape parameters. */
+    WindowShapeMode mode;
+    /** \brief Window-shape parameters. */
+    SDL_WindowShapeParams parameters;
 } SDL_WindowShapeMode;
 
 /**
@@ -121,7 +117,7 @@ typedef struct SDL_WindowShapeMode
  * \sa SDL_WindowShapeMode
  * \sa SDL_GetShapedWindowMode.
  */
-extern DECLSPEC int SDLCALL SDL_SetWindowShape(SDL_Window *window, SDL_Surface *shape, SDL_WindowShapeMode *shape_mode);
+extern DECLSPEC int SDLCALL SDL_SetWindowShape(SDL_Window *window,SDL_Surface *shape,SDL_WindowShapeMode *shape_mode);
 
 /**
  * \brief Get the shape parameters of a shaped window.
@@ -136,7 +132,7 @@ extern DECLSPEC int SDLCALL SDL_SetWindowShape(SDL_Window *window, SDL_Surface *
  * \sa SDL_WindowShapeMode
  * \sa SDL_SetWindowShape
  */
-extern DECLSPEC int SDLCALL SDL_GetShapedWindowMode(SDL_Window *window, SDL_WindowShapeMode *shape_mode);
+extern DECLSPEC int SDLCALL SDL_GetShapedWindowMode(SDL_Window *window,SDL_WindowShapeMode *shape_mode);
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

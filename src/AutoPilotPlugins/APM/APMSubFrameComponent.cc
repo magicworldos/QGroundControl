@@ -17,50 +17,50 @@
 #include "APMAutoPilotPlugin.h"
 #include "APMAirframeComponent.h"
 
-APMSubFrameComponent::APMSubFrameComponent(Vehicle *vehicle, AutoPilotPlugin *autopilot, QObject *parent)
-	: VehicleComponent(vehicle, autopilot, parent)
-	, _name(tr("Frame"))
+APMSubFrameComponent::APMSubFrameComponent(Vehicle* vehicle, AutoPilotPlugin* autopilot, QObject* parent)
+    : VehicleComponent(vehicle, autopilot, parent)
+    , _name(tr("Frame"))
 {
 }
 
 QString APMSubFrameComponent::name(void) const
 {
-	return _name;
+    return _name;
 }
 
 QString APMSubFrameComponent::description(void) const
 {
-	return tr("Frame setup allows you to choose your vehicle's motor configuration. Install clockwise" \
-		  "\npropellers on the green thrusters and counter-clockwise propellers on the blue thrusters" \
-		  "\n(or vice-versa). The flight controller will need to be rebooted to apply changes.");
+    return tr("Frame setup allows you to choose your vehicle's motor configuration. Install clockwise" \
+              "\npropellers on the green thrusters and counter-clockwise propellers on the blue thrusters" \
+              "\n(or vice-versa). The flight controller will need to be rebooted to apply changes.");
 }
 
 QString APMSubFrameComponent::iconResource(void) const
 {
-	return QStringLiteral("/qmlimages/SubFrameComponentIcon.png");
+    return QStringLiteral("/qmlimages/SubFrameComponentIcon.png");
 }
 
 bool APMSubFrameComponent::requiresSetup(void) const
 {
-	return false;
+    return false;
 }
 
 bool APMSubFrameComponent::setupComplete(void) const
 {
-	return true;
+    return true;
 }
 
 QStringList APMSubFrameComponent::setupCompleteChangedTriggerList(void) const
 {
-	return QStringList();
+    return QStringList();
 }
 
 QUrl APMSubFrameComponent::setupSource(void) const
 {
-	return QUrl::fromUserInput(QStringLiteral("qrc:/qml/APMSubFrameComponent.qml"));
+    return QUrl::fromUserInput(QStringLiteral("qrc:/qml/APMSubFrameComponent.qml"));
 }
 
 QUrl APMSubFrameComponent::summaryQmlSource(void) const
 {
-	return QUrl::fromUserInput(QStringLiteral("qrc:/qml/APMSubFrameComponentSummary.qml"));
+    return QUrl::fromUserInput(QStringLiteral("qrc:/qml/APMSubFrameComponentSummary.qml"));
 }

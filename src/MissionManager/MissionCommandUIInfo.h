@@ -37,47 +37,46 @@ class MissionCommandTreeTest;
 /// enumValues      string              Values associated with each enum string
 /// nanUnchanged    bool    false       True: value can be set to NaN to signal unchanged
 ///
-class MissionCmdParamInfo : public QObject
-{
+class MissionCmdParamInfo : public QObject {
 
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	MissionCmdParamInfo(QObject *parent = NULL);
+    MissionCmdParamInfo(QObject* parent = NULL);
 
-	MissionCmdParamInfo(const MissionCmdParamInfo &other, QObject *parent = NULL);
-	const MissionCmdParamInfo &operator=(const MissionCmdParamInfo &other);
+    MissionCmdParamInfo(const MissionCmdParamInfo& other, QObject* parent = NULL);
+    const MissionCmdParamInfo& operator=(const MissionCmdParamInfo& other);
 
-	Q_PROPERTY(int          decimalPlaces   READ decimalPlaces  CONSTANT)
-	Q_PROPERTY(double       defaultValue    READ defaultValue   CONSTANT)
-	Q_PROPERTY(QStringList  enumStrings     READ enumStrings    CONSTANT)
-	Q_PROPERTY(QVariantList enumValues      READ enumValues     CONSTANT)
-	Q_PROPERTY(QString      label           READ label          CONSTANT)
-	Q_PROPERTY(int          param           READ param          CONSTANT)
-	Q_PROPERTY(QString      units           READ units          CONSTANT)
-	Q_PROPERTY(bool         nanUnchanged    READ nanUnchanged   CONSTANT)
+    Q_PROPERTY(int          decimalPlaces   READ decimalPlaces  CONSTANT)
+    Q_PROPERTY(double       defaultValue    READ defaultValue   CONSTANT)
+    Q_PROPERTY(QStringList  enumStrings     READ enumStrings    CONSTANT)
+    Q_PROPERTY(QVariantList enumValues      READ enumValues     CONSTANT)
+    Q_PROPERTY(QString      label           READ label          CONSTANT)
+    Q_PROPERTY(int          param           READ param          CONSTANT)
+    Q_PROPERTY(QString      units           READ units          CONSTANT)
+    Q_PROPERTY(bool         nanUnchanged    READ nanUnchanged   CONSTANT)
 
-	int             decimalPlaces(void) const { return _decimalPlaces; }
-	double          defaultValue(void) const { return _defaultValue; }
-	QStringList     enumStrings(void) const { return _enumStrings; }
-	QVariantList    enumValues(void) const { return _enumValues; }
-	QString         label(void) const { return _label; }
-	int             param(void) const { return _param; }
-	QString         units(void) const { return _units; }
-	bool            nanUnchanged(void) const { return _nanUnchanged; }
+    int             decimalPlaces   (void) const { return _decimalPlaces; }
+    double          defaultValue    (void) const { return _defaultValue; }
+    QStringList     enumStrings     (void) const { return _enumStrings; }
+    QVariantList    enumValues      (void) const { return _enumValues; }
+    QString         label           (void) const { return _label; }
+    int             param           (void) const { return _param; }
+    QString         units           (void) const { return _units; }
+    bool            nanUnchanged    (void) const { return _nanUnchanged; }
 
 private:
-	int             _decimalPlaces;
-	double          _defaultValue;
-	QStringList     _enumStrings;
-	QVariantList    _enumValues;
-	QString         _label;
-	int             _param;
-	QString         _units;
-	bool            _nanUnchanged;
+    int             _decimalPlaces;
+    double          _defaultValue;
+    QStringList     _enumStrings;
+    QVariantList    _enumValues;
+    QString         _label;
+    int             _param;
+    QString         _units;
+    bool            _nanUnchanged;
 
-	friend class MissionCommandTree;
-	friend class MissionCommandUIInfo;
+    friend class MissionCommandTree;
+    friend class MissionCommandUIInfo;
 };
 
 /// UI Information associated with a mission command (MAV_CMD)
@@ -102,103 +101,102 @@ private:
 /// paramRemove             string              Used by an override to remove params, example: "1,3" will remove params 1 and 3 on the override
 /// param[1-7]              object              MissionCommandParamInfo object
 ///
-class MissionCommandUIInfo : public QObject
-{
-	Q_OBJECT
+class MissionCommandUIInfo : public QObject {
+    Q_OBJECT
 
 public:
-	MissionCommandUIInfo(QObject *parent = NULL);
+    MissionCommandUIInfo(QObject* parent = NULL);
 
-	MissionCommandUIInfo(const MissionCommandUIInfo &other, QObject *parent = NULL);
-	const MissionCommandUIInfo &operator=(const MissionCommandUIInfo &other);
+    MissionCommandUIInfo(const MissionCommandUIInfo& other, QObject* parent = NULL);
+    const MissionCommandUIInfo& operator=(const MissionCommandUIInfo& other);
 
-	Q_PROPERTY(QString  category                READ category               CONSTANT)
-	Q_PROPERTY(QString  description             READ description            CONSTANT)
-	Q_PROPERTY(bool     friendlyEdit            READ friendlyEdit           CONSTANT)
-	Q_PROPERTY(QString  friendlyName            READ friendlyName           CONSTANT)
-	Q_PROPERTY(QString  rawName                 READ rawName                CONSTANT)
-	Q_PROPERTY(bool     isStandaloneCoordinate  READ isStandaloneCoordinate CONSTANT)
-	Q_PROPERTY(bool     specifiesCoordinate     READ specifiesCoordinate    CONSTANT)
-	Q_PROPERTY(bool     specifiesAltitudeOnly   READ specifiesAltitudeOnly  CONSTANT)
-	Q_PROPERTY(int      command                 READ intCommand             CONSTANT)
+    Q_PROPERTY(QString  category                READ category               CONSTANT)
+    Q_PROPERTY(QString  description             READ description            CONSTANT)
+    Q_PROPERTY(bool     friendlyEdit            READ friendlyEdit           CONSTANT)
+    Q_PROPERTY(QString  friendlyName            READ friendlyName           CONSTANT)
+    Q_PROPERTY(QString  rawName                 READ rawName                CONSTANT)
+    Q_PROPERTY(bool     isStandaloneCoordinate  READ isStandaloneCoordinate CONSTANT)
+    Q_PROPERTY(bool     specifiesCoordinate     READ specifiesCoordinate    CONSTANT)
+    Q_PROPERTY(bool     specifiesAltitudeOnly   READ specifiesAltitudeOnly  CONSTANT)
+    Q_PROPERTY(int      command                 READ intCommand             CONSTANT)
 
-	MAV_CMD command(void) const { return _command; }
-	int     intCommand(void) const { return (int)_command; }
+    MAV_CMD command(void) const { return _command; }
+    int     intCommand(void) const { return (int)_command; }
 
-	QString category(void) const;
-	QString description(void) const;
-	bool    friendlyEdit(void) const;
-	QString friendlyName(void) const;
-	QString rawName(void) const;
-	bool    isStandaloneCoordinate(void) const;
-	bool    specifiesCoordinate(void) const;
-	bool    specifiesAltitudeOnly(void) const;
+    QString category                (void) const;
+    QString description             (void) const;
+    bool    friendlyEdit            (void) const;
+    QString friendlyName            (void) const;
+    QString rawName                 (void) const;
+    bool    isStandaloneCoordinate  (void) const;
+    bool    specifiesCoordinate     (void) const;
+    bool    specifiesAltitudeOnly   (void) const;
 
-	/// Load the data in the object from the specified json
-	///     @param jsonObject Json object to load from
-	///     @param requireFullObject true: not a partial load, false: partial load allowed
-	/// @return true: success, false: failure, errorString set
-	bool loadJsonInfo(const QJsonObject &jsonObject, bool requireFullObject, QString &errorString);
+    /// Load the data in the object from the specified json
+    ///     @param jsonObject Json object to load from
+    ///     @param requireFullObject true: not a partial load, false: partial load allowed
+    /// @return true: success, false: failure, errorString set
+    bool loadJsonInfo(const QJsonObject& jsonObject, bool requireFullObject, QString& errorString);
 
-	/// Retruns parameter information for specified parameter
-	///     @param index paremeter index to retrieve, 1-7
-	///     @param showUI true: show parameter in editor, false: hide parameter in editor
-	/// @return Param info for index, NULL for none available
-	const MissionCmdParamInfo *getParamInfo(int index, bool &showUI) const;
+    /// Retruns parameter information for specified parameter
+    ///     @param index paremeter index to retrieve, 1-7
+    ///     @param showUI true: show parameter in editor, false: hide parameter in editor
+    /// @return Param info for index, NULL for none available
+    const MissionCmdParamInfo* getParamInfo(int index, bool& showUI) const;
 
 private:
-	QString _loadErrorString(const QString &errorString) const;
+    QString _loadErrorString(const QString& errorString) const;
 
-	/// Returns whether the specific information value is available
-	bool _infoAvailable(const QString &key) const { return _infoMap.contains(key); }
+    /// Returns whether the specific information value is available
+    bool _infoAvailable(const QString& key) const { return _infoMap.contains(key); }
 
-	/// Returns the values for the specified value
-	const QVariant _infoValue(const QString &key) const { return _infoMap[key]; }
+    /// Returns the values for the specified value
+    const QVariant _infoValue(const QString& key) const { return _infoMap[key]; }
 
-	/// Set the value for the specified piece of information
-	void _setInfoValue(const QString &key, const QVariant &value) { _infoMap[key] = value; }
+    /// Set the value for the specified piece of information
+    void _setInfoValue(const QString& key, const QVariant& value) { _infoMap[key] = value; }
 
-	/// Overrides the existing values with new ui info
-	///     @param uiInfo New ui info to override existing info
-	void _overrideInfo(MissionCommandUIInfo *uiInfo);
+    /// Overrides the existing values with new ui info
+    ///     @param uiInfo New ui info to override existing info
+    void _overrideInfo(MissionCommandUIInfo* uiInfo);
 
-	MAV_CMD                         _command;
-	QMap<QString, QVariant>         _infoMap;
-	QMap<int, MissionCmdParamInfo *> _paramInfoMap;
-	QList<int>                      _paramRemoveList;
+    MAV_CMD                         _command;
+    QMap<QString, QVariant>         _infoMap;
+    QMap<int, MissionCmdParamInfo*> _paramInfoMap;
+    QList<int>                      _paramRemoveList;
 
-	static const char *_categoryJsonKey;
-	static const char *_decimalPlacesJsonKey;
-	static const char *_defaultJsonKey;
-	static const char *_descriptionJsonKey;
-	static const char *_enumStringsJsonKey;
-	static const char *_enumValuesJsonKey;
-	static const char *_nanUnchangedJsonKey;
-	static const char *_friendlyNameJsonKey;
-	static const char *_friendlyEditJsonKey;
-	static const char *_idJsonKey;
-	static const char *_labelJsonKey;
-	static const char *_mavCmdInfoJsonKey;
-	static const char *_param1JsonKey;
-	static const char *_param2JsonKey;
-	static const char *_param3JsonKey;
-	static const char *_param4JsonKey;
-	static const char *_param5JsonKey;
-	static const char *_param6JsonKey;
-	static const char *_param7JsonKey;
-	static const char *_paramJsonKeyFormat;
-	static const char *_paramRemoveJsonKey;
-	static const char *_rawNameJsonKey;
-	static const char *_standaloneCoordinateJsonKey;
-	static const char *_specifiesCoordinateJsonKey;
-	static const char *_specifiesAltitudeOnlyJsonKey;
-	static const char *_unitsJsonKey;
-	static const char *_commentJsonKey;
-	static const char *_advancedCategory;
+    static const char* _categoryJsonKey;
+    static const char* _decimalPlacesJsonKey;
+    static const char* _defaultJsonKey;
+    static const char* _descriptionJsonKey;
+    static const char* _enumStringsJsonKey;
+    static const char* _enumValuesJsonKey;
+    static const char* _nanUnchangedJsonKey;
+    static const char* _friendlyNameJsonKey;
+    static const char* _friendlyEditJsonKey;
+    static const char* _idJsonKey;
+    static const char* _labelJsonKey;
+    static const char* _mavCmdInfoJsonKey;
+    static const char* _param1JsonKey;
+    static const char* _param2JsonKey;
+    static const char* _param3JsonKey;
+    static const char* _param4JsonKey;
+    static const char* _param5JsonKey;
+    static const char* _param6JsonKey;
+    static const char* _param7JsonKey;
+    static const char* _paramJsonKeyFormat;
+    static const char* _paramRemoveJsonKey;
+    static const char* _rawNameJsonKey;
+    static const char* _standaloneCoordinateJsonKey;
+    static const char* _specifiesCoordinateJsonKey;
+    static const char* _specifiesAltitudeOnlyJsonKey;
+    static const char* _unitsJsonKey;
+    static const char* _commentJsonKey;    
+    static const char* _advancedCategory;
 
-	friend class MissionCommandTree;
+    friend class MissionCommandTree;    
 #ifdef UNITTEST_BUILD
-	friend class MissionCommandTreeTest;
+    friend class MissionCommandTreeTest;
 #endif
 };
 

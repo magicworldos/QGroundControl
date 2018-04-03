@@ -15,25 +15,25 @@
 
 class APMFlightModesComponent : public VehicleComponent
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	APMFlightModesComponent(Vehicle *vehicle, AutoPilotPlugin *autopilot, QObject *parent = NULL);
-
-	// Virtuals from VehicleComponent
-	QStringList setupCompleteChangedTriggerList(void) const final;
-
-	// Virtuals from VehicleComponent
-	QString name(void) const final;
-	QString description(void) const final;
-	QString iconResource(void) const final;
-	bool requiresSetup(void) const final;
-	bool setupComplete(void) const final;
-	QUrl setupSource(void) const final;
-	QUrl summaryQmlSource(void) const final;
-
+    APMFlightModesComponent(Vehicle* vehicle, AutoPilotPlugin* autopilot, QObject* parent = NULL);
+    
+    // Virtuals from VehicleComponent
+    QStringList setupCompleteChangedTriggerList(void) const final;
+    
+    // Virtuals from VehicleComponent
+    QString name(void) const final;
+    QString description(void) const final;
+    QString iconResource(void) const final;
+    bool requiresSetup(void) const final;
+    bool setupComplete(void) const final;
+    QUrl setupSource(void) const final;
+    QUrl summaryQmlSource(void) const final;
+    
 private:
-	const QString   _name;
+    const QString   _name;
 };
 
 #endif

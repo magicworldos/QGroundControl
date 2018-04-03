@@ -14,69 +14,65 @@
 
 class UnitsSettings : public SettingsGroup
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	UnitsSettings(QObject *parent = NULL);
+    UnitsSettings(QObject* parent = NULL);
 
-	enum DistanceUnits
-	{
-		DistanceUnitsFeet = 0,
-		DistanceUnitsMeters
-	};
+    enum DistanceUnits {
+        DistanceUnitsFeet = 0,
+        DistanceUnitsMeters
+    };
 
-	enum AreaUnits
-	{
-		AreaUnitsSquareFeet = 0,
-		AreaUnitsSquareMeters,
-		AreaUnitsSquareKilometers,
-		AreaUnitsHectares,
-		AreaUnitsAcres,
-		AreaUnitsSquareMiles,
-	};
+    enum AreaUnits {
+        AreaUnitsSquareFeet = 0,
+        AreaUnitsSquareMeters,
+        AreaUnitsSquareKilometers,
+        AreaUnitsHectares,
+        AreaUnitsAcres,
+        AreaUnitsSquareMiles,
+    };
 
-	enum SpeedUnits
-	{
-		SpeedUnitsFeetPerSecond = 0,
-		SpeedUnitsMetersPerSecond,
-		SpeedUnitsMilesPerHour,
-		SpeedUnitsKilometersPerHour,
-		SpeedUnitsKnots,
-	};
+    enum SpeedUnits {
+        SpeedUnitsFeetPerSecond = 0,
+        SpeedUnitsMetersPerSecond,
+        SpeedUnitsMilesPerHour,
+        SpeedUnitsKilometersPerHour,
+        SpeedUnitsKnots,
+    };
 
-	enum TemperatureUnits
-	{
-		TemperatureUnitsCelsius = 0,
-		TemperatureUnitsFarenheit,
-	};
+    enum TemperatureUnits {
+        TemperatureUnitsCelsius = 0,
+        TemperatureUnitsFarenheit,
+    };
 
-	Q_ENUMS(DistanceUnits)
-	Q_ENUMS(AreaUnits)
-	Q_ENUMS(SpeedUnits)
-	Q_ENUMS(TemperatureUnits)
+    Q_ENUMS(DistanceUnits)
+    Q_ENUMS(AreaUnits)
+    Q_ENUMS(SpeedUnits)
+    Q_ENUMS(TemperatureUnits)
 
-	Q_PROPERTY(Fact *distanceUnits                      READ distanceUnits                      CONSTANT)
-	Q_PROPERTY(Fact *areaUnits                          READ areaUnits                          CONSTANT)
-	Q_PROPERTY(Fact *speedUnits                         READ speedUnits                         CONSTANT)
-	Q_PROPERTY(Fact *temperatureUnits                   READ temperatureUnits                   CONSTANT)
+    Q_PROPERTY(Fact* distanceUnits                      READ distanceUnits                      CONSTANT)
+    Q_PROPERTY(Fact* areaUnits                          READ areaUnits                          CONSTANT)
+    Q_PROPERTY(Fact* speedUnits                         READ speedUnits                         CONSTANT)
+    Q_PROPERTY(Fact* temperatureUnits                   READ temperatureUnits                   CONSTANT)
 
-	Fact *distanceUnits(void);
-	Fact *areaUnits(void);
-	Fact *speedUnits(void);
-	Fact *temperatureUnits(void);
+    Fact* distanceUnits                     (void);
+    Fact* areaUnits                         (void);
+    Fact* speedUnits                        (void);
+    Fact* temperatureUnits                  (void);
 
-	static const char *unitsSettingsGroupName;
+    static const char* unitsSettingsGroupName;
 
-	static const char *distanceUnitsSettingsName;
-	static const char *areaUnitsSettingsName;
-	static const char *speedUnitsSettingsName;
-	static const char *temperatureUnitsSettingsName;
+    static const char* distanceUnitsSettingsName;
+    static const char* areaUnitsSettingsName;
+    static const char* speedUnitsSettingsName;
+    static const char* temperatureUnitsSettingsName;
 
 private:
-	SettingsFact *_distanceUnitsFact;
-	SettingsFact *_areaUnitsFact;
-	SettingsFact *_speedUnitsFact;
-	SettingsFact *_temperatureUnitsFact;
+    SettingsFact* _distanceUnitsFact;
+    SettingsFact* _areaUnitsFact;
+    SettingsFact* _speedUnitsFact;
+    SettingsFact* _temperatureUnitsFact;
 };
 
 #endif

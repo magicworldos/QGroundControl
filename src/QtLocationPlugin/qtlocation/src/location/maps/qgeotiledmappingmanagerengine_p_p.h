@@ -64,19 +64,19 @@ class QGeoTileFetcher;
 class QGeoTiledMappingManagerEnginePrivate
 {
 public:
-	QGeoTiledMappingManagerEnginePrivate();
-	~QGeoTiledMappingManagerEnginePrivate();
+    QGeoTiledMappingManagerEnginePrivate();
+    ~QGeoTiledMappingManagerEnginePrivate();
 
-	QSize tileSize_;
-	QSet<QGeoTiledMap *> tileMaps_;
-	QHash<QGeoTiledMap *, QSet<QGeoTileSpec> > mapHash_;
-	QHash<QGeoTileSpec, QSet<QGeoTiledMap *> > tileHash_;
-	QGeoTiledMappingManagerEngine::CacheAreas cacheHint_;
-	QGeoTileCache *tileCache_;
-	QGeoTileFetcher *fetcher_;
+    QSize tileSize_;
+    QSet<QGeoTiledMap *> tileMaps_;
+    QHash<QGeoTiledMap *, QSet<QGeoTileSpec> > mapHash_;
+    QHash<QGeoTileSpec, QSet<QGeoTiledMap *> > tileHash_;
+    QGeoTiledMappingManagerEngine::CacheAreas cacheHint_;
+    QGeoTileCache *tileCache_;
+    QGeoTileFetcher *fetcher_;
 
 private:
-	Q_DISABLE_COPY(QGeoTiledMappingManagerEnginePrivate)
+    Q_DISABLE_COPY(QGeoTiledMappingManagerEnginePrivate)
 };
 
 QT_END_NAMESPACE

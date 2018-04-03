@@ -46,45 +46,45 @@ class QSerialPortInfoPrivateDeleter;
 
 class QSerialPortInfo
 {
-	Q_DECLARE_PRIVATE(QSerialPortInfo)
+    Q_DECLARE_PRIVATE(QSerialPortInfo)
 public:
-	QSerialPortInfo();
-	explicit QSerialPortInfo(const QSerialPort &port);
-	explicit QSerialPortInfo(const QString &name);
-	QSerialPortInfo(const QSerialPortInfo &other);
-	~QSerialPortInfo();
+    QSerialPortInfo();
+    explicit QSerialPortInfo(const QSerialPort &port);
+    explicit QSerialPortInfo(const QString &name);
+    QSerialPortInfo(const QSerialPortInfo &other);
+    ~QSerialPortInfo();
 
-	QSerialPortInfo &operator=(const QSerialPortInfo &other);
-	void swap(QSerialPortInfo &other);
+    QSerialPortInfo& operator=(const QSerialPortInfo &other);
+    void swap(QSerialPortInfo &other);
 
-	QString portName() const;
-	QString systemLocation() const;
-	QString description() const;
-	QString manufacturer() const;
-	QString serialNumber() const;
+    QString portName() const;
+    QString systemLocation() const;
+    QString description() const;
+    QString manufacturer() const;
+    QString serialNumber() const;
 
-	quint16 vendorIdentifier() const;
-	quint16 productIdentifier() const;
+    quint16 vendorIdentifier() const;
+    quint16 productIdentifier() const;
 
-	bool hasVendorIdentifier() const;
-	bool hasProductIdentifier() const;
+    bool hasVendorIdentifier() const;
+    bool hasProductIdentifier() const;
 
-	bool isNull() const;
-	bool isBusy() const;
+    bool isNull() const;
+    bool isBusy() const;
 #if QT_DEPRECATED_SINCE(5, 2)
-	QT_DEPRECATED bool isValid() const;
+    QT_DEPRECATED bool isValid() const;
 #endif
 
-	static QList<qint32> standardBaudRates();
-	static QList<QSerialPortInfo> availablePorts();
+    static QList<qint32> standardBaudRates();
+    static QList<QSerialPortInfo> availablePorts();
 
-	QScopedPointer<QSerialPortInfoPrivate, QSerialPortInfoPrivateDeleter> d_ptr;
+    QScopedPointer<QSerialPortInfoPrivate, QSerialPortInfoPrivateDeleter> d_ptr;
 
 private:
-	QSerialPortInfo(const QSerialPortInfoPrivate &dd);
-	friend QList<QSerialPortInfo> availablePortsByUdev(bool &ok);
-	friend QList<QSerialPortInfo> availablePortsBySysfs(bool &ok);
-	friend QList<QSerialPortInfo> availablePortsByFiltersOfDevices(bool &ok);
+    QSerialPortInfo(const QSerialPortInfoPrivate &dd);
+    friend QList<QSerialPortInfo> availablePortsByUdev(bool &ok);
+    friend QList<QSerialPortInfo> availablePortsBySysfs(bool &ok);
+    friend QList<QSerialPortInfo> availablePortsByFiltersOfDevices(bool &ok);
 };
 
 inline bool QSerialPortInfo::isNull() const

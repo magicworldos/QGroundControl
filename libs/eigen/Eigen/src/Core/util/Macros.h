@@ -16,25 +16,25 @@
 #define EIGEN_MINOR_VERSION 7
 
 #define EIGEN_VERSION_AT_LEAST(x,y,z) (EIGEN_WORLD_VERSION>x || (EIGEN_WORLD_VERSION>=x && \
-				       (EIGEN_MAJOR_VERSION>y || (EIGEN_MAJOR_VERSION>=y && \
-						       EIGEN_MINOR_VERSION>=z))))
+                                      (EIGEN_MAJOR_VERSION>y || (EIGEN_MAJOR_VERSION>=y && \
+                                                                 EIGEN_MINOR_VERSION>=z))))
 #ifdef __GNUC__
-#define EIGEN_GNUC_AT_LEAST(x,y) ((__GNUC__==x && __GNUC_MINOR__>=y) || __GNUC__>x)
+  #define EIGEN_GNUC_AT_LEAST(x,y) ((__GNUC__==x && __GNUC_MINOR__>=y) || __GNUC__>x)
 #else
-#define EIGEN_GNUC_AT_LEAST(x,y) 0
+  #define EIGEN_GNUC_AT_LEAST(x,y) 0
 #endif
-
+ 
 #ifdef __GNUC__
-#define EIGEN_GNUC_AT_MOST(x,y) ((__GNUC__==x && __GNUC_MINOR__<=y) || __GNUC__<x)
+  #define EIGEN_GNUC_AT_MOST(x,y) ((__GNUC__==x && __GNUC_MINOR__<=y) || __GNUC__<x)
 #else
-#define EIGEN_GNUC_AT_MOST(x,y) 0
+  #define EIGEN_GNUC_AT_MOST(x,y) 0
 #endif
 
 #if EIGEN_GNUC_AT_MOST(4,3) && !defined(__clang__)
-// see bug 89
-#define EIGEN_SAFE_TO_USE_STANDARD_ASSERT_MACRO 0
+  // see bug 89
+  #define EIGEN_SAFE_TO_USE_STANDARD_ASSERT_MACRO 0
 #else
-#define EIGEN_SAFE_TO_USE_STANDARD_ASSERT_MACRO 1
+  #define EIGEN_SAFE_TO_USE_STANDARD_ASSERT_MACRO 1
 #endif
 
 #if defined(__GNUC__) && (__GNUC__ <= 3)
@@ -61,29 +61,29 @@
  && !EIGEN_GCC3_OR_OLDER \
  && !defined(__SUNPRO_CC) \
  && !defined(__QNXNTO__)
-#define EIGEN_ARCH_WANTS_STACK_ALIGNMENT 1
+  #define EIGEN_ARCH_WANTS_STACK_ALIGNMENT 1
 #else
-#define EIGEN_ARCH_WANTS_STACK_ALIGNMENT 0
+  #define EIGEN_ARCH_WANTS_STACK_ALIGNMENT 0
 #endif
 
 #ifdef EIGEN_DONT_ALIGN
-#ifndef EIGEN_DONT_ALIGN_STATICALLY
-#define EIGEN_DONT_ALIGN_STATICALLY
-#endif
-#define EIGEN_ALIGN 0
+  #ifndef EIGEN_DONT_ALIGN_STATICALLY
+    #define EIGEN_DONT_ALIGN_STATICALLY
+  #endif
+  #define EIGEN_ALIGN 0
 #else
-#define EIGEN_ALIGN 1
+  #define EIGEN_ALIGN 1
 #endif
 
 // EIGEN_ALIGN_STATICALLY is the true test whether we want to align arrays on the stack or not. It takes into account both the user choice to explicitly disable
 // alignment (EIGEN_DONT_ALIGN_STATICALLY) and the architecture config (EIGEN_ARCH_WANTS_STACK_ALIGNMENT). Henceforth, only EIGEN_ALIGN_STATICALLY should be used.
 #if EIGEN_ARCH_WANTS_STACK_ALIGNMENT && !defined(EIGEN_DONT_ALIGN_STATICALLY)
-#define EIGEN_ALIGN_STATICALLY 1
+  #define EIGEN_ALIGN_STATICALLY 1
 #else
-#define EIGEN_ALIGN_STATICALLY 0
-#ifndef EIGEN_DISABLE_UNALIGNED_ARRAY_ASSERT
-#define EIGEN_DISABLE_UNALIGNED_ARRAY_ASSERT
-#endif
+  #define EIGEN_ALIGN_STATICALLY 0
+  #ifndef EIGEN_DISABLE_UNALIGNED_ARRAY_ASSERT
+    #define EIGEN_DISABLE_UNALIGNED_ARRAY_ASSERT
+  #endif
 #endif
 
 #ifdef EIGEN_DEFAULT_TO_ROW_MAJOR
@@ -106,7 +106,7 @@
 #if (__has_feature(cxx_rvalue_references) || \
      defined(__GXX_EXPERIMENTAL_CXX0X__) || \
      (defined(_MSC_VER) && _MSC_VER >= 1600))
-#define EIGEN_HAVE_RVALUE_REFERENCES
+  #define EIGEN_HAVE_RVALUE_REFERENCES
 #endif
 
 
@@ -187,46 +187,40 @@
 
 // eigen_plain_assert is where we implement the workaround for the assert() bug in GCC <= 4.3, see bug 89
 #ifdef EIGEN_NO_DEBUG
-#define eigen_plain_assert(x)
+  #define eigen_plain_assert(x)
 #else
-#if EIGEN_SAFE_TO_USE_STANDARD_ASSERT_MACRO
-namespace Eigen
-{
-namespace internal
-{
-inline bool copy_bool(bool b) { return b; }
-}
-}
-#define eigen_plain_assert(x) assert(x)
-#else
-// work around bug 89
-#include <cstdlib>   // for abort
-#include <iostream>  // for std::cerr
+  #if EIGEN_SAFE_TO_USE_STANDARD_ASSERT_MACRO
+    namespace Eigen {
+    namespace internal {
+    inline bool copy_bool(bool b) { return b; }
+    }
+    }
+    #define eigen_plain_assert(x) assert(x)
+  #else
+    // work around bug 89
+    #include <cstdlib>   // for abort
+    #include <iostream>  // for std::cerr
 
-namespace Eigen
-{
-namespace internal
-{
-// trivial function copying a bool. Must be EIGEN_DONT_INLINE, so we implement it after including Eigen headers.
-// see bug 89.
-namespace
-{
-EIGEN_DONT_INLINE bool copy_bool(bool b) { return b; }
-}
-inline void assert_fail(const char *condition, const char *function, const char *file, int line)
-{
-	std::cerr << "assertion failed: " << condition << " in function " << function << " at " << file << ":" << line <<
-		  std::endl;
-	abort();
-}
-}
-}
-#define eigen_plain_assert(x) \
-	do { \
-		if(!Eigen::internal::copy_bool(x)) \
-			Eigen::internal::assert_fail(EIGEN_MAKESTRING(x), __PRETTY_FUNCTION__, __FILE__, __LINE__); \
-	} while(false)
-#endif
+    namespace Eigen {
+    namespace internal {
+    // trivial function copying a bool. Must be EIGEN_DONT_INLINE, so we implement it after including Eigen headers.
+    // see bug 89.
+    namespace {
+    EIGEN_DONT_INLINE bool copy_bool(bool b) { return b; }
+    }
+    inline void assert_fail(const char *condition, const char *function, const char *file, int line)
+    {
+      std::cerr << "assertion failed: " << condition << " in function " << function << " at " << file << ":" << line << std::endl;
+      abort();
+    }
+    }
+    }
+    #define eigen_plain_assert(x) \
+      do { \
+        if(!Eigen::internal::copy_bool(x)) \
+          Eigen::internal::assert_fail(EIGEN_MAKESTRING(x), __PRETTY_FUNCTION__, __FILE__, __LINE__); \
+      } while(false)
+  #endif
 #endif
 
 // eigen_assert can be overridden
@@ -247,15 +241,15 @@ inline void assert_fail(const char *condition, const char *function, const char 
 #endif
 
 #ifndef EIGEN_NO_DEPRECATED_WARNING
-#if (defined __GNUC__)
-#define EIGEN_DEPRECATED __attribute__((deprecated))
-#elif (defined _MSC_VER)
-#define EIGEN_DEPRECATED __declspec(deprecated)
+  #if (defined __GNUC__)
+    #define EIGEN_DEPRECATED __attribute__((deprecated))
+  #elif (defined _MSC_VER)
+    #define EIGEN_DEPRECATED __declspec(deprecated)
+  #else
+    #define EIGEN_DEPRECATED
+  #endif
 #else
-#define EIGEN_DEPRECATED
-#endif
-#else
-#define EIGEN_DEPRECATED
+  #define EIGEN_DEPRECATED
 #endif
 
 #if (defined __GNUC__)
@@ -265,21 +259,19 @@ inline void assert_fail(const char *condition, const char *function, const char 
 #endif
 
 // Suppresses 'unused variable' warnings.
-namespace Eigen
-{
-namespace internal
-{
-template<typename T> void ignore_unused_variable(const T &) {}
-}
+namespace Eigen {
+  namespace internal {
+    template<typename T> void ignore_unused_variable(const T&) {}
+  }
 }
 #define EIGEN_UNUSED_VARIABLE(var) Eigen::internal::ignore_unused_variable(var);
 
 #if !defined(EIGEN_ASM_COMMENT)
-#if (defined __GNUC__) && ( defined(__i386__) || defined(__x86_64__) )
-#define EIGEN_ASM_COMMENT(X)  __asm__("#" X)
-#else
-#define EIGEN_ASM_COMMENT(X)
-#endif
+  #if (defined __GNUC__) && ( defined(__i386__) || defined(__x86_64__) )
+    #define EIGEN_ASM_COMMENT(X)  __asm__("#" X)
+  #else
+    #define EIGEN_ASM_COMMENT(X)
+  #endif
 #endif
 
 /* EIGEN_ALIGN_TO_BOUNDARY(n) forces data to be n-byte aligned. This is used to satisfy SIMD requirements.
@@ -290,14 +282,14 @@ template<typename T> void ignore_unused_variable(const T &) {}
  * vectorized and non-vectorized code.
  */
 #if (defined __GNUC__) || (defined __PGI) || (defined __IBMCPP__) || (defined __ARMCC_VERSION)
-#define EIGEN_ALIGN_TO_BOUNDARY(n) __attribute__((aligned(n)))
+  #define EIGEN_ALIGN_TO_BOUNDARY(n) __attribute__((aligned(n)))
 #elif (defined _MSC_VER)
-#define EIGEN_ALIGN_TO_BOUNDARY(n) __declspec(align(n))
+  #define EIGEN_ALIGN_TO_BOUNDARY(n) __declspec(align(n))
 #elif (defined __SUNPRO_CC)
-// FIXME not sure about this one:
-#define EIGEN_ALIGN_TO_BOUNDARY(n) __attribute__((aligned(n)))
+  // FIXME not sure about this one:
+  #define EIGEN_ALIGN_TO_BOUNDARY(n) __attribute__((aligned(n)))
 #else
-#error Please tell me what is the equivalent of __attribute__((aligned(n))) for your compiler
+  #error Please tell me what is the equivalent of __attribute__((aligned(n))) for your compiler
 #endif
 
 #define EIGEN_ALIGN8  EIGEN_ALIGN_TO_BOUNDARY(8)
@@ -312,10 +304,10 @@ template<typename T> void ignore_unused_variable(const T &) {}
 #endif
 
 #ifdef EIGEN_DONT_USE_RESTRICT_KEYWORD
-#define EIGEN_RESTRICT
+  #define EIGEN_RESTRICT
 #endif
 #ifndef EIGEN_RESTRICT
-#define EIGEN_RESTRICT __restrict
+  #define EIGEN_RESTRICT __restrict
 #endif
 
 #ifndef EIGEN_STACK_ALLOCATION_LIMIT
@@ -338,21 +330,21 @@ template<typename T> void ignore_unused_variable(const T &) {}
 
 #if defined(_MSC_VER) && (_MSC_VER < 1900) && (!defined(__INTEL_COMPILER))
 #define EIGEN_INHERIT_ASSIGNMENT_EQUAL_OPERATOR(Derived) \
-	using Base::operator =;
+  using Base::operator =;
 #elif defined(__clang__) // workaround clang bug (see http://forum.kde.org/viewtopic.php?f=74&t=102653)
 #define EIGEN_INHERIT_ASSIGNMENT_EQUAL_OPERATOR(Derived) \
-	using Base::operator =; \
-	EIGEN_STRONG_INLINE Derived& operator=(const Derived& other) { Base::operator=(other); return *this; } \
-	template <typename OtherDerived> \
-	EIGEN_STRONG_INLINE Derived& operator=(const DenseBase<OtherDerived>& other) { Base::operator=(other.derived()); return *this; }
+  using Base::operator =; \
+  EIGEN_STRONG_INLINE Derived& operator=(const Derived& other) { Base::operator=(other); return *this; } \
+  template <typename OtherDerived> \
+  EIGEN_STRONG_INLINE Derived& operator=(const DenseBase<OtherDerived>& other) { Base::operator=(other.derived()); return *this; }
 #else
 #define EIGEN_INHERIT_ASSIGNMENT_EQUAL_OPERATOR(Derived) \
-	using Base::operator =; \
-	EIGEN_STRONG_INLINE Derived& operator=(const Derived& other) \
-	{ \
-		Base::operator=(other); \
-		return *this; \
-	}
+  using Base::operator =; \
+  EIGEN_STRONG_INLINE Derived& operator=(const Derived& other) \
+  { \
+    Base::operator=(other); \
+    return *this; \
+  }
 #endif
 
 /** \internal
@@ -370,40 +362,40 @@ template<typename T> void ignore_unused_variable(const T &) {}
 **/
 
 #define EIGEN_GENERIC_PUBLIC_INTERFACE(Derived) \
-	typedef typename Eigen::internal::traits<Derived>::Scalar Scalar; /*!< \brief Numeric type, e.g. float, double, int or std::complex<float>. */ \
-	typedef typename Eigen::NumTraits<Scalar>::Real RealScalar; /*!< \brief The underlying numeric type for composed scalar types. \details In cases where Scalar is e.g. std::complex<T>, T were corresponding to RealScalar. */ \
-	typedef typename Base::CoeffReturnType CoeffReturnType; /*!< \brief The return type for coefficient access. \details Depending on whether the object allows direct coefficient access (e.g. for a MatrixXd), this type is either 'const Scalar&' or simply 'Scalar' for objects that do not allow direct coefficient access. */ \
-	typedef typename Eigen::internal::nested<Derived>::type Nested; \
-	typedef typename Eigen::internal::traits<Derived>::StorageKind StorageKind; \
-	typedef typename Eigen::internal::traits<Derived>::Index Index; \
-	enum { RowsAtCompileTime = Eigen::internal::traits<Derived>::RowsAtCompileTime, \
-					   ColsAtCompileTime = Eigen::internal::traits<Derived>::ColsAtCompileTime, \
-							   Flags = Eigen::internal::traits<Derived>::Flags, \
-									   CoeffReadCost = Eigen::internal::traits<Derived>::CoeffReadCost, \
-											   SizeAtCompileTime = Base::SizeAtCompileTime, \
-													   MaxSizeAtCompileTime = Base::MaxSizeAtCompileTime, \
-															   IsVectorAtCompileTime = Base::IsVectorAtCompileTime };
+  typedef typename Eigen::internal::traits<Derived>::Scalar Scalar; /*!< \brief Numeric type, e.g. float, double, int or std::complex<float>. */ \
+  typedef typename Eigen::NumTraits<Scalar>::Real RealScalar; /*!< \brief The underlying numeric type for composed scalar types. \details In cases where Scalar is e.g. std::complex<T>, T were corresponding to RealScalar. */ \
+  typedef typename Base::CoeffReturnType CoeffReturnType; /*!< \brief The return type for coefficient access. \details Depending on whether the object allows direct coefficient access (e.g. for a MatrixXd), this type is either 'const Scalar&' or simply 'Scalar' for objects that do not allow direct coefficient access. */ \
+  typedef typename Eigen::internal::nested<Derived>::type Nested; \
+  typedef typename Eigen::internal::traits<Derived>::StorageKind StorageKind; \
+  typedef typename Eigen::internal::traits<Derived>::Index Index; \
+  enum { RowsAtCompileTime = Eigen::internal::traits<Derived>::RowsAtCompileTime, \
+        ColsAtCompileTime = Eigen::internal::traits<Derived>::ColsAtCompileTime, \
+        Flags = Eigen::internal::traits<Derived>::Flags, \
+        CoeffReadCost = Eigen::internal::traits<Derived>::CoeffReadCost, \
+        SizeAtCompileTime = Base::SizeAtCompileTime, \
+        MaxSizeAtCompileTime = Base::MaxSizeAtCompileTime, \
+        IsVectorAtCompileTime = Base::IsVectorAtCompileTime };
 
 
 #define EIGEN_DENSE_PUBLIC_INTERFACE(Derived) \
-	typedef typename Eigen::internal::traits<Derived>::Scalar Scalar; /*!< \brief Numeric type, e.g. float, double, int or std::complex<float>. */ \
-	typedef typename Eigen::NumTraits<Scalar>::Real RealScalar; /*!< \brief The underlying numeric type for composed scalar types. \details In cases where Scalar is e.g. std::complex<T>, T were corresponding to RealScalar. */ \
-	typedef typename Base::PacketScalar PacketScalar; \
-	typedef typename Base::CoeffReturnType CoeffReturnType; /*!< \brief The return type for coefficient access. \details Depending on whether the object allows direct coefficient access (e.g. for a MatrixXd), this type is either 'const Scalar&' or simply 'Scalar' for objects that do not allow direct coefficient access. */ \
-	typedef typename Eigen::internal::nested<Derived>::type Nested; \
-	typedef typename Eigen::internal::traits<Derived>::StorageKind StorageKind; \
-	typedef typename Eigen::internal::traits<Derived>::Index Index; \
-	enum { RowsAtCompileTime = Eigen::internal::traits<Derived>::RowsAtCompileTime, \
-					   ColsAtCompileTime = Eigen::internal::traits<Derived>::ColsAtCompileTime, \
-							   MaxRowsAtCompileTime = Eigen::internal::traits<Derived>::MaxRowsAtCompileTime, \
-									   MaxColsAtCompileTime = Eigen::internal::traits<Derived>::MaxColsAtCompileTime, \
-											   Flags = Eigen::internal::traits<Derived>::Flags, \
-													   CoeffReadCost = Eigen::internal::traits<Derived>::CoeffReadCost, \
-															   SizeAtCompileTime = Base::SizeAtCompileTime, \
-																	   MaxSizeAtCompileTime = Base::MaxSizeAtCompileTime, \
-																			   IsVectorAtCompileTime = Base::IsVectorAtCompileTime }; \
-	using Base::derived; \
-	using Base::const_cast_derived;
+  typedef typename Eigen::internal::traits<Derived>::Scalar Scalar; /*!< \brief Numeric type, e.g. float, double, int or std::complex<float>. */ \
+  typedef typename Eigen::NumTraits<Scalar>::Real RealScalar; /*!< \brief The underlying numeric type for composed scalar types. \details In cases where Scalar is e.g. std::complex<T>, T were corresponding to RealScalar. */ \
+  typedef typename Base::PacketScalar PacketScalar; \
+  typedef typename Base::CoeffReturnType CoeffReturnType; /*!< \brief The return type for coefficient access. \details Depending on whether the object allows direct coefficient access (e.g. for a MatrixXd), this type is either 'const Scalar&' or simply 'Scalar' for objects that do not allow direct coefficient access. */ \
+  typedef typename Eigen::internal::nested<Derived>::type Nested; \
+  typedef typename Eigen::internal::traits<Derived>::StorageKind StorageKind; \
+  typedef typename Eigen::internal::traits<Derived>::Index Index; \
+  enum { RowsAtCompileTime = Eigen::internal::traits<Derived>::RowsAtCompileTime, \
+        ColsAtCompileTime = Eigen::internal::traits<Derived>::ColsAtCompileTime, \
+        MaxRowsAtCompileTime = Eigen::internal::traits<Derived>::MaxRowsAtCompileTime, \
+        MaxColsAtCompileTime = Eigen::internal::traits<Derived>::MaxColsAtCompileTime, \
+        Flags = Eigen::internal::traits<Derived>::Flags, \
+        CoeffReadCost = Eigen::internal::traits<Derived>::CoeffReadCost, \
+        SizeAtCompileTime = Base::SizeAtCompileTime, \
+        MaxSizeAtCompileTime = Base::MaxSizeAtCompileTime, \
+        IsVectorAtCompileTime = Base::IsVectorAtCompileTime }; \
+  using Base::derived; \
+  using Base::const_cast_derived;
 
 
 #define EIGEN_PLAIN_ENUM_MIN(a,b) (((int)a <= (int)b) ? (int)a : (int)b)
@@ -413,23 +405,23 @@ template<typename T> void ignore_unused_variable(const T &) {}
 // followed by Dynamic, followed by other finite values. The reason for giving Dynamic the priority over
 // finite values is that min(3, Dynamic) should be Dynamic, since that could be anything between 0 and 3.
 #define EIGEN_SIZE_MIN_PREFER_DYNAMIC(a,b) (((int)a == 0 || (int)b == 0) ? 0 \
-		: ((int)a == 1 || (int)b == 1) ? 1 \
-		: ((int)a == Dynamic || (int)b == Dynamic) ? Dynamic \
-		: ((int)a <= (int)b) ? (int)a : (int)b)
+                           : ((int)a == 1 || (int)b == 1) ? 1 \
+                           : ((int)a == Dynamic || (int)b == Dynamic) ? Dynamic \
+                           : ((int)a <= (int)b) ? (int)a : (int)b)
 
 // EIGEN_SIZE_MIN_PREFER_FIXED is a variant of EIGEN_SIZE_MIN_PREFER_DYNAMIC comparing MaxSizes. The difference is that finite values
 // now have priority over Dynamic, so that min(3, Dynamic) gives 3. Indeed, whatever the actual value is
 // (between 0 and 3), it is not more than 3.
 #define EIGEN_SIZE_MIN_PREFER_FIXED(a,b)  (((int)a == 0 || (int)b == 0) ? 0 \
-		: ((int)a == 1 || (int)b == 1) ? 1 \
-		: ((int)a == Dynamic && (int)b == Dynamic) ? Dynamic \
-		: ((int)a == Dynamic) ? (int)b \
-		: ((int)b == Dynamic) ? (int)a \
-		: ((int)a <= (int)b) ? (int)a : (int)b)
+                           : ((int)a == 1 || (int)b == 1) ? 1 \
+                           : ((int)a == Dynamic && (int)b == Dynamic) ? Dynamic \
+                           : ((int)a == Dynamic) ? (int)b \
+                           : ((int)b == Dynamic) ? (int)a \
+                           : ((int)a <= (int)b) ? (int)a : (int)b)
 
 // see EIGEN_SIZE_MIN_PREFER_DYNAMIC. No need for a separate variant for MaxSizes here.
 #define EIGEN_SIZE_MAX(a,b) (((int)a == Dynamic || (int)b == Dynamic) ? Dynamic \
-			     : ((int)a >= (int)b) ? (int)a : (int)b)
+                           : ((int)a >= (int)b) ? (int)a : (int)b)
 
 #define EIGEN_ADD_COST(a,b) int(a)==Dynamic || int(b)==Dynamic ? Dynamic : int(a)+int(b)
 
@@ -438,22 +430,22 @@ template<typename T> void ignore_unused_variable(const T &) {}
 #define EIGEN_IMPLIES(a,b) (!(a) || (b))
 
 #define EIGEN_MAKE_CWISE_BINARY_OP(METHOD,FUNCTOR) \
-	template<typename OtherDerived> \
-	EIGEN_STRONG_INLINE const CwiseBinaryOp<FUNCTOR<Scalar>, const Derived, const OtherDerived> \
-	(METHOD)(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const \
-	{ \
-		return CwiseBinaryOp<FUNCTOR<Scalar>, const Derived, const OtherDerived>(derived(), other.derived()); \
-	}
+  template<typename OtherDerived> \
+  EIGEN_STRONG_INLINE const CwiseBinaryOp<FUNCTOR<Scalar>, const Derived, const OtherDerived> \
+  (METHOD)(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const \
+  { \
+    return CwiseBinaryOp<FUNCTOR<Scalar>, const Derived, const OtherDerived>(derived(), other.derived()); \
+  }
 
 // the expression type of a cwise product
 #define EIGEN_CWISE_PRODUCT_RETURN_TYPE(LHS,RHS) \
-	CwiseBinaryOp< \
-	internal::scalar_product_op< \
-	typename internal::traits<LHS>::Scalar, \
-	typename internal::traits<RHS>::Scalar \
-	>, \
-	const LHS, \
-	const RHS \
-	>
+    CwiseBinaryOp< \
+      internal::scalar_product_op< \
+          typename internal::traits<LHS>::Scalar, \
+          typename internal::traits<RHS>::Scalar \
+      >, \
+      const LHS, \
+      const RHS \
+    >
 
 #endif // EIGEN_MACROS_H

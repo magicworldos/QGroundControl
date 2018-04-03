@@ -20,15 +20,15 @@
     \sa QwtDoublePoint::isNull
 */
 QwtDoublePoint::QwtDoublePoint():
-	d_x(0.0),
-	d_y(0.0)
+    d_x(0.0),
+    d_y(0.0)
 {
 }
 
 //! Constructs a point with coordinates specified by x and y.
-QwtDoublePoint::QwtDoublePoint(double x, double y):
-	d_x(x),
-	d_y(y)
+QwtDoublePoint::QwtDoublePoint(double x, double y ):
+    d_x(x),
+    d_y(y)
 {
 }
 
@@ -38,8 +38,8 @@ QwtDoublePoint::QwtDoublePoint(double x, double y):
     Constructs a point using the values of the point specified.
 */
 QwtDoublePoint::QwtDoublePoint(const QPoint &p):
-	d_x(double(p.x())),
-	d_y(double(p.y()))
+    d_x(double(p.x())),
+    d_y(double(p.y()))
 {
 }
 
@@ -51,13 +51,13 @@ QwtDoublePoint::QwtDoublePoint(const QPoint &p):
 */
 bool QwtDoublePoint::operator==(const QwtDoublePoint &other) const
 {
-	return (d_x == other.d_x) && (d_y == other.d_y);
+    return (d_x == other.d_x) && (d_y == other.d_y);
 }
 
 //! Returns true if point1 is not equal to point2; otherwise returns false.
 bool QwtDoublePoint::operator!=(const QwtDoublePoint &other) const
 {
-	return !operator==(other);
+    return !operator==(other);
 }
 
 /*!
@@ -66,7 +66,7 @@ bool QwtDoublePoint::operator!=(const QwtDoublePoint &other) const
 */
 const QwtDoublePoint QwtDoublePoint::operator-() const
 {
-	return QwtDoublePoint(-d_x, -d_y);
+    return QwtDoublePoint(-d_x, -d_y);
 }
 
 /*!
@@ -75,9 +75,9 @@ const QwtDoublePoint QwtDoublePoint::operator-() const
     (Vector addition.)
 */
 const QwtDoublePoint QwtDoublePoint::operator+(
-	const QwtDoublePoint &other) const
+    const QwtDoublePoint &other) const
 {
-	return QwtDoublePoint(d_x + other.d_x, d_y + other.d_y);
+    return QwtDoublePoint(d_x + other.d_x, d_y + other.d_y);
 }
 
 /*!
@@ -86,9 +86,9 @@ const QwtDoublePoint QwtDoublePoint::operator+(
     coordinates. (Vector subtraction.)
 */
 const QwtDoublePoint QwtDoublePoint::operator-(
-	const QwtDoublePoint &other) const
+    const QwtDoublePoint &other) const
 {
-	return QwtDoublePoint(d_x - other.d_x, d_y - other.d_y);
+    return QwtDoublePoint(d_x - other.d_x, d_y - other.d_y);
 }
 
 /*!
@@ -98,7 +98,7 @@ const QwtDoublePoint QwtDoublePoint::operator-(
 */
 const QwtDoublePoint QwtDoublePoint::operator*(double factor) const
 {
-	return QwtDoublePoint(d_x * factor, d_y * factor);
+    return QwtDoublePoint(d_x * factor, d_y * factor);
 }
 
 /*!
@@ -108,7 +108,7 @@ const QwtDoublePoint QwtDoublePoint::operator*(double factor) const
 */
 const QwtDoublePoint QwtDoublePoint::operator/(double factor) const
 {
-	return QwtDoublePoint(d_x / factor, d_y / factor);
+    return QwtDoublePoint(d_x / factor, d_y / factor);
 }
 
 /*!
@@ -118,9 +118,9 @@ const QwtDoublePoint QwtDoublePoint::operator/(double factor) const
 */
 QwtDoublePoint &QwtDoublePoint::operator+=(const QwtDoublePoint &other)
 {
-	d_x += other.d_x;
-	d_y += other.d_y;
-	return *this;
+    d_x += other.d_x;
+    d_y += other.d_y;
+    return *this;
 }
 
 /*!
@@ -130,9 +130,9 @@ QwtDoublePoint &QwtDoublePoint::operator+=(const QwtDoublePoint &other)
 */
 QwtDoublePoint &QwtDoublePoint::operator-=(const QwtDoublePoint &other)
 {
-	d_x -= other.d_x;
-	d_y -= other.d_y;
-	return *this;
+    d_x -= other.d_x;
+    d_y -= other.d_y;
+    return *this;
 }
 
 /*!
@@ -142,9 +142,9 @@ QwtDoublePoint &QwtDoublePoint::operator-=(const QwtDoublePoint &other)
 */
 QwtDoublePoint &QwtDoublePoint::operator*=(double factor)
 {
-	d_x *= factor;
-	d_y *= factor;
-	return *this;
+    d_x *= factor;
+    d_y *= factor;
+    return *this;
 }
 
 /*!
@@ -154,38 +154,38 @@ QwtDoublePoint &QwtDoublePoint::operator*=(double factor)
 */
 QwtDoublePoint &QwtDoublePoint::operator/=(double factor)
 {
-	d_x /= factor;
-	d_y /= factor;
-	return *this;
+    d_x /= factor;
+    d_y /= factor;
+    return *this;
 }
 
 //! Constructs an invalid size.
 QwtDoubleSize::QwtDoubleSize():
-	d_width(-1.0),
-	d_height(-1.0)
+    d_width(-1.0),
+    d_height(-1.0)
 {
 }
 
 //! Constructs a size with width width and height height.
-QwtDoubleSize::QwtDoubleSize(double width, double height):
-	d_width(width),
-	d_height(height)
+QwtDoubleSize::QwtDoubleSize( double width, double height ):
+    d_width(width),
+    d_height(height)
 {
 }
 
 //! Constructs a size with floating point accuracy from the given size.
 QwtDoubleSize::QwtDoubleSize(const QSize &sz):
-	d_width(double(sz.width())),
-	d_height(double(sz.height()))
+    d_width(double(sz.width())),
+    d_height(double(sz.height()))
 {
 }
 
 //! Swaps the width and height values.
 void QwtDoubleSize::transpose()
 {
-	double tmp = d_width;
-	d_width = d_height;
-	d_height = tmp;
+    double tmp = d_width;
+    d_width = d_height;
+    d_height = tmp;
 }
 
 /*!
@@ -193,36 +193,36 @@ void QwtDoubleSize::transpose()
     size and other.
 */
 QwtDoubleSize QwtDoubleSize::expandedTo(
-	const QwtDoubleSize &other) const
+    const QwtDoubleSize &other) const
 {
-	return QwtDoubleSize(
-		       qwtMax(d_width, other.d_width),
-		       qwtMax(d_height, other.d_height)
-	       );
+    return QwtDoubleSize(
+               qwtMax(d_width, other.d_width),
+               qwtMax(d_height, other.d_height)
+           );
 }
 
 /*!
     Returns a size with the minimum width and height of this size and other.
 */
 QwtDoubleSize QwtDoubleSize::boundedTo(
-	const QwtDoubleSize &other) const
+    const QwtDoubleSize &other) const
 {
-	return QwtDoubleSize(
-		       qwtMin(d_width, other.d_width),
-		       qwtMin(d_height, other.d_height)
-	       );
+    return QwtDoubleSize(
+               qwtMin(d_width, other.d_width),
+               qwtMin(d_height, other.d_height)
+           );
 }
 
 //! Returns true if s1 and s2 are equal; otherwise returns false.
 bool QwtDoubleSize::operator==(const QwtDoubleSize &other) const
 {
-	return d_width == other.d_width && d_height == other.d_height;
+    return d_width == other.d_width && d_height == other.d_height;
 }
 
 //! Returns true if s1 and s2 are different; otherwise returns false.
 bool QwtDoubleSize::operator!=(const QwtDoubleSize &other) const
 {
-	return !operator==(other);
+    return !operator==(other);
 }
 
 /*!
@@ -230,10 +230,10 @@ bool QwtDoubleSize::operator!=(const QwtDoubleSize &other) const
   the components of other. Each component is added separately.
 */
 const QwtDoubleSize QwtDoubleSize::operator+(
-	const QwtDoubleSize &other) const
+    const QwtDoubleSize &other) const
 {
-	return QwtDoubleSize(d_width + other.d_width,
-			     d_height + other.d_height);
+    return QwtDoubleSize(d_width + other.d_width,
+                         d_height + other.d_height);
 }
 
 /*!
@@ -241,38 +241,38 @@ const QwtDoubleSize QwtDoubleSize::operator+(
   the components of other. Each component is subtracted separately.
 */
 const QwtDoubleSize QwtDoubleSize::operator-(
-	const QwtDoubleSize &other) const
+    const QwtDoubleSize &other) const
 {
-	return QwtDoubleSize(d_width - other.d_width,
-			     d_height - other.d_height);
+    return QwtDoubleSize(d_width - other.d_width,
+                         d_height - other.d_height);
 }
 
 //! Returns the size formed by multiplying both components by c.
 const QwtDoubleSize QwtDoubleSize::operator*(double c) const
 {
-	return QwtDoubleSize(d_width * c, d_height * c);
+    return QwtDoubleSize(d_width * c, d_height * c);
 }
 
 //! Returns the size formed by dividing both components by c.
 const QwtDoubleSize QwtDoubleSize::operator/(double c) const
 {
-	return QwtDoubleSize(d_width / c, d_height / c);
+    return QwtDoubleSize(d_width / c, d_height / c);
 }
 
 //! Adds size other to this size and returns a reference to this size.
 QwtDoubleSize &QwtDoubleSize::operator+=(const QwtDoubleSize &other)
 {
-	d_width += other.d_width;
-	d_height += other.d_height;
-	return *this;
+    d_width += other.d_width;
+    d_height += other.d_height;
+    return *this;
 }
 
 //! Subtracts size other from this size and returns a reference to this size.
 QwtDoubleSize &QwtDoubleSize::operator-=(const QwtDoubleSize &other)
 {
-	d_width -= other.d_width;
-	d_height -= other.d_height;
-	return *this;
+    d_width -= other.d_width;
+    d_height -= other.d_height;
+    return *this;
 }
 
 /*
@@ -281,9 +281,9 @@ QwtDoubleSize &QwtDoubleSize::operator-=(const QwtDoubleSize &other)
 */
 QwtDoubleSize &QwtDoubleSize::operator*=(double c)
 {
-	d_width *= c;
-	d_height *= c;
-	return *this;
+    d_width *= c;
+    d_height *= c;
+    return *this;
 }
 
 /*
@@ -292,17 +292,17 @@ QwtDoubleSize &QwtDoubleSize::operator*=(double c)
 */
 QwtDoubleSize &QwtDoubleSize::operator/=(double c)
 {
-	d_width /= c;
-	d_height /= c;
-	return *this;
+    d_width /= c;
+    d_height /= c;
+    return *this;
 }
 
 //! Constructs an rectangle with all components set to 0.0
 QwtDoubleRect::QwtDoubleRect():
-	d_left(0.0),
-	d_right(0.0),
-	d_top(0.0),
-	d_bottom(0.0)
+    d_left(0.0),
+    d_right(0.0),
+    d_top(0.0),
+    d_bottom(0.0)
 {
 }
 
@@ -311,11 +311,11 @@ QwtDoubleRect::QwtDoubleRect():
   y1 to y2 as y-range.
 */
 QwtDoubleRect::QwtDoubleRect(double left, double top,
-			     double width, double height):
-	d_left(left),
-	d_right(left + width),
-	d_top(top),
-	d_bottom(top + height)
+                             double width, double height):
+    d_left(left),
+    d_right(left + width),
+    d_top(top),
+    d_bottom(top + height)
 {
 }
 
@@ -324,37 +324,37 @@ QwtDoubleRect::QwtDoubleRect(double left, double top,
   size as the rectangle size.
 */
 QwtDoubleRect::QwtDoubleRect(
-	const QwtDoublePoint &p, const QwtDoubleSize &size):
-	d_left(p.x()),
-	d_right(p.x() + size.width()),
-	d_top(p.y()),
-	d_bottom(p.y() + size.height())
+    const QwtDoublePoint &p, const QwtDoubleSize &size):
+    d_left(p.x()),
+    d_right(p.x() + size.width()),
+    d_top(p.y()),
+    d_bottom(p.y() + size.height())
 {
 }
 
 QwtDoubleRect::QwtDoubleRect(const QRect &rect):
-	d_left(rect.left()),
-	d_right(rect.right()),
-	d_top(rect.top()),
-	d_bottom(rect.bottom())
+    d_left(rect.left()),
+    d_right(rect.right()),
+    d_top(rect.top()),
+    d_bottom(rect.bottom())
 {
 }
 
 QRect QwtDoubleRect::toRect() const
 {
-	return QRect(qRound(x()), qRound(y()), qRound(width()), qRound(height()));
+    return QRect(qRound(x()), qRound(y()), qRound(width()), qRound(height()));
 }
 
 /*!
   Set the x-range from x1 to x2 and the y-range from y1 to y2.
 */
 void QwtDoubleRect::setRect(double left, double top,
-			    double width, double height)
+                            double width, double height)
 {
-	d_left = left;
-	d_right = left + width;
-	d_top = top;
-	d_bottom = top + height;
+    d_left = left;
+    d_right = left + width;
+    d_top = top;
+    d_bottom = top + height;
 }
 
 /*!
@@ -363,8 +363,8 @@ void QwtDoubleRect::setRect(double left, double top,
 */
 void QwtDoubleRect::setSize(const QwtDoubleSize &size)
 {
-	setWidth(size.width());
-	setHeight(size.height());
+    setWidth(size.width());
+    setHeight(size.height());
 }
 
 /*!
@@ -375,33 +375,22 @@ void QwtDoubleRect::setSize(const QwtDoubleSize &size)
 */
 QwtDoubleRect QwtDoubleRect::normalized() const
 {
-	QwtDoubleRect r;
-
-	if (d_right < d_left)
-	{
-		r.d_left = d_right;
-		r.d_right = d_left;
-	}
-
-	else
-	{
-		r.d_left = d_left;
-		r.d_right = d_right;
-	}
-
-	if (d_bottom < d_top)
-	{
-		r.d_top = d_bottom;
-		r.d_bottom = d_top;
-	}
-
-	else
-	{
-		r.d_top = d_top;
-		r.d_bottom = d_bottom;
-	}
-
-	return r;
+    QwtDoubleRect r;
+    if ( d_right < d_left ) {
+        r.d_left = d_right;
+        r.d_right = d_left;
+    } else {
+        r.d_left = d_left;
+        r.d_right = d_right;
+    }
+    if ( d_bottom < d_top ) {
+        r.d_top = d_bottom;
+        r.d_bottom = d_top;
+    } else {
+        r.d_top = d_top;
+        r.d_bottom = d_bottom;
+    }
+    return r;
 }
 
 /*!
@@ -410,7 +399,7 @@ QwtDoubleRect QwtDoubleRect::normalized() const
 */
 QwtDoubleRect QwtDoubleRect::unite(const QwtDoubleRect &other) const
 {
-	return *this | other;
+    return *this | other;
 }
 
 /*!
@@ -419,7 +408,7 @@ QwtDoubleRect QwtDoubleRect::unite(const QwtDoubleRect &other) const
 */
 QwtDoubleRect QwtDoubleRect::intersect(const QwtDoubleRect &other) const
 {
-	return *this & other;
+    return *this & other;
 }
 
 /*!
@@ -428,21 +417,21 @@ QwtDoubleRect QwtDoubleRect::intersect(const QwtDoubleRect &other) const
 */
 bool QwtDoubleRect::intersects(const QwtDoubleRect &other) const
 {
-	return (qwtMax(d_left, other.d_left) <= qwtMin(d_right, other.d_right)) &&
-	       (qwtMax(d_top, other.d_top) <= qwtMin(d_bottom, other.d_bottom));
+    return ( qwtMax(d_left, other.d_left) <= qwtMin(d_right, other.d_right) ) &&
+           ( qwtMax(d_top, other.d_top ) <= qwtMin(d_bottom, other.d_bottom) );
 }
 
 //! Returns true if this rect and other are equal; otherwise returns false.
 bool QwtDoubleRect::operator==(const QwtDoubleRect &other) const
 {
-	return d_left == other.d_left && d_right == other.d_right &&
-	       d_top == other.d_top && d_bottom == other.d_bottom;
+    return d_left == other.d_left && d_right == other.d_right &&
+           d_top == other.d_top && d_bottom == other.d_bottom;
 }
 
 //! Returns true if this rect and other are different; otherwise returns false.
 bool QwtDoubleRect::operator!=(const QwtDoubleRect &other) const
 {
-	return !operator==(other);
+    return !operator==(other);
 }
 
 /*!
@@ -452,22 +441,18 @@ bool QwtDoubleRect::operator!=(const QwtDoubleRect &other) const
 */
 QwtDoubleRect QwtDoubleRect::operator|(const QwtDoubleRect &other) const
 {
-	if (isEmpty())
-	{
-		return other;
-	}
+    if ( isEmpty() )
+        return other;
 
-	if (other.isEmpty())
-	{
-		return *this;
-	}
+    if ( other.isEmpty() )
+        return *this;
 
-	const double minX = qwtMin(d_left, other.d_left);
-	const double maxX = qwtMax(d_right, other.d_right);
-	const double minY = qwtMin(d_top, other.d_top);
-	const double maxY = qwtMax(d_bottom, other.d_bottom);
+    const double minX = qwtMin(d_left, other.d_left);
+    const double maxX = qwtMax(d_right, other.d_right);
+    const double minY = qwtMin(d_top, other.d_top);
+    const double maxY = qwtMax(d_bottom, other.d_bottom);
 
-	return QwtDoubleRect(minX, minY, maxX - minX, maxY - minY);
+    return QwtDoubleRect(minX, minY, maxX - minX, maxY - minY);
 }
 
 /*!
@@ -476,41 +461,39 @@ QwtDoubleRect QwtDoubleRect::operator|(const QwtDoubleRect &other) const
 */
 QwtDoubleRect QwtDoubleRect::operator&(const QwtDoubleRect &other) const
 {
-	if (isNull() || other.isNull())
-	{
-		return QwtDoubleRect();
-	}
+    if (isNull() || other.isNull())
+        return QwtDoubleRect();
 
-	const QwtDoubleRect r1 = normalized();
-	const QwtDoubleRect r2 = other.normalized();
+    const QwtDoubleRect r1 = normalized();
+    const QwtDoubleRect r2 = other.normalized();
 
-	const double minX = qwtMax(r1.left(), r2.left());
-	const double maxX = qwtMin(r1.right(), r2.right());
-	const double minY = qwtMax(r1.top(), r2.top());
-	const double maxY = qwtMin(r1.bottom(), r2.bottom());
+    const double minX = qwtMax(r1.left(), r2.left());
+    const double maxX = qwtMin(r1.right(), r2.right());
+    const double minY = qwtMax(r1.top(), r2.top());
+    const double maxY = qwtMin(r1.bottom(), r2.bottom());
 
-	return QwtDoubleRect(minX, minY, maxX - minX, maxY - minY);
+    return QwtDoubleRect(minX, minY, maxX - minX, maxY - minY);
 }
 
 //! Unites this rectangle with rectangle other.
 QwtDoubleRect &QwtDoubleRect::operator|=(const QwtDoubleRect &other)
 {
-	*this = *this | other;
-	return *this;
+    *this = *this | other;
+    return *this;
 }
 
 //! Intersects this rectangle with rectangle other.
 QwtDoubleRect &QwtDoubleRect::operator&=(const QwtDoubleRect &other)
 {
-	*this = *this & other;
-	return *this;
+    *this = *this & other;
+    return *this;
 }
 
 //! Returns the center point of the rectangle.
 QwtDoublePoint QwtDoubleRect::center() const
 {
-	return QwtDoublePoint(d_left + (d_right - d_left) / 2.0,
-			      d_top + (d_bottom - d_top) / 2.0);
+    return QwtDoublePoint(d_left + (d_right - d_left) / 2.0,
+                          d_top + (d_bottom - d_top) / 2.0);
 }
 
 /*!
@@ -522,15 +505,10 @@ QwtDoublePoint QwtDoubleRect::center() const
 */
 bool QwtDoubleRect::contains(double x, double y, bool proper) const
 {
-	if (proper)
-	{
-		return x > d_left && x < d_right && y > d_top && y < d_bottom;
-	}
-
-	else
-	{
-		return x >= d_left && x <= d_right && y >= d_top && y <= d_bottom;
-	}
+    if ( proper )
+        return x > d_left && x < d_right && y > d_top && y < d_bottom;
+    else
+        return x >= d_left && x <= d_right && y >= d_top && y <= d_bottom;
 }
 
 /*!
@@ -542,7 +520,7 @@ bool QwtDoubleRect::contains(double x, double y, bool proper) const
 */
 bool QwtDoubleRect::contains(const QwtDoublePoint &p, bool proper) const
 {
-	return contains(p.x(), p.y(), proper);
+    return contains(p.x(), p.y(), proper);
 }
 
 /*!
@@ -554,68 +532,68 @@ bool QwtDoubleRect::contains(const QwtDoublePoint &p, bool proper) const
 */
 bool QwtDoubleRect::contains(const QwtDoubleRect &other, bool proper) const
 {
-	return contains(other.d_left, other.d_top, proper) &&
-	       contains(other.d_right, other.d_bottom, proper);
+    return contains(other.d_left, other.d_top, proper) &&
+           contains(other.d_right, other.d_bottom, proper);
 }
 
 //! moves x1() to x, leaving the size unchanged
 void QwtDoubleRect::moveLeft(double x)
 {
-	const double w = width();
-	d_left = x;
-	d_right = d_left + w;
+    const double w = width();
+    d_left = x;
+    d_right = d_left + w;
 }
 
 //! moves x1() to x, leaving the size unchanged
 void QwtDoubleRect::moveRight(double x)
 {
-	const double w = width();
-	d_right = x;
-	d_left = d_right - w;
+    const double w = width();
+    d_right = x;
+    d_left = d_right - w;
 }
 
 //! moves y1() to y, leaving the size unchanged
 void QwtDoubleRect::moveTop(double y)
 {
-	const double h = height();
-	d_top = y;
-	d_bottom = d_top + h;
+    const double h = height();
+    d_top = y;
+    d_bottom = d_top + h;
 }
 
 //! moves y1() to y, leaving the size unchanged
 void QwtDoubleRect::moveBottom(double y)
 {
-	const double h = height();
-	d_bottom = y;
-	d_top = d_bottom - h;
+    const double h = height();
+    d_bottom = y;
+    d_top = d_bottom - h;
 }
 
 //! moves left() to x and top() to y, leaving the size unchanged
 void QwtDoubleRect::moveTo(double x, double y)
 {
-	moveLeft(x);
-	moveTop(y);
+    moveLeft(x);
+    moveTop(y);
 }
 
 //! moves x1() by dx and y1() by dy. leaving the size unchanged
 void QwtDoubleRect::moveBy(double dx, double dy)
 {
-	d_left += dx;
-	d_right += dx;
-	d_top += dy;
-	d_bottom += dy;
+    d_left += dx;
+    d_right += dx;
+    d_top += dy;
+    d_bottom += dy;
 }
 
 //! moves the center to pos, leaving the size unchanged
 void QwtDoubleRect::moveCenter(const QwtDoublePoint &pos)
 {
-	moveCenter(pos.x(), pos.y());
+    moveCenter(pos.x(), pos.y());
 }
 
 //! moves the center to (x, y), leaving the size unchanged
 void QwtDoubleRect::moveCenter(double x, double y)
 {
-	moveTo(x - width() / 2.0, y - height() / 2.0);
+    moveTo(x - width() / 2.0, y - height() / 2.0);
 }
 
 #endif // QT_VERSION < 0x040000

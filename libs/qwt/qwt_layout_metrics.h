@@ -31,127 +31,127 @@ class QPaintDevice;
 class QWT_EXPORT QwtMetricsMap
 {
 public:
-	QwtMetricsMap();
+    QwtMetricsMap();
 
-	bool isIdentity() const;
+    bool isIdentity() const;
 
-	void setMetrics(const QPaintDevice *layoutMetrics,
-			const QPaintDevice *deviceMetrics);
+    void setMetrics(const QPaintDevice *layoutMetrics,
+                    const QPaintDevice *deviceMetrics);
 
-	int layoutToDeviceX(int x) const;
-	int deviceToLayoutX(int x) const;
-	int screenToLayoutX(int x) const;
-	int layoutToScreenX(int x) const;
+    int layoutToDeviceX(int x) const;
+    int deviceToLayoutX(int x) const;
+    int screenToLayoutX(int x) const;
+    int layoutToScreenX(int x) const;
 
-	int layoutToDeviceY(int y) const;
-	int deviceToLayoutY(int y) const;
-	int screenToLayoutY(int y) const;
-	int layoutToScreenY(int y) const;
+    int layoutToDeviceY(int y) const;
+    int deviceToLayoutY(int y) const;
+    int screenToLayoutY(int y) const;
+    int layoutToScreenY(int y) const;
 
-	QPoint layoutToDevice(const QPoint &, const QPainter * = NULL) const;
-	QPoint deviceToLayout(const QPoint &, const QPainter * = NULL) const;
-	QPoint screenToLayout(const QPoint &) const;
-	QPoint layoutToScreen(const QPoint &point) const;
+    QPoint layoutToDevice(const QPoint &, const QPainter * = NULL) const;
+    QPoint deviceToLayout(const QPoint &, const QPainter * = NULL) const;
+    QPoint screenToLayout(const QPoint &) const;
+    QPoint layoutToScreen(const QPoint &point) const;
 
 
-	QSize layoutToDevice(const QSize &) const;
-	QSize deviceToLayout(const QSize &) const;
-	QSize screenToLayout(const QSize &) const;
-	QSize layoutToScreen(const QSize &) const;
+    QSize layoutToDevice(const QSize &) const;
+    QSize deviceToLayout(const QSize &) const;
+    QSize screenToLayout(const QSize &) const;
+    QSize layoutToScreen(const QSize &) const;
 
-	QRect layoutToDevice(const QRect &, const QPainter * = NULL) const;
-	QRect deviceToLayout(const QRect &, const QPainter * = NULL) const;
-	QRect screenToLayout(const QRect &) const;
-	QRect layoutToScreen(const QRect &) const;
+    QRect layoutToDevice(const QRect &, const QPainter * = NULL) const;
+    QRect deviceToLayout(const QRect &, const QPainter * = NULL) const;
+    QRect screenToLayout(const QRect &) const;
+    QRect layoutToScreen(const QRect &) const;
 
-	QwtPolygon layoutToDevice(const QwtPolygon &,
-				  const QPainter * = NULL) const;
-	QwtPolygon deviceToLayout(const QwtPolygon &,
-				  const QPainter * = NULL) const;
+    QwtPolygon layoutToDevice(const QwtPolygon &,
+                              const QPainter * = NULL) const;
+    QwtPolygon deviceToLayout(const QwtPolygon &,
+                              const QPainter * = NULL) const;
 
 #if QT_VERSION < 0x040000
-	static QwtPolygon translate(const QWMatrix &, const QwtPolygon &);
-	static QRect translate(const QWMatrix &, const QRect &);
+    static QwtPolygon translate(const QWMatrix &, const QwtPolygon &);
+    static QRect translate(const QWMatrix &, const QRect &);
 #else
-	static QwtPolygon translate(const QMatrix &, const QwtPolygon &);
-	static QRect translate(const QMatrix &, const QRect &);
+    static QwtPolygon translate(const QMatrix &, const QwtPolygon &);
+    static QRect translate(const QMatrix &, const QRect &);
 #endif
 
 private:
-	double d_screenToLayoutX;
-	double d_screenToLayoutY;
+    double d_screenToLayoutX;
+    double d_screenToLayoutY;
 
-	double d_deviceToLayoutX;
-	double d_deviceToLayoutY;
+    double d_deviceToLayoutX;
+    double d_deviceToLayoutY;
 };
 
 inline bool QwtMetricsMap::isIdentity() const
 {
-	return d_deviceToLayoutX == 1.0 && d_deviceToLayoutY == 1.0;
+    return d_deviceToLayoutX == 1.0 && d_deviceToLayoutY == 1.0;
 }
 
 inline int QwtMetricsMap::layoutToDeviceX(int x) const
 {
-	return qRound(x / d_deviceToLayoutX);
+    return qRound(x / d_deviceToLayoutX);
 }
 
 inline int QwtMetricsMap::deviceToLayoutX(int x) const
 {
-	return qRound(x * d_deviceToLayoutX);
+    return qRound(x * d_deviceToLayoutX);
 }
 
 inline int QwtMetricsMap::screenToLayoutX(int x) const
 {
-	return qRound(x * d_screenToLayoutX);
+    return qRound(x * d_screenToLayoutX);
 }
 
 inline int QwtMetricsMap::layoutToScreenX(int x) const
 {
-	return qRound(x / d_screenToLayoutX);
+    return qRound(x / d_screenToLayoutX);
 }
 
 inline int QwtMetricsMap::layoutToDeviceY(int y) const
 {
-	return qRound(y / d_deviceToLayoutY);
+    return qRound(y / d_deviceToLayoutY);
 }
 
 inline int QwtMetricsMap::deviceToLayoutY(int y) const
 {
-	return qRound(y * d_deviceToLayoutY);
+    return qRound(y * d_deviceToLayoutY);
 }
 
 inline int QwtMetricsMap::screenToLayoutY(int y) const
 {
-	return qRound(y * d_screenToLayoutY);
+    return qRound(y * d_screenToLayoutY);
 }
 
 inline int QwtMetricsMap::layoutToScreenY(int y) const
 {
-	return qRound(y / d_screenToLayoutY);
+    return qRound(y / d_screenToLayoutY);
 }
 
 inline QSize QwtMetricsMap::layoutToDevice(const QSize &size) const
 {
-	return QSize(layoutToDeviceX(size.width()),
-		     layoutToDeviceY(size.height()));
+    return QSize(layoutToDeviceX(size.width()),
+                 layoutToDeviceY(size.height()));
 }
 
 inline QSize QwtMetricsMap::deviceToLayout(const QSize &size) const
 {
-	return QSize(deviceToLayoutX(size.width()),
-		     deviceToLayoutY(size.height()));
+    return QSize(deviceToLayoutX(size.width()),
+                 deviceToLayoutY(size.height()));
 }
 
 inline QSize QwtMetricsMap::screenToLayout(const QSize &size) const
 {
-	return QSize(screenToLayoutX(size.width()),
-		     screenToLayoutY(size.height()));
+    return QSize(screenToLayoutX(size.width()),
+                 screenToLayoutY(size.height()));
 }
 
 inline QSize QwtMetricsMap::layoutToScreen(const QSize &size) const
 {
-	return QSize(layoutToScreenX(size.width()),
-		     layoutToScreenY(size.height()));
+    return QSize(layoutToScreenX(size.width()),
+                 layoutToScreenY(size.height()));
 }
 
 #endif

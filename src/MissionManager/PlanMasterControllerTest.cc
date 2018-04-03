@@ -17,36 +17,36 @@
 #include "AppSettings.h"
 
 PlanMasterControllerTest::PlanMasterControllerTest(void)
-	: _masterController(NULL)
+    : _masterController(NULL)
 {
-
+    
 }
 
 void PlanMasterControllerTest::init(void)
 {
-	UnitTest::init();
+    UnitTest::init();
 
-	_masterController = new PlanMasterController(this);
-	_masterController->start(true /* editMode */);
+    _masterController = new PlanMasterController(this);
+    _masterController->start(true /* editMode */);
 }
 
 void PlanMasterControllerTest::cleanup(void)
 {
-	delete _masterController;
-	_masterController = NULL;
+    delete _masterController;
+    _masterController = NULL;
 
-	UnitTest::cleanup();
+    UnitTest::cleanup();
 }
 
 void PlanMasterControllerTest::_testMissionFileLoad(void)
 {
-	_masterController->loadFromFile(":/unittest/OldFileFormat.mission");
-	QCOMPARE(_masterController->missionController()->visualItems()->count(), 7);
+    _masterController->loadFromFile(":/unittest/OldFileFormat.mission");
+    QCOMPARE(_masterController->missionController()->visualItems()->count(), 7);
 }
 
 
 void PlanMasterControllerTest::_testMissionPlannerFileLoad(void)
 {
-	_masterController->loadFromFile(":/unittest/MissionPlanner.waypoints");
-	QCOMPARE(_masterController->missionController()->visualItems()->count(), 6);
+    _masterController->loadFromFile(":/unittest/MissionPlanner.waypoints");
+    QCOMPARE(_masterController->missionController()->visualItems()->count(), 6);
 }

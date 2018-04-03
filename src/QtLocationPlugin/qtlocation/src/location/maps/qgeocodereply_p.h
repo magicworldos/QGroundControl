@@ -61,21 +61,21 @@ class QGeoLocation;
 class QGeoCodeReplyPrivate
 {
 public:
-	QGeoCodeReplyPrivate();
-	QGeoCodeReplyPrivate(QGeoCodeReply::Error error, const QString &errorString);
-	~QGeoCodeReplyPrivate();
+    QGeoCodeReplyPrivate();
+    QGeoCodeReplyPrivate(QGeoCodeReply::Error error, const QString &errorString);
+    ~QGeoCodeReplyPrivate();
 
-	QGeoCodeReply::Error error;
-	QString errorString;
-	bool isFinished;
+    QGeoCodeReply::Error error;
+    QString errorString;
+    bool isFinished;
 
-	QGeoShape viewport;
-	QList<QGeoLocation> locations;
+    QGeoShape viewport;
+    QList<QGeoLocation> locations;
 
-	int limit;
-	int offset;
+    int limit;
+    int offset;
 private:
-	Q_DISABLE_COPY(QGeoCodeReplyPrivate)
+    Q_DISABLE_COPY(QGeoCodeReplyPrivate)
 };
 
 QT_END_NAMESPACE

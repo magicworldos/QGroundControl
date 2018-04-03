@@ -66,20 +66,20 @@ class QGeoTiledMapReply;
 class QGeoMappingManagerEnginePrivate
 {
 public:
-	QGeoMappingManagerEnginePrivate();
-	~QGeoMappingManagerEnginePrivate();
+    QGeoMappingManagerEnginePrivate();
+    ~QGeoMappingManagerEnginePrivate();
 
-	QString managerName;
-	int managerVersion;
+    QString managerName;
+    int managerVersion;
 
-	QList<QGeoMapType> supportedMapTypes;
-	QGeoCameraCapabilities capabilities_;
+    QList<QGeoMapType> supportedMapTypes;
+    QGeoCameraCapabilities capabilities_;
 
-	QLocale locale;
-	bool initialized;
+    QLocale locale;
+    bool initialized;
 
 private:
-	Q_DISABLE_COPY(QGeoMappingManagerEnginePrivate)
+    Q_DISABLE_COPY(QGeoMappingManagerEnginePrivate)
 };
 
 QT_END_NAMESPACE

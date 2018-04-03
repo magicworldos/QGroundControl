@@ -34,34 +34,34 @@
 
 class PX4AutoPilotPlugin : public AutoPilotPlugin
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	PX4AutoPilotPlugin(Vehicle *vehicle, QObject *parent);
-	~PX4AutoPilotPlugin();
+    PX4AutoPilotPlugin(Vehicle* vehicle, QObject* parent);
+    ~PX4AutoPilotPlugin();
 
-	// Overrides from AutoPilotPlugin
-	const QVariantList &vehicleComponents(void) override;
-	void parametersReadyPreChecks(void) override;
-	QString prerequisiteSetup(VehicleComponent *component) const override;
+    // Overrides from AutoPilotPlugin
+    const QVariantList& vehicleComponents(void) override;
+    void parametersReadyPreChecks(void) override;
+    QString prerequisiteSetup(VehicleComponent* component) const override;
 
 protected:
-	bool                    _incorrectParameterVersion; ///< true: parameter version incorrect, setup not allowed
-	PX4AirframeLoader      *_airframeFacts;
-	AirframeComponent      *_airframeComponent;
-	PX4RadioComponent      *_radioComponent;
-	ESP8266Component       *_esp8266Component;
-	FlightModesComponent   *_flightModesComponent;
-	SensorsComponent       *_sensorsComponent;
-	SafetyComponent        *_safetyComponent;
-	CameraComponent        *_cameraComponent;
-	PowerComponent         *_powerComponent;
-	MotorComponent         *_motorComponent;
-	PX4TuningComponent     *_tuningComponent;
-	SyslinkComponent       *_syslinkComponent;
+    bool                    _incorrectParameterVersion; ///< true: parameter version incorrect, setup not allowed
+    PX4AirframeLoader*      _airframeFacts;
+    AirframeComponent*      _airframeComponent;
+    PX4RadioComponent*      _radioComponent;
+    ESP8266Component*       _esp8266Component;
+    FlightModesComponent*   _flightModesComponent;
+    SensorsComponent*       _sensorsComponent;
+    SafetyComponent*        _safetyComponent;
+    CameraComponent*        _cameraComponent;
+    PowerComponent*         _powerComponent;
+    MotorComponent*         _motorComponent;
+    PX4TuningComponent*     _tuningComponent;
+    SyslinkComponent*       _syslinkComponent;
 
 private:
-	QVariantList            _components;
+    QVariantList            _components;
 };
 
 #endif

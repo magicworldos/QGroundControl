@@ -47,35 +47,35 @@ template class QWT_EXPORT QwtArray<QwtDoublePoint>;
 class QWT_EXPORT QwtData
 {
 public:
-	QwtData();
-	virtual ~QwtData();
+    QwtData();
+    virtual ~QwtData();
 
-	//! \return Pointer to a copy (virtual copy constructor)
-	virtual QwtData *copy() const = 0;
+    //! \return Pointer to a copy (virtual copy constructor)
+    virtual QwtData *copy() const = 0;
 
-	//! \return Size of the data set
-	virtual size_t size() const = 0;
+    //! \return Size of the data set
+    virtual size_t size() const = 0;
 
-	/*!
-	  Return the x value of data point i
-	  \param i Index
-	  \return x X value of data point i
-	 */
-	virtual double x(size_t i) const = 0;
-	/*!
-	  Return the y value of data point i
-	  \param i Index
-	  \return y Y value of data point i
-	 */
-	virtual double y(size_t i) const = 0;
+    /*!
+      Return the x value of data point i
+      \param i Index
+      \return x X value of data point i
+     */
+    virtual double x(size_t i) const = 0;
+    /*!
+      Return the y value of data point i
+      \param i Index
+      \return y Y value of data point i
+     */
+    virtual double y(size_t i) const = 0;
 
-	virtual QwtDoubleRect boundingRect() const;
+    virtual QwtDoubleRect boundingRect() const;
 
 protected:
-	/*!
-	  Assignment operator (virtualized)
-	 */
-	QwtData &operator=(const QwtData &);
+    /*!
+      Assignment operator (virtualized)
+     */
+    QwtData &operator=(const QwtData &);
 };
 
 
@@ -86,29 +86,29 @@ class QWT_EXPORT QwtPolygonFData: public QwtData
 {
 public:
 #if QT_VERSION < 0x040000
-	QwtPolygonFData(const QwtArray<QwtDoublePoint> &);
+    QwtPolygonFData(const QwtArray<QwtDoublePoint> &);
 #else
-	QwtPolygonFData(const QPolygonF &);
+    QwtPolygonFData(const QPolygonF &);
 #endif
 
-	QwtPolygonFData &operator=(const QwtPolygonFData &);
-	virtual QwtData *copy() const;
+    QwtPolygonFData &operator=(const QwtPolygonFData &);
+    virtual QwtData *copy() const;
 
-	virtual size_t size() const;
-	virtual double x(size_t i) const;
-	virtual double y(size_t i) const;
+    virtual size_t size() const;
+    virtual double x(size_t i) const;
+    virtual double y(size_t i) const;
 
 #if QT_VERSION < 0x040000
-	const QwtArray<QwtDoublePoint> &data() const;
+    const QwtArray<QwtDoublePoint> &data() const;
 #else
-	const QPolygonF &data() const;
+    const QPolygonF &data() const;
 #endif
 
 private:
 #if QT_VERSION < 0x040000
-	QwtArray<QwtDoublePoint> d_data;
+    QwtArray<QwtDoublePoint> d_data;
 #else
-	QPolygonF d_data;
+    QPolygonF d_data;
 #endif
 };
 
@@ -119,23 +119,23 @@ private:
 class QWT_EXPORT QwtArrayData: public QwtData
 {
 public:
-	QwtArrayData(const QwtArray<double> &x, const QwtArray<double> &y);
-	QwtArrayData(const double *x, const double *y, size_t size);
-	QwtArrayData &operator=(const QwtArrayData &);
-	virtual QwtData *copy() const;
+    QwtArrayData(const QwtArray<double> &x, const QwtArray<double> &y);
+    QwtArrayData(const double *x, const double *y, size_t size);
+    QwtArrayData &operator=(const QwtArrayData &);
+    virtual QwtData *copy() const;
 
-	virtual size_t size() const;
-	virtual double x(size_t i) const;
-	virtual double y(size_t i) const;
+    virtual size_t size() const;
+    virtual double x(size_t i) const;
+    virtual double y(size_t i) const;
 
-	const QwtArray<double> &xData() const;
-	const QwtArray<double> &yData() const;
+    const QwtArray<double> &xData() const;
+    const QwtArray<double> &yData() const;
 
-	virtual QwtDoubleRect boundingRect() const;
+    virtual QwtDoubleRect boundingRect() const;
 
 private:
-	QwtArray<double> d_x;
-	QwtArray<double> d_y;
+    QwtArray<double> d_x;
+    QwtArray<double> d_y;
 };
 
 /*!
@@ -144,23 +144,23 @@ private:
 class QWT_EXPORT QwtCPointerData: public QwtData
 {
 public:
-	QwtCPointerData(const double *x, const double *y, size_t size);
-	QwtCPointerData &operator=(const QwtCPointerData &);
-	virtual QwtData *copy() const;
+    QwtCPointerData(const double *x, const double *y, size_t size);
+    QwtCPointerData &operator=(const QwtCPointerData &);
+    virtual QwtData *copy() const;
 
-	virtual size_t size() const;
-	virtual double x(size_t i) const;
-	virtual double y(size_t i) const;
+    virtual size_t size() const;
+    virtual double x(size_t i) const;
+    virtual double y(size_t i) const;
 
-	const double *xData() const;
-	const double *yData() const;
+    const double *xData() const;
+    const double *yData() const;
 
-	virtual QwtDoubleRect boundingRect() const;
+    virtual QwtDoubleRect boundingRect() const;
 
 private:
-	const double *d_x;
-	const double *d_y;
-	size_t d_size;
+    const double *d_x;
+    const double *d_y;
+    size_t d_size;
 };
 
 #endif // !QWT_DATA

@@ -22,13 +22,13 @@
 
 class FlightGearUnitTest : public UnitTest
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	FlightGearUnitTest(void);
-
+    FlightGearUnitTest(void);
+    
 private slots:
-	void _parseUIArguments_test(void);
+    void _parseUIArguments_test(void);
 };
 
 #endif

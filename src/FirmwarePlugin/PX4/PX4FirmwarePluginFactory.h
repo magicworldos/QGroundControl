@@ -16,16 +16,16 @@ class PX4FirmwarePlugin;
 
 class PX4FirmwarePluginFactory : public FirmwarePluginFactory
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	PX4FirmwarePluginFactory(void);
+    PX4FirmwarePluginFactory(void);
 
-	QList<MAV_AUTOPILOT>    supportedFirmwareTypes(void) const final;
-	FirmwarePlugin         *firmwarePluginForAutopilot(MAV_AUTOPILOT autopilotType, MAV_TYPE vehicleType) final;
+    QList<MAV_AUTOPILOT>    supportedFirmwareTypes      (void) const final;
+    FirmwarePlugin*         firmwarePluginForAutopilot  (MAV_AUTOPILOT autopilotType, MAV_TYPE vehicleType) final;
 
 private:
-	PX4FirmwarePlugin  *_pluginInstance;
+    PX4FirmwarePlugin*  _pluginInstance;
 };
 
 #endif

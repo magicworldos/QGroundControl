@@ -58,31 +58,30 @@ class QGeoMapType;
 class QGeoCameraTilesPrivate;
 class QSize;
 
-class Q_LOCATION_EXPORT QGeoCameraTiles
-{
+class Q_LOCATION_EXPORT QGeoCameraTiles {
 public:
-	QGeoCameraTiles();
-	~QGeoCameraTiles();
+    QGeoCameraTiles();
+    ~QGeoCameraTiles();
 
-	enum PrefetchStle { PrefetchNeighbourLayer, PrefetchTwoNeighbourLayers};
+    enum PrefetchStle { PrefetchNeighbourLayer, PrefetchTwoNeighbourLayers};
 
-	void setCamera(const QGeoCameraData &camera);
-	void setScreenSize(const QSize &size);
-	void setTileSize(int tileSize);
-	void setMaximumZoomLevel(int maxZoom);
+    void setCamera(const QGeoCameraData &camera);
+    void setScreenSize(const QSize &size);
+    void setTileSize(int tileSize);
+    void setMaximumZoomLevel(int maxZoom);
 
-	int tileSize() const;
+    int tileSize() const;
 
-	void setPluginString(const QString &pluginString);
-	void setMapType(const QGeoMapType &mapType);
-	void setMapVersion(int mapVersion);
+    void setPluginString(const QString &pluginString);
+    void setMapType(const QGeoMapType &mapType);
+    void setMapVersion(int mapVersion);
 
-	QSet<QGeoTileSpec> visibleTiles();
-	QSet<QGeoTileSpec> prefetchTiles(PrefetchStle style);
+    QSet<QGeoTileSpec> visibleTiles();
+    QSet<QGeoTileSpec> prefetchTiles(PrefetchStle style);
 
 protected:
-	QScopedPointer<QGeoCameraTilesPrivate> d_ptr;
-	Q_DISABLE_COPY(QGeoCameraTiles)
+    QScopedPointer<QGeoCameraTilesPrivate> d_ptr;
+    Q_DISABLE_COPY(QGeoCameraTiles)
 };
 
 QT_END_NAMESPACE

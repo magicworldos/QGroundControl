@@ -42,49 +42,48 @@ class QIODevice;
 class QNmeaPositionInfoSourcePrivate;
 class Q_POSITIONING_EXPORT QNmeaPositionInfoSource : public QGeoPositionInfoSource
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	enum UpdateMode
-	{
-		RealTimeMode = 1,
-		SimulationMode
-	};
+    enum UpdateMode {
+        RealTimeMode = 1,
+        SimulationMode
+    };
 
-	explicit QNmeaPositionInfoSource(UpdateMode updateMode, QObject *parent = 0);
-	~QNmeaPositionInfoSource();
+    explicit QNmeaPositionInfoSource(UpdateMode updateMode, QObject *parent = 0);
+    ~QNmeaPositionInfoSource();
 
-	void setUserEquivalentRangeError(double uere);
-	double userEquivalentRangeError() const;
+    void setUserEquivalentRangeError(double uere);
+    double userEquivalentRangeError() const;
 
-	UpdateMode updateMode() const;
+    UpdateMode updateMode() const;
 
-	void setDevice(QIODevice *source);
-	QIODevice *device() const;
+    void setDevice(QIODevice *source);
+    QIODevice *device() const;
 
-	void setUpdateInterval(int msec);
+    void setUpdateInterval(int msec);
 
-	QGeoPositionInfo lastKnownPosition(bool fromSatellitePositioningMethodsOnly = false) const;
-	PositioningMethods supportedPositioningMethods() const;
-	int minimumUpdateInterval() const;
-	Error error() const;
+    QGeoPositionInfo lastKnownPosition(bool fromSatellitePositioningMethodsOnly = false) const;
+    PositioningMethods supportedPositioningMethods() const;
+    int minimumUpdateInterval() const;
+    Error error() const;
 
 
 public Q_SLOTS:
-	void startUpdates();
-	void stopUpdates();
-	void requestUpdate(int timeout = 0);
+    void startUpdates();
+    void stopUpdates();
+    void requestUpdate(int timeout = 0);
 
 protected:
-	virtual bool parsePosInfoFromNmeaData(const char *data,
-					      int size,
-					      QGeoPositionInfo *posInfo,
-					      bool *hasFix);
+    virtual bool parsePosInfoFromNmeaData(const char *data,
+                                          int size,
+                                          QGeoPositionInfo *posInfo,
+                                          bool *hasFix);
 
 private:
-	Q_DISABLE_COPY(QNmeaPositionInfoSource)
-	friend class QNmeaPositionInfoSourcePrivate;
-	QNmeaPositionInfoSourcePrivate *d;
-	void setError(QGeoPositionInfoSource::Error positionError);
+    Q_DISABLE_COPY(QNmeaPositionInfoSource)
+    friend class QNmeaPositionInfoSourcePrivate;
+    QNmeaPositionInfoSourcePrivate *d;
+    void setError(QGeoPositionInfoSource::Error positionError);
 };
 
 QT_END_NAMESPACE

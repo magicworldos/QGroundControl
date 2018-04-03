@@ -28,83 +28,77 @@
 
 static const float epsilon = std::numeric_limits<double>::epsilon();
 
-void convertGeoToNed(QGeoCoordinate coord, QGeoCoordinate origin, double *x, double *y, double *z)
+void convertGeoToNed(QGeoCoordinate coord, QGeoCoordinate origin, double* x, double* y, double* z)
 {
-	if (coord == origin)
-	{
-		// Short circuit to prevent NaNs in calculation
-		*x = *y = *z = 0;
-		return;
-	}
+    if (coord == origin) {
+        // Short circuit to prevent NaNs in calculation
+        *x = *y = *z = 0;
+        return;
+    }
 
-	double lat_rad = coord.latitude() * M_DEG_TO_RAD;
-	double lon_rad = coord.longitude() * M_DEG_TO_RAD;
+    double lat_rad = coord.latitude() * M_DEG_TO_RAD;
+    double lon_rad = coord.longitude() * M_DEG_TO_RAD;
 
-	double ref_lon_rad = origin.longitude() * M_DEG_TO_RAD;
-	double ref_lat_rad = origin.latitude() * M_DEG_TO_RAD;
+    double ref_lon_rad = origin.longitude() * M_DEG_TO_RAD;
+    double ref_lat_rad = origin.latitude() * M_DEG_TO_RAD;
 
-	double sin_lat = sin(lat_rad);
-	double cos_lat = cos(lat_rad);
-	double cos_d_lon = cos(lon_rad - ref_lon_rad);
+    double sin_lat = sin(lat_rad);
+    double cos_lat = cos(lat_rad);
+    double cos_d_lon = cos(lon_rad - ref_lon_rad);
 
-	double ref_sin_lat = sin(ref_lat_rad);
-	double ref_cos_lat = cos(ref_lat_rad);
+    double ref_sin_lat = sin(ref_lat_rad);
+    double ref_cos_lat = cos(ref_lat_rad);
 
-	double c = acos(ref_sin_lat * sin_lat + ref_cos_lat * cos_lat * cos_d_lon);
-	double k = (fabs(c) < epsilon) ? 1.0 : (c / sin(c));
+    double c = acos(ref_sin_lat * sin_lat + ref_cos_lat * cos_lat * cos_d_lon);
+    double k = (fabs(c) < epsilon) ? 1.0 : (c / sin(c));
 
-	*x = k * (ref_cos_lat * sin_lat - ref_sin_lat * cos_lat * cos_d_lon) * CONSTANTS_RADIUS_OF_EARTH;
-	*y = k * cos_lat * sin(lon_rad - ref_lon_rad) * CONSTANTS_RADIUS_OF_EARTH;
+    *x = k * (ref_cos_lat * sin_lat - ref_sin_lat * cos_lat * cos_d_lon) * CONSTANTS_RADIUS_OF_EARTH;
+    *y = k * cos_lat * sin(lon_rad - ref_lon_rad) * CONSTANTS_RADIUS_OF_EARTH;
 
-	*z = -(coord.altitude() - origin.altitude());
+    *z = -(coord.altitude() - origin.altitude());
 }
 
-void convertNedToGeo(double x, double y, double z, QGeoCoordinate origin, QGeoCoordinate *coord)
-{
-	double x_rad = x / CONSTANTS_RADIUS_OF_EARTH;
-	double y_rad = y / CONSTANTS_RADIUS_OF_EARTH;
-	double c = sqrtf(x_rad * x_rad + y_rad * y_rad);
-	double sin_c = sin(c);
-	double cos_c = cos(c);
+void convertNedToGeo(double x, double y, double z, QGeoCoordinate origin, QGeoCoordinate *coord) {
+    double x_rad = x / CONSTANTS_RADIUS_OF_EARTH;
+    double y_rad = y / CONSTANTS_RADIUS_OF_EARTH;
+    double c = sqrtf(x_rad * x_rad + y_rad * y_rad);
+    double sin_c = sin(c);
+    double cos_c = cos(c);
 
-	double ref_lon_rad = origin.longitude() * M_DEG_TO_RAD;
-	double ref_lat_rad = origin.latitude() * M_DEG_TO_RAD;
+    double ref_lon_rad = origin.longitude() * M_DEG_TO_RAD;
+    double ref_lat_rad = origin.latitude() * M_DEG_TO_RAD;
 
-	double ref_sin_lat = sin(ref_lat_rad);
-	double ref_cos_lat = cos(ref_lat_rad);
+    double ref_sin_lat = sin(ref_lat_rad);
+    double ref_cos_lat = cos(ref_lat_rad);
 
-	double lat_rad;
-	double lon_rad;
+    double lat_rad;
+    double lon_rad;
 
-	if (fabs(c) > epsilon)
-	{
-		lat_rad = asin(cos_c * ref_sin_lat + (x_rad * sin_c * ref_cos_lat) / c);
-		lon_rad = (ref_lon_rad + atan2(y_rad * sin_c, c * ref_cos_lat * cos_c - x_rad * ref_sin_lat * sin_c));
+    if (fabs(c) > epsilon) {
+        lat_rad = asin(cos_c * ref_sin_lat + (x_rad * sin_c * ref_cos_lat) / c);
+        lon_rad = (ref_lon_rad + atan2(y_rad * sin_c, c * ref_cos_lat * cos_c - x_rad * ref_sin_lat * sin_c));
 
-	}
+    } else {
+        lat_rad = ref_lat_rad;
+        lon_rad = ref_lon_rad;
+    }
 
-	else
-	{
-		lat_rad = ref_lat_rad;
-		lon_rad = ref_lon_rad;
-	}
+    coord->setLatitude(lat_rad * M_RAD_TO_DEG);
+    coord->setLongitude(lon_rad * M_RAD_TO_DEG);
 
-	coord->setLatitude(lat_rad * M_RAD_TO_DEG);
-	coord->setLongitude(lon_rad * M_RAD_TO_DEG);
-
-	coord->setAltitude(-z + origin.altitude());
+    coord->setAltitude(-z + origin.altitude());
 }
 
-int convertGeoToUTM(const QGeoCoordinate &coord, double &easting, double &northing)
+int convertGeoToUTM(const QGeoCoordinate& coord, double& easting, double& northing)
 {
-	return LatLonToUTMXY(coord.latitude(), coord.longitude(), -1 /* zone */, easting, northing);
+    return LatLonToUTMXY(coord.latitude(), coord.longitude(), -1 /* zone */, easting, northing);
 }
 
-void convertUTMToGeo(double easting, double northing, int zone, bool southhemi, QGeoCoordinate &coord)
+void convertUTMToGeo(double easting, double northing, int zone, bool southhemi, QGeoCoordinate& coord)
 {
-	double latRadians, lonRadians;
+    double latRadians, lonRadians;
 
-	UTMXYToLatLon(easting, northing, zone, southhemi, latRadians, lonRadians);
-	coord.setLatitude(RadToDeg(latRadians));
-	coord.setLongitude(RadToDeg(lonRadians));
+    UTMXYToLatLon (easting, northing, zone, southhemi, latRadians, lonRadians);
+    coord.setLatitude(RadToDeg(latRadians));
+    coord.setLongitude(RadToDeg(lonRadians));
 }

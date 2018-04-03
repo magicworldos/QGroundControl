@@ -14,25 +14,25 @@
 
 class BrandImageSettings : public SettingsGroup
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	BrandImageSettings(QObject *parent = NULL);
+    BrandImageSettings(QObject* parent = NULL);
 
-	Q_PROPERTY(Fact *userBrandImageIndoor       READ userBrandImageIndoor       CONSTANT)
-	Q_PROPERTY(Fact *userBrandImageOutdoor      READ userBrandImageOutdoor      CONSTANT)
+    Q_PROPERTY(Fact* userBrandImageIndoor       READ userBrandImageIndoor       CONSTANT)
+    Q_PROPERTY(Fact* userBrandImageOutdoor      READ userBrandImageOutdoor      CONSTANT)
 
-	Fact *userBrandImageIndoor(void);
-	Fact *userBrandImageOutdoor(void);
+    Fact* userBrandImageIndoor      (void);
+    Fact* userBrandImageOutdoor     (void);
 
-	static const char *brandImageSettingsGroupName;
+    static const char* brandImageSettingsGroupName;
 
-	static const char *userBrandImageIndoorName;
-	static const char *userBrandImageOutdoorName;
+    static const char* userBrandImageIndoorName;
+    static const char* userBrandImageOutdoorName;
 
 private:
-	SettingsFact *_userBrandImageIndoorFact;
-	SettingsFact *_userBrandImageOutdoorFact;
+    SettingsFact* _userBrandImageIndoorFact;
+    SettingsFact* _userBrandImageOutdoorFact;
 };
 
 #endif

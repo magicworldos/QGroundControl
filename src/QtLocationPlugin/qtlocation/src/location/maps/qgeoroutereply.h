@@ -49,46 +49,45 @@ class QGeoRouteReplyPrivate;
 
 class Q_LOCATION_EXPORT QGeoRouteReply : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	enum Error
-	{
-		NoError,
-		EngineNotSetError,
-		CommunicationError,
-		ParseError,
-		UnsupportedOptionError,
-		UnknownError
-	};
+    enum Error {
+        NoError,
+        EngineNotSetError,
+        CommunicationError,
+        ParseError,
+        UnsupportedOptionError,
+        UnknownError
+    };
 
-	QGeoRouteReply(Error error, const QString &errorString, QObject *parent = 0);
-	virtual ~QGeoRouteReply();
+    QGeoRouteReply(Error error, const QString &errorString, QObject *parent = 0);
+    virtual ~QGeoRouteReply();
 
-	bool isFinished() const;
-	Error error() const;
-	QString errorString() const;
+    bool isFinished() const;
+    Error error() const;
+    QString errorString() const;
 
-	QGeoRouteRequest request() const;
-	QList<QGeoRoute> routes() const;
+    QGeoRouteRequest request() const;
+    QList<QGeoRoute> routes() const;
 
-	virtual void abort();
+    virtual void abort();
 
 Q_SIGNALS:
-	void finished();
-	void error(QGeoRouteReply::Error error, const QString &errorString = QString());
+    void finished();
+    void error(QGeoRouteReply::Error error, const QString &errorString = QString());
 
 protected:
-	QGeoRouteReply(const QGeoRouteRequest &request, QObject *parent = 0);
+    QGeoRouteReply(const QGeoRouteRequest &request, QObject *parent = 0);
 
-	void setError(Error error, const QString &errorString);
-	void setFinished(bool finished);
+    void setError(Error error, const QString &errorString);
+    void setFinished(bool finished);
 
-	void setRoutes(const QList<QGeoRoute> &routes);
-	void addRoutes(const QList<QGeoRoute> &routes);
+    void setRoutes(const QList<QGeoRoute> &routes);
+    void addRoutes(const QList<QGeoRoute> &routes);
 
 private:
-	QGeoRouteReplyPrivate *d_ptr;
-	Q_DISABLE_COPY(QGeoRouteReply)
+    QGeoRouteReplyPrivate *d_ptr;
+    Q_DISABLE_COPY(QGeoRouteReply)
 };
 
 QT_END_NAMESPACE

@@ -16,60 +16,56 @@
 
 class QGCMapPolylineTest : public UnitTest
 {
-	Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-	QGCMapPolylineTest(void);
+    QGCMapPolylineTest(void);
 
 protected:
-	void init(void) final;
-	void cleanup(void) final;
-
+    void init(void) final;
+    void cleanup(void) final;
+    
 private slots:
-	void _testDirty(void);
-	void _testVertexManipulation(void);
+    void _testDirty(void);
+    void _testVertexManipulation(void);
 //    void _testKMLLoad(void);
 
 private:
-	enum
-	{
-		countChangedIndex = 0,
-		pathChangedIndex,
-		dirtyChangedIndex,
-		clearedIndex,
-		maxSignalIndex
-	};
+    enum {
+        countChangedIndex = 0,
+        pathChangedIndex,
+        dirtyChangedIndex,
+        clearedIndex,
+        maxSignalIndex
+    };
 
-	enum
-	{
-		countChangedMask =  1 << countChangedIndex,
-		pathChangedMask =   1 << pathChangedIndex,
-		dirtyChangedMask =  1 << dirtyChangedIndex,
-		clearedMask =       1 << clearedIndex,
-	};
+    enum {
+        countChangedMask =  1 << countChangedIndex,
+        pathChangedMask =   1 << pathChangedIndex,
+        dirtyChangedMask =  1 << dirtyChangedIndex,
+        clearedMask =       1 << clearedIndex,
+    };
 
-	static const size_t _cSignals = maxSignalIndex;
-	const char         *_rgSignals[_cSignals];
+    static const size_t _cSignals = maxSignalIndex;
+    const char*         _rgSignals[_cSignals];
 
-	enum
-	{
-		modelCountChangedIndex = 0,
-		modelDirtyChangedIndex,
-		maxModelSignalIndex
-	};
+    enum {
+        modelCountChangedIndex = 0,
+        modelDirtyChangedIndex,
+        maxModelSignalIndex
+    };
 
-	enum
-	{
-		modelCountChangedMask = 1 << modelCountChangedIndex,
-		modelDirtyChangedMask = 1 << modelDirtyChangedIndex,
-	};
+    enum {
+        modelCountChangedMask = 1 << modelCountChangedIndex,
+        modelDirtyChangedMask = 1 << modelDirtyChangedIndex,
+    };
 
-	static const size_t _cModelSignals = maxModelSignalIndex;
-	const char         *_rgModelSignals[_cModelSignals];
+    static const size_t _cModelSignals = maxModelSignalIndex;
+    const char*         _rgModelSignals[_cModelSignals];
 
-	MultiSignalSpy         *_multiSpyPolyline;
-	MultiSignalSpy         *_multiSpyModel;
-	QGCMapPolyline         *_mapPolyline;
-	QmlObjectListModel     *_pathModel;
-	QList<QGeoCoordinate>   _linePoints;
+    MultiSignalSpy*         _multiSpyPolyline;
+    MultiSignalSpy*         _multiSpyModel;
+    QGCMapPolyline*         _mapPolyline;
+    QmlObjectListModel*     _pathModel;
+    QList<QGeoCoordinate>   _linePoints;
 };

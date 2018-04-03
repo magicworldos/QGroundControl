@@ -64,38 +64,38 @@ class QGeoTileSpec;
 
 class Q_LOCATION_EXPORT QGeoTileFetcher : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	QGeoTileFetcher(QObject *parent = 0);
-	virtual ~QGeoTileFetcher();
+    QGeoTileFetcher(QObject *parent = 0);
+    virtual ~QGeoTileFetcher();
 
 public Q_SLOTS:
-	void updateTileRequests(const QSet<QGeoTileSpec> &tilesAdded, const QSet<QGeoTileSpec> &tilesRemoved);
+    void updateTileRequests(const QSet<QGeoTileSpec> &tilesAdded, const QSet<QGeoTileSpec> &tilesRemoved);
 
 private Q_SLOTS:
-	void cancelTileRequests(const QSet<QGeoTileSpec> &tiles);
-	void requestNextTile();
-	void finished();
+    void cancelTileRequests(const QSet<QGeoTileSpec> &tiles);
+    void requestNextTile();
+    void finished();
 
 Q_SIGNALS:
-	void tileFinished(const QGeoTileSpec &spec, const QByteArray &bytes, const QString &format);
-	void tileError(const QGeoTileSpec &spec, const QString &errorString);
+    void tileFinished(const QGeoTileSpec &spec, const QByteArray &bytes, const QString &format);
+    void tileError(const QGeoTileSpec &spec, const QString &errorString);
 
 protected:
-	void timerEvent(QTimerEvent *event);
-	QGeoTiledMappingManagerEngine::CacheAreas cacheHint() const;
+    void timerEvent(QTimerEvent *event);
+    QGeoTiledMappingManagerEngine::CacheAreas cacheHint() const;
 
 private:
-	QGeoTileFetcherPrivate *d_ptr;
+    QGeoTileFetcherPrivate *d_ptr;
 
-	virtual QGeoTiledMapReply *getTileImage(const QGeoTileSpec &spec) = 0;
-	void handleReply(QGeoTiledMapReply *reply, const QGeoTileSpec &spec);
+    virtual QGeoTiledMapReply *getTileImage(const QGeoTileSpec &spec) = 0;
+    void handleReply(QGeoTiledMapReply *reply, const QGeoTileSpec &spec);
 
-	Q_DECLARE_PRIVATE(QGeoTileFetcher)
-	Q_DISABLE_COPY(QGeoTileFetcher)
+    Q_DECLARE_PRIVATE(QGeoTileFetcher)
+    Q_DISABLE_COPY(QGeoTileFetcher)
 
-	friend class QGeoTiledMappingManagerEngine;
+    friend class QGeoTiledMappingManagerEngine;
 };
 
 QT_END_NAMESPACE

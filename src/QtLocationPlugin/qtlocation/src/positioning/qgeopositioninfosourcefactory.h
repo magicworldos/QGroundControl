@@ -44,16 +44,16 @@ QT_BEGIN_NAMESPACE
 class Q_POSITIONING_EXPORT QGeoPositionInfoSourceFactory
 {
 public:
-	virtual ~QGeoPositionInfoSourceFactory();
+    virtual ~QGeoPositionInfoSourceFactory();
 
-	virtual QGeoPositionInfoSource *positionInfoSource(QObject *parent) = 0;
-	virtual QGeoSatelliteInfoSource *satelliteInfoSource(QObject *parent) = 0;
-	virtual QGeoAreaMonitorSource *areaMonitor(QObject *parent) = 0;
+    virtual QGeoPositionInfoSource *positionInfoSource(QObject *parent) = 0;
+    virtual QGeoSatelliteInfoSource *satelliteInfoSource(QObject *parent) = 0;
+    virtual QGeoAreaMonitorSource *areaMonitor(QObject *parent) = 0;
 };
 
 #define QT_POSITION_SOURCE_INTERFACE
 Q_DECLARE_INTERFACE(QGeoPositionInfoSourceFactory,
-		    "org.qt-project.qt.position.sourcefactory/5.0")
+                    "org.qt-project.qt.position.sourcefactory/5.0")
 
 QT_END_NAMESPACE
 

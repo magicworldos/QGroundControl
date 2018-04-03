@@ -68,37 +68,37 @@ class QGeoCameraCapabilities;
 
 class Q_LOCATION_EXPORT QGeoMappingManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	~QGeoMappingManager();
+    ~QGeoMappingManager();
 
-	QString managerName() const;
-	int managerVersion() const;
+    QString managerName() const;
+    int managerVersion() const;
 
-	QGeoMap *createMap(QObject *parent);
+    QGeoMap *createMap(QObject *parent);
 
-	QList<QGeoMapType> supportedMapTypes() const;
+    QList<QGeoMapType> supportedMapTypes() const;
 
-	bool isInitialized() const;
+    bool isInitialized() const;
 
-	QGeoCameraCapabilities cameraCapabilities() const;
+    QGeoCameraCapabilities cameraCapabilities() const;
 
-	void setLocale(const QLocale &locale);
-	QLocale locale() const;
+    void setLocale(const QLocale &locale);
+    QLocale locale() const;
 
 Q_SIGNALS:
-	void initialized();
+    void initialized();
 
 protected:
-	QGeoMappingManager(QGeoMappingManagerEngine *engine, QObject *parent = 0);
+    QGeoMappingManager(QGeoMappingManagerEngine *engine, QObject *parent = 0);
 
 private:
-	QGeoMappingManagerPrivate *d_ptr;
-	Q_DISABLE_COPY(QGeoMappingManager)
+    QGeoMappingManagerPrivate *d_ptr;
+    Q_DISABLE_COPY(QGeoMappingManager)
 
-	friend class QGeoServiceProvider;
-	friend class QGeoServiceProviderPrivate;
+    friend class QGeoServiceProvider;
+    friend class QGeoServiceProviderPrivate;
 };
 
 QT_END_NAMESPACE
