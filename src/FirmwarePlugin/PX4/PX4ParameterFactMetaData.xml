@@ -4526,23 +4526,39 @@ towards MPC_ACC_HOR_MAX/MPC_ACC_UP_MAX with jerk limit</short_desc>
       <decimal>1</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.9" name="MPC_SOFT_PAR_SP" type="FLOAT">
-      <short_desc>Position control soft param set point</short_desc>
-      <long_desc>Position control soft param set point</long_desc>
+    <parameter default="0.95" name="MPC_SOFT_SP_XY" type="FLOAT">
+      <short_desc>Position control soft param set point xy</short_desc>
+      <long_desc>Position control soft param set point xy</long_desc>
       <min>0.01</min>
       <max>1.0</max>
       <decimal>5</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.99" name="MPC_SOFT_PAR_VEL" type="FLOAT">
-      <short_desc>Position control soft param set vel</short_desc>
-      <long_desc>Position control soft param set vel</long_desc>
+    <parameter default="0.5" name="MPC_SOFT_SP_Z" type="FLOAT">
+      <short_desc>Position control soft param set point z</short_desc>
+      <long_desc>Position control soft param set point z</long_desc>
       <min>0.01</min>
       <max>1.0</max>
       <decimal>5</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.995" name="MPC_SOFT_PAR_YAW" type="FLOAT">
+    <parameter default="0.995" name="MPC_SOFT_VEL_XY" type="FLOAT">
+      <short_desc>Position control soft param set vel xy</short_desc>
+      <long_desc>Position control soft param set vel xy</long_desc>
+      <min>0.01</min>
+      <max>1.0</max>
+      <decimal>5</decimal>
+      <scope>modules/mc_pos_control</scope>
+    </parameter>
+    <parameter default="0.95" name="MPC_SOFT_VEL_Z" type="FLOAT">
+      <short_desc>Position control soft param set vel z</short_desc>
+      <long_desc>Position control soft param set vel z</long_desc>
+      <min>0.01</min>
+      <max>1.0</max>
+      <decimal>5</decimal>
+      <scope>modules/mc_pos_control</scope>
+    </parameter>
+    <parameter default="0.995" name="MPC_SOFT_YAW" type="FLOAT">
       <short_desc>Position control soft param Yaw</short_desc>
       <long_desc>Position control soft param Yaw</long_desc>
       <min>0.0</min>
