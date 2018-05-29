@@ -4354,6 +4354,15 @@ default 1.5 turns per second</short_desc>
     </parameter>
   </group>
   <group name="Multicopter Position Control">
+    <parameter default="2.0" name="MPC_ACC_AUTO_MAX" type="FLOAT">
+      <short_desc>Maximum horizontal acceleration for auto mode</short_desc>
+      <min>0.5</min>
+      <max>15.0</max>
+      <unit>m/s/s</unit>
+      <decimal>2</decimal>
+      <increment>0.5</increment>
+      <scope>modules/mc_pos_control</scope>
+    </parameter>
     <parameter default="10.0" name="MPC_ACC_DOWN_MAX" type="FLOAT">
       <short_desc>Maximum vertical acceleration in velocity controlled modes down</short_desc>
       <min>2.0</min>
@@ -4524,46 +4533,6 @@ towards MPC_ACC_HOR_MAX/MPC_ACC_UP_MAX with jerk limit</short_desc>
       <max>400</max>
       <unit>deg/s</unit>
       <decimal>1</decimal>
-      <scope>modules/mc_pos_control</scope>
-    </parameter>
-    <parameter default="0.95" name="MPC_SOFT_SP_XY" type="FLOAT">
-      <short_desc>Position control soft param set point xy</short_desc>
-      <long_desc>Position control soft param set point xy</long_desc>
-      <min>0.01</min>
-      <max>1.0</max>
-      <decimal>5</decimal>
-      <scope>modules/mc_pos_control</scope>
-    </parameter>
-    <parameter default="0.5" name="MPC_SOFT_SP_Z" type="FLOAT">
-      <short_desc>Position control soft param set point z</short_desc>
-      <long_desc>Position control soft param set point z</long_desc>
-      <min>0.01</min>
-      <max>1.0</max>
-      <decimal>5</decimal>
-      <scope>modules/mc_pos_control</scope>
-    </parameter>
-    <parameter default="0.995" name="MPC_SOFT_VEL_XY" type="FLOAT">
-      <short_desc>Position control soft param set vel xy</short_desc>
-      <long_desc>Position control soft param set vel xy</long_desc>
-      <min>0.01</min>
-      <max>1.0</max>
-      <decimal>5</decimal>
-      <scope>modules/mc_pos_control</scope>
-    </parameter>
-    <parameter default="0.95" name="MPC_SOFT_VEL_Z" type="FLOAT">
-      <short_desc>Position control soft param set vel z</short_desc>
-      <long_desc>Position control soft param set vel z</long_desc>
-      <min>0.01</min>
-      <max>1.0</max>
-      <decimal>5</decimal>
-      <scope>modules/mc_pos_control</scope>
-    </parameter>
-    <parameter default="0.995" name="MPC_SOFT_YAW" type="FLOAT">
-      <short_desc>Position control soft param Yaw</short_desc>
-      <long_desc>Position control soft param Yaw</long_desc>
-      <min>0.0</min>
-      <max>1.0</max>
-      <decimal>5</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
     <parameter default="0.5" name="MPC_THR_HOVER" type="FLOAT">
