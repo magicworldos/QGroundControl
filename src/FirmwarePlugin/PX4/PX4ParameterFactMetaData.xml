@@ -4354,7 +4354,7 @@ default 1.5 turns per second</short_desc>
     </parameter>
   </group>
   <group name="Multicopter Position Control">
-    <parameter default="2.0" name="MPC_ACC_AUTO_XY" type="FLOAT">
+    <parameter default="5.0" name="MPC_ACC_AUTO_XY" type="FLOAT">
       <short_desc>Maximum horizontal acceleration for auto mode xy</short_desc>
       <min>0.5</min>
       <max>15.0</max>
@@ -4363,7 +4363,7 @@ default 1.5 turns per second</short_desc>
       <increment>0.5</increment>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="2.0" name="MPC_ACC_AUTO_Z" type="FLOAT">
+    <parameter default="5.0" name="MPC_ACC_AUTO_Z" type="FLOAT">
       <short_desc>Maximum horizontal acceleration for auto mode z</short_desc>
       <min>0.5</min>
       <max>15.0</max>
