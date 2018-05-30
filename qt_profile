@@ -1,0 +1,4 @@
+export QT_HOME=/data/apps/qt59
+export PATH=$QT_HOME/bin:$PATH
+export LD_LIBRARY_PATH=$QT_HOME/lib:$LD_LIBRARY_PATH
+
