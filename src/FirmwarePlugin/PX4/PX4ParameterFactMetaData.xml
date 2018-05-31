@@ -4024,7 +4024,7 @@ applied to input of all axis: roll, pitch, yaw</short_desc>
       <decimal>2</decimal>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="720.0" name="MC_ACRO_P_MAX" type="FLOAT">
+    <parameter default="90.0" name="MC_ACRO_P_MAX" type="FLOAT">
       <short_desc>Max acro pitch rate
 default: 2 turns per second</short_desc>
       <min>0.0</min>
@@ -4034,7 +4034,7 @@ default: 2 turns per second</short_desc>
       <increment>5</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="720.0" name="MC_ACRO_R_MAX" type="FLOAT">
+    <parameter default="90.0" name="MC_ACRO_R_MAX" type="FLOAT">
       <short_desc>Max acro roll rate
 default: 2 turns per second</short_desc>
       <min>0.0</min>
@@ -4053,7 +4053,7 @@ applied to input of all axis: roll, pitch, yaw</short_desc>
       <decimal>2</decimal>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="540.0" name="MC_ACRO_Y_MAX" type="FLOAT">
+    <parameter default="90.0" name="MC_ACRO_Y_MAX" type="FLOAT">
       <short_desc>Max acro yaw rate
 default 1.5 turns per second</short_desc>
       <min>0.0</min>
@@ -4069,7 +4069,7 @@ default 1.5 turns per second</short_desc>
       <boolean />
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.005" name="MC_PITCHRATE_D" type="FLOAT">
+    <parameter default="0.003" name="MC_PITCHRATE_D" type="FLOAT">
       <short_desc>Pitch rate D gain</short_desc>
       <long_desc>Pitch rate differential gain. Small values help reduce fast oscillations. If value is too big oscillations will appear again.</long_desc>
       <min>0.0</min>
@@ -4084,7 +4084,7 @@ default 1.5 turns per second</short_desc>
       <decimal>4</decimal>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.04" name="MC_PITCHRATE_I" type="FLOAT">
+    <parameter default="0.28" name="MC_PITCHRATE_I" type="FLOAT">
       <short_desc>Pitch rate I gain</short_desc>
       <long_desc>Pitch rate integral gain. Can be set to compensate static thrust difference or gravity center offset.</long_desc>
       <min>0.0</min>
@@ -4092,7 +4092,7 @@ default 1.5 turns per second</short_desc>
       <increment>0.01</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="220.0" name="MC_PITCHRATE_MAX" type="FLOAT">
+    <parameter default="60.0" name="MC_PITCHRATE_MAX" type="FLOAT">
       <short_desc>Max pitch rate</short_desc>
       <long_desc>Limit for pitch rate in manual and auto modes (except acro). Has effect for large rotations in autonomous mode, to avoid large control output and mixer saturation. This is not only limited by the vehicle's properties, but also by the maximum measurement rate of the gyro.</long_desc>
       <min>0.0</min>
@@ -4102,7 +4102,7 @@ default 1.5 turns per second</short_desc>
       <increment>5</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.13" name="MC_PITCHRATE_P" type="FLOAT">
+    <parameter default="0.11" name="MC_PITCHRATE_P" type="FLOAT">
       <short_desc>Pitch rate P gain</short_desc>
       <long_desc>Pitch rate proportional gain, i.e. control output for angular speed error 1 rad/s.</long_desc>
       <min>0.0</min>
@@ -4111,7 +4111,7 @@ default 1.5 turns per second</short_desc>
       <increment>0.01</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="6.5" name="MC_PITCH_P" type="FLOAT">
+    <parameter default="4.0" name="MC_PITCH_P" type="FLOAT">
       <short_desc>Pitch P gain</short_desc>
       <long_desc>Pitch proportional gain, i.e. desired angular speed in rad/s for error 1 rad.</long_desc>
       <min>0.0</min>
@@ -4131,14 +4131,6 @@ default 1.5 turns per second</short_desc>
       <increment>0.01</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.30" name="MC_PR_INT_LIM" type="FLOAT">
-      <short_desc>Pitch rate integrator limit</short_desc>
-      <long_desc>Pitch rate integrator limit. Can be set to increase the amount of integrator available to counteract disturbances or reduced to improve settling time after large pitch moment trim changes.</long_desc>
-      <min>0.0</min>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-      <scope>modules/mc_att_control</scope>
-    </parameter>
     <parameter default="0.8" name="MC_RATT_TH" type="FLOAT">
       <short_desc>Threshold for Rattitude mode</short_desc>
       <long_desc>Manual input needed in order to override attitude control rate setpoints and instead pass manual stick inputs as rate setpoints</long_desc>
@@ -4148,7 +4140,7 @@ default 1.5 turns per second</short_desc>
       <increment>0.01</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.005" name="MC_ROLLRATE_D" type="FLOAT">
+    <parameter default="0.003" name="MC_ROLLRATE_D" type="FLOAT">
       <short_desc>Roll rate D gain</short_desc>
       <long_desc>Roll rate differential gain. Small values help reduce fast oscillations. If value is too big oscillations will appear again.</long_desc>
       <min>0.0</min>
@@ -4164,7 +4156,7 @@ default 1.5 turns per second</short_desc>
       <decimal>4</decimal>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.04" name="MC_ROLLRATE_I" type="FLOAT">
+    <parameter default="0.28" name="MC_ROLLRATE_I" type="FLOAT">
       <short_desc>Roll rate I gain</short_desc>
       <long_desc>Roll rate integral gain. Can be set to compensate static thrust difference or gravity center offset.</long_desc>
       <min>0.0</min>
@@ -4172,7 +4164,7 @@ default 1.5 turns per second</short_desc>
       <increment>0.01</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="220.0" name="MC_ROLLRATE_MAX" type="FLOAT">
+    <parameter default="60.0" name="MC_ROLLRATE_MAX" type="FLOAT">
       <short_desc>Max roll rate</short_desc>
       <long_desc>Limit for roll rate in manual and auto modes (except acro). Has effect for large rotations in autonomous mode, to avoid large control output and mixer saturation. This is not only limited by the vehicle's properties, but also by the maximum measurement rate of the gyro.</long_desc>
       <min>0.0</min>
@@ -4182,7 +4174,7 @@ default 1.5 turns per second</short_desc>
       <increment>5</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.13" name="MC_ROLLRATE_P" type="FLOAT">
+    <parameter default="0.11" name="MC_ROLLRATE_P" type="FLOAT">
       <short_desc>Roll rate P gain</short_desc>
       <long_desc>Roll rate proportional gain, i.e. control output for angular speed error 1 rad/s.</long_desc>
       <min>0.0</min>
@@ -4191,7 +4183,7 @@ default 1.5 turns per second</short_desc>
       <increment>0.01</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="6.5" name="MC_ROLL_P" type="FLOAT">
+    <parameter default="4.0" name="MC_ROLL_P" type="FLOAT">
       <short_desc>Roll P gain</short_desc>
       <long_desc>Roll proportional gain, i.e. desired angular speed in rad/s for error 1 rad.</long_desc>
       <min>0.0</min>
@@ -4289,7 +4281,7 @@ default 1.5 turns per second</short_desc>
       <increment>0.01</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.1" name="MC_YAWRATE_I" type="FLOAT">
+    <parameter default="0.2" name="MC_YAWRATE_I" type="FLOAT">
       <short_desc>Yaw rate I gain</short_desc>
       <long_desc>Yaw rate integral gain. Can be set to compensate static thrust difference or gravity center offset.</long_desc>
       <min>0.0</min>
@@ -4306,7 +4298,7 @@ default 1.5 turns per second</short_desc>
       <increment>5</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="0.12" name="MC_YAWRATE_P" type="FLOAT">
+    <parameter default="0.25" name="MC_YAWRATE_P" type="FLOAT">
       <short_desc>Yaw rate P gain</short_desc>
       <long_desc>Yaw rate proportional gain, i.e. control output for angular speed error 1 rad/s.</long_desc>
       <min>0.0</min>
@@ -4334,7 +4326,7 @@ default 1.5 turns per second</short_desc>
       <increment>0.01</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="1.8" name="MC_YAW_P" type="FLOAT">
+    <parameter default="2.0" name="MC_YAW_P" type="FLOAT">
       <short_desc>Yaw P gain</short_desc>
       <long_desc>Yaw proportional gain, i.e. desired angular speed in rad/s for error 1 rad.</long_desc>
       <min>0.0</min>
@@ -4462,7 +4454,7 @@ is 90 degrees. It should be lower than MPC_XY_CRUISE</short_desc>
       <decimal>2</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.8" name="MPC_HOLD_MAX_XY" type="FLOAT">
+    <parameter default="0.5" name="MPC_HOLD_MAX_XY" type="FLOAT">
       <short_desc>Maximum horizontal velocity for which position hold is enabled (use 0 to disable check)</short_desc>
       <min>0.0</min>
       <max>3.0</max>
@@ -4470,7 +4462,7 @@ is 90 degrees. It should be lower than MPC_XY_CRUISE</short_desc>
       <decimal>2</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.6" name="MPC_HOLD_MAX_Z" type="FLOAT">
+    <parameter default="0.5" name="MPC_HOLD_MAX_Z" type="FLOAT">
       <short_desc>Maximum vertical velocity for which position hold is enabled (use 0 to disable check)</short_desc>
       <min>0.0</min>
       <max>3.0</max>
@@ -4546,7 +4538,7 @@ towards MPC_ACC_HOR_MAX/MPC_ACC_UP_MAX with jerk limit</short_desc>
       <increment>0.01</increment>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="35.0" name="MPC_MAN_TILT_MAX" type="FLOAT">
+    <parameter default="25.0" name="MPC_MAN_TILT_MAX" type="FLOAT">
       <short_desc>Maximal tilt angle in manual or altitude mode</short_desc>
       <min>0.0</min>
       <max>90.0</max>
@@ -4554,7 +4546,7 @@ towards MPC_ACC_HOR_MAX/MPC_ACC_UP_MAX with jerk limit</short_desc>
       <decimal>1</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="200.0" name="MPC_MAN_Y_MAX" type="FLOAT">
+    <parameter default="50.0" name="MPC_MAN_Y_MAX" type="FLOAT">
       <short_desc>Max manual yaw rate</short_desc>
       <min>0.0</min>
       <max>400</max>
@@ -4592,7 +4584,7 @@ towards MPC_ACC_HOR_MAX/MPC_ACC_UP_MAX with jerk limit</short_desc>
       <increment>0.01</increment>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="45.0" name="MPC_TILTMAX_AIR" type="FLOAT">
+    <parameter default="20.0" name="MPC_TILTMAX_AIR" type="FLOAT">
       <short_desc>Maximum tilt angle in air</short_desc>
       <long_desc>Limits maximum tilt in AUTO and POSCTRL modes during flight.</long_desc>
       <min>0.0</min>
@@ -4662,21 +4654,21 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <decimal>2</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.95" name="MPC_XY_P" type="FLOAT">
+    <parameter default="1.0" name="MPC_XY_P" type="FLOAT">
       <short_desc>Proportional gain for horizontal position error</short_desc>
       <min>0.0</min>
       <max>2.0</max>
       <decimal>2</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.02" name="MPC_XY_VEL_D" type="FLOAT">
+    <parameter default="0.005" name="MPC_XY_VEL_D" type="FLOAT">
       <short_desc>Differential gain for horizontal velocity error. Small values help reduce fast oscillations. If value is too big oscillations will appear again</short_desc>
       <min>0.005</min>
       <max>0.1</max>
       <decimal>3</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.08" name="MPC_XY_VEL_I" type="FLOAT">
+    <parameter default="0.01" name="MPC_XY_VEL_I" type="FLOAT">
       <short_desc>Integral gain for horizontal velocity error</short_desc>
       <long_desc>Non-zero value allows to resist wind.</long_desc>
       <min>0.0</min>
@@ -4694,7 +4686,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <increment>1</increment>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.12" name="MPC_XY_VEL_P" type="FLOAT">
+    <parameter default="0.08" name="MPC_XY_VEL_P" type="FLOAT">
       <short_desc>Proportional gain for horizontal velocity error</short_desc>
       <min>0.06</min>
       <max>0.15</max>
@@ -4723,12 +4715,21 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <decimal>3</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.02" name="MPC_Z_VEL_I" type="FLOAT">
+    <parameter default="0.2" name="MPC_Z_VEL_I" type="FLOAT">
       <short_desc>Integral gain for vertical velocity error</short_desc>
       <long_desc>Non zero value allows hovering thrust estimation on stabilized or autonomous takeoff.</long_desc>
       <min>0.01</min>
-      <max>0.1</max>
+      <max>0.3</max>
       <decimal>3</decimal>
+      <scope>modules/mc_pos_control</scope>
+    </parameter>
+    <parameter default="2.0" name="MPC_Z_VEL_MAX" type="FLOAT">
+      <short_desc>Maximum vertical ascent velocity</short_desc>
+      <long_desc>Maximum vertical velocity in AUTO mode and endpoint for stabilized modes (ALTCTRL, POSCTRL).</long_desc>
+      <min>0.5</min>
+      <max>8.0</max>
+      <unit>m/s</unit>
+      <decimal>1</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
     <parameter default="1.0" name="MPC_Z_VEL_MAX_DN" type="FLOAT">
@@ -4739,16 +4740,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <unit>m/s</unit>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="3.0" name="MPC_Z_VEL_MAX_UP" type="FLOAT">
-      <short_desc>Maximum vertical ascent velocity</short_desc>
-      <long_desc>Maximum vertical velocity in AUTO mode and endpoint for stabilized modes (ALTCTRL, POSCTRL).</long_desc>
-      <min>0.5</min>
-      <max>8.0</max>
-      <unit>m/s</unit>
-      <decimal>1</decimal>
-      <scope>modules/mc_pos_control</scope>
-    </parameter>
-    <parameter default="0.2" name="MPC_Z_VEL_P" type="FLOAT">
+    <parameter default="0.1" name="MPC_Z_VEL_P" type="FLOAT">
       <short_desc>Proportional gain for vertical velocity error</short_desc>
       <min>0.1</min>
       <max>0.4</max>
