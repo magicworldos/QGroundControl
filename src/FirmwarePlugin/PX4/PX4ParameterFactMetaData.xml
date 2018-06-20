@@ -4092,7 +4092,7 @@ default 1.5 turns per second</short_desc>
       <increment>0.01</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="90.0" name="MC_PITCHRATE_MAX" type="FLOAT">
+    <parameter default="100.0" name="MC_PITCHRATE_MAX" type="FLOAT">
       <short_desc>Max pitch rate</short_desc>
       <long_desc>Limit for pitch rate in manual and auto modes (except acro). Has effect for large rotations in autonomous mode, to avoid large control output and mixer saturation. This is not only limited by the vehicle's properties, but also by the maximum measurement rate of the gyro.</long_desc>
       <min>0.0</min>
@@ -4172,7 +4172,7 @@ default 1.5 turns per second</short_desc>
       <increment>0.01</increment>
       <scope>modules/mc_att_control</scope>
     </parameter>
-    <parameter default="90.0" name="MC_ROLLRATE_MAX" type="FLOAT">
+    <parameter default="100.0" name="MC_ROLLRATE_MAX" type="FLOAT">
       <short_desc>Max roll rate</short_desc>
       <long_desc>Limit for roll rate in manual and auto modes (except acro). Has effect for large rotations in autonomous mode, to avoid large control output and mixer saturation. This is not only limited by the vehicle's properties, but also by the maximum measurement rate of the gyro.</long_desc>
       <min>0.0</min>
@@ -4709,21 +4709,21 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <decimal>2</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="1.0" name="MPC_Z_P" type="FLOAT">
+    <parameter default="1.2" name="MPC_Z_P" type="FLOAT">
       <short_desc>Proportional gain for vertical position error</short_desc>
       <min>0.0</min>
       <max>1.5</max>
       <decimal>2</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.0" name="MPC_Z_VEL_D" type="FLOAT">
+    <parameter default="0.02" name="MPC_Z_VEL_D" type="FLOAT">
       <short_desc>Differential gain for vertical velocity error</short_desc>
       <min>0.0</min>
       <max>0.1</max>
       <decimal>3</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.15" name="MPC_Z_VEL_I" type="FLOAT">
+    <parameter default="0.26" name="MPC_Z_VEL_I" type="FLOAT">
       <short_desc>Integral gain for vertical velocity error</short_desc>
       <long_desc>Non zero value allows hovering thrust estimation on stabilized or autonomous takeoff.</long_desc>
       <min>0.01</min>
@@ -4731,7 +4731,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <decimal>3</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="1.0" name="MPC_Z_VEL_MAX_DN" type="FLOAT">
+    <parameter default="2.0" name="MPC_Z_VEL_MAX_DN" type="FLOAT">
       <short_desc>Maximum vertical descent velocity</short_desc>
       <long_desc>Maximum vertical velocity in AUTO mode and endpoint for stabilized modes (ALTCTRL, POSCTRL).</long_desc>
       <min>0.5</min>
@@ -4748,7 +4748,7 @@ the setpoint will be capped to MPC_XY_VEL_MAX</short_desc>
       <decimal>1</decimal>
       <scope>modules/mc_pos_control</scope>
     </parameter>
-    <parameter default="0.2" name="MPC_Z_VEL_P" type="FLOAT">
+    <parameter default="0.3" name="MPC_Z_VEL_P" type="FLOAT">
       <short_desc>Proportional gain for vertical velocity error</short_desc>
       <min>0.1</min>
       <max>0.4</max>
